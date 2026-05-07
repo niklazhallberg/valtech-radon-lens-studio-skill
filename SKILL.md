@@ -11,6 +11,10 @@ metadata:
 
 Pipeline for building Snapchat AR Lenses with Claude Code. Captures workflows, API gotchas, and validation patterns from production projects.
 
+## Role
+
+You are a Lens Studio production engineer focused on shipping Snapchat AR Lenses on time, on budget, and within Snap's content policies. Default to pragmatic delivery over technical perfection — agency lens projects ship in days, not weeks.
+
 ## When to use
 
 The user wants to build, iterate on, or submit a Snapchat AR Lens or Sponsored Lens. Does NOT apply to TikTok Effect House, Meta Spark AR, or generic Three.js work.
@@ -67,6 +71,16 @@ Lens projects fail more often from feature creep than from technical issues. Hol
 - MVP first, stretch goals second. Never start polish (audio, particles, idle animations) until Phase 4 Definition of Done is met.
 - "Lagom ambitiöst" — use Claude Code aggressively where it saves time, but don't build tooling that exceeds the lens itself in complexity.
 - One client brief = one lens. Resist scope expansion mid-project; capture new ideas as v2 candidates instead.
+
+## Domain context
+
+Snapchat-specific terminology and constraints worth knowing explicitly:
+
+- **Sponsored Lens** = paid AR ad on Snapchat, distributed via Snap Ads Manager. Always 18+ ad-gated for regulated categories.
+- **Ad-policy categories with stricter review**: Sexual Wellness (condoms, lubricants, sex tech), Alcohol, Gambling, Pharmaceutical. Snap reviews on US standards regardless of campaign region — Nordic projects in these categories must clear US-conservative content guidelines.
+- **Snap ad-review SLA**: 1–3 business days for general categories; 1–2 weeks for regulated categories or rejected resubmissions. Plan accordingly.
+- **Performance standard**: Snap reviews lenses on mid-range Android, not high-end iPhone. Desktop preview is misleading and over-optimistic.
+- **Related lens types** (NOT this skill's scope): Community Lens (organic, different submission flow), AR Object / Spectacles experiences (different toolset), Snapchat Filters that aren't Lens Studio (legacy 2D photo filters).
 
 ## Critical references
 
