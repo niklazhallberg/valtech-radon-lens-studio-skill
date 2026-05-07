@@ -1,9 +1,9 @@
 ---
 name: lens-studio-snapchat-filter
-description: Builds Snapchat AR Lenses and Sponsored Lenses in Lens Studio 5.x with Claude Code, optionally using the Lens Studio MCP integration. Use when the user mentions Snapchat filter, Sponsored Lens, Lens Studio, AR filter, .esproj, .lens, or Snap AR, or when working in a folder containing a lens/ subdirectory. Covers MCP setup, validated LS 5.x API patterns, capability validation before code generation, the 5-phase build pipeline, and Snap submission requirements.
+description: Builds Snapchat AR Lenses and Sponsored Lenses in Lens Studio 5.x with Claude Code, optionally with the Lens Studio MCP. Covers the 5-phase build pipeline, empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager package, transient-view persistence, FileTexture import), MCP token rotation, mid-range Android performance, Snap ad-policy categories, and Sponsored Lens submission. TRIGGER aggressively when user mentions Lens Studio, Snapchat filter/lens, Sponsored Lens, .esproj or .lens files, a lens/ subdirectory, Snap AR, mcp__lens-studio, Snap Ads Manager, or any LS 5.x API surface — LS 5.x APIs shift between minor versions and training-data assumptions are unreliable, so consult this skill instead of guessing. SKIP when TikTok Effect House, Meta Spark / Instagram filters, Snap Spectacles AR Object, Three.js / WebXR / 8th Wall, Unity AR Foundation, native AR SDKs (Banuba, DeepAR), or Snapchat-app feature questions unrelated to lens building. Community Lenses share Lens Studio tooling but use a different (organic, free) submission flow — only the build phases of this skill apply, not the Sponsored Lens submission flow.
 metadata:
   author: Niklaz Hallberg / Valtech RADON
-  version: 0.2.0
+  version: 0.3.0
   mcp-server: lens-studio
 ---
 
@@ -31,29 +31,34 @@ The user wants to build, iterate on, or submit a Snapchat AR Lens or Sponsored L
 
 ## Pipeline overview
 
-Five phases, sequential. Each is detailed in `references/build-pipeline.md`.
-Phase 0  · Setup (repo, MCP, LS project)         ~30–60 min
-Phase 1  · Scene Hierarchy + assets              ~2–3 h
-Phase 1.5 · Capability validation (CRITICAL)     ~30 min
-Phase 2  · Script generation                     ~30 min
-Phase 3  · Inspector wiring + animation config   ~1–2 h
-Phase 4  · Device test + iterate                 ~1–2 h
-Phase 5  · Submission prep                       ~1 h
+Five phases (plus 1.5), sequential. Each is detailed in `references/build-pipeline.md`.
+
+| Phase | Focus | Time |
+|---|---|---|
+| 0 | Setup (repo, MCP, LS project) | ~30–60 min |
+| 1 | Scene Hierarchy + assets | ~2–3 h |
+| 1.5 | Capability validation (CRITICAL) | ~30 min |
+| 2 | Script generation | ~30 min |
+| 3 | Inspector wiring + animation config | ~1–2 h |
+| 4 | Device test + iterate | ~1–2 h |
+| 5 | Submission prep | ~1 h |
 
 ## Pipeline checklist
 
 Copy this into the response when starting a build, check items off as you progress:
-Lens Build Progress:
 
- Phase 0: Repo, git, .gitignore, .gitattributes, LS project saved
- Phase 0: Lens Studio MCP registered and verified
- Phase 1: Assets prepped (PNG, ASTC, ≤1024px)
- Phase 1: Scene Hierarchy built (frozen state)
- Phase 1.5: All API surfaces validated on live LS instance
- Phase 2: Scripts generated using validated patterns
- Phase 3: @inputs wired, tweens configured
- Phase 4: iPhone tested, mid-range Android tested, FPS ≥25
- Phase 5: Final assets, icon spec verified, lens published
+```markdown
+Lens Build Progress:
+- [ ] Phase 0: Repo, git, .gitignore, .gitattributes, LS project saved
+- [ ] Phase 0: Lens Studio MCP registered and verified
+- [ ] Phase 1: Assets prepped (PNG, ASTC, ≤1024px)
+- [ ] Phase 1: Scene Hierarchy built (frozen state)
+- [ ] Phase 1.5: All API surfaces validated on live LS instance
+- [ ] Phase 2: Scripts generated using validated patterns
+- [ ] Phase 3: @inputs wired, tweens configured
+- [ ] Phase 4: iPhone tested, mid-range Android tested, FPS ≥25
+- [ ] Phase 5: Final assets, icon spec verified, lens published
+```
 
 
 ## Guiding principles
@@ -82,14 +87,14 @@ Snapchat-specific terminology and constraints worth knowing explicitly:
 - **Performance standard**: Snap reviews lenses on mid-range Android, not high-end iPhone. Desktop preview is misleading and over-optimistic.
 - **Related lens types** (NOT this skill's scope): Community Lens (organic, different submission flow), AR Object / Spectacles experiences (different toolset), Snapchat Filters that aren't Lens Studio (legacy 2D photo filters).
 
-## Critical references
+## References (load on demand by phase)
 
-Read in this order when starting:
+Don't read all of these upfront — pull each one when its phase activates:
 
-- `references/mcp-setup.md` — Lens Studio MCP registration, reconnect playbook for token rotation
-- `references/lens-studio-api-gotchas.md` — Validated LS 5.x API surface (Image.rotationAngle vs localTransform, FileTexture vs Texture, ScreenTransform anchor format, Tween Manager package, etc.)
-- `references/capability-validation-protocol.md` — How to verify API assumptions on the live LS instance before Phase 2
-- `references/build-pipeline.md` — Phase-by-phase detail with deliverables and tasks
+- `references/mcp-setup.md` — read at Phase 0 when registering MCP, or any time on token rotation / 401 errors
+- `references/build-pipeline.md` — read the section for the current phase (each phase has its own subsection)
+- `references/capability-validation-protocol.md` — read at Phase 1.5, before generating any production scripts
+- `references/lens-studio-api-gotchas.md` — read at Phase 1.5 and Phase 2 to cross-check every LS 5.x API name before trusting training data (Image.rotationAngle vs localTransform, FileTexture vs Texture, ScreenTransform anchor format, Tween Manager package, transient-view persistence, etc.)
 
 ## Performance budget
 

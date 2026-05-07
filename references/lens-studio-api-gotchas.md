@@ -22,7 +22,10 @@ Use this file as authoritative reference when generating production scripts. Whe
 ## Asset import (PNG → FileTexture)
 
 **Working pattern**:
-```typescriptAssetManager.importExternalFile(new Editor.Path(absPath))
+
+```typescript
+AssetManager.importExternalFile(new Editor.Path(absPath))
+```
 
 Returns a `FileTexture` asset, not a generic `Texture`.
 
@@ -35,7 +38,10 @@ Returns a `FileTexture` asset, not a generic `Texture`.
 ## Texture binding to Image components
 
 **Working pattern**: Bind texture from a runtime script:
-```typescriptscript.image.mainPass.baseTex = texture;
+
+```typescript
+script.image.mainPass.baseTex = texture;
+```
 
 Texture lives on the first material's `mainPass.baseTex`.
 
@@ -48,7 +54,10 @@ Texture lives on the first material's `mainPass.baseTex`.
 ## Screen Image rotation (NOT localTransform)
 
 **Working pattern**: Use `Image.rotationAngle` (degrees) for screen-space rotation:
-```typescriptimageComponent.rotationAngle = 15; // degrees
+
+```typescript
+imageComponent.rotationAngle = 15; // degrees
+```
 
 **Anti-pattern**: Setting `sceneObject.localTransform.rotation.z`. This is 3D world rotation and has NO visual effect on Screen Images, which render in 2D screen space.
 
@@ -62,13 +71,15 @@ Texture lives on the first material's `mainPass.baseTex`.
 
 **Working pattern**: Anchors are a singular `Rect` with `left`, `right`, `top`, `bottom` properties in normalized coordinates (`-1` to `+1`):
 
-```typescript// Via setProperty with valueType: RECT
+```typescript
+// Via setProperty with valueType: RECT
 {
-left: -0.5,
-right: 0.5,
-top: 0.5,
-bottom: -0.5
+  left: -0.5,
+  right: 0.5,
+  top: 0.5,
+  bottom: -0.5
 }
+```
 
 **Anti-pattern**: Treating anchors as plural (`anchors`) or as separate scalar values. The API accepts a single Rect object.
 
@@ -125,9 +136,12 @@ For `type=3` (Anchors), `AnchorsParam` is a separate enum:
 ## Tween cancellation semantics
 
 **Working pattern**:
-```typescripttm.stopTween(target, name);  // halts in-flight tween
+
+```typescript
+tm.stopTween(target, name);  // halts in-flight tween
 tm.resetObject(target);      // resets to original state
 tm.startTween(target, name); // can start new tween cleanly
+```
 
 **Critical behavior**: When a tween is stopped via `stopTween`, the original `onComplete` callback does NOT fire. Production state machines must not rely on `onComplete` for cleanup if the tween can be cancelled. Use explicit cleanup before calling `stopTween`.
 
@@ -140,11 +154,14 @@ tm.startTween(target, name); // can start new tween cleanly
 ## DelayedCallbackEvent cancel() actually works
 
 **Working pattern**:
-```typescriptconst handle = script.createEvent("DelayedCallbackEvent");
+
+```typescript
+const handle = script.createEvent("DelayedCallbackEvent");
 handle.bind(() => { /* ... */ });
 handle.reset(2.5); // schedule 2.5s from now
 // Later:
 handle.cancel(); // halts before callback fires
+```
 
 **Status**: `cancel()` is real and works. Earlier documentation hedges about needing a no-op-rebind workaround were unnecessary — they were based on speculation, not testing.
 
@@ -161,8 +178,10 @@ handle.cancel(); // halts before callback fires
 - Each name becomes a direct `propertyPath` on the component
 - No `inputs.X` wrapper needed
 
-```typescript// After setProperty assigns the script asset:
+```typescript
+// After setProperty assigns the script asset:
 component.propertyPath = "myInputName"; // direct, not "inputs.myInputName"
+```
 
 **Anti-pattern**: Wrapping property paths with `inputs.` prefix or trying to set inputs before the script asset is assigned. Order matters: assign script first, then inputs become available.
 
@@ -197,11 +216,19 @@ Some Editor API operations return a transient view that does not persist back to
 
 **Canonical example**: Setting `lensApplicability` via MCP:
 
-```typescript// Read returns transient view
+```typescript
+// Read returns transient view
 const proj = Editor.Model.IModel.project;
-const meta = proj.metaInfo;// Modify
-meta.lensApplicability = ["Front"];// Reassign back to persist
-proj.metaInfo = meta;// Save with ⌘S to flush to disk
+const meta = proj.metaInfo;
+
+// Modify
+meta.lensApplicability = ["Front"];
+
+// Reassign back to persist
+proj.metaInfo = meta;
+
+// Save with ⌘S to flush to disk
+```
 
 **Verification**: Reload LS and check on-disk YAML. If the change reverts, transient-view reassignment was missed.
 

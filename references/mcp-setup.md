@@ -33,9 +33,11 @@ LS displays the server URL (e.g., `http://localhost:50040/mcp`) and a Bearer tok
 
 From the project folder:
 
-```bashcd ~/Projects/[your-lens-project]
-claude mcp add --transport http --scope local lens-studio http://localhost:[port]/mcp 
---header "Authorization: Bearer [token]"
+```bash
+cd ~/Projects/[your-lens-project]
+claude mcp add --transport http --scope local lens-studio http://localhost:[port]/mcp \
+  --header "Authorization: Bearer [token]"
+```
 
 Scope choice:
 - `--scope local` — registration scoped to current directory (recommended for project-specific lens work)
@@ -43,9 +45,15 @@ Scope choice:
 
 ### 4. Verify
 
-```bashclaude mcp list
+```bash
+claude mcp list
+```
 
-Expected output includes:lens-studio: http://localhost:[port]/mcp (HTTP) - ✓ Connected
+Expected output includes:
+
+```
+lens-studio: http://localhost:[port]/mcp (HTTP) - ✓ Connected
+```
 
 If status is anything other than `✓ Connected`, see "Common failure modes" below.
 
@@ -63,18 +71,26 @@ In LS: **AI Assistant → AI Model Context Protocol (MCP) → Configure Server**
 
 ### 3. Restart Claude Code from the right directory
 
-```bashcd ~/Projects/[your-lens-project]
+```bash
+cd ~/Projects/[your-lens-project]
 claude
+```
 
 Working directory matters — see Prerequisites above.
 
 ### 4. Re-register
 
-```bashRemove the stale registration
-claude mcp remove lens-studioAdd the new one with current URL and token
-claude mcp add --transport http --scope local lens-studio http://localhost:[port]/mcp 
---header "Authorization: Bearer [new-token]"Verify
+```bash
+# Remove the stale registration
+claude mcp remove lens-studio
+
+# Add the new one with current URL and token
+claude mcp add --transport http --scope local lens-studio http://localhost:[port]/mcp \
+  --header "Authorization: Bearer [new-token]"
+
+# Verify
 claude mcp list
+```
 
 Expected: `lens-studio: ... ✓ Connected`.
 
@@ -82,7 +98,16 @@ Expected: `lens-studio: ... ✓ Connected`.
 
 After registration, verify live read access works. Run this GraphQL query via the MCP tool:
 
-```graphql{ rootSceneObjects { id name children { id name } } sceneObjectCount }
+```graphql
+{
+  rootSceneObjects {
+    id
+    name
+    children { id name }
+  }
+  sceneObjectCount
+}
+```
 
 Expected for a fresh LS project: 4 SceneObjects — `Camera Object`, `Lighting` (with `Envmap` + `Light` children), and any project-specific objects.
 

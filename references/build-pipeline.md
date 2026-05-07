@@ -63,15 +63,18 @@ Compression: ASTC, max texture size 1024.
 ### Scene Hierarchy pattern
 
 Standard layout for tap-to-reveal interactions:
+
+```
 Scene
 ├─ Camera Object              (default — keep)
 ├─ Lighting                   (default — keep)
 └─ Orthographic Camera        (one new — 2D Sponsored-Lens overlay)
-└─ Full Frame Region
-├─ [Background/Reveal Group]    (renders behind)
-├─ [Hero Object Group]          (renders in front, masking the reveal)
-├─ UI Group                     (always on top — prompts, hints)
-└─ Logic                        (ScriptComponent host, added in Phase 2)
+   └─ Full Frame Region
+      ├─ [Background/Reveal Group]    (renders behind)
+      ├─ [Hero Object Group]          (renders in front, masking the reveal)
+      ├─ UI Group                     (always on top — prompts, hints)
+      └─ Logic                        (ScriptComponent host, added in Phase 2)
+```
 
 z-order via Scene Hierarchy position — first child renders behind. Use this for "reveal" mechanics instead of separate slide-up tweens.
 
@@ -112,10 +115,13 @@ Quick rationale: catching a wrong API name now costs 10 minutes; catching it dur
 Goal: TypeScript files ready to drag into Lens Studio.
 
 ### Standard outputs
+
+```
 lens/Assets/Scripts/
 ├─ [ControllerName].ts   — state machine, timing, animation orchestration
 ├─ [HandlerName].ts      — input handling (tap, gesture, etc.)
 └─ data.json             — content data (fortunes, copy variants, etc.)
+```
 
 ### Generation rules
 
@@ -126,15 +132,18 @@ lens/Assets/Scripts/
 - Audio hooks as commented stubs ready for v2 enhancement
 
 ### Prompt template
+
+```
 Generate Lens Studio 5.x scripts for [project description]:
 
 [ControllerName].ts — state machine: [list states]
-@input fields for: [list scene objects + timing values]
+  @input fields for: [list scene objects + timing values]
 [HandlerName].ts — [interaction] handling, gates input during animation
 data.json — [content array]
 
 Use validated patterns from the lens-studio-snapchat-filter skill's
 references/lens-studio-api-gotchas.md.
+```
 
 ### Tasks
 
