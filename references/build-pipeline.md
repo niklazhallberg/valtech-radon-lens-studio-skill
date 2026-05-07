@@ -51,11 +51,12 @@ Goal: static "frozen" scene representing the final lens — no animation, no scr
 
 Standard sizes for Sponsored Lens 2D builds:
 
-| Asset type | Size | Format |
-|---|---|---|
-| Hero objects (pack, prop, etc.) | 1024×1024 | PNG-24 transparent |
-| Backgrounds / large surfaces | 1024×512 or 1024×1024 | PNG-24 transparent |
-| Lens icon | 320×320 | PNG (verify exact spec at developers.snap.com before submission) |
+| Asset type | Size | Format | Notes |
+|---|---|---|---|
+| Hero objects (pack, prop, etc.) | 1024×1024 | PNG-24 transparent | Soft edges, drop shadow baked in if needed |
+| Backgrounds / large surfaces | 1024×512 or 1024×1024 | PNG-24 transparent | Larger dimension along the visible axis |
+| UI elements (note bg, badges) | 1024×512 typical | PNG-24 transparent | Subtle drop shadow OK |
+| Lens icon | 320×320 | PNG | **Simplified graphic — NOT a product photo.** Verify exact spec at developers.snap.com/businesshelp before submission. |
 
 Compression: ASTC, max texture size 1024.
 
@@ -200,6 +201,23 @@ Desktop preview runs at 60+ FPS on any modern computer. Snap's review team and e
 - Scene object positions if user's face gets covered
 - Text size if readability fails on small screens
 
+### Phase 4 Definition of Done
+
+Before moving to Phase 5, all must be true:
+
+- [ ] Lens loads in under 2s on mid-range Android (cold start)
+- [ ] All interactions trigger correct animations on iPhone
+- [ ] All interactions trigger correct animations on mid-range Android
+- [ ] FPS ≥ 25 on test Android (verified in Performance panel)
+- [ ] Lens size ≤ 4 MB (verified in Performance panel)
+- [ ] RAM under 80 MB during sustained use
+- [ ] Tap during animation handled gracefully (ignored or queued)
+- [ ] 10+ rapid interactions in a row produce no slowdown or memory leak
+- [ ] Lens still functions in poor lighting
+- [ ] Screenshots look shareable (the "would I post this?" test)
+
+If any item fails, return to iteration. Don't proceed to Phase 5 with open issues — Snap review will catch them and the campaign will be delayed 1–2 weeks.
+
 ---
 
 ## Phase 5 — Submission prep
@@ -223,10 +241,35 @@ Goal: project ready for Snap Ads Manager upload.
 - Media agency uploads to Snap Ads Manager
 - Snap ad-review (1–3 business days; longer for regulated categories like Sexual Wellness, Alcohol, Gambling)
 
-### Definition of Done
+### Phase 5 Definition of Done
 
-- Lens loads in <2s on mid-range Android
-- All interactions trigger correct animations
-- Performance budget met (size, FPS, RAM per SKILL.md targets)
-- Final copy and assets approved by client
-- Documentation complete and handover-ready
+Submission-ready when ALL of these are true:
+
+**Build quality** (carries over from Phase 4):
+- [ ] Lens loads in under 2s on mid-range Android
+- [ ] FPS ≥ 25 on test Android
+- [ ] Lens size ≤ 4 MB
+- [ ] All interactions work as designed
+
+**Content & branding**:
+- [ ] All placeholder copy replaced with client-approved final copy
+- [ ] All placeholder assets replaced with client-approved final assets
+- [ ] Lens icon meets spec (320×320, simplified graphic, not product photo)
+- [ ] Brand voice and tone reviewed against client guidelines
+- [ ] If category-restricted (Sexual Wellness, Alcohol, Gambling): copy reviewed against Snap's category policy
+
+**Documentation & handover**:
+- [ ] `client-handover.md` generated with project overview, file map, edit instructions
+- [ ] `submission-checklist.md` generated with everything the media agency needs
+- [ ] Final preview video recorded for client approval
+- [ ] No unused assets in project
+- [ ] All textures ASTC-compressed
+- [ ] No test scaffolding remaining in scene
+- [ ] Repo committed with clean history, final tag applied
+
+**Submission**:
+- [ ] Lens published from Lens Studio (`File → Publish Lens`)
+- [ ] Snap Ad Account permissions verified (target Org accessible)
+- [ ] Handed off to media agency for Snap Ads Manager upload
+
+If any item is open, the project is not done — even if it "feels" done. Snap's review process catches gaps and adds 1–2 weeks of delay. Be disciplined here.

@@ -1,0 +1,39 @@
+# Project-template .gitignore for Lens Studio Snapchat Filter projects
+# Two-layer strategy: this file at repo root, second .gitignore inside lens/[ProjectName]/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# IDE / Editor
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node / build artifacts (if using ancillary tooling)
+node_modules/
+dist/
+build/
+.env
+.env.local
+
+# Lens Studio temp exports
+*.tmp.lens
+*.tmp.zip
+
+# Asset staging that shouldn't be tracked
+assets-export/temp/
+review/preview-captures/
+
+# Editor backup files
+*.bak
+*.backup
+
+# OS noise
+Thumbs.db
+desktop.ini

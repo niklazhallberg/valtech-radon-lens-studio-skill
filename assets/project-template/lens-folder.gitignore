@@ -1,0 +1,14 @@
+# Inner .gitignore — copy this into lens/[ProjectName]/.gitignore
+# Covers Lens Studio-managed paths that regenerate on project load
+
+Cache/
+Support/
+Workspaces/
+PluginsUserPreferences/
+BackUp/
+
+# Lock files from concurrent LS sessions
+*.esproj.*.lock
+
+# LS auto-generated TypeScript definitions
+**/*.d.ts.bak

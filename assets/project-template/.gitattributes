@@ -1,0 +1,30 @@
+# Project-template .gitattributes for Lens Studio Snapchat Filter projects
+# Light LFS for binary creative source files
+
+# Photoshop sources via LFS
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.psb filter=lfs diff=lfs merge=lfs -text
+
+# Video previews/exports via LFS
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+
+# Treat .esproj as text (YAML) so diffs are readable
+*.esproj text eol=lf
+
+# JS/TS as text with LF endings
+*.ts text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.material text eol=lf
+
+# Force binary on textures (avoid line-ending corruption)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tga binary
+*.dds binary
+*.fbx binary
+*.glb binary
+*.wav binary
+*.mp3 binary

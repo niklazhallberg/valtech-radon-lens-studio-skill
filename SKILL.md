@@ -60,6 +60,14 @@ Lens Build Progress:
 4. **Validate APIs empirically before generating code.** LS 5.x API names shift across minor versions. Web search and training data are not authoritative — the live LS instance is.
 5. **Mid-range Android testing is non-negotiable.** Desktop preview lies.
 
+## Scope discipline
+
+Lens projects fail more often from feature creep than from technical issues. Hold the line:
+
+- MVP first, stretch goals second. Never start polish (audio, particles, idle animations) until Phase 4 Definition of Done is met.
+- "Lagom ambitiöst" — use Claude Code aggressively where it saves time, but don't build tooling that exceeds the lens itself in complexity.
+- One client brief = one lens. Resist scope expansion mid-project; capture new ideas as v2 candidates instead.
+
 ## Critical references
 
 Read in this order when starting:
