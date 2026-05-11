@@ -9,7 +9,12 @@ How to register the Lens Studio MCP server with Claude Code, verify the connecti
 - Reconnect playbook (token rotation)
 - Sanity check via scene-graphql
 - Login state for Knowledge Base queries
+- MCP tool patterns (logs, screenshots, selection, deferred loading)
+- Auto-accept vs manual-approval policy
+- Transient-view persistence (MetaInfo write-back)
 - Common failure modes
+- When MCP setup fails for too long
+- Stop condition
 
 ## Prerequisites
 
@@ -122,16 +127,160 @@ If the query returns scene objects you don't recognize (e.g., `Test_*`, leftover
 
 Most MCP operations (scene reads, asset imports, component property changes) do NOT require login — only the KB query tool does. The analytics endpoint stays unauthenticated regardless.
 
-## Transient-view gotcha
+## MCP tool patterns
 
-Some Editor API operations require `Editor.Model.IModel` view re-assignment to persist. The `lensApplicability` setting is the canonical example:
+Beyond `scene-graphql` and `asset-graphql` mutations, several MCP tools support specific workflows. Schemas are often deferred — load via `ToolSearch` before first call.
 
-- Reading `project.metaInfo` returns a transient view
-- Modifying it requires reassigning back to the model for persistence
-- Save with ⌘S to flush to disk
-- Verify via on-disk YAML inspection
+### `RunAndCollectLogsTool` — force Preview refresh + log tailing
 
-This pattern applies to other meta-level project settings. When MCP write operations appear to succeed but don't persist after LS reload, suspect transient-view assignment.
+Refreshes the LS Preview panel and returns a log file path + byte offset for tailing runtime output.
+
+```
+RunAndCollectLogsTool() → { status, logFile, byteOffset }
+```
+
+Read the log file from `byteOffset` to inspect what scripts logged during the refresh. Use for:
+- Verifying scripts executed without runtime errors
+- Reading state-machine transition logs
+- Catching console.log output from controllers
+
+**Auto-approve**: read-only — doesn't mutate scene state.
+
+### `CapturePanelScreenshotTool` — base64-encoded JPEG of a panel
+
+```
+CapturePanelScreenshotTool({
+  pluginId: "Snap.Plugin.Gui.PreviewPanel",
+  detail: "auto"  // or "low" / "high"
+})
+```
+
+Common `pluginId` values:
+- `Snap.Plugin.Gui.PreviewPanel` — lens output (what user sees)
+- `Snap.Plugin.Gui.SceneEditor` — 3D viewport
+- `Snap.Plugin.Gui.InspectorPanel` — properties panel
+
+Returns base64 JPEG. Use for visual verification during build, especially when tuning closed-state layouts or animation midpoints.
+
+**Auto-approve**: read-only.
+
+### `SetLensStudioSelection` — direct user to specific SceneObject
+
+Programmatically select SceneObjects in LS Inspector. Useful for Inspector handoff (Guiding Principle 7).
+
+```
+SetLensStudioSelection({
+  mode: "set",       // or "add" / "clear"
+  ids: ["<uuid>"]
+})
+```
+
+LS Inspector + Scene Editor panels jump to the selection. Use when handing off to user for live tuning of "feel" parameters (magnitude, easing, color). See `prompt-templates.md` → Inspector handoff.
+
+**Auto-approve**: doesn't modify scene state, just UI focus.
+
+### `RecompileTypeScriptTool` — re-compile project's TS, surface errors
+
+```
+RecompileTypeScriptTool()
+```
+
+Returns status + error log path. Run after every script edit, BEFORE attempting scene-graphql wiring. Wiring against a script with compile errors = silent failure (the new @input fields don't exist yet).
+
+**Auto-approve**: read-only output (status + log path).
+
+### `QueryLensStudioKnowledgeBase` — Snap-curated docs
+
+Requires Snap login active in LS (see "Login state for Knowledge Base queries" above).
+
+```
+QueryLensStudioKnowledgeBase("<question or topic>")
+```
+
+Returns curated documentation. Use as authority source when:
+- Validating an API pattern against Snap's documented behavior
+- Recovering from "API mismatch" failures (Category A in `error-recovery.md`)
+- Cross-checking enum values, property surface, component types
+
+**Caveat**: KB content may lag LS version. If KB says X but live LS shows Y, trust live LS — that's what runs.
+
+### ToolSearch deferred-tool loading
+
+Many MCP tools have deferred schemas. Calling them directly fails with InputValidationError until ToolSearch loads the schema.
+
+```
+ToolSearch(query: "select:mcp__lens-studio__SetLensStudioSelection")
+```
+
+After ToolSearch returns, the tool is callable. Load lazily — schemas consume context.
+
+---
+
+## Auto-accept vs manual-approval policy
+
+Per Operational Rule 3 in `operational-rules.md`. Quick reference for MCP-specific tools:
+
+**Auto-accept (read-only)**:
+- All `scene-graphql` / `asset-graphql` query operations
+- `RunAndCollectLogsTool` (refreshes Preview, doesn't mutate)
+- `CapturePanelScreenshotTool`
+- `SetLensStudioSelection` (UI focus, not scene state)
+- `RecompileTypeScriptTool` (status-only)
+- `ListInstalledPackagesTool`
+- `QueryLensStudioKnowledgeBase`
+
+**Manual approval per call**:
+- Any `setProperty`, `createSceneObject`, `deleteSceneObject`, `setParent`, `addComponent`, `removeComponent`, `instantiatePrefab`
+- Any `asset-graphql` mutation
+- Package installs via MCP
+- `claude mcp add`, `claude mcp remove`
+
+When a series of related mutations is probed-and-validated (Rule 6), batch them in a single alias-mutation block — ONE permission prompt for the logical unit, not per-mutation. See `lens-studio-api-gotchas.md` → "Batched alias-mutation pattern".
+
+---
+
+## Transient-view persistence (MetaInfo write-back)
+
+Some Editor API operations require `Editor.Model.IModel` view re-assignment to persist. The `lensApplicability` setting is the canonical example, but the pattern applies to other meta-level project settings.
+
+### Symptom
+
+MCP write appears to succeed:
+- `setProperty` returns `success: true`
+- In-call read shows new value
+- Live LS shows updated value in Inspector
+
+BUT:
+- Cross-call read shows old value
+- LS reload reverts to previous value
+- On-disk YAML never updates
+
+### Fix — view write-back pattern
+
+```typescript
+project.history.executeAsGroup("update metaInfo", () => {
+  const meta = project.metaInfo;                                  // Read returns transient view
+  meta.lensApplicability = [Editor.Model.LensApplicability.Front]; // Modify
+  (project as any).metaInfo = meta;                               // REQUIRED: reassign back
+});
+// User must ⌘S to flush to disk
+```
+
+Then verify by:
+1. ⌘S in LS
+2. `git diff lens/[project].esproj` — should show the YAML change
+3. Reload LS, check that value persists
+
+### Applies to
+
+- `lensApplicability` (Front, Back, World)
+- `trackingModes` (face tracking, hand tracking, etc.)
+- Camera modes
+- Other `Editor.Model.MetaInfo`-rooted project settings
+
+When MCP writes to project-level metadata appear to succeed but don't persist after LS reload, suspect transient-view assignment.
+
+See `lens-studio-api-gotchas.md` → "setProperty Category 6: Editor.Model.MetaInfo" for the canonical recipe.
 
 ## Common failure modes
 

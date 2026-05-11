@@ -1,81 +1,140 @@
 ---
 name: lens-studio-snapchat-filter
-description: Builds Snapchat AR Lenses and Sponsored Lenses in Lens Studio 5.x with Claude Code, optionally with the Lens Studio MCP. Covers the 5-phase build pipeline, empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager package, transient-view persistence, FileTexture import), MCP token rotation, mid-range Android performance, Snap ad-policy categories, and Sponsored Lens submission. TRIGGER aggressively when user mentions Lens Studio, Snapchat filter/lens, Sponsored Lens, .esproj or .lens files, a lens/ subdirectory, Snap AR, mcp__lens-studio, Snap Ads Manager, or any LS 5.x API surface — LS 5.x APIs shift between minor versions and training-data assumptions are unreliable, so consult this skill instead of guessing. SKIP when TikTok Effect House, Meta Spark / Instagram filters, Snap Spectacles AR Object, Three.js / WebXR / 8th Wall, Unity AR Foundation, native AR SDKs (Banuba, DeepAR), or Snapchat-app feature questions unrelated to lens building. Community Lenses share Lens Studio tooling but use a different (organic, free) submission flow — only the build phases of this skill apply, not the Sponsored Lens submission flow.
+description: Builds Snapchat AR Lenses and Sponsored Lenses in Lens Studio 5.20+ with Claude Code, optionally with the Lens Studio MCP server. Covers full pipeline (Phase 0 spec → Phase 5 submission), empirically-validated LS 5.x API patterns, MCP mutation rules (probe+bulk, silent-drop recovery), and Sponsored Lens submission to Snap Ads Manager.
+when_to_use: TRIGGER when user mentions Lens Studio, Snapchat, filter (in Snap context), Sponsored Lens, AR lens, .esproj/.lens files, Snap Ads Manager, Camera Kit, Bitmoji, or asks help building/designing/setting up a Snapchat AR experience. Common intent phrases that trigger this skill (always in combination with Snap/Lens context) "build a Snapchat lens", "make an AR filter for Snap", "set up Lens Studio", "create a Sponsored Lens for [client]". SKIP for TikTok Effect House, Meta Spark/Instagram filters, Unity/Unreal AR, native ARKit/ARCore, WebXR/8th Wall/Three.js AR, Banuba/DeepAR/Vuforia, Apple Vision Pro/Quest/HoloLens, Spectacles AR Object, or generic AR questions without Snap/Lens Studio context. If user says "AR project" or "AR filter" without specifying platform, ask which platform first — only proceed if Snap/Lens Studio. Generic phrases like "help me get started" or "build me a thing" do NOT trigger this skill without a domain keyword.
+compatibility: Lens Studio 5.20+ (recommended), Claude Code, optionally Lens Studio MCP server
 metadata:
   author: Niklaz Hallberg / Valtech RADON
-  version: 0.3.0
+  version: 0.4.0
   mcp-server: lens-studio
+  category: ar-content-creation
+  tags: [snapchat, lens-studio, ar, sponsored-lens, mcp, snap-ads]
 ---
 
 # Lens Studio Snapchat Filter
 
-Pipeline for building Snapchat AR Lenses with Claude Code. Captures workflows, API gotchas, and validation patterns from production projects.
+Production-tested pipeline for Snapchat AR Lenses and Sponsored Lenses. Captures empirical LS 5.20+ knowledge, MCP mutation discipline, and submission workflow from agency lens projects.
 
-## Role
+## Role split
 
-You are a Lens Studio production engineer focused on shipping Snapchat AR Lenses on time, on budget, and within Snap's content policies. Default to pragmatic delivery over technical perfection — agency lens projects ship in days, not weeks.
+You (Claude Code) are the **technical + graphical executor**. The user is the **creative director + approver**. You infer design decisions from inspiration, draft specs from the brief, make scene mutations, write scripts, and surface choices for user approval only when ambiguity is genuine. The user provides vision + judgment; you handle execution. Ask 2-4 targeted questions per phase, never 20.
 
-## When to use
+## When to activate concierge mode
 
-The user wants to build, iterate on, or submit a Snapchat AR Lens or Sponsored Lens. Does NOT apply to TikTok Effect House, Meta Spark AR, or generic Three.js work.
+Activate concierge mode when ALL of these hold:
 
-## First decision: new or existing project?
+- User message contains a **domain keyword** (Snap / Snapchat / Lens / Lens Studio / filter-in-Snap-context / Sponsored Lens / .esproj / .lens / Camera Kit / Bitmoji)
+- AND an **action intent** (build / create / make / design / set up / help me / I want to / how do I)
+- AND user is NOT mid-build (no `PROJECT-STATE.md` in cwd, no `.esproj` in `lens/`, no build-mode language like "Phase 3 polish" or "wire @input")
 
-**New project** (no `lens/` folder, no `.esproj` file yet) → start at Phase 0 in `references/build-pipeline.md`.
+Edge case: if user says "AR project" or "AR filter" WITHOUT specifying platform, ask which platform first. Only proceed with this skill if Snap/Lens Studio confirmed. See full trigger discipline in the `when_to_use` field of this skill.
 
-**Existing project** (working folder has `.esproj`) → identify current phase from project state and resume there. Common entry points:
-- Scene exists, no scripts yet → Phase 1.5 (validate APIs before generating code)
-- Scripts exist, not wired → Phase 3 (Inspector wiring)
-- Wired and working, needs polish → Phase 4 (device test)
-- Ready to ship → Phase 5 (submission)
+When concierge mode activates, follow this sequence:
+
+1. **Confirm platform** — one sentence: "I'll help you build a Snapchat Lens Studio project. Is that what you're working on?" Wait for yes.
+2. **Run environment detection** — see `references/environment-detection.md`. Surface readiness report (✅/❌ per item).
+3. **Walk stepped setup flow** — see `references/concierge-setup-flow.md`. Eight steps, one user action per CC message, wait for confirmation between steps.
+
+## Concierge discipline (one-step-at-a-time)
+
+While in concierge mode (and any stepped guidance):
+
+- **One action per message.** Never bundle "do A, B, and C, then say done". Anna loses track.
+- **Wait for confirmation.** Don't auto-advance on silence. Wait for "done"/"klar"/"yes"/typed value.
+- **Coach, don't jargon.** Non-experts need plain language. "Drop 3-5 images that capture the vibe" not "curate INSPIRATION/ with categorized sub-folders".
+- **Defer to docs only on request.** If Anna says "is there a manual?" → offer `docs/INSTALL-REFERENCE.md`. Otherwise guide live.
+
+Full discipline + anti-patterns: `references/stepped-conversation-patterns.md`. Troubleshooting protocol: `references/troubleshooting-decision-tree.md`.
+
+## First decision — entry point
+
+**Brand-new lens project** (no `lens/` folder, no `.esproj`, no `PROJECT-STATE.md`) → concierge mode (above) → after setup complete → onboarding intake.
+
+**Existing project** with `PROJECT-STATE.md` → read it, identify current phase, resume there. Skip concierge.
+
+**Existing project** with `.esproj` but no `PROJECT-STATE.md` → likely partial RFSU-era setup. Read the scene state via MCP if connected, identify what phase the artifacts suggest, resume there.
+
+**Build-mode language from user** ("Phase 3 polish", "wire @input fields", "ScreenTransform anchor isn't working", "tween isn't firing") → skip concierge, go directly to relevant references (gotchas, phase-progression, error-recovery).
+
+## Onboarding intake (after concierge setup complete)
+
+After concierge mode finishes the eight-step setup (LS installed, project folder created, MCP registered, brief captured, INSPIRATION populated), transition to the onboarding intake: **8 questions in 3 groups, ~7 minutes**. Vision → Constraints → Asset validation. Gate: Readiness Report.
+
+Full protocol: `references/onboarding-protocol.md`.
 
 ## Pipeline overview
 
-Five phases (plus 1.5), sequential. Each is detailed in `references/build-pipeline.md`.
+Nine phases (Phase 0, B, 1, 1.5, 2, 2.5, 3, 4, 5), sequential except 2.5 (optional). Each phase has explicit DoD and watch points.
 
-| Phase | Focus | Time |
-|---|---|---|
-| 0 | Setup (repo, MCP, LS project) | ~30–60 min |
-| 1 | Scene Hierarchy + assets | ~2–3 h |
-| 1.5 | Capability validation (CRITICAL) | ~30 min |
-| 2 | Script generation | ~30 min |
-| 3 | Inspector wiring + animation config | ~1–2 h |
-| 4 | Device test + iterate | ~1–2 h |
-| 5 | Submission prep | ~1 h |
+| Phase | Focus | Time | DoD signal |
+|---|---|---|---|
+| 0 | Spec drafts (TECH-SPEC + USER-EXPERIENCE), repo, MCP, project structure | ~30-60 min | Specs concrete enough to generate code |
+| B | Capability tests for unfamiliar APIs (optional) | ~30 min-1 h | All blocking patterns validated |
+| 1 | Static scaffolding (scene + anchors + textures + closed state — NO logic) | ~2-3 h | First visible asset + pulse animation works in Preview |
+| 1.5 | Production copy + custom fonts | ~30 min | Final copy renders correctly |
+| 2 | Scripts + animation logic | ~2-3 h | Tap-to-final-state cycle works in Preview |
+| 2.5 | Advanced features (face effects, ML, audio) — only if brief requires | ~1-2 h | Each feature toggles without breaking core loop |
+| 3 | Polish iterations (magnitude tuning, feel calibration) | varies | User signs off in Preview |
+| 4 | Real-device testing (iPhone + mid-range Android) | ~1-2 h | FPS ≥ 25 on Android, lens ≤ 4 MB, all interactions correct |
+| 5 | Submission prep (icon, preview video, ad-account, metadata) | ~1 h | Snap submission accepted |
 
-## Pipeline checklist
+Per-phase detail + checkpoint mutations + watch-point patterns: `references/phase-progression.md`.
 
-Copy this into the response when starting a build, check items off as you progress:
+### Pipeline checklist
+
+Copy into the response when starting a build; check items off as you progress:
 
 ```markdown
 Lens Build Progress:
-- [ ] Phase 0: Repo, git, .gitignore, .gitattributes, LS project saved
-- [ ] Phase 0: Lens Studio MCP registered and verified
-- [ ] Phase 1: Assets prepped (PNG, ASTC, ≤1024px)
-- [ ] Phase 1: Scene Hierarchy built (frozen state)
-- [ ] Phase 1.5: All API surfaces validated on live LS instance
-- [ ] Phase 2: Scripts generated using validated patterns
-- [ ] Phase 3: @inputs wired, tweens configured
-- [ ] Phase 4: iPhone tested, mid-range Android tested, FPS ≥25
-- [ ] Phase 5: Final assets, icon spec verified, lens published
+- [ ] Phase 0: TECH-SPEC + USER-EXPERIENCE drafted, repo + MCP set up
+- [ ] Phase B: API surfaces validated empirically (or skipped — known surfaces)
+- [ ] Phase 1: Scene hierarchy + anchors + textures + closed state, NO logic
+- [ ] Phase 1.5: Production copy + custom fonts bound
+- [ ] Phase 2: Controller + handler scripts + Inspector wiring, core loop works in Preview
+- [ ] Phase 2.5 (optional): Advanced features — face effects, ML, audio
+- [ ] Phase 3: Polish iterations approved by user in Preview
+- [ ] Phase 4: iPhone + mid-range Android tested, FPS ≥ 25, ≤ 4 MB
+- [ ] Phase 5: Final assets + icon (320×320 simplified) + preview video + handover
 ```
 
+## Operational rules (non-negotiable)
+
+Eleven locked policies, derived from production-build experience. Full rationale + edge cases per rule: `references/operational-rules.md`.
+
+1. **Two-step commit/push gate** — never combine `git commit` and `git push`. User says "go commit" → CC commits + surfaces hash → user says "go push" → CC pushes.
+2. **⌘S save handshake** — MCP scene mutations only update LS in-memory state. Before any commit involving scene changes, pause and ask user to ⌘S in LS. Verify with `git diff lens/`.
+3. **Auto-accept read-only, manual approval for destructive** — queries auto-approved; every mutation, file write, package install, commit/push requires explicit per-call approval.
+4. **Atomic commits** — one logical change per commit.
+5. **Scaffold-correct + logic-correct as independent checkpoints** — push static-scaffold to origin BEFORE building logic. Remote checkpoint is real rollback insurance.
+6. **Probe + bulk mutation pattern** — for N similar mutations: probe one → read-back to verify actual value matches intent → bulk-apply remaining. Never mass-apply an unproven pattern.
+7. **Concrete values, not generic descriptions** — "anchor.left = -1.8" not "anchor moves toward edge".
+8. **Don't fabricate authority citations** — frame as internal target unless verifiable URL/KB query.
+9. **Don't extend scope** — see `references/scope-creep-detection.md`. Ask "is this in the original brief?" before adding anything.
+10. **Lock UX principles before scripting** — declare 3-5 principles before Phase 2 to prevent auto-derived behavior drift. See `references/ux-principle-locking.md`.
+11. **Read-back rule** — `success: true` does NOT guarantee persistence. After any compound-type, enum, or REFERENCE mutation, read back the actual stored value.
+
+## Watch points (per-phase user-tracked checkpoints)
+
+At each phase start, declare 3-5 watch points — soft pauses where CC surfaces material for user review. They're the user's explicit gates, distinct from phase gates. Methodology + templates: `references/watch-points-methodology.md`.
 
 ## Guiding principles
 
 1. **2D-first.** Reach for 3D only when the brief demands it.
 2. **Tap-as-primary input.** Add gesture detection only as enhancement.
-3. **MCP is optional.** If MCP setup exceeds 90 min, skip it — every lens can ship without it.
-4. **Validate APIs empirically before generating code.** LS 5.x API names shift across minor versions. Web search and training data are not authoritative — the live LS instance is.
-5. **Mid-range Android testing is non-negotiable.** Desktop preview lies.
+3. **MCP is optional.** If MCP setup exceeds 90 min, skip it — every lens can ship without MCP.
+4. **Validate APIs empirically before generating production code.** LS 5.x API surfaces shift across minor versions. Live LS instance is ground truth.
+5. **Mid-range Android testing is non-negotiable.** Desktop preview lies — Snap reviews on mid-range Android.
+6. **MCP-token rotation is daily.** Every LS restart issues a new Bearer token. If MCP calls start failing mid-session, run the reconnect playbook (`references/mcp-setup.md`) before troubleshooting anything else.
+7. **Inspector handoff for "feel" parameters.** MCP screenshot loop is ~15s/iteration; LS Inspector slider is 60fps live feedback. Hand off magnitude tuning, easing, color, position fine-tuning to user in Inspector (use `SetLensStudioSelection` to direct them to the right SceneObject).
 
 ## Scope discipline
 
 Lens projects fail more often from feature creep than from technical issues. Hold the line:
 
-- MVP first, stretch goals second. Never start polish (audio, particles, idle animations) until Phase 4 Definition of Done is met.
-- "Lagom ambitiöst" — use Claude Code aggressively where it saves time, but don't build tooling that exceeds the lens itself in complexity.
-- One client brief = one lens. Resist scope expansion mid-project; capture new ideas as v2 candidates instead.
+- MVP first, stretch goals second. Never start polish (audio, particles, idle animations) until Phase 4 DoD met.
+- "Lagom ambitiöst" — use Claude Code aggressively where it saves real time, but don't build tooling that exceeds the lens itself in complexity.
+- One client brief = one lens. Resist scope expansion mid-project; capture new ideas as v2 candidates.
+- Before adding anything not in the brief, run the 4-question check (see `references/scope-creep-detection.md`).
 
 ## Domain context
 
@@ -83,18 +142,40 @@ Snapchat-specific terminology and constraints worth knowing explicitly:
 
 - **Sponsored Lens** = paid AR ad on Snapchat, distributed via Snap Ads Manager. Always 18+ ad-gated for regulated categories.
 - **Ad-policy categories with stricter review**: Sexual Wellness (condoms, lubricants, sex tech), Alcohol, Gambling, Pharmaceutical. Snap reviews on US standards regardless of campaign region — Nordic projects in these categories must clear US-conservative content guidelines.
-- **Snap ad-review SLA**: 1–3 business days for general categories; 1–2 weeks for regulated categories or rejected resubmissions. Plan accordingly.
+- **Snap ad-review SLA**: 1-3 business days for general categories; 1-2 weeks for regulated categories or rejected resubmissions. Plan accordingly.
 - **Performance standard**: Snap reviews lenses on mid-range Android, not high-end iPhone. Desktop preview is misleading and over-optimistic.
-- **Related lens types** (NOT this skill's scope): Community Lens (organic, different submission flow), AR Object / Spectacles experiences (different toolset), Snapchat Filters that aren't Lens Studio (legacy 2D photo filters).
+- **Related lens types** (NOT this skill's scope): Community Lens (organic, different submission flow — build phases of this skill apply, submission does not), AR Object / Spectacles experiences (different toolset), Snapchat Filters that aren't Lens Studio (legacy 2D photo filters).
 
-## References (load on demand by phase)
+## References (load on demand by phase / situation)
 
-Don't read all of these upfront — pull each one when its phase activates:
+Don't read all of these upfront — pull each when relevant.
 
-- `references/mcp-setup.md` — read at Phase 0 when registering MCP, or any time on token rotation / 401 errors
-- `references/build-pipeline.md` — read the section for the current phase (each phase has its own subsection)
-- `references/capability-validation-protocol.md` — read at Phase 1.5, before generating any production scripts
-- `references/lens-studio-api-gotchas.md` — read at Phase 1.5 and Phase 2 to cross-check every LS 5.x API name before trusting training data (Image.rotationAngle vs localTransform, FileTexture vs Texture, ScreenTransform anchor format, Tween Manager package, transient-view persistence, etc.)
+**On trigger detection (concierge mode)**:
+- `references/environment-detection.md` — exact bash commands to map Anna's setup, readiness-report format
+- `references/concierge-setup-flow.md` — 8-step setup conversation script
+- `references/stepped-conversation-patterns.md` — one-action-per-message discipline, coaching language
+
+**Pre-build / build mode**:
+- `references/onboarding-protocol.md` — 8-question intake (3 groups), INSPIRATION coaching, Readiness Report
+- `references/operational-rules.md` — full text of the 11 locked policies + rationale
+- `references/phase-progression.md` — per-phase detail, watch points, DoD per phase
+- `references/prompt-templates.md` — proven prompts ("go probe X", "go bulk X", Inspector handoff, scope-validation challenge)
+- `references/watch-points-methodology.md` — declare 3-5 per phase
+- `references/scope-creep-detection.md` — 4-question check before adding unrequested scope
+- `references/ux-principle-locking.md` — lock principles before Phase 2 scripting
+- `references/capability-validation-protocol.md` — Phase B protocol for empirical API validation
+
+**When something breaks**:
+- `references/troubleshooting-decision-tree.md` — concierge / build / submission issues, clarify → fix → escalate
+- `references/error-recovery.md` — triage matrix, silent-drop recovery, rollback decisions
+
+**Building scripts or mutating scenes**:
+- `references/lens-studio-api-gotchas.md` — empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager, setProperty categories, FaceLiquify quirks, transient-view persistence, ~20 entries)
+- `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
+
+**User-facing backup (CC pointar dit BARA on request)**:
+- `docs/INSTALL-REFERENCE.md` — complete self-service install guide
+- `docs/TROUBLESHOOTING.md` — detailed debug guide
 
 ## Performance budget
 
@@ -110,10 +191,12 @@ Default targets — adjust per brief, but don't loosen without explicit reason.
 
 ## Project documentation pattern
 
-Each lens project ships with a standard `docs/` set. Template scaffold lives in `assets/project-template/`. Copy as starting point for new projects.
+Each lens project ships with a standard documentation set. Template scaffold lives in `assets/project-template/` — copy as starting point for new projects.
 
-- `README.md` — overview, status, quick links
-- `PROJECT-PLAN.md` — phases, milestones, risk log
-- `USER-EXPERIENCE.md` — second-by-second user journey
-- `TECH-SPEC.md` — assets, scripts, performance, state machine
-- `COPY-GUIDELINES.md` — tone of voice (if user-facing copy is part of the lens)
+- `PROJECT-STATE.md` — living state tracker: phase, locked decisions, watch points, UX principles, open questions, gotchas, pipeline metrics. CC + user maintain together.
+- `PROJECT-PLAN.md` — overview, phases, milestones, risk log
+- `docs/USER-EXPERIENCE.md` — second-by-second user journey (CC drafts, user reviews)
+- `docs/TECH-SPEC.md` — assets, scripts, performance, state machine (CC drafts, user reviews)
+- `docs/PROJECT-DECISIONS.md` — log of every inference CC made (for user validation)
+- `INSPIRATION/` — user-provided reference images (≥5), with sub-folders for visual-style, motion-references, color-palette-refs, ui-references (CC sorts retroactively if user provides flat folder)
+- `project-info/client-brief.md`, `vision-statement.md` — user-provided in concierge mode
