@@ -41,9 +41,13 @@ Use this file as authoritative reference when generating production scripts. Whe
 
 ### Script / API
 - DelayedCallbackEvent cancel() actually works
+- `InteractionComponent.onTouchStart` (object-bounded) vs `TapEvent` (screen-wide)
 - ScriptComponent inputNames auto-population
 - Editor API vs Lens API separation
 - Transient-view persistence pattern
+
+### Sponsored Lens compliance
+- Touch-blocking via `LensTurnOnEvent` (`global.touchSystem.touchBlocking = true`) to prevent Snap double-tap camera-flip
 
 ### MCP / mutation strategy
 - Batched alias-mutation pattern (one permission prompt per logical unit)
@@ -207,6 +211,39 @@ handle.cancel(); // halts before callback fires
 **Belt-and-suspenders pattern**: For state-critical cancellation, also set a `cancelled` flag the callback checks. Defends against any edge case where `cancel()` racing with the scheduler.
 
 **Use case**: Decelerating callback chains for fortune-roll animations, scheduled reveals, timeout patterns.
+
+---
+
+## `InteractionComponent.onTouchStart` (object-bounded) vs `TapEvent` (screen-wide)
+
+Two distinct tap-detection paths in LS. They are NOT interchangeable — pick the right one for the intent.
+
+**`InteractionComponent.onTouchStart`** — fires only when the user taps inside the bounds of an object's visible `meshVisuals`. The component is added to a SceneObject, given one or more `meshVisuals` references, and exposes `onTouchStart` / `onTouchEnd` events. Use this for tap-on-this-thing detection (buttons, packs, cards, character tap-to-react).
+
+```typescript
+@input interactionComponent!: InteractionComponent;
+
+onAwake() {
+  this.interactionComponent.onTouchStart.add(() => {
+    // Tapped inside the object's mesh bounds
+  });
+}
+```
+
+**`script.createEvent("TapEvent")`** — fires on ANY tap anywhere on the screen. No bounds, no targeting. Use this for "tap anywhere to advance" / "tap anywhere to reveal" UX.
+
+```typescript
+const tap = script.createEvent("TapEvent");
+tap.bind(() => {
+  // Tapped anywhere on screen
+});
+```
+
+**Common confusion**: reaching for `TapEvent` when the brief wants tap-on-the-object (then debugging why off-object taps also fire), or reaching for `InteractionComponent` for "tap anywhere" (and discovering the bounds excluded the area the user actually tapped).
+
+**Anti-pattern**: empty `meshVisuals` array on the InteractionComponent. The component is added, the event is bound, but no bounds = no hits — taps silently no-op. Detection: after adding the component, query `meshVisuals` length; if 0, the binding will never fire and the issue isn't in the handler.
+
+**Use case**: Phase 1.5 capability validation. Test both paths in isolation under a throwaway SceneObject before Phase 2 scripts depend on them. This is one of the more common "the handler ran in isolation, why doesn't it run here?" debug paths.
 
 ---
 
@@ -671,6 +708,31 @@ mutation { setProperty(id: "<button-id>" propertyPath: "animtionType" valueType:
 **Anti-pattern**: promising a client the Easy Lens "visual editing" experience via CC. That UX lives in the Easy Lens panel inside LS; CC's deliverable is the scriptable primitive + Inspector handoff.
 
 **Use case**: any 5.21+ client brief mentioning "Easy Lens X" or Easy-Lens-generated content. Map the changelog label to the underlying primitive before promising CC delivery.
+
+---
+
+## Sponsored Lens compliance — touch-blocking
+
+For Sponsored Lenses, Snap's default in-camera touch handling includes **double-tap-to-flip-camera** and other system shortcuts that pre-empt your handlers. If your lens depends on tap input (most do), the second tap of any rapid double-tap can fire the camera-flip before your handler runs — breaking interaction unpredictably and producing inconsistent QA reports.
+
+**Working pattern**: bind a `LensTurnOnEvent` callback that sets `global.touchSystem.touchBlocking = true`:
+
+```typescript
+const onLensTurnOn = script.createEvent("LensTurnOnEvent");
+onLensTurnOn.bind(() => {
+  global.touchSystem.touchBlocking = true;
+});
+```
+
+This blocks Snap's default touch shortcuts (double-tap camera flip, certain swipe gestures) while preserving your `InteractionComponent` and `TapEvent` handlers. Apply once at lens turn-on — no per-tap re-application.
+
+**Applies to**: ALL Sponsored Lenses. Community Lenses don't strictly require it but benefit from the same predictability — recommend by default unless the brief specifically wants Snap's defaults.
+
+**Anti-pattern**: omitting touch-blocking and accepting "sometimes the second tap doesn't fire" as a quirk. The bug is intermittent (depends on tap-cadence + Snap's internal debounce) which makes it look like a handler bug; Snap reviews catch it as inconsistent interaction.
+
+**Verification**: tap-tap rapidly on the lens on a real device. Without touch-blocking, the camera flips on the second tap (or shortly after). With touch-blocking, both taps reach your handler as intended. Desktop preview does NOT reproduce the camera-flip behavior — must test on device.
+
+**Use case**: Phase 1 scaffolding — add the LensTurnOnEvent handler as part of the static scene setup before any interaction logic. One-line install with no Phase-2 dependency; the earlier it lands, the fewer "intermittent tap bug" red herrings appear in later phases.
 
 ---
 

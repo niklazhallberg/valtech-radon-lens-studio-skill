@@ -198,6 +198,7 @@ Don't read all of these upfront — pull each when relevant.
 - `references/watch-points-methodology.md` — declare 3-5 per phase
 - `references/scope-creep-detection.md` — 4-question check before adding unrequested scope
 - `references/ux-principle-locking.md` — lock principles before Phase 2 scripting
+- `references/ux-patterns.md` — reusable interaction-design patterns (decelerating callback-chain for reveals, etc.)
 - `references/capability-validation-protocol.md` — Phase B protocol for empirical API validation
 
 **When something breaks**:
