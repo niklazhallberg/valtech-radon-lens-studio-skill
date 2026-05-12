@@ -51,6 +51,9 @@ Use this file as authoritative reference when generating production scripts. Whe
 - Inspector dropdown discipline (read-back enum changes)
 - Read-back rule (success ≠ persistence)
 
+### LS 5.21+ features
+- Easy Lens panel features vs MCP-scriptable primitives (Button v1.0.1 worked example, `animtionType` typo'd-key gotcha)
+
 ### Coordinate system reminders
 
 ---
@@ -623,6 +626,51 @@ For completeness, since these come up constantly:
 - Rotations are **degrees** in most APIs, but some operate in **radians** — verify per API
 - Screen Transforms use **anchors (-1..1)** plus **offsets** for 2D/UI layout
 - Prefer anchor-based sizing over offset-based for responsive layouts
+
+---
+
+## Easy Lens panel features vs MCP-scriptable primitives (LS 5.21+)
+
+"Easy Lens X" labels in the LS 5.21 release notes (https://ar.snap.com/download) refer to **panel-level features** in the Easy Lens / AI Creator UI, NOT to discrete Asset Library installables. CC cannot drive the Easy Lens panel via MCP. The actionable path is to identify and script the underlying primitive CustomComponent; designer-facing visual editing (shape, color, pressed-behavior tuning via the panel UI) is hands-off — that's a designer task in the Easy Lens panel inside LS.
+
+**Empirical example: "Easy Lens Button" maps to `Button` v1.0.1 primitive** (probed 2026-05-12):
+
+- `SearchLensStudioAssetLibrary(["Easy Lens Button"])` → no exact match. Closest discrete primitive: `Button` v1.0.1 CustomComponent.
+- Install via `InstallLensStudioPackage("https://assets.ctfassets.net/.../Button.v1.0.1.lsc")`. Asset lands at `Packages/Button.lsc/Button.ts`. Bundle includes 3 prefabs (Text / Background / Icon) + texture + material + shader graph.
+- Layout constraint: child of an Orthographic Camera (screen-space hierarchy).
+
+**Configurable inputs (Button v1.0.1)**:
+
+| Key | Type | Notes |
+|---|---|---|
+| `defaultBackgroundColor`, `pressedBackgroundColor`, `disabledBackgroundColor` | vec4 | RGBA per state |
+| `defaultLabelColor`, `pressedLabelColor`, `disabledLabelColor` | vec4 | RGBA per state |
+| `animtionType` | number | **TYPO'D KEY** — missing 'a' in "animation". 0=None, 1=Bounce, 2=Squish, 3=Transform |
+| `renderOrder`, `textSize`, `buttonScale` | number | |
+| `buttonCenter` | vec2 | |
+| `backgroundEnabled` | boolean | |
+
+**Methods**: `isPressed()`, `isActive()`, `enableInteractable()`, `disableInteractable()`, `setTransformType(type, default, pressed, disabled)` — type: 0=OffsetPos / 1=AnchorPos / 2=Rotation / 3=Scale.
+
+**Events** (`.add(callback)`): `onEnabledInteractable`, `onDisabledInteractable`, `onPressUp`, `onPressDown`, `onPress`.
+
+**Critical CC gotcha — typo'd input key**: `animtionType` is the published API name. `setProperty(buttonId, "animationType", NUMBER, "1")` will silent-drop (treated as an unknown property). Match the typo'd key as published:
+
+```graphql
+mutation { setProperty(id: "<button-id>" propertyPath: "animtionType" valueType: NUMBER value: "1") { success } }
+```
+
+**Working pattern for any "Easy Lens X" brief**:
+
+1. `SearchLensStudioAssetLibrary([feature name])` — see what discrete primitive (if any) maps to the changelog label.
+2. `InstallLensStudioPackage(<URI>)` for the primitive.
+3. `ListInstalledPackagesTool` to confirm install (package count delta + description field is the canonical API doc for that primitive).
+4. Script the primitive's input/event surface directly via `setProperty` / `script.<event>.add(cb)`.
+5. Hand off visual-tuning the panel exposes (but the script doesn't) to the user via Inspector / Easy Lens panel.
+
+**Anti-pattern**: promising a client the Easy Lens "visual editing" experience via CC. That UX lives in the Easy Lens panel inside LS; CC's deliverable is the scriptable primitive + Inspector handoff.
+
+**Use case**: any 5.21+ client brief mentioning "Easy Lens X" or Easy-Lens-generated content. Map the changelog label to the underlying primitive before promising CC delivery.
 
 ---
 

@@ -127,6 +127,40 @@ At each phase start, declare 3-5 watch points — soft pauses where CC surfaces 
 6. **MCP-token rotation is daily.** Every LS restart issues a new Bearer token. If MCP calls start failing mid-session, run the reconnect playbook (`references/mcp-setup.md`) before troubleshooting anything else.
 7. **Inspector handoff for "feel" parameters.** MCP screenshot loop is ~15s/iteration; LS Inspector slider is 60fps live feedback. Hand off magnitude tuning, easing, color, position fine-tuning to user in Inspector (use `SetLensStudioSelection` to direct them to the right SceneObject).
 
+## Feature intent detection
+
+Users describe what they want, not what the API is called. CC must map natural-language intent to a concrete LS feature / primitive, confirm in plain language, and only then install or script. Skip the confirmation only when the brief already names the exact primitive.
+
+**Workflow**:
+1. Detect intent from the user's natural language during build phases (Phase 1–3).
+2. Map to a concrete feature / primitive using the table below.
+3. Confirm with the user before installing or scripting. Wait for explicit yes.
+
+**Intent → feature map**:
+
+| Natural-language intent | Concrete LS primitive / feature | Notes |
+|---|---|---|
+| "clickable thing / button / tap target" | `Button` v1.0.1 (Asset Library install) | Easy Lens Button label maps here; see `lens-studio-api-gotchas.md` for input surface + `animtionType` typo'd-key gotcha |
+| "blurry background / frosted glass" | `GaussianBlurPreset` (native scene preset) | Easy Lens Blur label overlaps; native path is scriptable today |
+| "progress / score / fill bar" | Progress Bar block (LS 5.21+) | Easy Lens panel feature; primitive install path unverified — probe before promising |
+| "glasses / sunglasses on face" | Glasses collection (LS 5.21+) | Easy Lens / Asset Library; transparent + sun variants — ask which |
+| "physics / bouncing / gravity" | Easy Lens 2D Physics block (5.21+) or native 3D physics presets | 2D for game-style, 3D for world-anchored; confirm before installing |
+| "play sound / audio / ding" | `AudioComponent` (native) | For preset SFX (jump/coin), Easy Lens SFX library is a 5.21+ option (install path unverified) |
+| "3D character / avatar" | GenAI Body Generator (5.21+) — Tier 2 | Generated asset still needs FBX/glTF integration — Tier 2 (external asset) per `capability-tiers.md` |
+| "spin / rotate / animate text" | Text3D Animator block (5.21+); fallback `TweenTransform` on `Text3D` | Block install path unverified — fallback is production-safe |
+
+**Confirmation pattern** (Swedish, matches project bilingual tone):
+
+> "Jag tolkar det som att du vill ha [feature]. Jag kan lägga till [concrete primitive] som [does X]. Stämmer det, eller menar du något annat?"
+
+English equivalent:
+
+> "I read that as wanting [feature]. I can add [concrete primitive] which [does X]. Right read, or did you mean something else?"
+
+Wait for explicit confirmation before any install / mutation. If the user confirms, proceed; if they describe a different intent, re-map.
+
+**Why this gate exists**: 5.21 features ship under marketing names ("Easy Lens X"), MCP-actionable primitives ship under different names (`Button` v1.0.1, `GaussianBlurPreset`), and mismatched terminology between brief and implementation is a common source of wasted iteration. The mapping table + confirmation step closes the gap before any install/mutation cost is incurred.
+
 ## Scope discipline
 
 Lens projects fail more often from feature creep than from technical issues. Hold the line:

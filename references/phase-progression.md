@@ -72,6 +72,22 @@ Skip Phase B if all surfaces are known + documented in `lens-studio-api-gotchas.
 
 Phase 0 DoD met. TECH-SPEC identifies specific API surfaces production code will use.
 
+### Pre-flight: distinguish Easy Lens panel features from scriptable primitives (LS 5.21+)
+
+LS 5.21+ "Easy Lens X" features — Easy Lens Button, Easy Lens Blur, Easy Lens Colored Background, Easy Lens 2D Physics, Easy Lens SFX library, plus Text3D Animator, Progress Bar, Glasses collection, Bitmoji Stickers, GenAI Body Generator — are **panel-level features** inside the Easy Lens / AI Creator UI, not discrete Asset Library installables. CC cannot drive the Easy Lens panel via MCP — only the underlying primitive CustomComponents.
+
+Before recommending any 5.21 feature to a client, classify it:
+
+1. `scene-graphql { presets(nameContains: "...") }` — does a native preset exist?
+2. `ListInstalledPackagesTool` — is the underlying primitive already installed?
+3. `SearchLensStudioAssetLibrary([feature name])` — find the closest discrete primitive (e.g. "Easy Lens Button" → `Button` v1.0.1 CustomComponent, probed 2026-05-12).
+4. Place the feature into one of:
+   - **(a) Native preset present** — script directly via scene-graphql (e.g. `GaussianBlurPreset`).
+   - **(b) Primitive installed / installable** — install + script the CustomComponent (e.g. `Button` v1.0.1).
+   - **(c) Neither present** — propose install path before script-generation; don't promise the feature until install + probe confirms.
+
+The "all 5.21 features are Asset Library blocks" framing is a working hypothesis, NOT a confirmed pattern — classify each feature individually. Cross-references: `lens-studio-api-gotchas.md` → "Easy Lens panel features vs MCP-scriptable primitives" for the empirical Button v1.0.1 surface (and the `animtionType` typo'd-key gotcha); `capability-tiers.md` → "Tier 1 nuance" for the Tier 1 boundary; SKILL.md → "Feature intent detection" for the natural-language-to-primitive mapping.
+
 ### Tasks
 
 - List API surfaces the production code will hit (anchors, tweens, tap detection, face binding, etc.)

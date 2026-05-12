@@ -19,6 +19,23 @@ Examples:
 
 **Build time**: 3-5 days.
 
+### Tier 1 nuance: "Easy Lens X" features ≠ MCP-scriptable (LS 5.21+)
+
+"Easy Lens X" labels in the LS 5.21 changelog (https://ar.snap.com/download) — Easy Lens Button, Easy Lens Blur, Easy Lens Colored Background, Easy Lens 2D Physics, Easy Lens SFX library, etc. — are **panel-level features inside the Easy Lens / AI Creator UI**, not Tier 1 via CC. CC cannot drive the Easy Lens panel via MCP.
+
+What stays Tier 1 (CC can script directly):
+
+- **Underlying primitive CustomComponents** that the panel wraps. Empirical example: "Easy Lens Button" wraps `Button` v1.0.1 (Asset Library), which CC can install + script. The same pattern likely applies to other Easy Lens features (verify per-feature via `SearchLensStudioAssetLibrary` + install + probe).
+- **Native presets already in the preset registry** that share the feature name. Example: "Easy Lens Blur" overlaps with `GaussianBlurPreset` (native, scriptable via scene-graphql).
+
+What drops out of Tier 1 (Inspector / designer task, not CC):
+
+- **Panel-level visual tuning** — shape pickers, color swatches, pressed-behavior previews, in-canvas drag handles in the Easy Lens UI. Hand off to the user via Inspector / Easy Lens panel.
+
+When a brief uses "Easy Lens X" language, decompose into "scriptable primitive surface" (Tier 1 via CC) and "visual tuning surface" (Inspector handoff). Don't promise the Easy Lens panel UX via CC.
+
+See `lens-studio-api-gotchas.md` → "Easy Lens panel features vs MCP-scriptable primitives" for the empirical Button v1.0.1 surface and the `animtionType` typo'd-key gotcha.
+
 ## Tier 2 — Generatable, requires external asset
 
 CC handles all code and scene work. Client (or external specialist) provides the asset.
