@@ -17,6 +17,7 @@ The 8-question / 3-group light-touch intake CC runs after concierge setup comple
 - **Default + iterate** beats "specify upfront".
 - **Preserve creative momentum** — bureaucratic intake kills projects.
 - One question at a time. No batching the 8 into a wall of text.
+- **The 8/3 structure is INTERNAL pacing — don't announce it to the user.** Anna should experience a natural conversation, not "I'm going to ask 8 questions in 3 groups, takes 7 minutes." Open with a conversational lead-in ("Bra — nu vill jag förstå din vision lite bättre. Första frågan: ...") and just start asking.
 - After all 8 answered, CC reads INSPIRATION/ and infers concrete design decisions (colors, motion, mood) WITHOUT asking. Surface inferences in PROJECT-DECISIONS.md for user validation, don't ask for hex codes or easing curves.
 
 ## Group 1 — Vision (3 questions)
@@ -59,7 +60,11 @@ Single date or week range. Drives:
 
 ## Group 3 — Asset validation (2 questions, CC reads INSPIRATION/ first)
 
-Before asking these, CC runs:
+Before running the scan, CC says one friendly context line so Anna understands why bash output is about to appear:
+
+> CC: "Kikar igenom inspiration-bilderna du la in..."
+
+Then CC runs:
 
 ```bash
 ls ~/Projects/[client]-lens/INSPIRATION/
@@ -67,6 +72,8 @@ find ~/Projects/[client]-lens/INSPIRATION/ -type f \( -name "*.jpg" -o -name "*.
 ```
 
 Then CC extracts visual signals via reading the images (color analysis, composition, motion characterization).
+
+When surfacing findings, present them naturally — never "I ran find ~/Projects/... and found 5 files" but "Du har 5 bilder. Jag ser mörka toner, neon-accenter, och minimalistisk stil...".
 
 **Q3.1**: "INSPIRATION/-folder has [N] images. I see [extracted summary — e.g., 'mostly dark moody color palette with neon accents, slow-paced motion, minimalist compositions, branded elements from Spotify']. Match your vision, or am I reading the wrong signals?"
 
@@ -78,41 +85,42 @@ If `brand-assets/` empty → CC will infer brand from INSPIRATION/ + client name
 
 ## Readiness Report gate
 
-After all 8 questions answered, CC drafts a Readiness Report:
+After all 8 questions answered, CC drafts a Readiness Report as a per-row table. Each row gets a confirm/edit marker — ✔ for verbatim user-provided answers (rarely need adjustment); ✔/✏️ for CC inferences and defaults (user may want to tweak). Format chosen so the user can scan and spot ONE wrong row without reading prose.
 
 ```markdown
 ## Readiness Report — [client] Lens
 
-### Locked decisions
-- **Vision**: [Q1.1 verbatim]
-- **Feeling**: [Q1.2]
-- **Pace**: [Q1.3]
-- **Client + category**: [Q2.1]
-- **Off-limits**: [Q2.2]
-- **Deadline**: [Q2.3]
-
-### CC inferences (from INSPIRATION/ + brief + Q3 confirmation)
-- **Color palette**: [3-5 hex codes extracted from inspiration]
-- **Motion feel**: [characterized: ambient/sharp/elastic/etc.]
-- **Mood signals**: [extracted from imagery]
-- **Typography direction**: [inferred from references — modern/classic/playful/etc.]
-- **Composition style**: [centered/dramatic/minimal/etc.]
-
-### Defaults CC will apply (override-able)
-- **Audio**: silent (no ambient track) — say "add audio" to override
-- **Interaction**: tap-anywhere primary trigger (per "Tap-as-primary" guiding principle)
-- **Reset behavior**: no auto-reset (user controls when to re-trigger)
-- **Camera applicability**: Front-only (selfie)
+| Decision | Value | |
+|---|---|---|
+| Vision | [Q1.1 verbatim] | ✔ |
+| Feeling | [Q1.2] | ✔ |
+| Pace | [Q1.3] | ✔ |
+| Client + category | [Q2.1] | ✔ |
+| Off-limits | [Q2.2] | ✔ |
+| Deadline | [Q2.3] | ✔ |
+| **CC inference** | | |
+| Color palette | [3-5 hex codes from INSPIRATION/] | ✔/✏️ |
+| Motion feel | [characterized: ambient/sharp/elastic/etc.] | ✔/✏️ |
+| Mood signals | [extracted from imagery] | ✔/✏️ |
+| Typography | [inferred: modern/classic/playful/etc.] | ✔/✏️ |
+| Composition | [centered/dramatic/minimal/etc.] | ✔/✏️ |
+| **Defaults** | | |
+| Audio | Silent (no ambient track) | ✔/✏️ |
+| Interaction | Tap-anywhere primary trigger | ✔/✏️ |
+| Reset | No auto-reset (user controls re-trigger) | ✔/✏️ |
+| Camera | Front-only (selfie) | ✔/✏️ |
 
 ### Specs CC will draft (you review before Phase 1)
 - `docs/TECH-SPEC.md` — scene hierarchy, scripts, performance targets
 - `docs/USER-EXPERIENCE.md` — second-by-second user journey
 - `docs/PROJECT-DECISIONS.md` — log of every inference
 
-**Approve?** Reply "go phase 0" to lock and proceed to spec drafts.
+Reply:
+- **"go phase 0"** if all rows look right
+- **"ändra [row]: [new value]"** for any row that needs adjusting
 ```
 
-Wait for user's "go phase 0" before drafting specs.
+Wait for user's "go phase 0" before drafting specs. If user replies with "ändra X: Y", update the relevant row, re-surface the table, wait again.
 
 ## Proactive clarification (per-phase, 2-4 questions max)
 

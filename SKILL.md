@@ -157,6 +157,7 @@ Don't read all of these upfront — pull each when relevant.
 
 **Pre-build / build mode**:
 - `references/onboarding-protocol.md` — 8-question intake (3 groups), INSPIRATION coaching, Readiness Report
+- `references/capability-tiers.md` — silent brief analysis: detects impossible Tier 3 requests early and proposes honest Tier 1 alternatives
 - `references/operational-rules.md` — full text of the 11 locked policies + rationale
 - `references/phase-progression.md` — per-phase detail, watch points, DoD per phase
 - `references/prompt-templates.md` — proven prompts ("go probe X", "go bulk X", Inspector handoff, scope-validation challenge)

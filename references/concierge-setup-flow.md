@@ -113,6 +113,27 @@ One question:
 
 Wait for Anna's brief. Save to `project-info/client-brief.md`.
 
+**Silent tier detection.** After receiving the brief, CC silently analyzes it against the capability-tier framework (see `references/capability-tiers.md`). The tier check is invisible to Anna — never mention "tiers" or present them as a menu.
+
+- **Tier 1 or Tier 2 detected** → proceed to Step 7 as normal. No mention of tiers.
+- **Tier 3 detected** (custom GAN, Snap-internal ML, realistic face/skin/hair replacement, GAN-based age/gender swap, "Snapchat Beauty filter" equivalent) → CC responds honestly using the language template:
+
+  > CC: "Det filtret du beskriver går faktiskt inte att producera med standard Lens Studio — inte för oss, inte för någon vanlig byrå.
+  >
+  > [Explain WHY in plain language — no jargon. 1-2 sentences. Example: 'Avatar Na'vi-filtret krävde specialiserade AI-verktyg som Snap byggde internt tillsammans med Disney, med tillgång till film-data som inte finns utanför Snap.']
+  >
+  > Vad vi däremot kan bygga är:
+  >
+  > [Concrete Tier 1 version that captures campaign spirit — e.g., 'Blå face-tint + gula ögon-texturer + Na'vi-skin overlay + Avatar-logo lockup. 1-2 dagars bygge.']
+  >
+  > Vill du att vi går vidare med det?"
+
+  Key rules: never say "with more budget", never say "we could try", always propose a concrete Tier 1 alternative immediately, use plain language. Full language templates + detection signals + scope-down patterns in `references/capability-tiers.md`.
+
+  If Anna accepts the Tier 1 alternative → save the SCOPED brief (not the original) to `project-info/client-brief.md` and continue to Step 7.
+
+  If Anna declines / wants to negotiate budget / claims "another agency could do it" → use the troubleshooting decision tree (see `references/troubleshooting-decision-tree.md` for the "client pushes back on Tier 3 refusal" pattern).
+
 ### Step 7: Inspiration folder coaching
 
 This is the **non-expert coaching moment** — don't jargon her into the sub-folder taxonomy.
@@ -138,14 +159,13 @@ If fewer than 3 images: ask for more. If 3+: continue.
 
 ### Step 8: Handoff to onboarding intake
 
-Now move from concierge mode to onboarding-protocol.md:
+Now move from concierge mode to onboarding-protocol.md. **Don't announce the 8/3 structure** — that's CC's internal pacing, not something Anna should hear. Open with a natural conversational lead-in and go straight into Q1.1:
 
-> CC: "Bra — vi har allt vi behöver för att börja. Nu går vi igenom briefen mer noggrant. **8 frågor i 3 grupper, ~7 minuter.** Sen draftar jag specs och vi börjar bygga.
+> CC: "Bra — nu vill jag förstå din vision lite bättre. Första frågan:
 >
-> Grupp 1 är 'Vision'. Första frågan:
 > **Beskriv lensen i 1-2 meningar — vad gör den, vad är 'momentet'?**"
 
-This transitions CC from concierge mode into the standard 8-question intake. See `onboarding-protocol.md` for the full intake protocol.
+This transitions CC from concierge mode into the standard 8-question intake. See `onboarding-protocol.md` for the full intake protocol (the 8/3 structure governs CC's pacing — Anna just experiences a conversation).
 
 After intake completes and Readiness Report is approved, CC enters Phase 0.
 
