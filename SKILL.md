@@ -209,9 +209,11 @@ Don't read all of these upfront — pull each when relevant.
 - `references/lens-studio-api-gotchas.md` — empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager, setProperty categories, FaceLiquify quirks, transient-view persistence, ~20 entries)
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
 
-**User-facing backup (CC pointar dit BARA on request)**:
-- `docs/INSTALL-REFERENCE.md` — complete self-service install guide
-- `docs/TROUBLESHOOTING.md` — detailed debug guide
+**User documentation (human-facing — Anna reads these herself)**:
+- `docs/MANUAL-SV.md` — Användarhandbok (svenska): vad skill:en gör, hur den fungerar, var gränserna går
+- `docs/MANUAL-EN.md` — User manual (English): what the skill does, how it works, where the limits are
+- `docs/INSTALL-REFERENCE.md` — full install steps (read after the manual confirms this fits the project)
+- `docs/TROUBLESHOOTING.md` — debug guide for when something breaks after install
 
 ## Performance budget
 
