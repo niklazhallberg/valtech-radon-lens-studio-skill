@@ -55,6 +55,7 @@ Concierge mode has completed (LS installed, project folder created, MCP register
 - Editing `.esproj` YAML directly — use MCP tools
 - Committing `Cache/`, `Support/`, `Workspaces/`, `PluginsUserPreferences/`, `BackUp/` — these regenerate; the `lens-folder.gitignore` covers them
 - Skipping the `lensApplicability` lock — changing it later is annoying
+- Treating tracker-driven content as "wired = done" before real-device calibration. Desktop LS Preview cannot reliably render tracker-anchored content (see `body-anchored-calibration.md` → "Desktop LS Preview limitations" matrix). Phone pair-test is mandatory ground truth.
 
 ### DoD signal
 
@@ -161,6 +162,7 @@ z-order via `renderOrder` on visual components (see `lens-studio-api-gotchas.md`
 
 ### Tasks
 
+- **If TECH-SPEC includes body-anchored / tracker-driven content** (Foot Tracking, Face Mesh, Head Binding, Hand Tracking, full-body, world-anchored): read `body-anchored-calibration.md` FIRST and follow its probe-first protocol. This is mandatory before any other Phase 1 scaffolding for tracker-driven content.
 - Set front-facing camera as default (or per brief — back-facing for some product reveals)
 - Build empty Scene Hierarchy with named groups
 - Import PNG assets, set ASTC compression and max texture size 1024
@@ -168,6 +170,7 @@ z-order via `renderOrder` on visual components (see `lens-studio-api-gotchas.md`
 - Apply anchors via NUMBER scalar writes (Category 1, NOT RECT compound)
 - Lock UX principles per `ux-principle-locking.md` BEFORE Phase 2
 - Verify "frozen" closed-state scene visually
+- For tracker-driven content: complete real-device calibration using the probe-first protocol from `body-anchored-calibration.md` BEFORE moving to Phase 1.5
 
 ### Deliverables
 
@@ -190,6 +193,8 @@ Per RFSU project metrics. Roughly: scene-hierarchy creates (5-8) + asset imports
 ### DoD signal
 
 Scene visually matches the post-interaction frozen state from USER-EXPERIENCE.md. No scripts attached yet.
+
+**Additional DoD for tracker-driven content**: real-device calibration completed using the probe-first protocol from `body-anchored-calibration.md`. For paired-symmetry content (left/right shoes, earrings, rings, etc.): both sides calibrated and user signs off in phone pair-test (not desktop preview). Final calibration values + camera-pose documented.
 
 ---
 
@@ -528,6 +533,7 @@ If any item is open, the project is not done — even if it "feels" done. Snap's
 - `scope-creep-detection.md` — discipline against feature drift mid-build
 - `capability-validation-protocol.md` — full Phase B protocol
 - `lens-studio-api-gotchas.md` — API patterns for Phase 1+ implementation
+- `body-anchored-calibration.md` — MANDATORY for any tracker-driven content (foot, face, hand, head, full-body, world-anchored). Universal probe-first protocol + per-body-part defaults. Read FIRST for Phase 1 builds involving body or world tracking.
 - `mcp-setup.md` — MCP registration + tool patterns
 - `error-recovery.md` — when builds break
 - `prompt-templates.md` — proven prompts per phase

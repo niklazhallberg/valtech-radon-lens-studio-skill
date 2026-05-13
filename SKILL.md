@@ -5,7 +5,7 @@ when_to_use: TRIGGER when user mentions Lens Studio, Snapchat, filter (in Snap c
 compatibility: Lens Studio 5.20+ (recommended), Claude Code, optionally Lens Studio MCP server
 metadata:
   author: Niklaz Hallberg / Valtech RADON
-  version: 0.5.0
+  version: 0.6.0
   mcp-server: lens-studio
   category: ar-content-creation
   tags: [snapchat, lens-studio, ar, sponsored-lens, mcp, snap-ads]
@@ -206,7 +206,8 @@ Don't read all of these upfront — pull each when relevant.
 - `references/error-recovery.md` — triage matrix, silent-drop recovery, rollback decisions
 
 **Building scripts or mutating scenes**:
-- `references/lens-studio-api-gotchas.md` — empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager, setProperty categories, FaceLiquify quirks, transient-view persistence, ~20 entries)
+- `references/lens-studio-api-gotchas.md` — empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager, setProperty categories, FaceLiquify quirks, transient-view persistence, Try-On Pack Sneakers + Foot Tracking calibration, ~21 entries)
+- `references/body-anchored-calibration.md` — MANDATORY for any tracker-driven content (foot, face, hand, head, full-body, world-anchored). Universal probe-first protocol, mesh-pivot awareness, wrapper-anchor pattern, desktop-preview-limitations matrix, per-body-part defaults. Read FIRST before proposing any architecture for tracker-driven Phase 1 builds.
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
 
 **User documentation (human-facing — Anna reads these herself)**:

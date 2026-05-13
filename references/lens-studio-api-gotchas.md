@@ -736,6 +736,98 @@ This blocks Snap's default touch shortcuts (double-tap camera flip, certain swip
 
 ---
 
+## Try-On Pack Sneakers — Foot Tracking calibration (full empirical record)
+
+> See `body-anchored-calibration.md` for the universal probe-first protocol that applies to ALL tracker-driven content. This section covers Try-On Pack Sneakers + Foot Tracking-specific empirical findings (first validated 2026-05-13 on a Sponsored Lens foot try-on build).
+
+**Working pattern**: Snap's "Try On Pack - Sneakers" (asset id `eafc3816-061e-4cd1-99c2-626ee19d33f4`) + Foot Tracking custom component (asset id `0d0a080f-37d1-401d-be96-f14684516652`) install + wire cleanly via MCP. But the resulting lens is NEVER ready for real-device review at default values. Three independent calibrations are required, in this order: geometry placement (scale → position → mirror) → material color.
+
+### Empirical observations
+
+**1. Foot Tracking overwrites entire `localTransform` on its anchor references each frame** — not just position+rotation. Setting scale or position directly on `shoe_mesh_l/r` as referenced by `leftFootAnchor` / `rightFootAnchor` is overwritten before next render. Verified: scale=(4,4,4) showed zero visual delta vs untouched right shoe. Manual UI-side scale change (2 in inspector) also did not persist visually.
+
+**2. Wrapper-anchor architecture is mandatory** for any property you want to control. Sequence (3 steps — NOT atomic, read-back after each):
+
+```graphql
+# Step 1: Create empty wrapper SceneObject under FootTracker
+mutation { createSceneObject(name: "LeftFootAnchor" parentId: "<FootTracker-id>") { id success } }
+
+# Step 2: Re-parent shoe under wrapper
+mutation { setParent(id: "<shoe_mesh_l-id>" parentId: "<new-anchor-id>") { success } }
+
+# Step 3: Re-wire tracker's leftFootAnchor reference (Category 4 REFERENCE)
+mutation { setProperty(id: "<FootTracker-ScriptComponent-id>" propertyPath: "leftFootAnchor" valueType: REFERENCE value: "<new-anchor-id>") { success } }
+```
+
+Then apply `localTransform` (scale, position) on the shoe — it now persists because tracker writes to wrapper, not to child. Mirror to right shoe ONLY after left side calibration locks + user signs off.
+
+**3. Try-On Pack Sneakers mesh-pivot is NOT at foot-center.** FileMesh bbox values via `asset-graphql` on FileMesh asset `b08d829a-e7cd-4fc5-88dd-44e6a1539aea`:
+
+| Axis | aabbMin | aabbMax | Mesh-center offset from pivot (0,0,0) |
+|---|---|---|---|
+| X (lateral) | 19.74 | 33.56 | **26.65** — mesh entirely +X of pivot |
+| Y (vertical) | 0.007 | 19.27 | 9.64 — sole sits at pivot Y ≈ 0 |
+| Z (toe-heel) | -6.99 | 25.38 | 9.19 — pivot near heel-end |
+
+At scale 4× the X-offset becomes 4 × 26.65 = 106.6 LS units lateral displacement (~1m visually). Pivot-compensation formula: `position = -1 × scale × mesh-center-offset`. The X-component is the dominant displacement source; Z is secondary; Y is anatomically correct (sole-at-pivot) and usually doesn't need compensation EXCEPT for the tracker-anchor-Y offset described in point 4.
+
+**4. Tracker anchor Y-position is at ANKLE level (~40 LS units above floor), NOT at sole.** Empirical: Y=0 places mesh-sole at ankle-height = shoes float ~40 cm above floor. Y=-40 drops sole to floor at scale 4. This is foot-tracker-specific; verify per body-part-tracker. The "sole-at-pivot mesh + tracker-at-ankle" mismatch is hidden until first device test.
+
+**5. AnimationPlayer defensive disable** on Sneakers prefab root. Try-On Pack ships with `autoplay=true` and clip "BaseLayer" with `end=0 frames` — likely no-op but eliminates a potential overwrite source. Use `setEnabled(id, enabled: false)`, never `deleteComponent` (delete is destructive, can break dependent references).
+
+**6. DefaultMtl baseColor ships at `(0.4, 0.4, 0.4, 1)` (40% gray, NOT white)** at path `passInfos.0.baseColor`. Both shoes share the *same* material instance — single mutation affects both. Material is cosmetic, tackle ONLY after geometry is locked.
+
+**7. Pre-made colorway alternatives exist** in Try-On Pack package — often higher fidelity than mutating DefaultMtl baseColor:
+
+| Material asset | Asset id | Notes |
+|---|---|---|
+| `DefaultMtl` | `a2d908f2-266a-403e-8c36-b8fb104761a6` | Flat 40% gray, no textures, shared between both shoes |
+| `sneakers_blue.mat` | `2a288760-49f9-4517-869c-af0768575a5e` | Textured blue colorway with diffuse + normal + params maps, ShaderGraph shader |
+| `sneakers_red.mat` | `558f3992-0e90-4ac1-bc5a-25d1753f8983` | Textured red colorway with diffuse + normal + params maps, ShaderGraph shader |
+
+Material swap is a single setProperty per shoe (REFERENCE valueType on `materials[0]` of the RenderMeshVisual component) — replaces flat gray with textured colorway. For brand-authentic looks (when the brief specifies a particular colorway), swap-to-pre-made often beats tuning DefaultMtl.
+
+### Foot-specific verification protocol (mandatory before declaring Phase 1 done)
+
+1. **Hierarchy walk** via `scene-graphql` — output object names + IDs + localTransforms + materials + script-wiring at each level. Confirm FootTracker script's `leftFootAnchor` / `rightFootAnchor` REFERENCES point to `shoe_mesh_l/r` initially.
+2. **Bbox-read** via `asset-graphql` on shoe_mesh_l FileMesh — record `aabbMin/aabbMax/aabbSize` before any scale mutation. Pivot-compensation formula depends on these.
+3. **Defensive disable** AnimationPlayer on Sneakers prefab root.
+4. **Asymmetric scale probe** on shoe_mesh_l only (no wrapper yet) — verify on phone whether scale persists.
+   - No visible delta → tracker overwrites → proceed to step 5 (wrapper).
+   - Left shoe bigger than right → scale layer is yours (rare for Foot Tracking; document the surprise).
+5. **Wrapper-anchor installation** for left foot (LeftFootAnchor created, shoe_mesh_l re-parented, tracker.leftFootAnchor re-wired). Read-back after each of the 3 mutations.
+6. **Pivot-compensation probes** on shoe_mesh_l within wrapper — use formula `-scale × bbox-center` as starting estimate, then tune empirically (10-30% adjustment typical, especially in X-axis where bbox-center under-estimates real pivot location).
+7. **Y-offset compensation** for tracker-anchor-at-ankle vs sole — try Y=-40 first (verified ankle height for Foot Tracking custom component at typical scales 2-4×).
+8. **Mirror geometry to right side** — create RightFootAnchor wrapper for shoe_mesh_r, re-wire tracker.rightFootAnchor, apply same localTransform values. ONLY AFTER left side locks + user signs off.
+9. **NOW probe material** in correct visual context (shoes sitting on feet). Choose: tune DefaultMtl baseColor (small step first, 0.4 → 0.6) OR swap to sneakers_blue.mat / sneakers_red.mat for textured look.
+10. **⌘S** after each successful probe-test cycle.
+
+### Anti-patterns
+
+- **"Wired = done"** — skipping real-device calibration. Desktop LS Preview can't reliably render foot-tracking ML; what looks fine in LS reads as broken in Snapchat.
+- **Mutating `shoe_mesh_l/r` directly** as tracker-references without first checking what the tracker overwrites per frame.
+- **Tuning material before geometry locks** — judgments made in wrong visual context.
+- **Skipping bbox-read before scale mutation** — pivot-offset amplifies linearly with scale, surprises you at scale ≥ 2.
+- **Trusting MP4 video as Preview source** for foot-tracking visual validation — inpainting/Shoe Removal pipeline runs on MP4 input, but content rendering is unreliable in desktop preview regardless of input source. **Phone pair-test is the single source of truth.**
+- **Treating bbox-center as exact** — formula `-scale × bbox-center` is *starting estimate*. Real pivot can diverge 10-30% from aabbCenter due to geometry distribution. Expect to tune.
+- **Predicting which world-axis a mesh-local mutation will display as** — tracker rotation + body orientation + camera angle stack into an unpredictable chain. Probe + observe, don't pre-reason.
+
+### When inpainting works but content renders offset (diagnosis pattern)
+
+If `useInpainting: true` produces clean foot removal (Snap visibly knows where feet are) BUT virtual shoe renders displaced from feet — that is NOT a tracking bug. It is mesh-pivot offset (the FBX's authored pivot point isn't at the anatomical anchor point Snap's tracker writes to). Inpainting/Shoe Removal pipeline uses pixel-space foot mask; content-rendering uses SceneObject anchor REFERENCE. The two paths can be perfectly aligned in tracker-space but visibly offset in screen-space due to pivot-vs-anchor mismatch.
+
+**Diagnose**: bbox-read the FileMesh; the mesh-center offset from (0,0,0) tells you how much position-compensation to apply. **Cure**: position-offset on wrapper-child as documented above.
+
+### Calibration camera-pose discipline
+
+User pair-tests in *typical user-position* (~30-45° down for foot-tracking), NOT rakt-nedåt. A lens calibrated for one camera angle can fail in another. Document final calibration values alongside the camera pose they were validated in.
+
+### Why empirically validated
+
+First validated on a Snapchat Sponsored Lens foot try-on build, 2026-05-13. First device test showed shoes at ~⅓ foot size, floating ~20 cm above actual feet, gray against wooden floor. Diagnosis sequence: hierarchy walk → AnimationPlayer disable → scale probe (tracker overwrote → wrapper installation) → bbox-read → position-compensation tuning → mirror to right → material decision. Y=-40 ankle-vs-sole compensation discovered empirically. Bbox-formula under-compensated X by ~15-20% (real pivot slightly inside the mesh from aabbCenter). Per-foot wrapper positions caused *asymmetric* visual displacement under partial compensation (left shoe drifted toward body center, right shoe drifted outward from body) — required full pivot-compensation magnitude (`scale × bbox-center`) to land both shoes on respective feet simultaneously.
+
+---
+
 ## Adding new findings
 
 When a new API gotcha is discovered during a lens project, add an entry here with:
