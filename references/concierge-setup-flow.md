@@ -136,14 +136,24 @@ Wait for Anna's brief. Save to `project-info/client-brief.md`.
 
 ### Step 7: Inspiration folder coaching
 
-This is the **non-expert coaching moment** — don't jargon her into the sub-folder taxonomy.
+This is the **non-expert coaching moment** — don't jargon her into the sub-folder taxonomy, and don't assume she knows what "inspiration" means in this context. Spell it out + show the value-exchange.
 
-> CC: "Jag behöver inspiration-bilder för att förstå hur lensen ska kännas. **3-5 bilder räcker att börja med**. De kan vara:
-> - Screenshots från andra appar / filter du gillar
-> - Foton som fångar stämningen (färger, känsla)
-> - Logos / branding-element från klienten
+> CC: "Nu behöver jag inspiration-bilder. Med 'inspiration' menar jag inte mockups eller färdiga designer av lensen — det är referenser som visar mig *känslan* du vill att lensen ska ha. Sånt som:
 >
-> Drop dem i `~/Projects/spotify-lens/INSPIRATION/` (samma folder vi precis skapade). Säg 'klar' när du har minst 3 där."
+> - **Screenshots** från andra AR-filter du gillar (Snap, TikTok, Insta — vad som helst)
+> - **Foton** som fångar stämningen — Pinterest-bilder, kampanjbilder, Instagram-fynd, streetstyle, produktfoton
+> - **Färgreferenser** — paletter, gradients, en bild med 'rätt' färgkänsla
+> - **Rörelseklipp** — om du har sett en animation/transition du gillar, droppa screenshot eller länk
+> - **Logos / brand-element** från klienten (om sådana finns)
+>
+> Vad det INTE behöver vara: mockups, wireframes, eller färdiga lens-designer. Råmaterial räcker.
+>
+> **Value-exchange — vad jag gör med dem:**
+> - **3 bilder**: jag drar en grov tonalitet (mörkt/ljust, varmt/kallt, lugnt/energiskt) och föreslår en startpalett — du får godkänna eller justera senare.
+> - **6-8 bilder**: jag kan dra slutsatser om motion-feel (mjukt vs snabbt), kompositionstyp (centrerat vs dramatiskt), och typografi-känsla — färre frågor till dig senare.
+> - **10+ bilder**: jag har mycket mer underlag att korsreferera; risken för 'fel tonalitet'-överraskningar i Phase 1 blir nästan noll. Lönsamt om du har materialet redan.
+>
+> **3-5 bilder räcker för att börja**. Drop dem i `~/Projects/spotify-lens/INSPIRATION/` (samma folder vi precis skapade — undermapparna är frivilliga, släng dem i huvudmappen om du inte vill sortera). Säg 'klar' när du har minst 3 där."
 
 Wait for: "klar".
 

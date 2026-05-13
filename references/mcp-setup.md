@@ -76,12 +76,20 @@ In LS: **AI Assistant → AI Model Context Protocol (MCP) → Configure Server**
 
 ### 3. Restart Claude Code from the right directory
 
+Exit the current Claude Code session first. In the same terminal where you originally started Claude Code, then run:
+
 ```bash
 cd ~/Projects/[your-lens-project]
 claude
 ```
 
 Working directory matters — see Prerequisites above.
+
+**Wording note for the assistant (mentor-tone):** Never coach the user with "in the terminal where Claude Code is running" — they are typing into Claude Code right now, so the phrasing is ambiguous and confusing. Use this pattern instead:
+
+> "Här i den här chatten där du skriver till mig nu: skriv `/exit` och tryck enter. Det stänger vår nuvarande session. Sen — i samma terminalfönster du startade mig från första gången — kör `claude` igen, så är vi tillbaka med MCP omladdat."
+
+The principle: name what the user is looking at (this chat) and name what they need to do next (exit + restart) in concrete first-person language, not abstract "the terminal".
 
 ### 4. Re-register
 

@@ -20,6 +20,21 @@ This file is the **memory** that prevents that rediscovery. Read it before *any*
 
 For ALL body-anchored content, in this order:
 
+### 0. Library-first sourcing
+
+Before commissioning a custom 3D model OR proposing in-house Blender work: scan Snap Asset Library AND Snap-templates for body-part-relevant assets. If a serviceable asset exists, use it for at least Phase 1 scaffolding — switch to custom only when the library asset can't meet the brief's photo-real / brand-specific requirements.
+
+**Why:** Custom modeling typically costs 1-2 days in-house to 1-2 weeks via commission. Library assets are immediate. A "perfect brand-specific photo-real" replaced by a "library placeholder" in Phase 1 does not slow the project — it accelerates it, because foot-tracking, calibration, and material/animation logic can be validated against the placeholder while real asset is sourced in parallel. The placeholder also de-risks the project: if the real asset is delayed, submission can fall back to the library version rather than slip.
+
+**How to scan:**
+- **Snap Asset Library** — search by body-part keyword ("foot", "head", "hand"), filter to 3D objects, look for "Try-On Pack" series and similar Snap-curated content packs.
+- **Snap Templates** — when starting a new project, browse Tracking section ("Foot Tracking", "Head Binding", "Hand Effects"). Templates ship with a default content asset built-in.
+- **Confirmed library assets per body part:** see per-body-part defaults section below (each section leads with the library-scan result).
+
+**When to skip:** Library scan can be skipped only if the brief explicitly requires a photo-real brand asset from day 1 AND that asset is already in hand at project start. In all other cases, scan first and propose the library option as the Phase 1 default.
+
+**Mentor framing (not optional):** Never present library-vs-custom as a hidden internal calculation. Surface the library option to the user explicitly, by name, with a one-line description of what it gives them and what it doesn't. Anti-pattern: launching into "I'll model a placeholder in Blender" without first reporting "Snap has a Try-On Pack with sneakers — that gets us shoes on feet today; we swap to your real asset in Phase 3."
+
 ### 1. Hierarchy walk FIRST
 
 Before proposing any mutation: run `scene-graphql` query that outputs object names + IDs + localTransforms + components + script-wiring + REFERENCE properties at every level of the relevant subtree. Show the diagram to the user for visual confirmation before any mutation is proposed.
@@ -324,6 +339,11 @@ Explicit acknowledgment when probe confirms a hypothesis. Don't move silently pa
 Filled in empirically over time as projects discover the per-body-part specifics. Each section here should reference back to the foot-section in `lens-studio-api-gotchas.md` (for foot) or its equivalent (for other body parts) for exact values and IDs.
 
 ### Feet (Try-On Pack Sneakers + Foot Tracking custom component)
+
+**Library-first scan result for feet (as of 2026-05-13):**
+- ✅ **Try-On Pack Sneakers** (Snap Asset Library) — low-poly sneaker prefab. Ships with `shoe_mesh_l` + `shoe_mesh_r` + 3 pre-made colorways (default white, sneakers_blue.mat, sneakers_red.mat). Generic silhouette, not brand-specific. **Suitable for:** Phase 1 scaffolding, calibration validation, tap-through animation logic, fallback submission. **Not suitable for:** final submission requiring photo-real brand-specific shoe.
+- ✅ **Foot Tracking template** (Snap Templates → Tracking) — starter project with the Foot Tracking custom component pre-wired to default placeholder shoe. Use when starting a foot project from scratch instead of importing pieces separately.
+- ➡️ **When brand-specific shoe is needed for final submission:** source/commission the real asset AFTER Phase 1 scaffolding validates calibration with the library placeholder. Real-asset swap happens in Phase 3 polish; no calibration work is wasted because mesh-pivot offsets are asset-specific and re-probed against the real mesh anyway.
 
 Empirical findings for the Snap-supplied Try-On Pack Sneakers + Foot Tracking custom component (applies to any project using these assets):
 
