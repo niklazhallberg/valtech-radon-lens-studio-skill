@@ -1,0 +1,65 @@
+# Material Editor
+
+You can find this sample project on Lens Studio Home Page.
+
+The Material Editor sample project includes a number of materials made with the [Material Editor](/lens-studio/features/graphics/materials/material-editor/introduction-and-concepts.md) that can be easily exported and imported into other projects. The materials used in this project can also be found in the [Material Section](/lens-studio/features/graphics/materials/material-editor/material-library.md) in the `Asset Browser` panel. Each material can be modified through the Material Editor, or the `Inspector` panel.
+
+## Guide[​**](#guide "Copy to clipboard")
+
+The sample project is filled with all sorts of cool materials that you can tweak and modify to use in your own project.
+
+Under the `WorldObjectController > Examples > Default Examples` in the `Scene Hierarchy` panel, we have 9 different materials.
+
+![](/assets/images/me-1-1599f9bac855680d96b7584e74d0243b.png)
+
+There are 5 more examples under the `More Examples` object at the bottom of the `Material Examples` object.
+
+![](/assets/images/me-2-6ee0cb06ae5813839649087c17c8e30d.png)
+
+To see the other example you can simply disable the `Default Example` object and enable the `More Example` scene object by pressing the checkbox next to the object’s name in the `Scene Hierarchy` panel.
+
+[](/img/lens-studio/5-graphics/me-4.webm)
+
+### Tweaking a Material[​**](#tweaking-a-material "Copy to clipboard")
+
+Each material has options that you can easily tweak. You can select an object, and click on the `Settings` icon next to the `Material` field to find some of the material's setting. Then, click on the `Open Full Inspector` button to see all the settings of the material.
+
+This is the same as selecting the material being used in the `Asset Browser` panel.
+
+[](/img/lens-studio/5-graphics/me-3.webm)
+
+Additionally, you can customize the material itself and how it works. To customize each material, `double-click` the material in `Asset Browser` to open the material's shader.
+
+Now you can see Material Editor panel is now open and you can start to customize the material.
+
+A **material** has a reference to a `shader` that defines what the material does. You can have multiple materials, each with different settings, point to the same shader.
+
+[](/img/lens-studio/5-graphics/me-5.webm)
+
+Take a look at the [Material Editor](/lens-studio/features/graphics/materials/material-editor/welcome-to-material-editor.md) guide section on the Lens Studio website for more information on how the material editor work.
+
+### Create a Graph Material[​**](#create-a-graph-material "Copy to clipboard")
+
+To create your own custom material, you can create a new Graph material. To do this, click on the `+` button in the `Asset Browser` panel and search for `Empty Material`.
+
+[](/img/lens-studio/5-graphics/me-6.webm)
+
+Adding new materials, the usage of a shader, will usually include the shader that it uses. However, if you add a material, and your existing project already has the same shader, it will not import a new one!
+
+### Adding Materials from the Asset Library[​**](#adding-materials-from-the-asset-library "Copy to clipboard")
+
+Alternatively, you can base your material on a number of pre-made materials available in the [Asset Library](/lens-studio/assets-pipeline/asset-library/asset-library-overview.md).
+
+To do this, click on the Asset Library button in the top toolbar.
+
+![](data:image/png;base64,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)
+
+Then, select the `Materials` section in the sidebar. Hover over the item you'd like, and click the `Import` button.
+
+![](/assets/images/me-7b-f831e651da470aeb537410707ca9a926.png)
+
+This will add a new graph material into your project resources which you can customize.
+
+## Previewing Your Lens[​**](#previewing-your-lens "Copy to clipboard")
+
+You’re now ready to preview your Lens! To preview your Lens in Snapchat, follow the [Pairing to Snapchat](/lens-studio/lens-studio-workflow/pairing-to-snapchat.md) guide.

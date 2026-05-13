@@ -1,0 +1,89 @@
+# Ring Binding Component
+
+The Ring Binding Component enables ring try-on experiences in Lens Studio; it binds ring objects to the fingers with the help of reference points pinned to the surface of the hand mesh. Each hand has 14 positions to place a ring on, which are each identical mirrors of the other hand.
+
+Multiple Rings Binding Components can be used in parallel.
+
+![](/img/lens-studio/ring-binding-cc-1.png)
+
+## Installing[​**](#installing "Copy to clipboard")
+
+The Ring Binding Component is a [Custom Component](/lens-studio/features/scripting/script-components.md) you can install from the [Asset Library](/lens-studio/assets-pipeline/asset-library/asset-library-overview.md),
+
+## Usage[​**](#usage "Copy to clipboard")
+
+The custom component must be placed within the Perspective camera, with a ring mesh inside it as a child.
+
+![](data:image/png;base64,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)
+
+In the component's settings, the standard settings allow you to position the ring on certain joints of the hand.
+
+![](/assets/images/ring-binding-cc-3-b4db65fb4e1e4b0599cbbfee93b9d047.png)
+
+The component provides options for:
+
+* Selecting the hand to try on the ring (2 hands)
+* Selecting the finger on the hand (5 fingers each hand)
+* Selecting the section on the finger (2 sections on thumb, 3 sections on other fingers, where proximal is the closest to the palm and distal is the furthest).
+
+With those you can configure where you want the ring to be placed for try-on.
+
+![](/assets/images/ring-binding-cc-4-252ef5f0f79d6988846546e063cd6382.png)
+
+When `advanced` is enabled additional settings become available. Users can elect to show the reference points - visual indications of all the joints that the ring can be attached to.
+
+Additionally, there is an option to turn on a constrained display for the ring, which determines if the ring should be displayed based on the transform of the tracked hand (this option can be turned on and off). This is to make sure the ring is not displayed at angles that don't make the try-on look accurate. The ring is disabled if the selected hand is:
+
+* Not being tracked
+* Too close to the camera
+* The rotation on pitch or yaw axis is beyond thresholds.
+
+Lastly, the ring’s offset position, rotation and scale in relation to the target joint can be modified.
+
+![](/img/lens-studio/ring-binding-cc-5.png)
+
+## ​​API[​**](#api "Copy to clipboard")
+
+Aside from the Script UI, the ring can also be used with a script API.
+
+***
+
+**isTracking()**
+
+Returns True if the selected hand is being tracked.
+
+***
+
+**getHandSelection(int)**
+
+Gets the hand currently selected.
+
+***
+
+**setHandSelection(int)**
+
+Sets either left (0) / right (1) hand as selected hand.
+
+***
+
+**getFingerSelection(int)**
+
+Gets the finger currently selected.
+
+***
+
+**setFingerSelection(int)**
+
+Sets one of the five fingers as selected finger.
+
+***
+
+**getSectionSelection(int)**
+
+Gets the section currently selected.
+
+***
+
+**setSectionSelection(int)**
+
+Sets one of the sections as selected section on the finger.

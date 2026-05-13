@@ -1,0 +1,117 @@
+# Sunglasses
+
+The Sunglasses asset allows users to create customizable sunglasses. The asset comes with five different sunglasses types. The asset allows you to tune the material, color and lenses of the sunglasses. This guide covers how to customize the sunglasses and add a custom reflection to the lenses.
+
+Find the `Sunglasses` asset in the Asset Library and import it into your project. Click [here](/lens-studio/assets-pipeline/asset-library/asset-library-overview.md#prefab) to learn more about how to use assets in the Asset Library.
+
+![](/img/lens-studio/5-features/sunglasses-preview.png)
+
+## Import Asset[​**](#import-asset "Copy to clipboard")
+
+Once you import the asset from Asset Library, you can find the package in the Asset Browser.
+
+![](/assets/images/sunglasses-import-package-b847522b3b9b28d41a6a660af160c24c.png)
+
+Follow the instructions and drag the prefab `Sunglasses__PUT_UNDER_MAIN_CAM` into Scene Hierarchy to create a new Scene Object.
+
+[](/img/lens-studio/5-features/sunglasses-drag-prefab.webm)
+
+You can right-click and select `Unpack for Editing` from the drop-down menu to unpack all assets stored in the bundle. Click here to learn more about [Asset Packages](/lens-studio/features/package-management/asset-packages-introduction.md). Once you unpack the package, you can then edit its content.
+
+![](/assets/images/sunglasses-unpack-package-af58713ee1a333695c1d4e1839767bf4.png)
+
+## Customize the Sunglasses[​**](#customize-the-sunglasses "Copy to clipboard")
+
+To customize the sunglasses, select the `Sunglasses Controller [EDIT_ME]` object in the `Scene Hierarchy` panel and adjust its settings in the `Inspector` panel.
+
+The sections below walk through each customizable setting.
+
+## Coloring the Frame[​**](#coloring-the-frame "Copy to clipboard")
+
+You can edit the frame’s color in the `Inspector` panel by selecting and editing the `Frame Color` property.
+
+[](/img/lens-studio/5-features/sunglasses-frame-color.webm)
+
+## Changing the Frame Type[​**](#changing-the-frame-type "Copy to clipboard")
+
+Choose a frame type by selecting a frame from the `Frame Type` dropdown menu.
+
+[](/img/lens-studio/5-features/sunglasses-frame-type.webm)
+
+## Changing the Frame Material[​**](#changing-the-frame-material "Copy to clipboard")
+
+Change the frame material by selecting a material from the `Frame Material` dropdown menu. The available frame materials are Matte, Metallic and Glossy.
+
+[](/img/lens-studio/5-features/sunglasses-frame-material.webm)
+
+If you wish to have a transparent frame, check the `Clear Frame` checkbox. When checked, the `Frame Alpha` slider allows you to adjust the amount of transparency.
+
+[](/img/lens-studio/5-features/sunglasses-frame-clearframe.webm)
+
+## Adjust the Frame Size and Position[​**](#adjust-the-frame-size-and-position "Copy to clipboard")
+
+You can adjust the frame size using the `Frame Size` slider and adjust the frame position using the `Frame Offset` slider.
+
+[](/img/lens-studio/5-features/sunglasses-frame-size.webm)
+
+## Coloring the Lenses[​**](#coloring-the-lenses "Copy to clipboard")
+
+You can edit the color of the lenses in the `Inspector` panel by changing the `Lens Color` property.
+
+[](/img/lens-studio/5-features/sunglasses-lens-color.webm)
+
+For more transparent Lenses, adjust the `Lens Alpha` slider.
+
+[](/img/lens-studio/5-features/sunglasses-lens-alpha.webm)
+
+## Adjusting the Lens Roughness[​**](#adjusting-the-lens-roughness "Copy to clipboard")
+
+You can adjust the lens reflectivity by adjusting the `Lens Roughness` slider.
+
+[](/img/lens-studio/5-features/sunglasses-lens-roughness.webm)
+
+## Custom Reflection[​**](#custom-reflection "Copy to clipboard")
+
+The Sunglasses template allows you to use a simple 2D image as a custom reflection. To use a custom reflection, enable the `Custom Reflection` checkbox.
+
+[](/img/lens-studio/5-features/sunglasses-lens-custom-checkbox.webm)
+
+The custom reflection will not be influenced by the environment map
+
+## Changing the Custom Reflection[​**](#changing-the-custom-reflection "Copy to clipboard")
+
+Edit the custom reflection’s texture by changing the `Reflection Texture` property to your own custom texture. To import a custom texture into Lens Studio, select `+ -> Import Files` in the `Asset Browser` panel. Adjust the `Reflection Intensity` slider to define how prominent your custom reflection is.
+
+## Custom Sprite[​**](#custom-sprite "Copy to clipboard")
+
+A custom sprite can be added to the lenses as well. Unlike the custom reflection, the custom sprites are attached to the frames and rotate with the sunglasses. To enable the custom sprite, check the `Custom Sprite` checkbox.
+
+[](/img/lens-studio/5-features/sunglasses-lens-sprite-checkbox.webm)
+
+## Changing the Custom Sprite[​**](#changing-the-custom-sprite "Copy to clipboard")
+
+You can change the custom sprite’s texture by changing the `Sprite Texture` property to a custom texture you’ve imported into Lens Studio.
+
+Make sure the imported sprite texture is not transparent so it can be blended with the lens reflection.
+
+## Adjusting the Custom Sprite[​**](#adjusting-the-custom-sprite "Copy to clipboard")
+
+You can adjust the custom sprite’s visibility by changing the `Sprite Intensity` slider, adjust the custom sprite’s size using the `Sprite Size` slider and adjust the custom sprite’s position using the `Sprite Offset X` and `Sprite Offset Y` sliders.
+
+[](/img/lens-studio/5-features/sunglasses-sprite-adjust.webm)
+
+## Changing the Environment Map[​**](#changing-the-environment-map "Copy to clipboard")
+
+You can change the environment map by changing the `Diff Texture` and `Spec Texture` properties to the environment map textures of your choosing. Click on the Envmap Object under Lighting Object. In the Inspector Panel, adjust the brightness of the environment map by changing the `Exposure` slider and adjust the rotation of the environment map by changing the `Rotation` slider.
+
+[](/img/lens-studio/5-features/sunglasses-env-adjust.webm)
+
+## Support for Two Heads[​**](#support-for-two-heads "Copy to clipboard")
+
+The Sunglasses controller supports two heads wearing the same sunglasses. To enable two head support, check the `Two Heads` checkbox.
+
+![](data:image/png;base64,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)
+
+## Previewing Your Lens[​**](#previewing-your-lens "Copy to clipboard")
+
+You’re now ready to preview your Lens experience. To preview your Lens in Snapchat, follow the [Pairing to Snapchat](/lens-studio/lens-studio-workflow/previewing-your-lens.md) guide.
