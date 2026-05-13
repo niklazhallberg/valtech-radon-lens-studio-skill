@@ -5,7 +5,7 @@ when_to_use: TRIGGER when user mentions Lens Studio, Snapchat, filter (in Snap c
 compatibility: Lens Studio 5.20+ (recommended), Claude Code, optionally Lens Studio MCP server
 metadata:
   author: Niklaz Hallberg / Valtech RADON
-  version: 0.4.0
+  version: 0.5.0
   mcp-server: lens-studio
   category: ar-content-creation
   tags: [snapchat, lens-studio, ar, sponsored-lens, mcp, snap-ads]

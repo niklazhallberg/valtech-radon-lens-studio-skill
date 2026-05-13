@@ -20,7 +20,7 @@ If you get stuck at any step, return to Claude Code and say "I'm stuck on step [
 - Step 5: Per-project setup
 - Step 6: Register MCP server
 - Step 7: Sanity check
-- Daily reminder: MCP token rotation
+- MCP token: re-registration and rotation
 - Permission prompts you'll see
 
 ## Prerequisites
@@ -70,6 +70,9 @@ If LS won't open or crashes immediately:
 
 ## Step 3: Install the skill
 
+> [!NOTE]
+> All commands in this step run in your **terminal** (Terminal.app or iTerm on macOS). Open it now if you don't have it open yet. All commands from here through Step 7 run in the same terminal window.
+
 You received the skill as one of:
 
 ### Option A: `.skill` file (zip archive)
@@ -79,6 +82,8 @@ mkdir -p ~/.claude/skills
 unzip lens-studio-snapchat-filter.skill -d ~/.claude/skills/
 # Result: ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md exists
 ```
+
+**Verify:** run `ls ~/.claude/skills/` — you should now see `lens-studio-snapchat-filter/` in the listing.
 
 If `unzip` fails (because the file has `.skill` extension, not `.zip`), rename first:
 
@@ -143,6 +148,17 @@ cd ~/Projects/[client]-lens
 
 Substitute `[client]` with the actual name in kebab-case (e.g., `spotify-lens`, `olw-lens`, `voi-lens`).
 
+**Example** — for an Adidas project:
+
+```bash
+mkdir -p ~/Projects/adidas-lens
+cd ~/Projects/adidas-lens
+```
+
+When the command finishes, you're *inside* the project folder — the terminal prompt now shows the folder name.
+
+**Verify:** open Finder → Projects. You'll see a new `adidas-lens` folder. This is where Claude will create subfolders (`docs/`, `brief/`, etc.) in the next phase.
+
 Inside the project folder, create the sub-structure:
 
 ```bash
@@ -170,21 +186,52 @@ The Lens Studio MCP server lets Claude Code make scene mutations, run scripts in
 
 ### Get credentials
 
-In Lens Studio:
-1. **AI Assistant → AI Model Context Protocol (MCP) → Configure Server**
-2. You'll see:
-   - A URL like `http://localhost:50040/mcp`
-   - A Bearer token (long random string)
+> [!NOTE]
+> This step uses **two windows**: Lens Studio (to read the port + token) and your terminal (to register them with Claude). Follow the steps in order.
+
+**1. Open the MCP Server panel in Lens Studio:**
+
+**AI Assistant → AI Model Context Protocol (MCP) → Configure Server**
+
+![Lens Studio MCP Server panel with the Copy MCP Config button highlighted](img/ls-mcp-server-panel.png)
+
+*MCP Server panel — find the **Copy MCP Config** button.*
+
+**2. Click "Copy MCP Config".** The full server config (URL + Bearer token) is now in your clipboard as a JSON blob.
+
+> [!WARNING]
+> **3. Do NOT paste the JSON in the terminal yet.** Paste it into a text editor (TextEdit, VS Code, Sublime — whatever you have open). The JSON blob is **information**, not a command. Pasting it into your shell will produce a `parse error` and nothing will work.
+
+![JSON config pasted in a text editor with port and token highlighted](img/ls-mcp-config-clipboard.png)
+
+*JSON config — note the port (after `localhost:`) and the token (after `Bearer`).*
+
+**4. Find the two values you need in the JSON:**
+
+- **Port** — the number after `localhost:` in the `url` field (e.g., `50040`).
+- **Token** — the long random string after `Bearer ` in the `headers.Authorization` field.
+
+**5. Now go to your terminal** and run the command in the next section, replacing `PORT` and `YOUR_TOKEN_HERE` with the values from the JSON.
 
 ### Register with Claude Code
 
 ```bash
 cd ~/Projects/[client]-lens
-claude mcp add --transport http --scope local lens-studio http://localhost:50040/mcp \
+claude mcp add --transport http --scope local lens-studio http://localhost:PORT/mcp \
   --header "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
-Replace the port (e.g., `50040`) with what LS shows, and `YOUR_TOKEN_HERE` with the actual Bearer token from LS.
+**Example** — with real values filled in:
+
+```bash
+claude mcp add --transport http --scope local lens-studio http://localhost:50040/mcp \
+  --header "Authorization: Bearer abc123def456..."
+```
+
+Replace `PORT` (e.g., `50040`) with the port LS showed you, and `YOUR_TOKEN_HERE` with the actual Bearer token.
+
+> [!WARNING]
+> Run the command as **one line** (or with the `\` line-continuation as shown). Don't press Enter in the middle of the command. If the terminal visually wraps the long line, that's fine — only a literal Enter breaks the command.
 
 **Scope choice**:
 - `--scope local`: registration scoped to current directory (recommended for project-specific work)
@@ -213,6 +260,9 @@ cd ~/Projects/[client]-lens
 claude
 ```
 
+> [!NOTE]
+> Run this in the same terminal window, from your project folder (e.g., `adidas-lens`). This starts the Claude Code CLI — you'll land in an interactive chat prompt where you type messages directly to Claude.
+
 Ask:
 
 > "Read the current scene from Lens Studio and tell me what objects are there."
@@ -235,13 +285,13 @@ Claude will:
 
 The full pipeline (Phase 0 → Phase 5) is documented in `~/.claude/skills/lens-studio-snapchat-filter/references/phase-progression.md`, but you don't need to read it — Claude walks you through each phase.
 
-## Daily reminder: MCP token rotation
+## MCP token: re-registration and rotation
 
-**Every time you restart Lens Studio, the Bearer token rotates.** Your existing MCP registration uses the old token and will fail.
+The MCP Bearer token in Lens Studio is **long-lived** — empirically verified to persist across both LS app restarts and the MCP server's Stop/Start cycle (tested on LS 5.21). If `claude mcp list` shows the lens-studio server as `✓ Connected`, your stored token still works and you don't need to do anything.
 
-Standard recovery (~3 minutes):
+If your registration starts failing (`✗ Failed to connect` or `401 Unauthorized`), re-register with the current token:
 
-1. Get the new token from LS: **AI Assistant → MCP → Configure Server**
+1. Get the current token from LS as in Step 6 above (**AI Assistant → MCP → Configure Server** → **Copy MCP Config** → paste into a text editor to read the port and token).
 2. Re-register:
 
 ```bash
@@ -253,6 +303,9 @@ claude mcp list
 ```
 
 If you'd rather have Claude walk you through this when it happens, just tell Claude "MCP isn't working" — it'll guide you through reconnect.
+
+> [!WARNING]
+> Treat the MCP Bearer token like a password — don't share screenshots, logs, or messages that include it. If you suspect a leak, the most reliable way to force token rotation in current LS versions is to **reset Lens Studio preferences**: hold ⇧⌥ while launching LS → "Reset Preferences". Stop/Start the MCP server from the panel does *not* reliably rotate the token (verified on LS 5.21).
 
 ## Permission prompts you'll see
 
