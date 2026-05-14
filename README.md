@@ -1,0 +1,181 @@
+# lens-studio-snapchat-filter
+
+> A growing knowledge base for building Snapchat AR Lenses and Sponsored Lenses with Claude Code + Lens Studio.
+
+A Claude Code "skill" — a plug-in that turns the general-purpose AI assistant into a specialized mentor for Snapchat Lens Studio. Built and maintained by **Valtech RADON**, it captures empirically-validated patterns, gotchas, and workflows from real production lens builds.
+
+---
+
+## Background
+
+Lens Studio is powerful but unforgiving. APIs shift between minor versions. ML trackers behave differently on desktop versus real device. Submission has strict, sometimes undocumented, requirements. Every designer building their first lens hits the same traps — the same Slack searches, the same hour-long debugging cycles, the same surprises in Phase 4.
+
+This skill exists to collapse that learning curve. **One colleague pays the time cost of discovery once. Every colleague after inherits the answer.**
+
+---
+
+## How you and Claude Code split the work
+
+The skill is built around a clear role split. You stay in your creative director seat. Claude Code handles the technical execution.
+
+| You (Creative Director) | Claude Code (Technical Executor) |
+|---|---|
+| Provide vision, brief, inspiration images | Translate the vision into a Lens Studio scene structure |
+| Make design decisions, judge "feel" | Build the closed state, animation logic, polish |
+| Approve every mutation before it lands | Execute scene mutations, write TypeScript, install assets |
+| Use the LS Inspector to fine-tune magnitude, easing, colour | Draft `TECH-SPEC.md` and `USER-EXPERIENCE.md` from your brief |
+| Test on real device, report what you see | Probe with read-back to verify every change |
+| Say yes / no / "try this instead" | Surface choices only when ambiguity is genuine |
+| Set the pace — slow down when you need to | Ask 2–4 targeted questions per phase, never 20 |
+
+This division is enforced by the skill's operational rules and voice mandate. You are never a passenger.
+
+---
+
+## Getting started — 5 steps
+
+The commands below are written for macOS. Adjust paths and package managers for Windows / Linux as needed.
+
+### 1. Install Lens Studio
+
+Download Lens Studio 5.20 or later from Snap:
+
+**https://ar.snap.com/download**
+
+Open the app once after install to confirm it launches.
+
+### 2. Install Claude Code
+
+In your terminal:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+If you don't have Node.js / npm yet, install it first from **https://nodejs.org** (LTS version is fine).
+
+Confirm Claude Code is installed:
+
+```bash
+claude --version
+```
+
+### 3. Clone this skill into the Claude Code skills directory
+
+```bash
+mkdir -p ~/.claude/skills
+cd ~/.claude/skills
+git clone https://github.com/niklazhallberg/lens-studio-snapchat-filter-skill.git lens-studio-snapchat-filter
+```
+
+You must be invited as a collaborator on the private repository to clone it. See the **Access** section below.
+
+(The clone URL will change once the repository migrates to a Valtech GitHub organization.)
+
+### 4. Create a project folder and start Claude Code
+
+```bash
+mkdir -p ~/Projects/my-first-lens
+cd ~/Projects/my-first-lens
+claude
+```
+
+### 5. Tell the agent what you want to build
+
+In the Claude Code chat, type something like:
+
+> "I want to build a Snapchat Lens for [your concept here]."
+
+The skill activates automatically. The agent walks you through environment detection, concierge setup, the 8-question onboarding intake, and the full 9-phase build pipeline.
+
+For a designer-friendly walkthrough with screenshots, open `docs/MANUAL.html` in your browser.
+
+---
+
+## What's in it
+
+| File / area | Contents |
+|---|---|
+| `SKILL.md` | Entry point — voice mandate, 9-phase pipeline, operational rules, scope discipline |
+| `references/snap-docs/` | 365 pages of Snap's official documentation, curated and organized into 9 must-have buckets |
+| `references/mcp-tool-schemas.md` | All 20 Lens Studio MCP tools — parameters, use-cases, and explicit limits (what MCP cannot do) |
+| `references/mcp-setup.md` | Install, register with Claude Code, reconnect playbook for when LS restarts |
+| `references/lens-studio-api-gotchas.md` | ~21 empirically-validated API gotchas (Tween Manager quirks, ScreenTransform behaviour, MetaInfo transient-view persistence, and more) |
+| `references/body-anchored-calibration.md` | Probe-first protocol for tracker-driven content (foot, face, hand, body, world-anchored). Mandatory reading before any tracker work |
+| `references/voice-and-pedagogy.md` | The 8 principles + 3 layers that govern how the agent talks to you. Mentor-role is the product's core value, not just the technical machinery |
+| `references/skill-growth-protocol.md` | How new learnings flow back into the skill — the cultural protocol |
+| `references/onboarding-protocol.md` | 8 questions, 3 groups, ~7 minutes — captures vision, constraints, asset validation before Phase 0 spec drafting |
+| `references/concierge-setup-flow.md` | 8-step setup conversation for designers who've never built a lens before |
+| `docs/MANUAL.html` | Designer-facing manual |
+| `docs/VALTECH-PRESENTATION.md` | Standalone overview for a broader Valtech audience (designer, team lead, tech lead, decision-maker) |
+| `CHANGELOG.md` | The skill's biography — every release, every accepted discovery, with timestamps, project context, and value-for-user statements |
+
+See `SKILL.md` for the full reference catalog with load-on-demand cross-refs.
+
+---
+
+## How the skill gets better over time
+
+**This is the part that matters most.**
+
+Every project is an opportunity to make the skill smarter. When you and the agent solve something during a real build that the skill doesn't already know — a new gotcha, a new pattern, a subtle calibration trick — the agent will pause and ask permission:
+
+> "We've learned something new here. [plain-language explanation of the finding]
+>
+> This is valuable to save for future situations. Today this knowledge isn't in the system files, which means the next colleague who [concrete use-case] will probably get stuck in the exact same trap, unless we write it in now as a learning. Let's make the files even better with the help of your discovery.
+>
+> Your discovery has real value — it makes me as an AI assistant smarter every time, and helps every colleague who meets the same trap in the future.
+>
+> **Is it OK if I update the system files with your discovery? It's quick and doesn't interrupt our work in any way.**"
+
+**When you see this ask, please say yes.** That single permission is what turns this from a static knowledge base into a growing one.
+
+The agent then:
+
+1. **Generalizes the finding** — removes project-specific values, client names, dates
+2. **Writes it into the right `references/` file** as a new section
+3. **Adds a `CHANGELOG.md` entry** with timestamp, project context, and a "value for user" statement
+4. **Shows you the diff** so you can review before anything lands on disk
+5. **Commits and pushes** (with your second approval)
+
+The whole cycle takes about 2 minutes and doesn't break your build momentum.
+
+---
+
+## Why your contribution matters
+
+Without this protocol, lens-building expertise stays trapped in individual heads. People go on vacation, switch to other projects, or simply forget — and the institutional knowledge becomes inaccessible exactly when the next person needs it.
+
+With this protocol, every solved problem becomes a permanent asset. The agent grows smarter with every accepted discovery. The compound effect over 5, 10, 20 projects is dramatic: a designer joining Valtech RADON next year inherits everything we have learned today.
+
+**The bet is simple: compound interest on skill investment.** Every "yes" to the in-flow ask is a small deposit. Over time those deposits become the difference between starting from scratch and starting from a sharp, opinionated, battle-tested baseline.
+
+When you scroll `CHANGELOG.md` six months from now, you should feel momentum. "We learned X in January, Y in February, all the way to today. This isn't standing still — it grows on its own when we use it."
+
+---
+
+## Access
+
+This is currently a **private repository** on a personal GitHub account. Access is granted by invitation to Valtech RADON colleagues only.
+
+If you have been invited as a collaborator:
+
+- You have full read + write access
+- Pull the repo into `~/.claude/skills/lens-studio-snapchat-filter/`
+- Use the skill in your lens projects
+- When the agent surfaces an in-flow ask: **say yes**
+- Open an issue or push a fix when you see something that conflicts with your experience
+
+There is no formal review process yet. Trust is high; the audit trail (every change in git history with project context, author, and timestamp) is the safety net.
+
+Migration to a Valtech GitHub organization with SSO and granular role management is on the roadmap.
+
+---
+
+## At a glance
+
+- **Owner**: Valtech RADON
+- **Status**: Private, invitation-only, growing actively
+- **Latest release**: see `CHANGELOG.md`
+- **Use it for**: Snapchat AR Lenses, Sponsored Lenses, brand campaigns, internal experimentation with Lens Studio AI workflows
+- **Not for**: TikTok Effect House, Meta Spark, Unity / Unreal AR, native ARKit / ARCore (see `SKILL.md` `when_to_use` for full scope)
