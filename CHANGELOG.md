@@ -18,6 +18,13 @@ anpassat för skill-evolution snarare än software-API.
 
 _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
+### 2026-05-14 — [project: demo-face-lens]
+- **scene-graphql allSceneObjects + destructive mutations**:
+  offset-iteration hoppar item när mutation deleted SceneObject
+  mid-cycle. Re-query efter destructive batch.
+- File: `references/mcp-tool-schemas.md` § Edge case: allSceneObjects offset
+- Type: [demo]
+
 ### 2026-05-14 — [project: demo-foot-lens]
 - **Tracker confidence-tröskel för stabil anchor**: jitter under
   ~0.55 confidence — defensiv guard med hysteresis (0.6/0.65)
