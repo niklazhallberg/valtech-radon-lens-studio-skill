@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="sv" data-lang="sv">
+<html lang="sv">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lens Studio Snapchat Filter — Manual</title>
+<title>Snapchat-filter på 10 minuter — Manual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,12 +14,17 @@
     --bg: #050709;
     --ink: #ffffff;
     --accent: #3b82f6;
-    --rule: rgba(255, 255, 255, 0.06);
+    --accent-soft: rgba(59, 130, 246, 0.12);
+    --rule: rgba(255, 255, 255, 0.08);
     --ink-85: rgba(255, 255, 255, 0.85);
     --ink-60: rgba(255, 255, 255, 0.60);
     --ink-45: rgba(255, 255, 255, 0.45);
     --ink-35: rgba(255, 255, 255, 0.35);
     --ink-12: rgba(255, 255, 255, 0.12);
+    --code-bg: rgba(255, 255, 255, 0.04);
+    --code-border: rgba(255, 255, 255, 0.10);
+    --warn: #fbbf24;
+    --ok: #34d399;
   }
 
   html, body {
@@ -30,1677 +35,660 @@
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
   }
-
-  html[data-lang="sv"] .lang-en { display: none !important; }
-  html[data-lang="en"] .lang-sv { display: none !important; }
-
-  body {
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
+  body { min-height: 100vh; overflow-x: hidden; }
   ::selection { background: var(--accent); color: var(--bg); }
 
-  /* ── Top nav ───────────────────────────── */
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+  a:hover { border-bottom-color: var(--accent); }
+
+  code, pre, .mono { font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; }
+
+  /* ── Nav ───────────────────────────────────── */
   .nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 40px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     background: rgba(5, 7, 9, 0.6);
     border-bottom: 1px solid var(--rule);
   }
-  .nav-brand {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ink-60);
-  }
-  .lang-toggle {
-    display: inline-flex;
-    gap: 12px;
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px 0;
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ink-45);
-  }
-  .lang-toggle span {
-    transition: color 0.2s ease;
-  }
-  html[data-lang="sv"] .lang-toggle .l-sv,
-  html[data-lang="en"] .lang-toggle .l-en {
-    color: var(--ink);
-  }
-  .lang-toggle .l-divider { color: var(--ink-12); }
+  .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--ink-60); }
+  .nav-badge { font-size: 10px; font-weight: 500; color: var(--ink-45); }
 
-  /* ── Sections ──────────────────────────── */
-  .section {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 120px 40px;
-    position: relative;
-  }
-  .section + .section {
-    border-top: 1px solid var(--rule);
-  }
-  .micro {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--ink-35);
-    margin-bottom: 24px;
-    display: block;
-  }
+  /* ── Sections ──────────────────────────────── */
+  .section { max-width: 1080px; margin: 0 auto; padding: 96px 40px; position: relative; }
+  .section + .section { border-top: 1px solid var(--rule); }
+  .micro { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--ink-35); margin-bottom: 24px; display: block; }
+  .section h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 24px; }
+  .section .lede { font-size: clamp(17px, 1.6vw, 19px); color: var(--ink-85); max-width: 720px; margin-bottom: 48px; line-height: 1.55; }
+  .section p { color: var(--ink-85); margin-bottom: 16px; }
+  .section p:last-child { margin-bottom: 0; }
 
-  /* ── Hero ──────────────────────────────── */
+  /* ── Hero ──────────────────────────────────── */
   .hero {
-    min-height: 100vh;
-    padding-top: 180px;
-    padding-bottom: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
+    min-height: 100vh; padding-top: 160px; padding-bottom: 80px;
+    display: flex; flex-direction: column; justify-content: center; position: relative;
   }
   .hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: 800px; height: 600px;
-    background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.10) 0%, transparent 70%);
     pointer-events: none;
   }
   .hero h1 {
-    font-size: clamp(48px, 11vw, 144px);
-    font-weight: 700;
-    letter-spacing: -0.05em;
-    line-height: 0.95;
-    margin-bottom: 32px;
+    font-size: clamp(44px, 10vw, 128px);
+    font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; margin-bottom: 32px;
   }
-  .hero h1 .line { display: block; }
-  .hero h1 .accent { opacity: 0.35; font-weight: 300; }
-  .hero .tagline {
-    font-size: clamp(18px, 2vw, 24px);
-    font-weight: 400;
-    color: var(--ink-60);
-    max-width: 640px;
-    margin-bottom: 64px;
-    line-height: 1.4;
-  }
-  .hero-meta {
-    display: flex;
-    gap: 64px;
-    flex-wrap: wrap;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    color: var(--ink-45);
-    text-transform: uppercase;
-  }
-  .hero-meta strong { color: var(--ink); font-weight: 600; }
-  .scroll-cue {
-    position: absolute;
-    bottom: 40px;
-    left: 40px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ink-35);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .scroll-cue::after {
-    content: '';
-    width: 1px; height: 24px;
-    background: var(--ink-35);
-    display: inline-block;
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.4); }
+  .hero h1 .accent { opacity: 0.4; font-weight: 300; }
+  .hero .tagline { font-size: clamp(18px, 2vw, 22px); color: var(--ink-60); max-width: 640px; margin-bottom: 64px; line-height: 1.4; }
+  .hero-meta { display: flex; gap: 48px; flex-wrap: wrap; font-size: 12px; font-weight: 500; color: var(--ink-45); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 64px; }
+
+  /* 4-step preview grid */
+  .preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .preview-cell { background: var(--bg); padding: 32px 24px; }
+  .preview-num { font-size: 10px; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-bottom: 12px; display: block; }
+  .preview-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .preview-desc { font-size: 14px; color: var(--ink-60); line-height: 1.4; }
+
+  @media (max-width: 768px) {
+    .preview-grid { grid-template-columns: 1fr; }
   }
 
-  /* ── Reveal animation ──────────────────── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+  /* ── Step layout ───────────────────────────── */
+  .step .step-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    margin-top: 32px;
   }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-stagger > * {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-    transition-delay: calc(var(--i, 0) * 0.08s);
-  }
-  .reveal-stagger.visible > * {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  @media (max-width: 768px) { .step .step-grid { grid-template-columns: 1fr; gap: 32px; } }
 
-  /* ── What is this ──────────────────────── */
-  .what h2 {
-    font-size: clamp(32px, 5vw, 56px);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-    max-width: 900px;
-    margin-bottom: 48px;
-  }
-  .what h2 em {
-    font-style: normal;
-    color: var(--ink-45);
-    font-weight: 400;
-  }
-  .what-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    margin-top: 80px;
-  }
-  .what-col h3 {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--ink);
-    margin-bottom: 12px;
-  }
-  .what-col p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
-
-  /* ── Problem → solution ────────────────── */
-  .ps-grid {
-    display: grid;
-    grid-template-columns: 1fr 80px 1fr;
-    align-items: center;
-    gap: 48px;
-  }
-  .ps-card .label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ink-35);
-    margin-bottom: 16px;
-    display: block;
-  }
-  .ps-card h3 {
-    font-size: clamp(28px, 3.5vw, 44px);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-    margin-bottom: 16px;
-  }
-  .ps-card.before h3 { color: var(--ink-45); }
-  .ps-card p {
-    font-size: 15px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
-  .ps-arrow {
-    color: var(--accent);
-    font-size: 28px;
-    font-weight: 300;
-    text-align: center;
-    opacity: 0.6;
-  }
-
-  /* ── Tiers ─────────────────────────────── */
-  .tiers {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    margin-top: 64px;
-    background: var(--rule);
-  }
-  .tier {
-    background: var(--bg);
-    padding: 48px 40px;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 48px;
-    align-items: start;
-  }
-  .tier-head {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .tier-num {
-    font-size: clamp(48px, 6vw, 80px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1;
-  }
-  .tier-1 .tier-num { color: var(--ink); }
-  .tier-2 .tier-num { color: var(--ink-60); }
-  .tier-3 .tier-num { color: var(--ink-35); }
-  .tier-name {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--ink-60);
-  }
-  .tier-body h3 {
-    font-size: clamp(20px, 2.4vw, 28px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    margin-bottom: 12px;
-    line-height: 1.25;
-  }
-  .tier-body p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-  .tier-examples {
-    font-size: 13px;
-    color: var(--ink-45);
-    line-height: 1.7;
-  }
-  .tier-time {
-    text-align: right;
-    font-size: 12px;
-    color: var(--ink-45);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .tier-time strong {
-    display: block;
-    font-size: 28px;
-    color: var(--ink);
-    margin-top: 4px;
-    letter-spacing: -0.02em;
-    text-transform: none;
-    font-weight: 600;
-  }
-  .tier-3 .tier-time strong { color: var(--ink-35); }
-
-  /* ── RFSU proof ────────────────────────── */
-  .proof {
-    margin-top: 80px;
-    padding: 56px 40px;
+  .step-do, .step-see {
+    background: rgba(255,255,255,0.02);
     border: 1px solid var(--rule);
-    border-radius: 4px;
-    display: flex;
-    gap: 48px;
-    align-items: center;
-    flex-wrap: wrap;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0) 50%);
+    border-radius: 12px;
+    padding: 32px;
   }
-  .proof-stat {
-    flex-shrink: 0;
+  .step-do h3, .step-see h3 {
+    font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--ink-45); margin-bottom: 20px;
   }
-  .proof-stat .num {
-    font-size: clamp(56px, 8vw, 96px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 0.9;
-    color: var(--accent);
-  }
-  .proof-stat .unit {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ink-45);
-    margin-top: 8px;
-  }
-  .proof-text { flex: 1; min-width: 260px; }
-  .proof-text .label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-    display: block;
-  }
-  .proof-text h3 {
-    font-size: clamp(22px, 2.4vw, 28px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    margin-bottom: 12px;
-    line-height: 1.25;
-  }
-  .proof-text p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
+  .step-do h3::before { content: '▸ '; color: var(--accent); }
+  .step-see h3::before { content: '✓ '; color: var(--ok); }
 
-  /* ── How (3-step) ──────────────────────── */
-  .how-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    margin-top: 64px;
-  }
-  .step {
-    position: relative;
-    padding-top: 24px;
-  }
-  .step::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 24px;
-    height: 1px;
-    background: var(--accent);
-  }
-  .step .num {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-    display: block;
-  }
-  .step h3 {
-    font-size: clamp(20px, 2.2vw, 24px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    margin-bottom: 12px;
-    line-height: 1.25;
-  }
-  .step p {
+  .hint {
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--accent-soft);
+    border-radius: 8px;
     font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
-
-  /* ── Phase pipeline ────────────────────── */
-  .pipeline {
-    position: relative;
-    margin-top: 64px;
-    padding-left: 80px;
-  }
-  .pipeline::before {
-    content: '';
-    position: absolute;
-    left: 40px;
-    top: 24px;
-    bottom: 24px;
-    width: 1px;
-    background: linear-gradient(180deg, var(--accent) 0%, var(--ink-12) 100%);
-  }
-  .phase {
-    display: grid;
-    grid-template-columns: 1fr 160px;
-    gap: 48px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--rule);
-    position: relative;
-  }
-  .phase:last-child { border-bottom: none; }
-  .phase::before {
-    content: '';
-    position: absolute;
-    left: -47px;
-    top: 38px;
-    width: 14px;
-    height: 14px;
-    background: var(--bg);
-    border: 1px solid var(--ink-35);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-  }
-  .phase.visible::before {
-    background: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-  }
-  .phase-num {
-    position: absolute;
-    left: -80px;
-    top: 18px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: var(--ink-45);
-    transform: translateX(-100%);
-    width: 80px;
-    text-align: right;
-    padding-right: 16px;
-  }
-  .phase-body h3 {
-    font-size: clamp(22px, 2.4vw, 28px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    margin-bottom: 8px;
-    line-height: 1.25;
-  }
-  .phase-body p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
-  .phase-meta {
-    text-align: right;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--ink-45);
-  }
-  .phase-meta strong {
-    display: block;
-    font-size: 22px;
-    color: var(--ink);
-    font-weight: 600;
-    text-transform: none;
-    letter-spacing: -0.015em;
-    margin-top: 4px;
-  }
-  .phase.optional .phase-meta strong { color: var(--ink-45); }
-  .phase.optional .phase-num::after {
-    content: '· optional';
-    color: var(--ink-35);
-    font-weight: 400;
-    margin-left: 4px;
-  }
-
-  /* ── Split (You vs Claude) ─────────────── */
-  .split {
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr;
-    gap: 64px;
-    margin-top: 64px;
-  }
-  .split-divider {
-    background: var(--rule);
-  }
-  .split-col h3 {
-    font-size: clamp(24px, 3vw, 36px);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    margin-bottom: 32px;
-    line-height: 1.15;
-  }
-  .split-col .who {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--ink-45);
-    margin-bottom: 12px;
-    display: block;
-  }
-  .split-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .split-list li {
-    font-size: 15px;
     color: var(--ink-85);
     line-height: 1.5;
-    padding-left: 24px;
+  }
+
+  /* ── Code blocks ───────────────────────────── */
+  .code-block {
     position: relative;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 8px;
+    margin: 16px 0;
   }
-  .split-list li::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 11px;
-    width: 12px; height: 1px;
-    background: var(--ink-45);
-  }
-
-  /* ── Limits ────────────────────────────── */
-  .limits {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    margin-top: 64px;
-    background: var(--rule);
-  }
-  .limit {
-    background: var(--bg);
-    padding: 32px 40px;
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 48px;
-    align-items: start;
-  }
-  .limit-num {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--ink-35);
-    padding-top: 8px;
-  }
-  .limit-body h3 {
-    font-size: clamp(20px, 2.2vw, 24px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    margin-bottom: 8px;
-    line-height: 1.25;
-  }
-  .limit-body p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
-
-  /* ── Tips ──────────────────────────────── */
-  .tips-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    margin-top: 64px;
-  }
-  .tip {
-    position: relative;
-  }
-  .tip .num {
-    font-size: clamp(40px, 5vw, 64px);
-    font-weight: 300;
-    letter-spacing: -0.03em;
-    color: var(--ink-12);
-    line-height: 1;
-    margin-bottom: 16px;
-    display: block;
-  }
-  .tip h3 {
-    font-size: clamp(18px, 2vw, 22px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    margin-bottom: 8px;
-    line-height: 1.25;
-  }
-  .tip p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-  }
-
-  /* ── CTA ───────────────────────────────── */
-  .cta {
-    text-align: center;
-    padding: 160px 40px;
-  }
-  .cta h2 {
-    font-size: clamp(40px, 7vw, 88px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 0.95;
-    margin-bottom: 48px;
-  }
-  .cta-actions {
-    display: inline-flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 24px;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 32px;
-    border: 1px solid var(--ink-12);
-    border-radius: 100px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    color: var(--ink);
-    text-decoration: none;
-    background: transparent;
-    transition: all 0.2s ease;
-  }
-  .btn:hover {
-    border-color: var(--ink);
-    background: var(--ink);
-    color: var(--bg);
-  }
-  .btn.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .btn.primary:hover {
-    background: #5a9af7;
-    border-color: #5a9af7;
-  }
-  .btn .arrow {
-    transition: transform 0.2s ease;
-  }
-  .btn:hover .arrow {
-    transform: translateX(4px);
-  }
-
-  /* ── Install steps ─────────────────────── */
-  .install-hero {
-    font-size: clamp(32px, 5vw, 56px);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.15;
-    max-width: 900px;
-    margin-bottom: 16px;
-  }
-  .install-sub {
-    font-size: clamp(16px, 2vw, 20px);
-    font-weight: 400;
-    color: var(--ink-60);
-    max-width: 640px;
-    line-height: 1.5;
-  }
-  .steps {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    margin-top: 64px;
-    background: var(--rule);
-  }
-  .step-row {
-    background: var(--bg);
-    padding: 32px 40px;
-    display: grid;
-    grid-template-columns: 64px 1fr 120px;
-    gap: 40px;
-    align-items: start;
-  }
-  .step-badge {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    color: var(--accent);
-    line-height: 1;
-    padding-top: 4px;
-  }
-  .step-content h3 {
-    font-size: clamp(20px, 2.2vw, 24px);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    line-height: 1.25;
-    margin-bottom: 10px;
-  }
-  .step-content p {
-    font-size: 14px;
-    color: var(--ink-60);
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
-  .step-link, .step-code {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 12px;
-    border-radius: 4px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0;
-    text-decoration: none;
-  }
-  .step-link {
-    background: rgba(59, 130, 246, 0.08);
-    border: 1px solid rgba(59, 130, 246, 0.18);
-    color: var(--ink);
-    transition: background 0.2s ease, border-color 0.2s ease;
-  }
-  .step-link:hover {
-    background: rgba(59, 130, 246, 0.14);
-    border-color: rgba(59, 130, 246, 0.32);
-  }
-  .step-code {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--ink-85);
-    cursor: default;
-    white-space: pre;
+  .code-block pre {
+    padding: 20px 24px;
+    padding-right: 80px;
     overflow-x: auto;
-    max-width: 100%;
-  }
-  .step-note {
-    margin-top: 12px;
-    padding: 10px 14px;
-    border-left: 2px solid var(--accent);
-    background: rgba(59, 130, 246, 0.05);
-    border-radius: 0 4px 4px 0;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--ink-85);
-  }
-  .step-note strong { color: var(--ink); }
-  .step-note.warning {
-    border-left-color: #f59e0b;
-    background: rgba(245, 158, 11, 0.06);
-  }
-  .step-example {
-    display: block;
-    margin-top: 10px;
-    background: rgba(34, 197, 94, 0.05);
-    border: 1px solid rgba(34, 197, 94, 0.18);
-    border-radius: 4px;
-    padding: 10px 12px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 1.5;
     color: var(--ink-85);
     white-space: pre-wrap;
-    word-break: break-all;
-    line-height: 1.55;
+    word-break: break-word;
   }
-  .step-example::before {
-    content: 'Example:';
-    display: block;
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgb(74, 222, 128);
-    margin-bottom: 6px;
-  }
-  html[data-lang="sv"] .step-example::before { content: 'Exempel:'; }
-  .step-screenshot {
-    display: block;
-    margin: 14px 0;
-  }
-  .step-screenshot img {
-    max-width: 100%;
+  .code-block.compact pre { padding: 14px 20px; padding-right: 80px; }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--code-border);
     border-radius: 6px;
-    border: 1px solid var(--ink-12);
-    display: block;
-  }
-  .step-screenshot figcaption {
-    margin-top: 8px;
-    font-size: 12px;
+    padding: 6px 12px;
     color: var(--ink-60);
-    line-height: 1.5;
-    font-style: italic;
-  }
-  .step-time {
-    text-align: right;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--ink-45);
-    padding-top: 10px;
-  }
-  .install-fineprint {
-    margin-top: 48px;
-    font-size: 13px;
-    color: var(--ink-45);
-    line-height: 1.65;
-    text-align: center;
-  }
-  .install-fineprint a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 1px solid var(--ink-35);
-    transition: border-color 0.2s ease;
-  }
-  .install-fineprint a:hover {
-    border-color: var(--ink);
-  }
-
-  /* ── Footer ────────────────────────────── */
-  .footer {
-    border-top: 1px solid var(--rule);
-    padding: 48px 40px;
-    max-width: 1240px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 24px;
+    font-family: inherit;
     font-size: 11px;
     font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.10); color: var(--ink); }
+  .copy-btn.copied { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  .output {
+    background: rgba(52, 211, 153, 0.06);
+    border: 1px solid rgba(52, 211, 153, 0.20);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ok);
+    margin: 12px 0;
+    white-space: pre-wrap;
+    line-height: 1.55;
+  }
+
+  /* ── Screenshot placeholders ───────────────── */
+  .screenshot-placeholder, .screenshot {
+    margin: 20px 0;
+    background: rgba(255,255,255,0.02);
+    border: 2px dashed var(--code-border);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+  }
+  .screenshot { border-style: solid; padding: 0; overflow: hidden; }
+  .screenshot img { width: 100%; height: auto; display: block; }
+  .placeholder-label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--warn);
+    margin-bottom: 8px;
+  }
+  .screenshot-placeholder p { font-size: 13px; color: var(--ink-60); margin: 0; }
+
+  /* ── Details / collapsible "Funkar inte?" ──── */
+  .hint-collapsible {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--code-border);
+    border-radius: 8px;
+    padding: 12px 20px;
+  }
+  .hint-collapsible summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-60);
+    padding: 4px 0;
+    user-select: none;
+    list-style: none;
+  }
+  .hint-collapsible summary::before { content: '▸ '; color: var(--ink-45); transition: transform 0.15s; }
+  .hint-collapsible[open] summary::before { content: '▾ '; color: var(--accent); }
+  .hint-collapsible summary:hover { color: var(--ink-85); }
+  .hint-collapsible ul { margin: 12px 0 4px 0; padding-left: 20px; }
+  .hint-collapsible li { font-size: 13px; color: var(--ink-85); margin-bottom: 8px; line-height: 1.5; }
+  .hint-collapsible code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  /* ── Setup prompt (Step 3 magic) ───────────── */
+  .prompt-block {
+    background: var(--code-bg);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    margin: 24px 0;
+    position: relative;
+  }
+  .prompt-block .prompt-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--code-border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px;
+    font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--ink-35);
+    color: var(--accent);
   }
-  .footer a {
-    color: var(--ink-45);
-    text-decoration: none;
-    transition: color 0.2s ease;
+  .prompt-block pre {
+    padding: 24px;
+    padding-right: 100px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-85);
+    white-space: pre-wrap;
+    word-break: break-word;
   }
-  .footer a:hover { color: var(--ink); }
+  .prompt-block .copy-btn {
+    top: 14px; right: 16px;
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .prompt-block .copy-btn:hover { background: #2563eb; border-color: #2563eb; color: var(--bg); }
 
-  /* ── Responsive ────────────────────────── */
-  @media (max-width: 900px) {
-    .nav { padding: 16px 24px; }
-    .section { padding: 80px 24px; }
-    .what-grid, .how-grid, .tips-grid { grid-template-columns: 1fr; gap: 32px; }
-    .ps-grid { grid-template-columns: 1fr; gap: 24px; }
-    .ps-arrow { transform: rotate(90deg); }
-    .tier { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
-    .tier-time { text-align: left; }
-    .split { grid-template-columns: 1fr; gap: 48px; }
-    .split-divider { height: 1px; }
-    .phase { grid-template-columns: 1fr; gap: 16px; padding: 24px 0; }
-    .phase-meta { text-align: left; }
-    .pipeline { padding-left: 56px; }
-    .pipeline::before { left: 24px; }
-    .phase::before { left: -39px; }
-    .phase-num {
-      position: static;
-      transform: none;
-      width: auto;
-      text-align: left;
-      padding-right: 0;
-      margin-bottom: 4px;
-    }
-    .limit { grid-template-columns: 1fr; gap: 12px; padding: 24px; }
-    .step-row {
-      grid-template-columns: 56px 1fr;
-      gap: 20px;
-      padding: 24px;
-    }
-    .step-time {
-      grid-column: 1 / -1;
-      text-align: left;
-      padding-top: 4px;
-    }
-    .step-code { font-size: 11px; padding: 8px 10px; }
-    .proof { padding: 32px 24px; gap: 24px; }
-    .hero-meta { gap: 24px; }
+  /* ── Stuck section ─────────────────────────── */
+  .stuck { background: linear-gradient(to bottom, transparent, rgba(251, 191, 36, 0.03), transparent); }
+  .stuck-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 32px;
   }
+  @media (max-width: 768px) { .stuck-grid { grid-template-columns: 1fr; } }
+  .stuck-option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .stuck-option h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+  .stuck-option p { font-size: 15px; color: var(--ink-85); line-height: 1.55; }
+  .stuck-option em { color: var(--accent); font-style: normal; }
 
-  @media (max-width: 480px) {
-    .nav { padding: 12px 16px; }
-    .section { padding: 64px 16px; }
-    .hero { padding-top: 120px; }
-    .footer { padding: 32px 16px; flex-direction: column; }
+  /* ── Härnäst / idea grid ───────────────────── */
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 32px;
   }
+  @media (max-width: 768px) { .ideas-grid { grid-template-columns: 1fr; } }
+  .idea {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .idea-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+  .idea-desc { font-size: 14px; color: var(--ink-85); line-height: 1.5; }
+
+  /* ── Footer ────────────────────────────────── */
+  .footer { padding: 48px 40px; border-top: 1px solid var(--rule); text-align: center; }
+  .footer p { font-size: 12px; color: var(--ink-45); letter-spacing: 1px; }
+
+  /* ── Inline pieces ─────────────────────────── */
+  kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-85);
+    line-height: 1.2;
+  }
+  strong { color: var(--ink); font-weight: 600; }
 </style>
 </head>
 <body>
 
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  NAV                                    ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
 <nav class="nav">
-  <span class="nav-brand">Lens Studio Snapchat Filter</span>
-  <button class="lang-toggle" aria-label="Toggle language">
-    <span class="l-sv">SV</span>
-    <span class="l-divider">/</span>
-    <span class="l-en">EN</span>
-  </button>
+  <span class="nav-brand">Snapchat-filter via Claude Code</span>
+  <span class="nav-badge">för dig som aldrig öppnat terminalen</span>
 </nav>
 
-<!-- ═════════════ HERO ═════════════ -->
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  HERO                                   ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
 <section class="section hero">
-  <h1 class="reveal">
-    <span class="line lang-sv">Bygg</span><span class="line lang-en">Build</span>
-    <span class="line lang-sv">Snapchat-</span><span class="line lang-en">Snapchat</span>
-    <span class="line lang-sv">lenser.</span><span class="line lang-en">lenses.</span>
-    <span class="line accent lang-sv">Designat för designers.</span>
-    <span class="line accent lang-en">Designed for designers.</span>
+  <span class="micro">Manual · 2026-05-13</span>
+  <h1>
+    <span class="line">Snapchat-filter</span>
+    <span class="line accent">på 10 minuter.</span>
   </h1>
-  <p class="tagline reveal">
-    <span class="lang-sv">En skill för Claude Code som tar dig från brief till submission utan att du behöver kunna koda. Du driver vision. Claude driver exekvering.</span>
-    <span class="lang-en">A Claude Code skill that takes you from brief to submission without you needing to code. You drive the vision. Claude drives execution.</span>
-  </p>
-  <div class="hero-meta reveal">
-    <span><span class="lang-sv">Skill version</span><span class="lang-en">Skill version</span> <strong>0.4.4</strong></span>
-    <span><span class="lang-sv">Lens Studio</span><span class="lang-en">Lens Studio</span> <strong>5.21+</strong></span>
-    <span><span class="lang-sv">Produktionstestat</span><span class="lang-en">Production-tested</span> <strong>RFSU BANG</strong></span>
-  </div>
-  <div class="scroll-cue">
-    <span class="lang-sv">Scrolla</span><span class="lang-en">Scroll</span>
-  </div>
-</section>
+  <p class="tagline">Du installerar ett verktyg. Du klistrar in en text. Claude tar hand om resten — och guidar dig genom det som saknas.</p>
 
-<!-- ═════════════ WHAT IS THIS ═════════════ -->
-<section class="section what">
-  <span class="micro reveal"><span class="lang-sv">01 — Vad är detta?</span><span class="lang-en">01 — What is this?</span></span>
-  <h2 class="reveal">
-    <span class="lang-sv">Ett verktyg som lär Claude Code hela arbetsflödet för att bygga Snapchat-lenser. <em>Från första brief till submission i Snap Ads Manager.</em></span>
-    <span class="lang-en">A tool that teaches Claude Code the full workflow for building Snapchat lenses. <em>From first brief to submission in Snap Ads Manager.</em></span>
-  </h2>
-  <div class="what-grid reveal-stagger">
-    <div class="what-col" style="--i:0">
-      <h3><span class="lang-sv">Vem det är för</span><span class="lang-en">Who it's for</span></h3>
-      <p>
-        <span class="lang-sv">Digitala designers, creative technologists och account managers på Valtech RADON. Designkompetens räcker — du behöver inte kunna koda eller terminal.</span>
-        <span class="lang-en">Digital designers, creative technologists, and account managers at Valtech RADON. Design skills are enough — you don't need to code or use a terminal.</span>
-      </p>
+  <div class="hero-meta">
+    <span>Målgrupp · digital designer</span>
+    <span>Förkunskaper · inga</span>
+    <span>Tid · ~10 minuter</span>
+  </div>
+
+  <div class="preview-grid">
+    <div class="preview-cell">
+      <span class="preview-num">01</span>
+      <p class="preview-title">Installera Claude Code</p>
+      <p class="preview-desc">Ladda ner och kör installer. Som vilken app som helst.</p>
     </div>
-    <div class="what-col" style="--i:1">
-      <h3><span class="lang-sv">Vad det ersätter</span><span class="lang-en">What it replaces</span></h3>
-      <p>
-        <span class="lang-sv">Manuell Lens Studio-handpåläggning i hela pipelinen. Istället för att klicka och Inspector-greja varje detalj beskriver du vision — Claude bygger scen, scripts och animationer.</span>
-        <span class="lang-en">Manual Lens Studio handwork across the whole pipeline. Instead of clicking and Inspector-tweaking every detail, you describe vision — Claude builds scene, scripts, and animations.</span>
-      </p>
+    <div class="preview-cell">
+      <span class="preview-num">02</span>
+      <p class="preview-title">Öppna terminalen</p>
+      <p class="preview-desc">Skriv <code>claude</code>, tryck Enter. Du är inne.</p>
     </div>
-    <div class="what-col" style="--i:2">
-      <h3><span class="lang-sv">Vad det inte gör</span><span class="lang-en">What it doesn't do</span></h3>
-      <p>
-        <span class="lang-sv">Tar kreativa beslut åt dig, godkänner sin egen output, klickar Submit, testar på din telefon eller hanterar kundkommunikation. Du är fortfarande creative director.</span>
-        <span class="lang-en">Make creative decisions for you, approve its own output, click Submit, test on your phone, or handle client communication. You're still the creative director.</span>
-      </p>
+    <div class="preview-cell">
+      <span class="preview-num">03</span>
+      <p class="preview-title">Klistra in setup-prompt</p>
+      <p class="preview-desc">En text vi har förberett åt dig. Kopiera, klistra, kör.</p>
+    </div>
+    <div class="preview-cell">
+      <span class="preview-num">04</span>
+      <p class="preview-title">Följ Claudes guidning</p>
+      <p class="preview-desc">Claude diagnostiserar och tar dig genom det som saknas.</p>
     </div>
   </div>
 </section>
 
-<!-- ═════════════ RESPONSIBILITY (Du vs Claude) ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">02 — Vad gör Claude. Vad gör du.</span><span class="lang-en">02 — What Claude does. What you do.</span></span>
-  <h2 class="reveal" style="font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.025em;line-height:1.15;max-width:840px;margin-bottom:48px;">
-    <span class="lang-sv">Du driver vision och godkänner. Claude driver scen, kod och animation.</span>
-    <span class="lang-en">You drive vision and approve. Claude drives scene, code, and animation.</span>
-  </h2>
-  <div class="split reveal">
-    <div class="split-col">
-      <span class="who"><span class="lang-sv">Du</span><span class="lang-en">You</span></span>
-      <h3><span class="lang-sv">Creative director</span><span class="lang-en">Creative director</span></h3>
-      <ul class="split-list">
-        <li><span class="lang-sv">Vision och feel</span><span class="lang-en">Vision and feel</span></li>
-        <li><span class="lang-sv">Brief, INSPIRATION, brand-assets</span><span class="lang-en">Brief, INSPIRATION, brand assets</span></li>
-        <li><span class="lang-sv">Godkännande av varje fas</span><span class="lang-en">Approval of each phase</span></li>
-        <li><span class="lang-sv">"go"-kommandon för att avancera</span><span class="lang-en">"go" commands to advance</span></li>
-        <li><span class="lang-sv">Justeringar i Phase 3 via Inspector</span><span class="lang-en">Phase 3 adjustments via Inspector</span></li>
-        <li><span class="lang-sv">Device-testning på riktig telefon</span><span class="lang-en">Device testing on a real phone</span></li>
-        <li><span class="lang-sv">Submit-klick i Snap Ads Manager</span><span class="lang-en">Submit click in Snap Ads Manager</span></li>
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 1                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-1">
+  <span class="micro">Steg 01 av 04</span>
+  <h2>Installera Claude Code</h2>
+  <p class="lede">Claude Code är hjärnan som bygger ditt filter. Den körs lokalt på din egen dator — inget moln, inget eget extra konto utöver Anthropic-inloggningen.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p><strong>1.</strong> Gå till nedladdningssidan i din webbläsare:</p>
+      <div class="code-block compact">
+        <pre><code>https://claude.ai/code</code></pre>
+        <button class="copy-btn" data-copy="https://claude.ai/code">Kopiera</button>
+      </div>
+      <p><strong>2.</strong> Klicka på "Download" — sidan känner igen din dator (Mac, Windows eller Linux).</p>
+      <p><strong>3.</strong> Öppna den nedladdade filen och följ stegen i installern. Som vilken app som helst.</p>
+      <p><strong>4.</strong> När installern säger "klart" — öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter), klistra in detta och tryck Enter:</p>
+      <div class="code-block compact">
+        <pre><code>claude --version</code></pre>
+        <button class="copy-btn" data-copy="claude --version">Kopiera</button>
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>I terminalen, efter <code>claude --version</code>, borde du se ett versionsnummer:</p>
+      <pre class="output">claude code 1.x.x</pre>
+      <p>Exakt nummer spelar ingen roll — det viktiga är att du <em>får</em> ett svar (inte "command not found").</p>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>"command not found: claude"</strong> — installer:n körde, men terminalen vet inte var <code>claude</code> ligger. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
+          <li><strong>Installern öppnar inte</strong> — Mac: högerklicka på filen → Öppna → "Öppna ändå". Windows: högerklicka → Egenskaper → "Avblockera".</li>
+          <li><strong>Vet inte vad Terminal är</strong> — det är en svart eller mörkgrön ruta där du skriver kommandon istället för att klicka. Öppna Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) och skriv "Terminal".</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 2                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-2">
+  <span class="micro">Steg 02 av 04</span>
+  <h2>Starta Claude Code</h2>
+  <p class="lede">Nu öppnar du själva Claude-sessionen — det är där ni två (du och Claude) snackar.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p>I samma terminal som nyss, skriv:</p>
+      <div class="code-block compact">
+        <pre><code>claude</code></pre>
+        <button class="copy-btn" data-copy="claude">Kopiera</button>
+      </div>
+      <p>Tryck Enter.</p>
+      <p>Första gången du startar Claude Code kommer den be dig logga in via webbläsaren — den öppnar automatiskt en sida hos Anthropic. Logga in där, kom tillbaka till terminalen.</p>
+
+      <div class="hint">
+        <strong>Behöver du konto?</strong> Claude Code kräver ett Anthropic-konto. Om du inte har ett — be din närmaste chef eller IT om access via Valtechs konto. Annars kan du fastna på login utan att förstå varför.
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>I terminalen visas en prompt — en cursor som väntar på att du ska skriva. Något i stil med:</p>
+      <pre class="output">Welcome to Claude Code.
+
+Type your message to begin:
+&gt; _</pre>
+      <p>Det streckade understrecket (cursor) blinkar. Du är inne. Allt du skriver härifrån går direkt till Claude.</p>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>"You need to log in"</strong> men ingen webbläsare öppnas — kopiera URL:en som visas i terminalen och klistra in i webbläsaren manuellt.</li>
+          <li><strong>"Account not found / unauthorized"</strong> — ditt Anthropic-konto har inte access till Claude Code-API:n. Be Valtech-IT lägga till dig.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 3 — THE MAGIC                     ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-3">
+  <span class="micro">Steg 03 av 04 · det här är magin</span>
+  <h2>Klistra in setup-prompten</h2>
+  <p class="lede">Detta är det enda du egentligen behöver minnas. Kopiera texten nedan, klistra in i Claude Code, tryck Enter. Claude tar över därifrån — hen diagnostiserar vad du har, vad som saknas, och guidar dig genom det.</p>
+
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span>SETUP-PROMPT — kopiera hela</span>
+    </div>
+    <pre id="setup-prompt-text">Jag är ny användare som vill bygga ett Snapchat-filter via dig och Lens Studio. Jag har just installerat dig (Claude Code) och inget annat är på plats än. Hjälp mig komma igång.
+
+Kör först en diagnostik på vad som finns / saknas på min maskin:
+
+1. Lens Studio installerat? Kolla om mappen `/Applications/Lens Studio.app` finns på Mac, eller om `lens-studio` finns i PATH på Windows/Linux.
+
+2. lens-studio-snapchat-filter-skillen installerad? Kolla om `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` existerar.
+
+3. MCP-server registrerad mellan dig och Lens Studio? Kör `claude mcp list` och leta efter en rad med `lens-studio`.
+
+Rapportera vad du hittade — vad finns, vad saknas. Sen guida mig genom det som saknas, ett steg i taget. Vänta på mitt 'klar' efter varje steg innan du går vidare.
+
+Förklara varje steg i klarspråk. Jag är digital designer, inte tekniker. Använd mentor-tone — du är en kollega som hjälper mig, inte ett system som kör en setup-wizard. Berätta vad jag ser i Lens Studio och i terminalen när varje steg lyckas.
+
+När allt är på plats: fråga vad mitt lens-projekt ska handla om (klient + grov idé) och kör dina vanliga onboarding-frågor. Du är expert på filter-bygge nu — guida mig hela vägen från idé till submission.</pre>
+    <button class="copy-btn" data-copy-target="#setup-prompt-text">Kopiera hela</button>
+  </div>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p><strong>1.</strong> Klicka "Kopiera hela" på block:et ovan.</p>
+      <p><strong>2.</strong> Gå tillbaka till Claude Code-terminalen (där cursor:n blinkade).</p>
+      <p><strong>3.</strong> Klistra in: <kbd>⌘</kbd>+<kbd>V</kbd> på Mac, <kbd>Ctrl</kbd>+<kbd>V</kbd> på Windows.</p>
+      <p><strong>4.</strong> Tryck Enter.</p>
+
+      <div class="hint">
+        Det är OK att klistra in en lång text i terminalen. Claude Code kan ta emot flera rader samtidigt. Du behöver inte trycka Enter mellan raderna.
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>Claude börjar svara — först med "Jag kör en diagnostik..." eller liknande. Sen listar hen vad som finns och vad som saknas på din maskin. Något i stil med:</p>
+      <pre class="output">Kollar din maskin nu...
+
+✓ Claude Code: igång (det är du som pratar med mig)
+✗ Lens Studio: hittade inte appen
+✗ Filter-skill: ej installerad
+✗ MCP-server: ej registrerad
+
+Vi behöver fixa tre saker. Vi tar dem en i taget...</pre>
+      <p>Sen pratar Claude dig genom första steget — installera Lens Studio. Du följer hens guidning. Det här är HEN nu, inte manualen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 4                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-4">
+  <span class="micro">Steg 04 av 04</span>
+  <h2>Följ Claudes guidning</h2>
+  <p class="lede">Härifrån är det inte längre du som följer en manual. Du följer Claude. Hen är en kollega som vet vad hen gör.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p>Claude kommer säga vad nästa steg är. Det kan vara att:</p>
+      <ul style="color: var(--ink-85); margin: 12px 0 0 20px; line-height: 1.8;">
+        <li>Ladda ner Lens Studio från ar.snap.com</li>
+        <li>Klicka på en specifik knapp i Lens Studio</li>
+        <li>Klistra in en konfiguration i terminalen</li>
+        <li>Spara en fil</li>
       </ul>
+      <p style="margin-top: 16px;">När du gjort steget — skriv <strong>"klar"</strong> i terminalen, tryck Enter. Claude verifierar och går vidare.</p>
+
+      <div class="hint">
+        Är du osäker på något steg? Säg det till Claude i klartext: <em>"Jag förstår inte vad du menar med [X]"</em>. Hen omformulerar och förklarar enklare.
+      </div>
     </div>
-    <div class="split-divider"></div>
-    <div class="split-col">
-      <span class="who">Claude</span>
-      <h3><span class="lang-sv">Teknisk + grafisk exekutor</span><span class="lang-en">Technical + graphical executor</span></h3>
-      <ul class="split-list">
-        <li><span class="lang-sv">Scen-hierarki, kod, animationer</span><span class="lang-en">Scene hierarchy, code, animations</span></li>
-        <li><span class="lang-sv">Inferens från brief + INSPIRATION</span><span class="lang-en">Inference from brief + INSPIRATION</span></li>
-        <li><span class="lang-sv">TECH-SPEC, USER-EXPERIENCE drafts</span><span class="lang-en">TECH-SPEC, USER-EXPERIENCE drafts</span></li>
-        <li><span class="lang-sv">Scripts, mutationer, error recovery</span><span class="lang-en">Scripts, mutations, error recovery</span></li>
-        <li><span class="lang-sv">Inspector-handoff med rätt object</span><span class="lang-en">Inspector handoff with the right object</span></li>
-        <li><span class="lang-sv">Submission-prep (icon, preview, metadata)</span><span class="lang-en">Submission prep (icon, preview, metadata)</span></li>
-        <li><span class="lang-sv">MCP-orkestrering, git-arbete</span><span class="lang-en">MCP orchestration, git work</span></li>
-      </ul>
+
+    <div class="step-see">
+      <h3>Vad du ser när allt är klart</h3>
+      <p>När alla tre saknade delar (Lens Studio, skill, MCP) är på plats, säger Claude:</p>
+      <pre class="output">Allt på plats — nu kan vi börja bygga.
+
+Berätta lite om filtret du vill göra:
+- Vilken klient/projekt?
+- Grov idé — vad ska användaren uppleva?
+- Tidsplan om du har en
+
+Jag drar onboarding-frågorna när du svarat på det.</pre>
+      <p>Det är start-skottet. Härifrån är det filter-bygge — Claude vet hela vägen från idé till färdig lens.</p>
     </div>
   </div>
 </section>
 
-<!-- ═════════════ KOM IGÅNG / GET STARTED ═════════════ -->
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STUCK                                  ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section stuck">
+  <span class="micro">Allt går inte enligt plan</span>
+  <h2>Fastnar du?</h2>
+  <p class="lede">Det här är nytt och ovanligt. Du kommer fastna på något. Det är okej, och det finns flera vägar framåt.</p>
+
+  <div class="stuck-grid">
+    <div class="stuck-option">
+      <h3>1. Fråga Claude Code direkt</h3>
+      <p>Har du fått Claude Code att starta? Skriv bara <em>"Jag fastnar på &lt;steg&gt;: &lt;vad du ser&gt;"</em>. Claude växlar till felsökning automatiskt — hen frågar tillbaka tills hen förstår, och föreslår en fix.</p>
+    </div>
+
+    <div class="stuck-option">
+      <h3>2. Fråga en annan AI</h3>
+      <p>Ingen Claude Code att fråga än? Kopiera kommandot eller felmeddelandet, klistra in i <a href="https://claude.ai">claude.ai</a>, <a href="https://chatgpt.com">ChatGPT</a> eller <a href="https://gemini.google.com">Gemini</a>. Lägg till <em>"jag försöker installera Claude Code för att bygga Snapchat-filter"</em> så de förstår kontexten.</p>
+    </div>
+
+    <div class="stuck-option">
+      <h3>3. Be en kollega</h3>
+      <p>På Valtech finns andra som kört detta. Stilla på er Slack-kanal (#snapchat-filter eller motsvarande) och peka på det steg som krånglar. Någon har troligen sett samma sak.</p>
+    </div>
+
+    <div class="stuck-option">
+      <h3>4. Visa mig din skärm</h3>
+      <p>Använd din dators skärmdump-funktion (Mac: <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>4</kbd>, Windows: <kbd>Win</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>). Ta bild på vad du ser i terminalen. Klistra in bilden direkt i Claude.ai eller ChatGPT — de kan SE vad som gått fel.</p>
+      <p style="font-size: 13px; color: var(--ink-60); margin-top: 12px;">Många nybörjare vet inte hur man <em>beskriver</em> ett fel i text. En screenshot är enklare.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  VAD HÄRNÄST                            ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
 <section class="section">
-  <span class="micro reveal"><span class="lang-sv">03 — Kom igång</span><span class="lang-en">03 — Get started</span></span>
-  <h2 class="install-hero reveal">
-    <span class="lang-sv">Installera på 30 minuter.</span>
-    <span class="lang-en">Install in 30 minutes.</span>
-  </h2>
-  <p class="install-sub reveal">
-    <span class="lang-sv">Tre verktyg att installera. En projektmapp att skapa. Sedan börjar samtalet.</span>
-    <span class="lang-en">Three tools to install. One project folder to create. Then the conversation begins.</span>
-  </p>
+  <span class="micro">När setup är klart</span>
+  <h2>Vad du kan bygga</h2>
+  <p class="lede">Lens Studio + Claude Code låter dig bygga ungefär vad som helst. Här är några vanliga första-projekt för att få en känsla för vad som är möjligt.</p>
 
-  <div class="steps reveal-stagger">
-
-    <div class="step-row" style="--i:0">
-      <div class="step-badge">01</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Installera Claude Code</span><span class="lang-en">Install Claude Code</span></h3>
-        <p>
-          <span class="lang-sv">Anthropics terminalverktyg. Det är här ni har samtalet.</span>
-          <span class="lang-en">Anthropic's terminal tool. This is where the conversation happens.</span>
-        </p>
-        <a class="step-link" href="https://claude.ai/code" target="_blank" rel="noopener">claude.ai/code →</a>
-      </div>
-      <div class="step-time">~5 min</div>
+  <div class="ideas-grid">
+    <div class="idea">
+      <p class="idea-name">Logo som följer ansiktet</p>
+      <p class="idea-desc">Brand-logo eller text som flyger in när användaren öppnar filtret, fäster vid pannan eller över axeln. Enkelt face tracking + 2D-bild.</p>
     </div>
-
-    <div class="step-row" style="--i:1">
-      <div class="step-badge">02</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Installera Lens Studio 5.21+</span><span class="lang-en">Install Lens Studio 5.21+</span></h3>
-        <p>
-          <span class="lang-sv">Snaps verktyg för att bygga lenser. Logga in med ditt Snap-konto för att aktivera Knowledge Base och Submit-panelen.</span>
-          <span class="lang-en">Snap's tool for building lenses. Sign in with your Snap account to enable the Knowledge Base and Submit panel.</span>
-        </p>
-        <a class="step-link" href="https://ar.snap.com/download" target="_blank" rel="noopener">ar.snap.com/download →</a>
-      </div>
-      <div class="step-time">~10 min</div>
+    <div class="idea">
+      <p class="idea-name">Hatt, glasögon eller smycken</p>
+      <p class="idea-desc">3D-modell som "bärs" av användaren. Funkar för cap, snapback, ringar, halsband, örhängen. Snap har färdiga Try-On Packs att börja från.</p>
     </div>
-
-    <div class="step-row" style="--i:2">
-      <div class="step-badge">03</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Installera skill:en</span><span class="lang-en">Install the skill</span></h3>
-        <p>
-          <span class="lang-sv">Packa upp .skill-filen till ~/.claude/skills/. Om unzip krånglar — byt extension till .zip först.</span>
-          <span class="lang-en">Unzip the .skill file into ~/.claude/skills/. If unzip complains — rename to .zip first.</span>
-        </p>
-        <span class="step-code">unzip lens-studio-snapchat-filter.skill -d ~/.claude/skills/</span>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Var det körs:</strong> i terminalen (Terminal.app eller iTerm). Öppna den om du inte redan har den uppe. Alla kommandon härifrån till och med steg 07 körs i samma terminalfönster.</span>
-          <span class="lang-en"><strong>Where this runs:</strong> in the terminal (Terminal.app or iTerm). Open it if you don't have it open yet. All commands from here through step 07 run in the same terminal window.</span>
-        </div>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Verifiering:</strong> kör <code>ls ~/.claude/skills/</code> — du ska se mappen <code>lens-studio-snapchat-filter/</code> i listan.</span>
-          <span class="lang-en"><strong>Verify:</strong> run <code>ls ~/.claude/skills/</code> — you should see the folder <code>lens-studio-snapchat-filter/</code> in the listing.</span>
-        </div>
-      </div>
-      <div class="step-time">~2 min</div>
+    <div class="idea">
+      <p class="idea-name">Sneakers på fötterna</p>
+      <p class="idea-desc">Klassiskt try-on-filter: skor som följer användarens fötter. Vi har empirisk erfarenhet av detta i skill:en — Claude vet vägen.</p>
     </div>
-
-    <div class="step-row" style="--i:3">
-      <div class="step-badge">04</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Skapa projektmapp</span><span class="lang-en">Create the project folder</span></h3>
-        <p>
-          <span class="lang-sv">En mapp per kundprojekt. Claude skapar undermapparna åt dig i concierge-läget.</span>
-          <span class="lang-en">One folder per client project. Claude creates the subfolders for you in concierge mode.</span>
-        </p>
-        <span class="step-code">mkdir -p ~/Projects/[kund]-lens &amp;&amp; cd ~/Projects/[kund]-lens</span>
-        <span class="step-example">mkdir -p ~/Projects/adidas-lens &amp;&amp; cd ~/Projects/adidas-lens</span>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Var det körs:</strong> samma terminalfönster som steg 03. När kommandot är klart är du <em>inne i</em> projektmappen — terminal-prompten visar nu mappnamnet (t.ex. <code>adidas-lens</code>).</span>
-          <span class="lang-en"><strong>Where this runs:</strong> same terminal window as step 03. When the command finishes, you're <em>inside</em> the project folder — the terminal prompt now shows the folder name (e.g. <code>adidas-lens</code>).</span>
-        </div>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Verifiering:</strong> öppna Finder → Projects. Du ser nu en ny mapp <code>adidas-lens</code>. Det är här Claude kommer skapa undermappar (<code>docs/</code>, <code>brief/</code>, m.fl.) i nästa fas.</span>
-          <span class="lang-en"><strong>Verify:</strong> open Finder → Projects. You'll see a new <code>adidas-lens</code> folder. This is where Claude will create subfolders (<code>docs/</code>, <code>brief/</code>, etc.) in the next phase.</span>
-        </div>
-      </div>
-      <div class="step-time">~1 min</div>
+    <div class="idea">
+      <p class="idea-name">Tap-to-reveal-effekt</p>
+      <p class="idea-desc">Användaren tappar på skärmen, något fades in eller animeras — bra för kampanj-reveal eller "scratch the surface"-mekaniker.</p>
     </div>
-
-    <div class="step-row" style="--i:4">
-      <div class="step-badge">05</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Registrera MCP-servern</span><span class="lang-en">Register the MCP server</span></h3>
-        <p>
-          <span class="lang-sv">Så Claude kan styra Lens Studio direkt. Detta görs i <strong>två fönster</strong>: Lens Studio (för att läsa port + token) och terminalen (för att registrera dem hos Claude).</span>
-          <span class="lang-en">So Claude can drive Lens Studio directly. This is done in <strong>two windows</strong>: Lens Studio (to read port + token) and your terminal (to register them with Claude).</span>
-        </p>
-        <div class="step-note">
-          <span class="lang-sv"><strong>1.</strong> I Lens Studio: <strong>AI Assistant → AI Model Context Protocol (MCP) → Configure Server</strong>.</span>
-          <span class="lang-en"><strong>1.</strong> In Lens Studio: <strong>AI Assistant → AI Model Context Protocol (MCP) → Configure Server</strong>.</span>
-        </div>
-        <figure class="step-screenshot">
-          <img src="img/ls-mcp-server-panel.png" alt="LS MCP Server panel with Copy MCP Config button">
-          <figcaption>
-            <span class="lang-sv">MCP Server-panelen — hitta knappen <strong>Copy MCP Config</strong>.</span>
-            <span class="lang-en">MCP Server panel — find the <strong>Copy MCP Config</strong> button.</span>
-          </figcaption>
-        </figure>
-        <div class="step-note">
-          <span class="lang-sv"><strong>2.</strong> Klicka <strong>Copy MCP Config</strong>. Hela server-konfigurationen (URL + Bearer-token) ligger nu i ditt clipboard som en JSON-blob.</span>
-          <span class="lang-en"><strong>2.</strong> Click <strong>Copy MCP Config</strong>. The full server config (URL + Bearer token) is now in your clipboard as a JSON blob.</span>
-        </div>
-        <div class="step-note warning">
-          <span class="lang-sv"><strong>3. Klistra INTE in i terminalen ännu.</strong> Klistra JSON:en i en text-editor (TextEdit, VS Code, Sublime — vad du har uppe). JSON-blobben är <strong>information</strong>, inte ett kommando.</span>
-          <span class="lang-en"><strong>3. Don't paste in the terminal yet.</strong> Paste the JSON into a text editor (TextEdit, VS Code, Sublime — whatever you have open). The JSON is <strong>information</strong>, not a command.</span>
-        </div>
-        <figure class="step-screenshot">
-          <img src="img/ls-mcp-config-clipboard.png" alt="JSON config pasted in text editor with port and token marked">
-          <figcaption>
-            <span class="lang-sv">JSON-konfigen — notera porten (efter <code>localhost:</code>) och token (efter <code>Bearer</code>).</span>
-            <span class="lang-en">JSON config — note the port (after <code>localhost:</code>) and token (after <code>Bearer</code>).</span>
-          </figcaption>
-        </figure>
-        <div class="step-note">
-          <span class="lang-sv"><strong>4.</strong> Hitta de två värdena: <strong>porten</strong> är numret efter <code>localhost:</code> i <code>url</code>-fältet. <strong>Token</strong> är den långa strängen efter <code>Bearer</code> i <code>headers.Authorization</code>-fältet.</span>
-          <span class="lang-en"><strong>4.</strong> Find the two values: the <strong>port</strong> is the number after <code>localhost:</code> in the <code>url</code> field. The <strong>token</strong> is the long string after <code>Bearer</code> in the <code>headers.Authorization</code> field.</span>
-        </div>
-        <div class="step-note">
-          <span class="lang-sv"><strong>5.</strong> Gå tillbaka till terminalen och kör kommandot nedan — men <strong>ersätt <code>PORT</code> och <code>TOKEN</code></strong> med de faktiska värdena från JSON:en.</span>
-          <span class="lang-en"><strong>5.</strong> Go back to the terminal and run the command below — but <strong>replace <code>PORT</code> and <code>TOKEN</code></strong> with the actual values from the JSON.</span>
-        </div>
-        <span class="step-code">claude mcp add --transport http --scope local lens-studio http://localhost:PORT/mcp --header "Authorization: Bearer TOKEN"</span>
-        <span class="step-example">claude mcp add --transport http --scope local lens-studio http://localhost:50040/mcp --header "Authorization: Bearer abc123def456..."</span>
-        <div class="step-note warning">
-          <span class="lang-sv"><strong>Kör som en rad.</strong> Bryt inte raden med Enter mitt i kommandot. Om terminalen visuellt wraps är det OK — det är bara bokstavligt Enter som bryter kommandot.</span>
-          <span class="lang-en"><strong>Run as one line.</strong> Don't press Enter in the middle of the command. If the terminal visually wraps, that's fine — only a literal Enter breaks the command.</span>
-        </div>
-      </div>
-      <div class="step-time">~3 min</div>
-    </div>
-
-    <div class="step-row" style="--i:5">
-      <div class="step-badge">06</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Sanity check</span><span class="lang-en">Sanity check</span></h3>
-        <p>
-          <span class="lang-sv">Starta Claude i projektmappen och be den läsa scenen. Om Claude rapporterar Camera Object och Lighting — du är uppkopplad.</span>
-          <span class="lang-en">Start Claude in the project folder and ask it to read the scene. If Claude reports Camera Object and Lighting — you're connected.</span>
-        </p>
-        <span class="step-code">claude</span>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Var det körs:</strong> samma terminalfönster, från projektmappen (<code>adidas-lens</code>). Detta startar Claude Code-CLI:t — du landar i en interaktiv chat-prompt.</span>
-          <span class="lang-en"><strong>Where this runs:</strong> same terminal window, from your project folder (<code>adidas-lens</code>). This starts the Claude Code CLI — you land in an interactive chat prompt.</span>
-        </div>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Verifiering:</strong> skriv <em>"läs scenen"</em> i Claude-prompten. Om Claude svarar med Camera Object + Lighting — MCP fungerar.</span>
-          <span class="lang-en"><strong>Verify:</strong> type <em>"read the scene"</em> in the Claude prompt. If Claude replies with Camera Object + Lighting — MCP is working.</span>
-        </div>
-      </div>
-      <div class="step-time">~1 min</div>
-    </div>
-
-    <div class="step-row" style="--i:6">
-      <div class="step-badge">07</div>
-      <div class="step-content">
-        <h3><span class="lang-sv">Säg vad ni vill bygga</span><span class="lang-en">Say what you want to build</span></h3>
-        <p>
-          <span class="lang-sv">Claude tar det därifrån — concierge-läge, miljödetektering, onboarding-intag. Du behöver inte säga "använd skill:en" — Claude detekterar det.</span>
-          <span class="lang-en">Claude takes it from there — concierge mode, environment detection, onboarding intake. You don't need to say "use the skill" — Claude detects it.</span>
-        </p>
-        <span class="step-code">Jag vill bygga en Snapchat-lens för [kund]. Här är briefen: ...</span>
-        <div class="step-note">
-          <span class="lang-sv"><strong>Var det skrivs:</strong> i Claude-prompten (samma terminalfönster som steg 06). Inte i Lens Studio, inte i en webbläsare — du pratar med Claude direkt i terminalen.</span>
-          <span class="lang-en"><strong>Where you type this:</strong> in the Claude prompt (same terminal window as step 06). Not in Lens Studio, not in a browser — you talk to Claude directly in the terminal.</span>
-        </div>
-      </div>
-      <div class="step-time"><span class="lang-sv">Nu!</span><span class="lang-en">Now!</span></div>
-    </div>
-
   </div>
 
-  <p class="install-fineprint reveal">
-    <span class="lang-sv">Behöver du detaljerna? Fullständig steg-för-steg-guide med bash-kommandon, verifieringspunkter och fallback-paths finns i <a href="INSTALL-REFERENCE.md">INSTALL-REFERENCE.md</a>. Om något krånglar — säg det till Claude eller läs <a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a>.</span>
-    <span class="lang-en">Want the details? Full step-by-step guide with bash commands, verification points, and fallback paths lives in <a href="INSTALL-REFERENCE.md">INSTALL-REFERENCE.md</a>. If something breaks — tell Claude or read <a href="TROUBLESHOOTING.md">TROUBLESHOOTING.md</a>.</span>
+  <p style="margin-top: 32px; color: var(--ink-60);">När du har en idé — säg den till Claude och hen drar onboarding-frågorna. ~8 frågor i 3 block (vision, ramar, assets), ~10 min totalt. Sen börjar bygget.</p>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  FÖR NYFIKNA                            ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section">
+  <span class="micro">För nyfikna</span>
+  <h2>Vill du veta mer?</h2>
+  <p class="lede">Manualen ovan är kortaste vägen. Här är några länkar om du vill djupdyka.</p>
+
+  <div class="ideas-grid">
+    <div class="idea">
+      <p class="idea-name">INSTALL-REFERENCE.md</p>
+      <p class="idea-desc">Steg-för-steg installation manuellt (för dig som hellre läser komplett innan du börjar, eller behöver setupa flera maskiner).</p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">TROUBLESHOOTING.md</p>
+      <p class="idea-desc">Vanliga fel + fixar. Bra att kolla om Claude inte själv kan lösa något.</p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">references/mcp-tool-schemas.md</p>
+      <p class="idea-desc">Vad Claude kan göra i Lens Studio via MCP — alla 20 verktyg dokumenterade med parametrar.</p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">references/snap-docs/00-INDEX.md</p>
+      <p class="idea-desc">Routing-tabell till Snap:s officiella docs (365 sidor speglade, klassificerade per kategori).</p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">CHANGELOG.md</p>
+      <p class="idea-desc">Se hur skillen har vuxit — varje upptäckt loggad med datum + projekt. En lång lista över all kunskap som flowat in från riktiga Valtech-projekt över tid. Skillens biografi.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 40px; padding: 16px 20px; background: rgba(251, 191, 36, 0.05); border-left: 2px solid var(--warn); border-radius: 4px; font-size: 13px; color: var(--ink-60); line-height: 1.55;">
+    <strong style="color: var(--warn);">OBS — repo-status:</strong> Skill-repot ligger just nu på Niklaz personliga GitHub (<code>niklazhallberg/lens-studio-snapchat-filter-skill</code>). Planen är att flytta till Valtechs organisationskonto när fler kollegor börjar använda skillen. Fråga din lead om du är osäker på om du ska koppla till detta.
   </p>
 </section>
 
-<!-- ═════════════ PROBLEM → SOLUTION ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">04 — Varför då?</span><span class="lang-en">04 — Why?</span></span>
-  <div class="ps-grid reveal">
-    <div class="ps-card before">
-      <span class="label"><span class="lang-sv">Förr</span><span class="lang-en">Before</span></span>
-      <h3>
-        <span class="lang-sv">Lens Studio. Klick, drag, Inspector-jakt. Trial and error.</span>
-        <span class="lang-en">Lens Studio. Click, drag, Inspector hunting. Trial and error.</span>
-      </h3>
-      <p>
-        <span class="lang-sv">Två till tre veckor för en lens som egentligen är enkel.</span>
-        <span class="lang-en">Two to three weeks for a lens that's fundamentally simple.</span>
-      </p>
-    </div>
-    <div class="ps-arrow">→</div>
-    <div class="ps-card after">
-      <span class="label"><span class="lang-sv">Nu</span><span class="lang-en">Now</span></span>
-      <h3>
-        <span class="lang-sv">Du beskriver känsla och flöde. Claude bygger.</span>
-        <span class="lang-en">You describe feeling and flow. Claude builds.</span>
-      </h3>
-      <p>
-        <span class="lang-sv">Tre till fem dagar. Produktionstestat, inte gissning.</span>
-        <span class="lang-en">Three to five days. Production-tested, not guesswork.</span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════ TIERS ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">05 — Vad kan du bygga?</span><span class="lang-en">05 — What can you build?</span></span>
-  <h2 class="reveal" style="font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.025em;line-height:1.15;max-width:840px;">
-    <span class="lang-sv">Skill:en är ärlig om vad som går. Tre nivåer.</span>
-    <span class="lang-en">The skill is honest about what's possible. Three tiers.</span>
-  </h2>
-
-  <div class="tiers reveal-stagger">
-    <div class="tier tier-1" style="--i:0">
-      <div class="tier-head">
-        <span class="tier-num">01</span>
-        <span class="tier-name"><span class="lang-sv">Helt själv</span><span class="lang-en">Fully generatable</span></span>
-      </div>
-      <div class="tier-body">
-        <h3><span class="lang-sv">Claude bygger allt själv.</span><span class="lang-en">Claude builds everything itself.</span></h3>
-        <p>
-          <span class="lang-sv">Ingen extern asset utöver kundens logo och brand-typsnitt. Claude hanterar scen, kod, animationer, submission.</span>
-          <span class="lang-en">No external assets beyond client logo and brand fonts. Claude handles scene, code, animations, submission.</span>
-        </p>
-        <div class="tier-examples">
-          <span class="lang-sv">2D-overlays · Fortune/quiz/horoskop · Tap-interaktioner · Custom-typsnitt · Partikel-effekter · Face tracking · Klickbara knappar · Blur · Audio</span>
-          <span class="lang-en">2D overlays · Fortune/quiz/horoscope · Tap interactions · Custom fonts · Particle effects · Face tracking · Buttons · Blur · Audio</span>
-        </div>
-      </div>
-      <div class="tier-time">
-        <span><span class="lang-sv">Bygg-tid</span><span class="lang-en">Build time</span></span>
-        <strong>3–5d</strong>
-      </div>
-    </div>
-
-    <div class="tier tier-2" style="--i:1">
-      <div class="tier-head">
-        <span class="tier-num">02</span>
-        <span class="tier-name"><span class="lang-sv">Med asset</span><span class="lang-en">With asset</span></span>
-      </div>
-      <div class="tier-body">
-        <h3><span class="lang-sv">Claude bygger om du levererar tillgången.</span><span class="lang-en">Claude builds it if you provide the asset.</span></h3>
-        <p>
-          <span class="lang-sv">All kod och scen-uppbyggnad. Du (eller en specialist) levererar en specifik tillgång.</span>
-          <span class="lang-en">All code and scene work. You (or a specialist) deliver one specific asset.</span>
-        </p>
-        <div class="tier-examples">
-          <span class="lang-sv">3D-objekt på ansikte (FBX/glTF) · Kund-tränad ML-modell (.dnn) · Licensierad karaktär (PNG)</span>
-          <span class="lang-en">3D objects on face (FBX/glTF) · Client-trained ML model (.dnn) · Licensed character (PNG)</span>
-        </div>
-      </div>
-      <div class="tier-time">
-        <span><span class="lang-sv">Bygg-tid</span><span class="lang-en">Build time</span></span>
-        <strong>1–2w</strong>
-      </div>
-    </div>
-
-    <div class="tier tier-3" style="--i:2">
-      <div class="tier-head">
-        <span class="tier-num">03</span>
-        <span class="tier-name"><span class="lang-sv">Inte möjligt</span><span class="lang-en">Not possible</span></span>
-      </div>
-      <div class="tier-body">
-        <h3><span class="lang-sv">Kräver Snap-intern teknik. Mer budget löser det inte.</span><span class="lang-en">Requires Snap-internal tech. More budget won't fix it.</span></h3>
-        <p>
-          <span class="lang-sv">Strukturell gräns — inte en kostnadsfråga. Claude flaggar dessa direkt i kund-konversationen och föreslår Tier 1-alternativ.</span>
-          <span class="lang-en">Structural boundary — not a cost question. Claude flags these directly in the client conversation and proposes Tier 1 alternatives.</span>
-        </p>
-        <div class="tier-examples">
-          <span class="lang-sv">Full ansiktstransformation (Avatar-Na'vi) · Snap Beauty filters · Realtidsbaserad hår-segmentering · GAN-baserad ålders-transformation</span>
-          <span class="lang-en">Full face transformation (Avatar-Na'vi) · Snap Beauty filters · Real-time hair segmentation · GAN-based age transformation</span>
-        </div>
-      </div>
-      <div class="tier-time">
-        <span><span class="lang-sv">Bygg-tid</span><span class="lang-en">Build time</span></span>
-        <strong>—</strong>
-      </div>
-    </div>
-  </div>
-
-  <!-- RFSU proof -->
-  <div class="proof reveal">
-    <div class="proof-stat">
-      <div class="num">5</div>
-      <div class="unit"><span class="lang-sv">dagar</span><span class="lang-en">days</span></div>
-    </div>
-    <div class="proof-text">
-      <span class="label"><span class="lang-sv">Produktionsbevis</span><span class="lang-en">Production proof</span></span>
-      <h3>RFSU BANG Fortune Lens</h3>
-      <p>
-        <span class="lang-sv">En "open-the-pack"-lens där användaren tappar på en kondom-förpackning som öppnas, och en slumpmässig fortune-cookie-text avslöjas med en decelererande callback-rytm. Tier 1 från första till sista dag — ingen 3D-artist, ingen ML, ingen Snap-intern teknik.</span>
-        <span class="lang-en">An "open-the-pack" lens where the user taps a condom package that opens, revealing a random fortune-cookie text with a decelerating callback rhythm. Tier 1 from day one — no 3D artist, no ML, no Snap-internal tech.</span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════ HOW ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">06 — Hur pratar Claude med dig?</span><span class="lang-en">06 — How Claude works with you</span></span>
-  <h2 class="reveal" style="font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.025em;line-height:1.15;max-width:840px;">
-    <span class="lang-sv">Lugnt, tydligt och ett steg i taget. Aldrig 20 frågor på en gång.</span>
-    <span class="lang-en">Calm, clear, one step at a time. Never 20 questions at once.</span>
-  </h2>
-  <div class="how-grid reveal-stagger">
-    <div class="step" style="--i:0">
-      <span class="num"><span class="lang-sv">Steg 01 · Concierge</span><span class="lang-en">Step 01 · Concierge</span></span>
-      <h3>
-        <span class="lang-sv">En åtgärd per meddelande.</span>
-        <span class="lang-en">One action per message.</span>
-      </h3>
-      <p>
-        <span class="lang-sv">Claude detekterar din miljö (LS, MCP, projektmapp) och guidar dig genom 8-stegs setup. Klart efter ~25 min.</span>
-        <span class="lang-en">Claude detects your environment (LS, MCP, project folder) and walks you through 8-step setup. Done in ~25 min.</span>
-      </p>
-    </div>
-    <div class="step" style="--i:1">
-      <span class="num"><span class="lang-sv">Steg 02 · Onboarding</span><span class="lang-en">Step 02 · Onboarding</span></span>
-      <h3>
-        <span class="lang-sv">8 frågor i 3 grupper. ~7 minuter.</span>
-        <span class="lang-en">8 questions in 3 groups. ~7 minutes.</span>
-      </h3>
-      <p>
-        <span class="lang-sv">Vision (känsla, pace), constraints (kund, deadline), asset-validering (Claude läser INSPIRATION-mappen). Du säger "cinematic" — Claude översätter till 0.8–1.5s tweens.</span>
-        <span class="lang-en">Vision (feeling, pace), constraints (client, deadline), asset validation (Claude reads INSPIRATION). You say "cinematic" — Claude translates to 0.8–1.5s tweens.</span>
-      </p>
-    </div>
-    <div class="step" style="--i:2">
-      <span class="num"><span class="lang-sv">Steg 03 · Readiness Report</span><span class="lang-en">Step 03 · Readiness Report</span></span>
-      <h3>
-        <span class="lang-sv">En tabell. Skanna. Godkänn eller justera.</span>
-        <span class="lang-en">One table. Scan. Approve or adjust.</span>
-      </h3>
-      <p>
-        <span class="lang-sv">Varje beslut har en rad. Du svarar antingen "go phase 0" eller "ändra X: Y". Claude uppdaterar och visar igen tills du säger go.</span>
-        <span class="lang-en">Every decision is one row. You reply either "go phase 0" or "change X: Y". Claude updates and re-surfaces until you say go.</span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════ PHASES ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">07 — Faserna</span><span class="lang-en">07 — The phases</span></span>
-  <h2 class="reveal" style="font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.025em;line-height:1.15;max-width:840px;">
-    <span class="lang-sv">Från noll till submission i nio sekventiella faser. Claude guidar varje.</span>
-    <span class="lang-en">From zero to submission in nine sequential phases. Claude guides each one.</span>
-  </h2>
-
-  <div class="pipeline">
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 0</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Specdrafts</span><span class="lang-en">Spec drafts</span></h3>
-        <p>
-          <span class="lang-sv">Claude skriver TECH-SPEC och USER-EXPERIENCE från brief + INSPIRATION + onboarding-svar. Du läser och godkänner innan kod körs.</span>
-          <span class="lang-en">Claude writes TECH-SPEC and USER-EXPERIENCE from brief + INSPIRATION + onboarding answers. You read and approve before any code runs.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>30–60min</strong>
-      </div>
-    </div>
-
-    <div class="phase optional reveal">
-      <span class="phase-num">PHASE B</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Capability-tester</span><span class="lang-en">Capability tests</span></h3>
-        <p>
-          <span class="lang-sv">Empirisk validering av API-yt lensen ska använda. Hoppas över om alla mönster redan är dokumenterade.</span>
-          <span class="lang-en">Empirical validation of API surfaces the lens will use. Skipped if all patterns are already documented.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>30–60min</strong>
-      </div>
-    </div>
-
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 1</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Statisk scaffolding</span><span class="lang-en">Static scaffolding</span></h3>
-        <p>
-          <span class="lang-sv">Scen-hierarki, anchors, texturer, closed state. Ingen animation, inga scripts — bara den statiska strukturen. Du ser första bilden i Preview.</span>
-          <span class="lang-en">Scene hierarchy, anchors, textures, closed state. No animation, no scripts — just the static structure. You see the first image in Preview.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>2–3h</strong>
-      </div>
-    </div>
-
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 1.5</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Copy + typsnitt</span><span class="lang-en">Copy + fonts</span></h3>
-        <p>
-          <span class="lang-sv">Placeholder-text byts mot produktionstext. Custom-typsnitt importeras. Du ser rätt copy + rätt typografi i Preview.</span>
-          <span class="lang-en">Placeholder text gets replaced with production copy. Custom fonts get imported. You see correct copy + correct typography in Preview.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>~30min</strong>
-      </div>
-    </div>
-
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 2</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Scripts + animation</span><span class="lang-en">Scripts + animation</span></h3>
-        <p>
-          <span class="lang-sv">TypeScript-scripts som driver interaktion och animationer. @input-fält wires upp via MCP. Hela tap-till-final-state-cykeln fungerar i Preview.</span>
-          <span class="lang-en">TypeScript scripts that drive interaction and animations. @input fields get wired via MCP. The full tap-to-final-state cycle works in Preview.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>2–3h</strong>
-      </div>
-    </div>
-
-    <div class="phase optional reveal">
-      <span class="phase-num">PHASE 2.5</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Avancerade features</span><span class="lang-en">Advanced features</span></h3>
-        <p>
-          <span class="lang-sv">Face-effekter, ML-baserade features, audio — bara om briefen kräver det.</span>
-          <span class="lang-en">Face effects, ML-based features, audio — only if the brief requires them.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>1–2h</strong>
-      </div>
-    </div>
-
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 3</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Polish</span><span class="lang-en">Polish</span></h3>
-        <p>
-          <span class="lang-sv">Magnituder, tween-tider, färger, easings. Du pekar på en sak som känns fel — Claude justerar. Live-feedback via LS Inspector (60fps).</span>
-          <span class="lang-en">Magnitudes, tween durations, colors, easings. You point at one thing that feels off — Claude adjusts. Live feedback via LS Inspector (60fps).</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>—</strong>
-      </div>
-    </div>
-
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 4</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Device-test</span><span class="lang-en">Device testing</span></h3>
-        <p>
-          <span class="lang-sv">iPhone + mid-range Android. Manuellt — Claude kan inte ansluta till din telefon. Mål: ≥25 FPS, ≤4 MB.</span>
-          <span class="lang-en">iPhone + mid-range Android. Manual — Claude can't connect to your phone. Target: ≥25 FPS, ≤4 MB.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>1–2h</strong>
-      </div>
-    </div>
-
-    <div class="phase reveal">
-      <span class="phase-num">PHASE 5</span>
-      <div class="phase-body">
-        <h3><span class="lang-sv">Submission</span><span class="lang-en">Submission</span></h3>
-        <p>
-          <span class="lang-sv">Icon (320×320), preview-video, submission-metadata. Du klickar Submit i Snap Ads Manager.</span>
-          <span class="lang-en">Icon (320×320), preview video, submission metadata. You click Submit in Snap Ads Manager.</span>
-        </p>
-      </div>
-      <div class="phase-meta">
-        <span><span class="lang-sv">Tid</span><span class="lang-en">Time</span></span>
-        <strong>~1h</strong>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════ LIMITS ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">08 — Var går gränsen?</span><span class="lang-en">08 — Where are the limits?</span></span>
-  <h2 class="reveal" style="font-size:clamp(28px,4vw,44px);font-weight:600;letter-spacing:-0.025em;line-height:1.15;max-width:840px;">
-    <span class="lang-sv">Skill:en är ärlig om vad den inte gör.</span>
-    <span class="lang-en">The skill is honest about what it doesn't do.</span>
-  </h2>
-  <div class="limits reveal-stagger">
-    <div class="limit" style="--i:0">
-      <div class="limit-num">01</div>
-      <div class="limit-body">
-        <h3><span class="lang-sv">Easy Lens-panelen</span><span class="lang-en">The Easy Lens panel</span></h3>
-        <p>
-          <span class="lang-sv">Claude kan inte styra LS 5.21:s Easy Lens-panel direkt. Den manipulerar de underliggande primitive-komponenterna. Designerdefinierad visuell tuning händer i panel-UI:t — det är ditt jobb.</span>
-          <span class="lang-en">Claude can't drive the LS 5.21 Easy Lens panel directly. It manipulates the underlying primitive components. Designer-driven visual tuning happens in the panel UI — that's your job.</span>
-        </p>
-      </div>
-    </div>
-    <div class="limit" style="--i:1">
-      <div class="limit-num">02</div>
-      <div class="limit-body">
-        <h3><span class="lang-sv">Tier 3 är Tier 3</span><span class="lang-en">Tier 3 is Tier 3</span></h3>
-        <p>
-          <span class="lang-sv">Full ansiktstransformation, Snap Beauty filters, GAN-baserade effekter. Mer budget löser det inte. Claude flaggar och föreslår alternativ — det räddar kunden från en omöjlig leverans.</span>
-          <span class="lang-en">Full face transformation, Snap Beauty filters, GAN-based effects. More budget won't fix it. Claude flags and proposes alternatives — that saves the client from an impossible delivery.</span>
-        </p>
-      </div>
-    </div>
-    <div class="limit" style="--i:2">
-      <div class="limit-num">03</div>
-      <div class="limit-body">
-        <h3><span class="lang-sv">MCP-token roterar dagligen</span><span class="lang-en">MCP token rotates daily</span></h3>
-        <p>
-          <span class="lang-sv">Varje gång du startar om Lens Studio får MCP-servern en ny Bearer-token. ~3 min reconnect-rutin som Claude guidar dig genom om du säger "MCP funkar inte".</span>
-          <span class="lang-en">Every time you restart Lens Studio, the MCP server gets a new Bearer token. ~3 min reconnect routine that Claude walks you through if you say "MCP isn't working".</span>
-        </p>
-      </div>
-    </div>
-    <div class="limit" style="--i:3">
-      <div class="limit-num">04</div>
-      <div class="limit-body">
-        <h3><span class="lang-sv">Device-testning är manuell</span><span class="lang-en">Device testing is manual</span></h3>
-        <p>
-          <span class="lang-sv">Claude kan inte ansluta till din telefon. Phase 4 är där du tar fram iPhone + mid-range Android och testar lensen själv. Icke-förhandlingsbart — Snap reviewar på mid-range Android.</span>
-          <span class="lang-en">Claude can't connect to your phone. Phase 4 is where you take out an iPhone and a mid-range Android and test the lens yourself. Non-negotiable — Snap reviews on mid-range Android.</span>
-        </p>
-      </div>
-    </div>
-    <div class="limit" style="--i:4">
-      <div class="limit-num">05</div>
-      <div class="limit-body">
-        <h3><span class="lang-sv">Snap review-SLA</span><span class="lang-en">Snap review SLA</span></h3>
-        <p>
-          <span class="lang-sv">General-kategorier: 1–3 arbetsdagar. Reglerade kategorier (Sexual Wellness, Alcohol, Gambling, Pharmaceutical): 1–2 veckor. Avslag som behöver resubmission: addera 1–2 veckor till.</span>
-          <span class="lang-en">General categories: 1–3 business days. Regulated categories (Sexual Wellness, Alcohol, Gambling, Pharmaceutical): 1–2 weeks. Rejections needing resubmission: add another 1–2 weeks.</span>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════ TIPS ═════════════ -->
-<section class="section">
-  <span class="micro reveal"><span class="lang-sv">09 — Tips för bästa resultat</span><span class="lang-en">09 — Tips for best results</span></span>
-  <div class="tips-grid reveal-stagger">
-    <div class="tip" style="--i:0">
-      <span class="num">01</span>
-      <h3><span class="lang-sv">5+ bilder i INSPIRATION</span><span class="lang-en">5+ images in INSPIRATION</span></h3>
-      <p>
-        <span class="lang-sv">Den enskilt största hävstången. Tom mapp = Claude gissar. Rik mapp = Claude träffar rätt på första iterationen.</span>
-        <span class="lang-en">The single biggest lever. Empty folder = Claude guesses. Rich folder = Claude lands it on the first iteration.</span>
-      </p>
-    </div>
-    <div class="tip" style="--i:1">
-      <span class="num">02</span>
-      <h3><span class="lang-sv">Prata om känsla, inte specs</span><span class="lang-en">Talk about feel, not specs</span></h3>
-      <p>
-        <span class="lang-sv">"Energiskt, snappy" istället för "100ms cubic-easing". Claude omsätter feel till värden — det är ditt jobb att äga känslan.</span>
-        <span class="lang-en">"Energetic, snappy" instead of "100ms cubic easing". Claude converts feel into values — your job is to own the feeling.</span>
-      </p>
-    </div>
-    <div class="tip" style="--i:2">
-      <span class="num">03</span>
-      <h3><span class="lang-sv">Ett brief = en lens</span><span class="lang-en">One brief = one lens</span></h3>
-      <p>
-        <span class="lang-sv">Resist scope creep mitt i projektet. Claude flaggar proaktivt om en ny idé inte fanns i den ursprungliga briefen.</span>
-        <span class="lang-en">Resist scope creep mid-project. Claude proactively flags when a new idea wasn't in the original brief.</span>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════ CTA ═════════════ -->
-<section class="section cta">
-  <h2 class="reveal">
-    <span class="lang-sv">Redo att börja?</span>
-    <span class="lang-en">Ready to start?</span>
-  </h2>
-  <div class="cta-actions reveal">
-    <a href="INSTALL-REFERENCE.md" class="btn primary">
-      <span class="lang-sv">Installera</span><span class="lang-en">Install</span>
-      <span class="arrow">→</span>
-    </a>
-    <a href="MANUAL-SV.md" class="btn lang-sv">
-      Läs hela manualen
-      <span class="arrow">→</span>
-    </a>
-    <a href="MANUAL-EN.md" class="btn lang-en">
-      Read the full manual
-      <span class="arrow">→</span>
-    </a>
-    <a href="mailto:niklaz.a.hallberg@gmail.com" class="btn">
-      <span class="lang-sv">Maila Niklaz</span><span class="lang-en">Email Niklaz</span>
-      <span class="arrow">→</span>
-    </a>
-  </div>
-</section>
-
-<!-- ═════════════ FOOTER ═════════════ -->
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  FOOTER                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
 <footer class="footer">
-  <span>v0.4.4 · Lens Studio 5.21+</span>
-  <span><a href="https://ar.snap.com/download" target="_blank" rel="noopener">ar.snap.com/download</a></span>
-  <span>Valtech RADON · 2026</span>
+  <p>lens-studio-snapchat-filter · v0.7.0 · 2026-05-13 · Valtech Radon</p>
 </footer>
 
 <script>
-  // ── Language toggle ─────────────────────
-  (function() {
-    const html = document.documentElement;
-    const toggle = document.querySelector('.lang-toggle');
-    const KEY = 'lens-manual-lang';
+  // Copy-button handler — supports both data-copy (inline) and data-copy-target (selector)
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', async function() {
+      var text = '';
+      if (btn.dataset.copy) {
+        text = btn.dataset.copy;
+      } else if (btn.dataset.copyTarget) {
+        var el = document.querySelector(btn.dataset.copyTarget);
+        text = el ? el.textContent.trim() : '';
+      }
+      if (!text) return;
 
-    const stored = localStorage.getItem(KEY);
-    if (stored === 'sv' || stored === 'en') {
-      html.dataset.lang = stored;
-    }
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        // Fallback for older browsers
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
 
-    toggle.addEventListener('click', () => {
-      const next = html.dataset.lang === 'sv' ? 'en' : 'sv';
-      html.dataset.lang = next;
-      localStorage.setItem(KEY, next);
+      var originalText = btn.textContent;
+      btn.textContent = 'Kopierat!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+      }, 1500);
     });
-  })();
-
-  // ── Scroll-reveal ───────────────────────
-  (function() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -80px 0px'
-    });
-
-    document.querySelectorAll('.reveal, .reveal-stagger, .phase').forEach(el => {
-      observer.observe(el);
-    });
-
-    // Pre-reveal hero contents on load for above-the-fold immediacy
-    requestAnimationFrame(() => {
-      document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
-    });
-  })();
+  });
 </script>
 
 </body>
