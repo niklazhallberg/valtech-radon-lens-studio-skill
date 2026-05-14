@@ -169,13 +169,24 @@ If fewer than 3 images: ask for more. If 3+: continue.
 
 ### Step 8: Handoff to onboarding intake
 
-Now move from concierge mode to onboarding-protocol.md. **Don't announce the 8/3 structure** — that's CC's internal pacing, not something Anna should hear. Open with a natural conversational lead-in and go straight into Q1.1:
+Move from concierge mode to onboarding-protocol.md. **v0.7.0 update — REVERSAL of prior rule:** the 8/3 structure is now ANNOUNCED to Anna. See `onboarding-protocol.md` "Onboarding philosophy (v0.7.0)" for the why-reversal (designers want a map; hiding the structure broke trust in user-testing).
 
-> CC: "Bra — nu vill jag förstå din vision lite bättre. Första frågan:
+Open with the structure-announcement, then immediately go into Q1.1:
+
+> CC: "Bra — nu går vi från setup till själva briefen. Jag ställer ungefär **8 frågor i tre block** — vision, ramar, assets — det tar 5-10 min. Ju skarpare du svarar, desto mer kan jag dra slutsatser själv senare istället för att fråga dig om småsaker. Du kan alltid säga 'hoppa över' eller 'jag vet inte än'.
 >
-> **Beskriv lensen i 1-2 meningar — vad gör den, vad är 'momentet'?**"
+> **Block 1 av 3 — Vision.**  
+> Fråga 1: Beskriv lensen i 1-2 meningar — vad ska hända för användaren?"
 
-This transitions CC from concierge mode into the standard 8-question intake. See `onboarding-protocol.md` for the full intake protocol (the 8/3 structure governs CC's pacing — Anna just experiences a conversation).
+Deliberate elements (full breakdown in `onboarding-protocol.md` § "The opening"):
+- "8 frågor i tre block" — roadmap. Anna now has a map.
+- "5-10 min" — honest time-commitment.
+- "Ju skarpare du svarar..." — value-exchange (`voice-and-pedagogy.md` #7).
+- "Du kan alltid säga 'hoppa över'" — agency (#6).
+- "Block 1 av 3 — Vision" — first progress signal. Sets pattern for remaining blocks.
+- Immediate first question — no further preamble. Headline first.
+
+This transitions CC from concierge mode into the announced 8-question intake. Full intake protocol (block-progress between Qs, value-exchange per Q, plain-language Readiness Report) lives in `onboarding-protocol.md`.
 
 After intake completes and Readiness Report is approved, CC enters Phase 0.
 
