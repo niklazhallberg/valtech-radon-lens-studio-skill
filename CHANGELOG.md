@@ -18,6 +18,14 @@ anpassat för skill-evolution snarare än software-API.
 
 _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
+### 2026-05-14 — [project: demo-foot-lens]
+- **Tracker confidence-tröskel för stabil anchor**: jitter under
+  ~0.55 confidence — defensiv guard med hysteresis (0.6/0.65)
+  eliminerar flicker. Hittades vid edge-of-frame foot-tracking
+  i pair-test.
+- File: `references/body-anchored-calibration.md` § Tracker confidence-tröskel för stabil anchor
+- Type: [demo]
+
 ### 2026-05-14 — [project: demo-promo-lens]
 - **ScreenTransform parent anchor inheritance**: parent
   ScreenTransform med anchors enabled överrider tyst barns
