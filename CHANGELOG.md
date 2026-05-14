@@ -2,11 +2,12 @@
 
 All notable changes to **lens-studio-snapchat-filter** are documented here.
 
-Discoveries från riktiga Valtech-projekt flödar in i [Unreleased]-sektionen
-automatiskt via skill-growth-protokollet — se `references/skill-growth-protocol.md`
+Discoveries från riktiga Valtech-projekt flödar in i sektionen
+"Improvements and newly acquired knowledge" automatiskt via
+skill-growth-protokollet — se `references/skill-growth-protocol.md`
 för in-flow-ask-mekaniken och format-spec.
 
-Vid release: [Unreleased]-entries konsolideras under en `[vX.Y.Z]`-rubrik
+Vid release: dessa entries konsolideras under en `[vX.Y.Z]`-rubrik
 med release-datum.
 
 Format löst inspirerat av [Keep a Changelog](https://keepachangelog.com/) men
