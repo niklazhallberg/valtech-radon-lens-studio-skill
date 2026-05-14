@@ -2,54 +2,55 @@
 
 All notable changes to **lens-studio-snapchat-filter** are documented here.
 
-Discoveries från riktiga Valtech-projekt flödar in i sektionen
-"Improvements and newly acquired knowledge" automatiskt via
-skill-growth-protokollet — se `references/skill-growth-protocol.md`
-för in-flow-ask-mekaniken och format-spec.
+Discoveries from real Valtech RADON projects flow into the
+"Improvements and newly acquired knowledge" section automatically
+via the skill-growth protocol — see `references/skill-growth-protocol.md`
+for the in-flow-ask mechanic and format spec.
 
-Vid release: dessa entries konsolideras under en `[vX.Y.Z]`-rubrik
-med release-datum.
+At release time: those entries are consolidated under a `[vX.Y.Z]`
+heading with the release date.
 
-Format löst inspirerat av [Keep a Changelog](https://keepachangelog.com/) men
-anpassat för skill-evolution snarare än software-API.
+Format loosely inspired by [Keep a Changelog](https://keepachangelog.com/)
+but adapted for skill evolution rather than a software API.
 
 ---
 
 ## Improvements and newly acquired knowledge
 
-_Nya lärdomar som flutit in från pågående Valtech-projekt._
+_New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-14 18:22 — [project: demo-face-lens]
-- **Hopp i lista efter borttagning av scen-objekt**: När man
-  bläddrar igenom alla scen-objekt sida för sida och samtidigt
-  tar bort något, hoppar listan över nästa post. Lösning: fråga
-  om listan från början igen efter varje borttagning.
-- Value for user: Sparar minst en bug-jakt där "saknat objekt"
-  verkar vara ett mysterium men i själva verket bara är en lista
-  som flyttats.
+- **Skipped items after scene-object deletion**: When paginating
+  through all scene objects and deleting one mid-iteration, the
+  list skips the next entry. Solution: re-query the list from
+  the start after each destructive batch.
+- Value for user: Saves at least one bug-hunt where "missing
+  object" seems mysterious but is actually just a list that
+  shifted between calls.
 - File: `references/mcp-tool-schemas.md` § Edge case: allSceneObjects offset
 - Type: [demo]
 
 ### 💡 2026-05-14 18:21 — [project: demo-foot-lens]
-- **Stabil anker vid lågt tracker-förtroende**: När en
-  body-tracker (fot, hand, ansikte) börjar bli osäker på var
-  kroppsdelen är, börjar position att hoppa runt synligt.
-  Lösning: göm visuellt innehåll när säkerheten är låg, visa
-  igen när den är stabil — med lite marginal så det inte blinkar.
-- Value for user: Slipper synligt jitter när användaren rör sig
-  nära kamerakanten — slutresultatet känns proffsigare.
+- **Stable anchor when tracker confidence drops**: When a
+  body-tracker (foot, hand, face) becomes uncertain about where
+  the body part is, the anchor position starts jittering visibly.
+  Solution: hide visual content when confidence is low, show it
+  again when it stabilizes — with a small margin so it doesn't
+  flicker.
+- Value for user: Avoids visible jitter when the user moves near
+  the camera edge — the final result feels more polished.
 - File: `references/body-anchored-calibration.md` § Tracker confidence-tröskel för stabil anchor
 - Type: [demo]
 
 ### 💡 2026-05-14 18:20 — [project: demo-promo-lens]
-- **Skärm-anker tar över barnens position**: När ett
-  parent-objekt har skärm-anker aktiverat, skriver det tyst över
-  barnens position varje frame. Lösning: lägg ett vanligt objekt
-  mellan parent och barn — det vanliga objektet absorberar
-  anker-överskrivningen.
-- Value for user: Sparar 1-2 timmar bug-jakt där "jag satte
-  position till X men det syns inte" verkar omöjligt — när det
-  egentligen bara är parent-ankern som tar över varje frame.
+- **Parent screen-anchor overrides child position**: When a
+  parent object has screen-anchor enabled, it silently overrides
+  its children's position every frame. Solution: place a plain
+  object between the parent and child — the plain object
+  absorbs the anchor override.
+- Value for user: Saves 1-2 hours of bug-hunting where "I set
+  position to X but nothing shows" seems impossible — when in
+  fact the parent's anchor is taking over every frame.
 - File: `references/lens-studio-api-gotchas.md` § ScreenTransform parent anchor inheritance
 - Type: [demo]
 
@@ -58,19 +59,21 @@ _Nya lärdomar som flutit in från pågående Valtech-projekt._
 ## [v0.7.4] — 2026-05-14
 
 ### 💡 2026-05-14 18:30 — [project: skill-meta]
-- **Varm ton i CHANGELOG + protokoll v0.5**: CHANGELOG-entries
-  använder nu 💡-emoji, klockslag, plain svenska beskrivning
-  och "Value for user"-fält. Section-titeln är nu
-  "Improvements and newly acquired knowledge" istället för
-  "[Unreleased]". Protokoll-template för agentens in-flow-ask
-  omskriven till plain-svenska "Vi har lärt oss något nytt
-  här..." istället för tekniska "Vi har en discovery..."-rader.
-  Retro-uppdaterade 3 demo-entries + v0.7.3-entry till nya
-  formatet.
-- Value for user: CHANGELOG-strukturen blir läsbar för icke-
-  tekniska kollegor (designers, teamleads, leadership). Värdet
-  av varje lärdom är direkt synligt utan att läsa hela filen
-  den landade i.
+- **Warm tone in CHANGELOG + protocol v0.5**: CHANGELOG entries
+  now use 💡-emoji, HH:MM timestamp, plain-English description,
+  and "Value for user" field. The section title is now
+  "Improvements and newly acquired knowledge" instead of
+  "[Unreleased]". The protocol template for the agent's in-flow
+  ask is rewritten in plain Swedish ("Vi har lärt oss något nytt
+  här...") instead of technical "Vi har en discovery..." phrasing —
+  the in-flow ask is user-facing chat, so it stays in the user's
+  language; the GitHub artifact (CHANGELOG + references files)
+  is English-only. Retroactively updated 3 demo entries +
+  v0.7.3 entry to the new format.
+- Value for user: The CHANGELOG structure becomes readable for
+  non-technical colleagues (designers, team leads, leadership).
+  The value of each learning is directly visible without having
+  to read the file it landed in.
 - Files: `CHANGELOG.md`, `references/skill-growth-protocol.md`
 - Type: [convention]
 
@@ -80,25 +83,28 @@ _Nya lärdomar som flutit in från pågående Valtech-projekt._
 
 ### 💡 2026-05-14 13:30 — [project: skill-meta]
 - **Documentation sync: MCP capability gap-fixes (Tier 1)**:
-  Cross-validerade extern Perplexity Deep Research-rapport
-  (2026-05-13) mot existerande `references/`. Tre Tier 1-gaps
-  stängda:
-  - `references/mcp-tool-schemas.md` — ny sektion "Vad MCP
-    INTE kan göra": 11-radig UI-only-operations-tabell,
-    desktop preview-begränsningar, per-phase-implications.
-  - `references/mcp-tool-schemas.md` — ny sektion "Officiella
-    tool-namn ↔ MCP-client-namn": mappning mellan Snap's 40+
-    "normalized names" och vår 20-tools client-capture, med
-    version-disclaimer för LS-version-evolution.
-  - `references/mcp-setup.md` — Chat Tool Package tillagt
-    som prerequisite (Prerequisites-bullet + ny Step 2 med
-    renumrering 2→3, 3→4, 4→5). Mentor-ärlig om empirisk
-    observation att core MCP funkar utan explicit install i
-    LS 5.20+.
-- Value for user: Tre operativa MCP-luckor stängda — designer
-  som möter MCP-gränser i verkliga projekt ser direkt vad MCP
-  kan och inte kan, och förstår mappningen mellan Snap's
-  officiella tool-namn och vad de faktiskt ser i Claude Code.
+  Cross-validated an external Perplexity Deep Research report
+  (2026-05-13) against existing `references/`. Three Tier 1
+  gaps closed:
+  - `references/mcp-tool-schemas.md` — new section "Vad MCP
+    INTE kan göra" (What MCP cannot do): 11-row UI-only
+    operations table, desktop preview limits, per-phase
+    implications.
+  - `references/mcp-tool-schemas.md` — new section "Officiella
+    tool-namn ↔ MCP-client-namn" (Official tool names ↔
+    MCP-client names): mapping between Snap's 40+ "normalized
+    names" and our 20-tools client capture, with a version-
+    disclaimer for LS-version evolution.
+  - `references/mcp-setup.md` — Chat Tool Package added as a
+    prerequisite (Prerequisites bullet + new Step 2 with
+    renumbering 2→3, 3→4, 4→5). Honest about the empirical
+    observation that core MCP works without explicit install
+    in LS 5.20+.
+- Value for user: Three operational MCP gaps closed — a
+  designer who hits MCP limits in real projects sees directly
+  what MCP can and cannot do, and understands the mapping
+  between Snap's official tool names and what they actually
+  see in Claude Code.
 - Files: `references/mcp-tool-schemas.md`, `references/mcp-setup.md`
 - Type: [docs]
 
@@ -214,13 +220,13 @@ Skillens första canonical fil — universal probe-first protokoll för all trac
 
 ## Note on cumulative growth
 
-Denna CHANGELOG är skillens biografi — varje rad representerar antingen
-en release (manuellt konsoliderad) eller en in-flow discovery från ett
-verkligt projekt (automatiskt prepended av agent).
+This CHANGELOG is the skill's biography — each line represents either a
+release (manually consolidated) or an in-flow discovery from a real project
+(automatically prepended by the agent).
 
-Idén: när en Valtech-kollega om 6 månader scrollar denna fil ska de få
-en känsla av momentum. "Vi har lärt oss X i januari, Y i februari, hela
-vägen till idag. Det här är inte stillastående — det här växer av sig
-självt när vi använder det."
+The idea: when a Valtech RADON colleague scrolls this file 6 months from
+now, they should feel momentum. "We learned X in January, Y in February,
+all the way to today. This isn't standing still — it grows on its own
+when we use it."
 
-Discoveries över time = compound interest på skill-investering.
+Discoveries over time = compound interest on skill investment.

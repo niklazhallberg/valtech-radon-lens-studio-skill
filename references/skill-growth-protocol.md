@@ -164,31 +164,43 @@ Entry-format (auto-extraherat av agent):
 
 ```markdown
 ### 💡 YYYY-MM-DD HH:MM — [project: <cwd-derived>]
-- **<title i plain svenska>**: <1-2 meningar
-  beskrivning, jargong-fri>
-- Value for user: <vad nästa kollega vinner — tid
-  sparad, fälla undviken, eller bara något känns
-  bättre>
+- **<title in plain English>**: <1-2 sentence
+  description, jargon-free, plain English>
+- Value for user: <what the next colleague gains —
+  time saved, trap avoided, or just something feels
+  better. Plain English.>
 - File: `<path>` § <section>
 - Type: [discovery] / [docs] / [convention]
 ```
 
+**Language rule:** CHANGELOG entries on GitHub are
+**English-only** (designer/teamlead/leadership audience,
+some non-Swedish-speaking). The in-flow ask itself
+stays in the user's language (Swedish for Swedish-
+speaking colleagues) — but when the agent writes the
+artifact to disk, the OUTPUT must translate to plain
+English. Section-title references inside descriptions
+may quote Swedish section names verbatim with an
+English gloss in parentheses.
+
 Auto-extraction:
-- 💡-emoji — alltid prefix på rubriken (signal:
-  positiv ny insikt)
-- `YYYY-MM-DD HH:MM` — current date + tid i 24h-format
-- `<cwd-derived>` — från `$PWD`
+- 💡-emoji — always prefix on the rubric (signal:
+  positive new insight)
+- `YYYY-MM-DD HH:MM` — current date + time in 24h format
+- `<cwd-derived>` — from `$PWD`
   (`~/Projects/<name>-lens` → `<name>-lens`)
-- `<title>` — plain-svenska summary (om discovery
-  namns med API-term, översätt — t.ex. "ScreenTransform
-  parent anchor inheritance" → "Skärm-anker tar över
-  barnens position")
-- `<description>` — 1-2 meningar från "Vad:"-fältet,
-  plain svenska
-- `<value>` — direkt från "Värde för användare:"-fältet
-  i entry-formatet ovan
-- `<path>` — relativ path av edited fil
-- `<section>` — markdown-section där entryn hamnade
+- `<title>` — plain-English summary (if the discovery
+  is named with an API term, translate it — e.g.
+  `ScreenTransform parent anchor inheritance` →
+  "Parent screen-anchor overrides child position")
+- `<description>` — 1-2 sentences derived from the
+  agent's internal "Vad:"-field, translated to
+  plain English
+- `<value>` — direct from the agent's internal
+  "Värde för användare:" field, translated to
+  plain English
+- `<path>` — relative path of edited file
+- `<section>` — markdown section where the entry landed
 
 Single commit täcker BÅDE references-file-edit
 OCH CHANGELOG.md-prepend. Inga separata commits.
