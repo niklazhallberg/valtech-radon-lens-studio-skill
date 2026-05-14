@@ -103,6 +103,10 @@ tekniska detaljer kommer EFTER ja):
 > lärdom. Låt oss göra filerna ännu bättre med hjälp
 > av din upptäckt.
 >
+> Din upptäckt har riktigt värde — den gör mig som
+> AI-assistent smartare för varje gång, och hjälper
+> varje kollega som möter samma fälla i framtiden.
+>
 > **Är det OK att jag uppdaterar systemfilerna med
 > din upptäckt? Det går snabbt och avbryter inte på
 > något vis vårt arbete ihop.**
@@ -118,6 +122,12 @@ Voice-nyanser:
   när det landar i skillen)
 - "Låt oss göra filerna ännu bättre" (kollaborativ,
   inte transaktion)
+- "Din upptäckt har riktigt värde — den gör mig som
+  AI-assistent smartare för varje gång" — value-
+  exchange-transparency: användaren ska förstå att
+  deras bidrag har värde långt bortom det egna
+  projektet. AI:n växer av varje delad lärdom; det
+  är inte bara en logg.
 - Reassurance på slutet ("avbryter inte vårt arbete")
   — användaren oroar sig ofta att discovery-pausen
   bryter momentum; säg ut att den inte gör det
