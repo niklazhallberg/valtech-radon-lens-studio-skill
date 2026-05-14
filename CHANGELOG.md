@@ -19,41 +19,6 @@ but adapted for skill evolution rather than a software API.
 
 _New learnings registered from past or ongoing Valtech RADON projects._
 
-### 💡 2026-05-14 18:22 — [project: demo-face-lens]
-- **Skipped items after scene-object deletion**: When paginating
-  through all scene objects and deleting one mid-iteration, the
-  list skips the next entry. Solution: re-query the list from
-  the start after each destructive batch.
-- Value for user: Saves at least one bug-hunt where "missing
-  object" seems mysterious but is actually just a list that
-  shifted between calls.
-- File: `references/mcp-tool-schemas.md` § Edge case: allSceneObjects offset
-- Type: [demo]
-
-### 💡 2026-05-14 18:21 — [project: demo-foot-lens]
-- **Stable anchor when tracker confidence drops**: When a
-  body-tracker (foot, hand, face) becomes uncertain about where
-  the body part is, the anchor position starts jittering visibly.
-  Solution: hide visual content when confidence is low, show it
-  again when it stabilizes — with a small margin so it doesn't
-  flicker.
-- Value for user: Avoids visible jitter when the user moves near
-  the camera edge — the final result feels more polished.
-- File: `references/body-anchored-calibration.md` § Tracker confidence-tröskel för stabil anchor
-- Type: [demo]
-
-### 💡 2026-05-14 18:20 — [project: demo-promo-lens]
-- **Parent screen-anchor overrides child position**: When a
-  parent object has screen-anchor enabled, it silently overrides
-  its children's position every frame. Solution: place a plain
-  object between the parent and child — the plain object
-  absorbs the anchor override.
-- Value for user: Saves 1-2 hours of bug-hunting where "I set
-  position to X but nothing shows" seems impossible — when in
-  fact the parent's anchor is taking over every frame.
-- File: `references/lens-studio-api-gotchas.md` § ScreenTransform parent anchor inheritance
-- Type: [demo]
-
 ---
 
 ## [v0.7.4] — 2026-05-14
