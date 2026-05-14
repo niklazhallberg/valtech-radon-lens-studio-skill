@@ -86,24 +86,41 @@ Om nej → skriv om tills svaret är ja.
 När en discovery passerar grep-checken:
 säg DIREKT till användaren, mitt i flowet.
 
-Template (warm tone, jargong-fri — tekniska detaljer
-kommer EFTER ja):
+Template (warm tone, jargong-fri, kollaborativ —
+tekniska detaljer kommer EFTER ja):
 
 > "Vi har lärt oss något nytt här.
 >
-> [1-2 meningar om vad, i plain svenska — undvik
+> [1-2 meningar om vad, plain svenska — undvik
 > API-namn, filsökvägar, grep-output, "discovery"-ord]
 >
-> Det här är värdefullt att spara. Idag är det inte
-> med i skillen, men [konkret konsekvens för nästa
-> kollega om vi inte skriver in det — t.ex. "fastnar
-> i samma fälla 1-2 timmar" eller "slutresultatet
-> känns mindre proffsigt"].
+> Det här är värdefullt att spara ner för framtida
+> situationer. Idag är inte denna kunskap med i
+> systemfilerna, vilket innebär att nästa kollega som
+> [konkret use-case — animera räknare, kalibrera fot-
+> tracking, etc.] troligtvis kommer fastna i exakt
+> samma fälla, om vi inte skriver in det nu som en
+> lärdom. Låt oss göra filerna ännu bättre med hjälp
+> av din upptäckt.
 >
 > **Är det OK att jag uppdaterar systemfilerna med
-> din upptäckt?**
+> din upptäckt? Det går snabbt och avbryter inte på
+> något vis vårt arbete ihop.**
 >
 > Ja / nej / spara för senare"
+
+Voice-nyanser:
+- "Spara ner för framtida situationer" > "spara"
+  (känns mer som ett aktivt val, inte tråkig logg)
+- "troligtvis kommer fastna" > "kommer fastna"
+  (ödmjukt — vi vet inte 100%)
+- "som en lärdom" > inget (framing av vad det blir
+  när det landar i skillen)
+- "Låt oss göra filerna ännu bättre" (kollaborativ,
+  inte transaktion)
+- Reassurance på slutet ("avbryter inte vårt arbete")
+  — användaren oroar sig ofta att discovery-pausen
+  bryter momentum; säg ut att den inte gör det
 
 Internt INNAN denna ask:
 - Generaliseringsregeln-walk (3 steg) körs tyst
@@ -129,6 +146,33 @@ Användarens svar styr:
 Varje accepterad discovery får en egen
 liten commit. Granular history; lätt att
 rulla tillbaka något specifikt.
+
+### Closing message efter commit (plain, ingen jargong)
+
+När commit+push körts klart: stäng loopen i plain
+svenska. INGEN `origin`, INGA `granular commit`-,
+`rollback`- eller `git`-ord. Användaren bryr sig om
+att det är sparat och att vi kan ångra om det blir
+fel — inte om VCS-mekaniken.
+
+Template:
+
+> "Klart, det är sparat nu. Om vi senare märker att
+> något inte stämmer kan vi enkelt rulla tillbaka det.
+>
+> Tillbaka till [konkret pågående arbete] — säg till
+> när du är redo att fortsätta."
+
+Voice-nyanser:
+- "Klart, det är sparat nu" > "Pushat till origin"
+  (resultat-fokus, inte plumbing)
+- "Om vi senare märker att något inte stämmer kan
+  vi enkelt rulla tillbaka det" > "Granular commit,
+  lätt att rulla tillbaka" (förklarar SÄKERHETSNÄTET
+  i mänskliga termer)
+- "Tillbaka till [konkret arbete]" — referenser till
+  vad de gjorde innan ger känsla av att momentum
+  inte bröts
 
 ## Format för entry
 
