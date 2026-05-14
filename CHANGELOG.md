@@ -20,6 +20,30 @@ _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
 ---
 
+## [v0.7.3] — 2026-05-14
+
+### 2026-05-14 — [project: skill-meta]
+- **Documentation sync: MCP capability gap-fixes (Tier 1)**:
+  Cross-validerade extern Perplexity Deep Research-rapport
+  (2026-05-13) mot existerande `references/`. Tre Tier 1-gaps
+  stängda:
+  - `references/mcp-tool-schemas.md` — ny sektion "Vad MCP
+    INTE kan göra": 11-radig UI-only-operations-tabell,
+    desktop preview-begränsningar, per-phase-implications.
+  - `references/mcp-tool-schemas.md` — ny sektion "Officiella
+    tool-namn ↔ MCP-client-namn": mappning mellan Snap's 40+
+    "normalized names" och vår 20-tools client-capture, med
+    version-disclaimer för LS-version-evolution.
+  - `references/mcp-setup.md` — Chat Tool Package tillagt
+    som prerequisite (Prerequisites-bullet + ny Step 2 med
+    renumrering 2→3, 3→4, 4→5). Mentor-ärlig om empirisk
+    observation att core MCP funkar utan explicit install i
+    LS 5.20+.
+- Files: `references/mcp-tool-schemas.md`, `references/mcp-setup.md`
+- Type: [docs]
+
+---
+
 ## [v0.7.2] — 2026-05-14
 
 ### 2026-05-14 — [project: skill-meta]

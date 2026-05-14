@@ -20,6 +20,7 @@ How to register the Lens Studio MCP server with Claude Code, verify the connecti
 
 - Lens Studio 5.x installed and running
 - Claude Code installed
+- Chat Tool Package installed in the LS project (via Asset Library — see Initial registration step 2 below)
 - Working directory matters: start CC from inside the lens project folder (where `.mcp.json` lives) OR from the repo root (where `~/.claude.json` user-scoped registration applies)
 
 ## Initial registration
@@ -28,13 +29,27 @@ How to register the Lens Studio MCP server with Claude Code, verify the connecti
 
 The MCP server starts automatically when an LS project is open. Without an open project, no MCP server is available.
 
-### 2. Get MCP credentials from LS
+### 2. Install Chat Tool Package (if not yet installed)
+
+Snap's official documentation specifies Chat Tool Package as a prerequisite for full MCP tool exposure. Empirically we've seen core MCP functionality (`scene-graphql`, `asset-graphql`, asset-library tools) work without explicit Chat Tool Package install — so the package may be auto-installed in LS 5.20+ projects, or only required for specific tools (generators, knowledge-base queries).
+
+**To be safe** — install it explicitly the first time you set up a new lens project:
+
+1. In LS: open **Asset Library** (left panel)
+2. Search for "Chat Tool"
+3. Click Install on the Chat Tool Package result
+
+**Symptom if missing:** ToolSearch may return a partial tool list. If a tool you expect (especially `QueryLensStudioKnowledgeBase` or AI generators) appears absent, suspect Chat Tool Package.
+
+**Verify:** LS → Project Settings → Installed Packages — should list Chat Tool Package (exact path may vary by LS version — untested).
+
+### 3. Get MCP credentials from LS
 
 In Lens Studio: **AI Assistant → AI Model Context Protocol (MCP) → Configure Server**.
 
 LS displays the server URL (e.g., `http://localhost:50040/mcp`) and a Bearer token. LS also shows the full `claude mcp add ...` command for convenience — copy that.
 
-### 3. Register with Claude Code
+### 4. Register with Claude Code
 
 From the project folder:
 
@@ -48,7 +63,7 @@ Scope choice:
 - `--scope local` — registration scoped to current directory (recommended for project-specific lens work)
 - `--scope user` — registration in `~/.claude.json`, available everywhere
 
-### 4. Verify
+### 5. Verify
 
 ```bash
 claude mcp list

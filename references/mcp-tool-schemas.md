@@ -44,6 +44,184 @@
 
 ---
 
+# Vad MCP INTE kan göra
+
+MCP-servern täcker introspection, mutation, scripting, asset/music
+library, AI-generation — men en del Lens Studio-operationer kan
+**inte** drivas via MCP. Att känna gränserna innan probe sparar tid
+och frustration.
+
+Källa: Snap's officiella docs (`snap-docs/01-mcp-and-claude-code/custom-prompt-for-mcp.md`,
+`snap-docs/01-mcp-and-claude-code/developer-mode.md`) cross-validerat
+mot extern kapacitetskartläggning 2026-05-13.
+
+| Operation | Typ | Notering |
+|---|---|---|
+| Skapa nytt projekt från template | UI-only | New Project-dialogen kan ej triggas via MCP. Använd LS UI; därefter kan MCP ta vid |
+| Importera 3D-filer från disk (FBX/GLB/OBJ) | UI-only | Inget `Import3DModel`-tool finns. Drag-and-drop till Asset Browser eller `File → Import Asset`. Alternativ via MCP: `GenerateFast3DAssets` för AI-genererade modeller (ej brand-assets) |
+| Öppna FBX Import Options-dialogen | UI-only | Material-, animation-, vertex-color-flaggor sätts via dialogen, ej via MCP |
+| Initiera lens-submission | UI-only | Inget `SubmitLens`-tool. Submission via `my-lenses.snapchat.com` eller LS UI |
+| Köpa premium-assets från Asset Library | UI-only | Köpflöde kräver UI/webbportal. `InstallLensStudioPackage` hanterar free assets — premium-flödet är ej publikt dokumenterat |
+| Redigera Visual Script-grafer | UI-only | Visual Script-noder finns ej i MCP-schema. Påverkar ej TypeScript-agent-flöden |
+| Modifiera Material Editor-noder grafiskt | UI-only | PBR-properties (baseColor etc.) kan sättas via `scene-graphql`/`asset-graphql` mutations på `mainMaterial.passInfos.0.*`. Shader-graphens nod-yta kräver UI |
+| Paira mobil device med Lens Studio | UI-only | Device-pairing-flow är UI-driven. MCP kan inte trigga QR-kod-generering |
+| Ändra Project Settings (lens name, ikon, applicability) | Mestadels UI | `lensApplicability` + `trackingModes` kan sättas via Editor.Model.MetaInfo write-back (se `mcp-setup.md` §Transient-view-persistence). Andra Project Settings-fält oklart |
+| Starta/stoppa MCP-servern | UI-only | Kräver AI Assistant → MCP → Configure Server. MCP kan ej omstarta sig själv |
+| Trigga ⌘S (spara) | UI-only / manuell | Mutationer lever in-memory. Användaren måste manuellt spara. Se Operational Rule 2 (⌘S-handshake) |
+
+## Desktop Preview-begränsningar (separat från MCP-gränser)
+
+Desktop Preview kör INTE alla ML-modeller — bl.a. foot-tracking. MCP
+kan förbereda scenen perfekt, men visuell verifiering kräver real
+device via QR-kod preview. Detaljer + per-body-part-matris:
+`../body-anchored-calibration.md` §Desktop-preview-limitations.
+
+## Implication för agent-flöden
+
+- **Phase 0 spec**: Notera om brief kräver något UI-only. Om ja:
+  planera manuella steg in i timeline.
+- **Phase 1 scaffolding**: Vid 3D-asset från klient: pausa för
+  user-driven import innan MCP-positionering tar vid.
+- **Phase 4 device-test**: Pairing måste vara förberett före
+  phase-start.
+- **Phase 5 submission**: Submission är 100% manuell. MCP-flödet
+  slutar vid "lens fungerar i preview".
+
+---
+
+# Officiella tool-namn ↔ MCP-client-namn
+
+Snap's officiella dokumentation (system-prompt-exempel,
+ChatTool API) använder "normalized names" som
+`GetLensStudioSceneGraph`, `SetLensStudioProperty`,
+`CreateSceneObjectFromPresetTool`. Vår empiriska capture via
+ToolSearch ser MCP-client-namn som `scene-graphql`,
+`asset-graphql` etc.
+
+Dessa är **samma server, två olika abstraction-lager**:
+
+- **Officiella namn** = procedurella wrappers dokumenterade i
+  Snap's agent-system-prompt (se
+  `snap-docs/01-mcp-and-claude-code/custom-prompt-for-mcp.md`)
+- **MCP-client-namn** = vad Claude Code/Cursor/VS Code faktiskt
+  ser via `localhost:[port]/mcp` — primärt GraphQL-transport
+  plus specialiserade tools
+
+> **Version-disclaimer:** Tool-namn kan variera mellan
+> LS-versioner. Vår capture är från LS 5.x 2026-05-13.
+> Verifiera med live probe vid avvikelse.
+
+## Identiska namn (inga aliaser)
+
+| Tool | Funktion |
+|---|---|
+| `SearchLensStudioAssetLibrary` | Asset Library-sökning |
+| `InstallLensStudioPackage` | Installation från Asset Library |
+| `SearchLensStudioMusicLibrary` | Musik-sökning |
+| `InstallLicensedMusic` | Musik-install |
+| `ListInstalledPackagesTool` | Installerade paket-list |
+| `RunAndCollectLogsTool` | Preview refresh + log capture |
+| `GenerateFast3DAssets` | AI-3D-generering |
+
+## Olika namn, samma funktion
+
+| Snap docs | Vår capture | Sannolik orsak |
+|---|---|---|
+| `QueryLensStudioRag` | `QueryLensStudioKnowledgeBase` | Namn-evolution; vår empiriska är aktuell per 2026-05-13 |
+| `CompileWithLogsTool` | `RecompileTypeScriptTool` | Samma underlying tool; vår exponeras med tydligare action-verb |
+| `ReadWriteTextFile` (1 tool) | `FileReadTool` + `FileEditTool` + `FileGrepTool` (3 tools) | Snap's prompt-exempel beskriver konsoliderat read+write; vår client ser tre granulärare ytor |
+
+## Officiella tools → vår client-equivalent (GraphQL-transport)
+
+Många officiella tools är exponerade som GraphQL-queries inom
+`scene-graphql` eller `asset-graphql`. Använd dessa GraphQL-
+queries i client-anrop.
+
+### Scene-introspektion
+
+| Snap docs | Vår client-väg |
+|---|---|
+| `GetLensStudioSceneGraph` | `scene-graphql` med `rootSceneObjects { ... }` |
+| `GetLensStudioSceneObjectById` | `scene-graphql` med `sceneObject(id) { ... }` |
+| `GetLensStudioSceneObjectByName` | `scene-graphql` med `allSceneObjects(nameContains: "X") { ... }` |
+
+### Asset-introspektion
+
+| Snap docs | Vår client-väg |
+|---|---|
+| `ListLensStudioAssets` | `asset-graphql` med `allAssets { ... }` |
+| `GetLensStudioAssetById` | `asset-graphql` med `asset(id) { ... }` |
+| `GetLensStudioAssetByPath` | `asset-graphql` med `assetByPath(path) { ... }` |
+| `GetLensStudioAssetsByName` | `asset-graphql` med `assetsByName(name) { ... }` |
+
+### Scene-mutation
+
+| Snap docs | Vår client-väg |
+|---|---|
+| `CreateLensStudioSceneObject` | `scene-graphql` mutation |
+| `DeleteLensStudioSceneObject` | `scene-graphql` mutation |
+| `RenameLensStudioSceneObject` | `scene-graphql` mutation |
+| `DuplicateLensStudioSceneObject` | `scene-graphql` mutation |
+| `SetLensStudioParent` | `scene-graphql` mutation |
+| `SetLensStudioProperty` | `scene-graphql` mutation (för scene-target) eller `asset-graphql` mutation (för asset-target som material) |
+| `CreateLensStudioComponent` | `scene-graphql` mutation |
+
+### Asset-mutation
+
+| Snap docs | Vår client-väg |
+|---|---|
+| `CreateLensStudioAsset` | `asset-graphql` med `createAsset(type, name)` |
+| `DeleteLensStudioAsset` | `asset-graphql` med `deleteAsset(id)` |
+| `RenameAsset` | `asset-graphql` med `renameAsset(id, newName)` |
+| `MoveLensStudioAsset` | `asset-graphql` mutation |
+| `DuplicateLensStudioAsset` | `asset-graphql` mutation |
+
+### Preset-flöden
+
+| Snap docs | Vår client-väg |
+|---|---|
+| `GetPresetRegistryTool` | `scene-graphql` med `presets(type?)` eller `asset-graphql` med `presets` |
+| `CreateSceneObjectFromPresetTool` | `scene-graphql` mutation med preset-referens |
+| `CreateComponentFromPresetTool` | `scene-graphql` mutation med preset-referens |
+| `CreateAssetFromPresetTool` | `asset-graphql` mutation med preset-referens |
+
+## Tools i vår capture, ej i Snap's docs
+
+Specialiserade verktyg som inte exponeras som "normalized names"
+i Snap's system-prompt-exempel men som finns via ToolSearch.
+Operationellt viktiga för agent-flöden:
+
+| Tool | Använd för |
+|---|---|
+| `SetLensStudioSelection` | Highlight SceneObject i LS Inspector (Inspector handoff) |
+| `CapturePanelScreenshotTool` | Visuell verifiering via panel-screenshots |
+| `ListAllPanels` | Discover panel-IDs |
+| `GetBoundingBox` | AABB-mätning för mesh-pivot/scale-kalibrering |
+| `ExecuteEditorCode` | Direkt Editor API-access via TypeScript |
+| `GenerateLensIcon` | AI-genererad lens-ikon för draft/WIP |
+
+## Tools i Snap's docs, ej i vår capture
+
+Listade i Snap's system-prompt-exempel men ej fångade via vår
+ToolSearch 2026-05-13. Möjligt att de exponeras vid annan LS-
+config eller med specifika ChatTool-packages installerade.
+Probe live om de behövs:
+
+| Snap docs | Beskriven funktion |
+|---|---|
+| `GetLensStudioLogsTool` | Ad-hoc log-read utan preview-refresh |
+| `InstantiateLensStudioPrefab` | Prefab-instansering i scen |
+| `CreatePrefabFromSceneObject` | Konvertera SceneObject till prefab |
+| `GenerateThreeDAssetTool` | Detaljerad 3D-AI-generering (vs Fast3D) |
+| `GenerateTexture` | AI-texturer från text-prompt |
+| `GenerateFaceMaskTexture` | AI-ansiktsmask för face-filter |
+| `GetLensStudioContextMenuQueue` | Läsa "Use as AI Context"-kö |
+| `CheckAiContextQueue` | Polla AI-context-state |
+| `GetAiContextMenuQueue` | Läs AI-context-menu-state |
+| `LensStudio` | Allmän miljökontext (env-info) |
+
+---
+
 # Scene mutation / inspection
 
 ## `mcp__lens-studio__scene-graphql`
