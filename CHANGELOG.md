@@ -20,6 +20,31 @@ _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
 ---
 
+## [v0.7.1] — 2026-05-14
+
+### Patch — SKILL.md version fix + Generaliseringsregeln i skill-growth-protocol
+
+**Fix:**
+- `SKILL.md` — version 0.6.1 → 0.7.0. Bump var missad i v0.7.0 commit
+  `e2dfa45` (commit-meddelandet sa "version 0.6.1 → 0.7.0" men själva
+  filändringen inkluderade inte version-bumpen). Korrigerad här.
+
+**Feature:**
+- `references/skill-growth-protocol.md` (v0.3 → v0.4) — ny sektion
+  "Generaliseringsregeln" insat före in-flow ask. Tre-stegs
+  omskrivningsprotokoll:
+  1. Identifiera kärnan (projekt-specifikt → universellt mönster)
+  2. Ta bort allt projektspecifikt (checklist med explicit ❌/✅)
+  3. "Nästa kollega"-test (skulle en kollega på ett annat projekt
+     ha nytta av detta?)
+  
+  Triggad av observation att den tidigare "undvik projektspecifika
+  värden"-regeln var för svag — discoveries landade som anekdoter
+  snarare än universella regler. Nu en explicit metodologisk regel
+  som körs INNAN in-flow ask.
+
+---
+
 ## [v0.7.0] — 2026-05-14
 
 ### Mentor mode (voice / pace / pedagogy) + cumulative discovery history
