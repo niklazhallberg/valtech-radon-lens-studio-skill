@@ -18,6 +18,18 @@ anpassat för skill-evolution snarare än software-API.
 
 _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
+---
+
+## [v0.7.2] — 2026-05-14
+
+### 2026-05-14 — [project: skill-meta]
+- **VALTECH-PRESENTATION.md tillagd**: självständig översikt över
+  skillen för bred Valtech-publik (designer, teamlead, teknikchef,
+  beslutsfattare). Sju sektioner inkl. säkerhet och ROI.
+  Generaliserad — inga klient- eller personnamn.
+- File: `docs/VALTECH-PRESENTATION.md`
+- Type: [docs]
+
 ### 2026-05-14 — [project: skill-meta]
 - **Version convention codified in CONTRIBUTING.md**: `SKILL.md`
   `version:` field tracks minor releases only (0.7 → 0.8). Patch
