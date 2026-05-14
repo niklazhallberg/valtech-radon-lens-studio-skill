@@ -14,38 +14,70 @@ anpassat för skill-evolution snarare än software-API.
 
 ---
 
-## [Unreleased]
+## Improvements and newly acquired knowledge
 
-_Discoveries från pågående och kommande Valtech-projekt hamnar här._
+_Nya lärdomar som flutit in från pågående Valtech-projekt._
 
-### 2026-05-14 — [project: demo-face-lens]
-- **scene-graphql allSceneObjects + destructive mutations**:
-  offset-iteration hoppar item när mutation deleted SceneObject
-  mid-cycle. Re-query efter destructive batch.
+### 💡 2026-05-14 18:22 — [project: demo-face-lens]
+- **Hopp i lista efter borttagning av scen-objekt**: När man
+  bläddrar igenom alla scen-objekt sida för sida och samtidigt
+  tar bort något, hoppar listan över nästa post. Lösning: fråga
+  om listan från början igen efter varje borttagning.
+- Value for user: Sparar minst en bug-jakt där "saknat objekt"
+  verkar vara ett mysterium men i själva verket bara är en lista
+  som flyttats.
 - File: `references/mcp-tool-schemas.md` § Edge case: allSceneObjects offset
 - Type: [demo]
 
-### 2026-05-14 — [project: demo-foot-lens]
-- **Tracker confidence-tröskel för stabil anchor**: jitter under
-  ~0.55 confidence — defensiv guard med hysteresis (0.6/0.65)
-  eliminerar flicker. Hittades vid edge-of-frame foot-tracking
-  i pair-test.
+### 💡 2026-05-14 18:21 — [project: demo-foot-lens]
+- **Stabil anker vid lågt tracker-förtroende**: När en
+  body-tracker (fot, hand, ansikte) börjar bli osäker på var
+  kroppsdelen är, börjar position att hoppa runt synligt.
+  Lösning: göm visuellt innehåll när säkerheten är låg, visa
+  igen när den är stabil — med lite marginal så det inte blinkar.
+- Value for user: Slipper synligt jitter när användaren rör sig
+  nära kamerakanten — slutresultatet känns proffsigare.
 - File: `references/body-anchored-calibration.md` § Tracker confidence-tröskel för stabil anchor
 - Type: [demo]
 
-### 2026-05-14 — [project: demo-promo-lens]
-- **ScreenTransform parent anchor inheritance**: parent
-  ScreenTransform med anchors enabled överrider tyst barns
-  localPosition varje frame. Wrapper-pattern löser. Hittades
-  under Phase 2-wiring när stationära element drev tyst.
+### 💡 2026-05-14 18:20 — [project: demo-promo-lens]
+- **Skärm-anker tar över barnens position**: När ett
+  parent-objekt har skärm-anker aktiverat, skriver det tyst över
+  barnens position varje frame. Lösning: lägg ett vanligt objekt
+  mellan parent och barn — det vanliga objektet absorberar
+  anker-överskrivningen.
+- Value for user: Sparar 1-2 timmar bug-jakt där "jag satte
+  position till X men det syns inte" verkar omöjligt — när det
+  egentligen bara är parent-ankern som tar över varje frame.
 - File: `references/lens-studio-api-gotchas.md` § ScreenTransform parent anchor inheritance
 - Type: [demo]
 
 ---
 
+## [v0.7.4] — 2026-05-14
+
+### 💡 2026-05-14 18:30 — [project: skill-meta]
+- **Varm ton i CHANGELOG + protokoll v0.5**: CHANGELOG-entries
+  använder nu 💡-emoji, klockslag, plain svenska beskrivning
+  och "Value for user"-fält. Section-titeln är nu
+  "Improvements and newly acquired knowledge" istället för
+  "[Unreleased]". Protokoll-template för agentens in-flow-ask
+  omskriven till plain-svenska "Vi har lärt oss något nytt
+  här..." istället för tekniska "Vi har en discovery..."-rader.
+  Retro-uppdaterade 3 demo-entries + v0.7.3-entry till nya
+  formatet.
+- Value for user: CHANGELOG-strukturen blir läsbar för icke-
+  tekniska kollegor (designers, teamleads, leadership). Värdet
+  av varje lärdom är direkt synligt utan att läsa hela filen
+  den landade i.
+- Files: `CHANGELOG.md`, `references/skill-growth-protocol.md`
+- Type: [convention]
+
+---
+
 ## [v0.7.3] — 2026-05-14
 
-### 2026-05-14 — [project: skill-meta]
+### 💡 2026-05-14 13:30 — [project: skill-meta]
 - **Documentation sync: MCP capability gap-fixes (Tier 1)**:
   Cross-validerade extern Perplexity Deep Research-rapport
   (2026-05-13) mot existerande `references/`. Tre Tier 1-gaps
@@ -62,6 +94,10 @@ _Discoveries från pågående och kommande Valtech-projekt hamnar här._
     renumrering 2→3, 3→4, 4→5). Mentor-ärlig om empirisk
     observation att core MCP funkar utan explicit install i
     LS 5.20+.
+- Value for user: Tre operativa MCP-luckor stängda — designer
+  som möter MCP-gränser i verkliga projekt ser direkt vad MCP
+  kan och inte kan, och förstår mappningen mellan Snap's
+  officiella tool-namn och vad de faktiskt ser i Claude Code.
 - Files: `references/mcp-tool-schemas.md`, `references/mcp-setup.md`
 - Type: [docs]
 

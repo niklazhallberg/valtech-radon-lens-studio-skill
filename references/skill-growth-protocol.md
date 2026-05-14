@@ -1,4 +1,4 @@
-# Skill Growth Protocol v0.4
+# Skill Growth Protocol v0.5
 
 Syfte: fånga empiriska lärdomar från verkliga
 projekt så skillen växer över tid — i flow,
@@ -86,16 +86,37 @@ Om nej → skriv om tills svaret är ja.
 När en discovery passerar grep-checken:
 säg DIREKT till användaren, mitt i flowet.
 
-Template:
+Template (warm tone, jargong-fri — tekniska detaljer
+kommer EFTER ja):
 
-> "Vi har en discovery: [en mening, vad det är].
-> Den regeln finns inte i [relevant fil]
-> (jag kollade). Skriv in i skillen?
-> Detta gör skillen bättre och hjälper
-> dina kollegor (eller framtida dig) med
-> bättre underlag för nästa projekt.
+> "Vi har lärt oss något nytt här.
 >
-> **Ja / nej / spara för senare review.**"
+> [1-2 meningar om vad, i plain svenska — undvik
+> API-namn, filsökvägar, grep-output, "discovery"-ord]
+>
+> Det här är värdefullt att spara. Idag är det inte
+> med i skillen, men [konkret konsekvens för nästa
+> kollega om vi inte skriver in det — t.ex. "fastnar
+> i samma fälla 1-2 timmar" eller "slutresultatet
+> känns mindre proffsigt"].
+>
+> **Är det OK att jag uppdaterar systemfilerna med
+> din upptäckt?**
+>
+> Ja / nej / spara för senare"
+
+Internt INNAN denna ask:
+- Generaliseringsregeln-walk (3 steg) körs tyst
+- Grep-check körs tyst — bara om regeln INTE finns
+  någonstans går vi vidare till ask
+- Probe-resultat och tekniska bevis stannar i
+  agent-state, inte i user-meddelandet
+
+EFTER att användaren sagt ja kommer NÄSTA meddelande
+med konkret diff, fil-path, sektion och commit-
+meddelande för second-stage-approval. Det är där
+tekniska detaljer släpps in i konversationen — efter
+opt-in, inte före.
 
 Användarens svar styr:
 - **Ja** → öppna rätt references-fil, lägg
@@ -111,18 +132,28 @@ rulla tillbaka något specifikt.
 
 ## Format för entry
 
-- Vad: [en mening]
-- Hur hittades: [probe-kedjan kort]
+- Vad: [en mening, plain svenska — INTE en
+  API-path eller jargong-rad]
+- Värde för användare: [vad nästa kollega vinner
+  — tid sparad, fälla undviken, något känns bättre.
+  EN rad, konkret. Obligatoriskt fält.]
+- Hur hittades: [probe-kedjan kort, internt]
 - Generaliserbar? [ja/nej + varför]
-- Föreslagen text: [neutralt skriven,
-  projektagnostisk]
+- Föreslagen text för references-fil: [neutralt
+  skriven, projektagnostisk, plain svenska där möjligt]
 
 ## CHANGELOG.md — alltid del av discovery-commit
 
 När en discovery committas (ja-path ovan):
 samma commit MÅSTE inkludera en prepend till
 `CHANGELOG.md` på repo-root, under sektionen
-`[Unreleased]`.
+`## Improvements and newly acquired knowledge`.
+
+(Notera: tidigare versioner använde `## [Unreleased]`
+som sektionstitel — bytt till värde-bärande titel
+från v0.5 av detta protokoll, eftersom CHANGELOG
+ska läsas som värde-narrativ av icke-tekniska läsare
+också.)
 
 Skäl: utan CHANGELOG-entry har discoveryn ingen
 kumulativ synlighet — den finns bara i git log.
@@ -132,19 +163,30 @@ läsare (designers, PMs, leadership).
 Entry-format (auto-extraherat av agent):
 
 ```markdown
-### YYYY-MM-DD — [project: <cwd-derived>]
-- **<title>**: <one-sentence description>
+### 💡 YYYY-MM-DD HH:MM — [project: <cwd-derived>]
+- **<title i plain svenska>**: <1-2 meningar
+  beskrivning, jargong-fri>
+- Value for user: <vad nästa kollega vinner — tid
+  sparad, fälla undviken, eller bara något känns
+  bättre>
 - File: `<path>` § <section>
-- Type: [discovery]
+- Type: [discovery] / [docs] / [convention]
 ```
 
 Auto-extraction:
-- `YYYY-MM-DD` — current date
+- 💡-emoji — alltid prefix på rubriken (signal:
+  positiv ny insikt)
+- `YYYY-MM-DD HH:MM` — current date + tid i 24h-format
 - `<cwd-derived>` — från `$PWD`
   (`~/Projects/<name>-lens` → `<name>-lens`)
-- `<title>` — kort summary
-- `<description>` — en mening från
-  "Vad:"-fältet i discovery-entryn
+- `<title>` — plain-svenska summary (om discovery
+  namns med API-term, översätt — t.ex. "ScreenTransform
+  parent anchor inheritance" → "Skärm-anker tar över
+  barnens position")
+- `<description>` — 1-2 meningar från "Vad:"-fältet,
+  plain svenska
+- `<value>` — direkt från "Värde för användare:"-fältet
+  i entry-formatet ovan
 - `<path>` — relativ path av edited fil
 - `<section>` — markdown-section där entryn hamnade
 
@@ -195,6 +237,18 @@ onboarding-diagnosen och i denna fil.
 
 ## Changelog
 
+- v0.4 → v0.5 (2026-05-14): warm-tone CHANGELOG-format.
+  In-flow-ask-template omskriven till plain svenska utan
+  jargong (no grep, no "discovery"-ord, no API-paths i
+  första meddelandet). Format-för-entry får nytt "Värde
+  för användare"-fält (obligatoriskt). CHANGELOG.md-spec:
+  section-titel ändrad från `[Unreleased]` till
+  `Improvements and newly acquired knowledge`; entry-rubrik
+  får 💡-emoji + `HH:MM`-timestamp; description ska vara
+  plain svenska; nytt `Value for user:`-fält per entry.
+  Triggad av Niklaz observation att tidigare protokoll-
+  template var för teknisk och bröt mot voice-and-pedagogy
+  principen om att translatera jargon.
 - v0.3 → v0.4 (2026-05-14): Generaliseringsregeln
   som explicit omskrivningssteg. Tre steg
   (identifiera kärnan → ta bort projektspecifikt
