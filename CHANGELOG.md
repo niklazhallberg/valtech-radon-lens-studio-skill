@@ -78,10 +78,10 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 ## [v0.7.2] — 2026-05-14
 
 ### 2026-05-14 — [project: skill-meta]
-- **VALTECH-PRESENTATION.md tillagd**: självständig översikt över
-  skillen för bred Valtech-publik (designer, teamlead, teknikchef,
-  beslutsfattare). Sju sektioner inkl. säkerhet och ROI.
-  Generaliserad — inga klient- eller personnamn.
+- **VALTECH-PRESENTATION.md added**: standalone overview of the
+  skill for a broad Valtech audience (designer, team lead, tech
+  lead, decision-maker). Seven sections including security and
+  ROI. Generalized — no client or personal names.
 - File: `docs/VALTECH-PRESENTATION.md`
 - Type: [docs]
 
@@ -99,26 +99,27 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 
 ## [v0.7.1] — 2026-05-14
 
-### Patch — SKILL.md version fix + Generaliseringsregeln i skill-growth-protocol
+### Patch — SKILL.md version fix + Generaliseringsregeln in skill-growth-protocol
 
 **Fix:**
-- `SKILL.md` — version 0.6.1 → 0.7.0. Bump var missad i v0.7.0 commit
-  `e2dfa45` (commit-meddelandet sa "version 0.6.1 → 0.7.0" men själva
-  filändringen inkluderade inte version-bumpen). Korrigerad här.
+- `SKILL.md` — version 0.6.1 → 0.7.0. The bump was missed in v0.7.0
+  commit `e2dfa45` (the commit message said "version 0.6.1 → 0.7.0"
+  but the file change itself didn't include the version bump).
+  Corrected here.
 
 **Feature:**
-- `references/skill-growth-protocol.md` (v0.3 → v0.4) — ny sektion
-  "Generaliseringsregeln" insat före in-flow ask. Tre-stegs
-  omskrivningsprotokoll:
-  1. Identifiera kärnan (projekt-specifikt → universellt mönster)
-  2. Ta bort allt projektspecifikt (checklist med explicit ❌/✅)
-  3. "Nästa kollega"-test (skulle en kollega på ett annat projekt
-     ha nytta av detta?)
+- `references/skill-growth-protocol.md` (v0.3 → v0.4) — new section
+  "Generaliseringsregeln" (Generalization rule) inserted before the
+  in-flow ask. Three-step rewrite protocol:
+  1. Identify the core (project-specific → universal pattern)
+  2. Remove everything project-specific (checklist with explicit ❌/✅)
+  3. "Next colleague" test (would a colleague on a different project
+     benefit from this?)
   
-  Triggad av observation att den tidigare "undvik projektspecifika
-  värden"-regeln var för svag — discoveries landade som anekdoter
-  snarare än universella regler. Nu en explicit metodologisk regel
-  som körs INNAN in-flow ask.
+  Triggered by the observation that the earlier "avoid project-
+  specific values" rule was too weak — discoveries landed as
+  anecdotes rather than universal rules. Now an explicit
+  methodological rule that runs BEFORE the in-flow ask.
 
 ---
 
@@ -126,23 +127,23 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### Mentor mode (voice / pace / pedagogy) + cumulative discovery history
 
-Skillens första canonical voice-capture, plus protokollet för hur skillen växer över tid.
+The skill's first canonical voice capture, plus the protocol for how the skill grows over time.
 
-**Nya filer:**
+**New files:**
 
-- **`references/voice-and-pedagogy.md`** — 8 principer (Believe in user, Guide-not-dictate, Honest about uncertainty, Celebrate progress, Connect over time, Give agency, Value-exchange transparency, Embodied first-person voice) + 3 lager (Voice/Pace/Pedagogy). Worked examples från Samba/adidas-sessionen.
-- **`references/glossary-translation.md`** — 19 tekniska termer i klarspråk (GLB, FBX, MCP, scen-hierarki, state machine, Try-On Pack, etc.) + first-use-regel.
-- **`references/mentor-flow-patterns.md`** — 7 templates: progress-bar mellan frågor, magic moment celebration, "kom och titta i LS"-inbjudan, "hitta i LS UI"-navigation, long-call mellansnack, embodied screenshot-narration, Inspector handoff.
-- **`references/skill-growth-protocol.md`** (v0.3) — in-flow ask för discoveries med colleague-impact-framing; SKILL-DISCOVERIES.md som backup-path; CHANGELOG.md som obligatorisk del av varje discovery-commit.
-- **`CHANGELOG.md`** — denna fil. Kumulativ skill-biografi.
+- **`references/voice-and-pedagogy.md`** — 8 principles (Believe in user, Guide-not-dictate, Honest about uncertainty, Celebrate progress, Connect over time, Give agency, Value-exchange transparency, Embodied first-person voice) + 3 layers (Voice/Pace/Pedagogy). Worked examples from the foot-tracking Sponsored Lens session.
+- **`references/glossary-translation.md`** — 19 technical terms in plain language (GLB, FBX, MCP, scene hierarchy, state machine, Try-On Pack, etc.) + first-use rule.
+- **`references/mentor-flow-patterns.md`** — 7 templates: progress bar between questions, magic-moment celebration, "come and look in LS" invitation, "find it in the LS UI" navigation, long-call mid-talk, embodied screenshot narration, Inspector handoff.
+- **`references/skill-growth-protocol.md`** (v0.3) — in-flow ask for discoveries with colleague-impact framing; SKILL-DISCOVERIES.md as backup path; CHANGELOG.md as mandatory part of every discovery commit.
+- **`CHANGELOG.md`** — this file. Cumulative skill biography.
 
 **Rewrites / patches:**
 
-- **`references/onboarding-protocol.md`** — announce-structure-omvändning (reverses prior "don't announce 8/3"-regel); Q1.2 (känsla) accepts open answer; Q1.3 (tempo) sensoriska exempel istället för sekunder; Readiness Report plain-language-purpose före filnamn.
-- **`references/concierge-setup-flow.md`** — Step 8 öppnar med structure-announcement istället för dold pacing.
-- **`references/phase-progression.md`** — magic-moment-checkpoint per phase (0/B/1/1.5/2/2.5/3/4/5) som strukturella krav + översikt-tabell. Phase 3 cross-ref till Template 7.
-- **`SKILL.md`** — voice mandate leads (innan role-split). Version 0.6.1 → 0.7.0.
-- **`docs/MANUAL.html`** — rebuilt beginner-first 4-step flow (claude.ai/code → terminalen → klistra setup-prompt → följ Claude). 71 KB bilingual → 32 KB svensk single-language. Setup-prompt som magic centerpiece. "Fastnar du?"-sektion med 4 vägar inkl. screenshot-pasta.
+- **`references/onboarding-protocol.md`** — announce-structure reversal (reverses the prior "don't announce 8/3" rule); Q1.2 (feeling) accepts open answer; Q1.3 (tempo) sensory examples instead of seconds; Readiness Report plain-language purpose before filename.
+- **`references/concierge-setup-flow.md`** — Step 8 opens with structure announcement instead of hidden pacing.
+- **`references/phase-progression.md`** — magic-moment checkpoint per phase (0/B/1/1.5/2/2.5/3/4/5) as structural requirements + overview table. Phase 3 cross-ref to Template 7.
+- **`SKILL.md`** — voice mandate leads (before role-split). Version 0.6.1 → 0.7.0.
+- **`docs/MANUAL.html`** — rebuilt beginner-first 4-step flow (claude.ai/code → terminal → paste setup prompt → follow Claude). 71 KB bilingual → 32 KB Swedish single-language. Setup prompt as the magic centerpiece. "Stuck?" section with 4 paths including screenshot paste.
 
 ---
 
@@ -150,18 +151,18 @@ Skillens första canonical voice-capture, plus protokollet för hur skillen väx
 
 ### Snap-docs mirror + MCP tool schemas + v0.6.0 follow-up patches
 
-Skillens första laser-fokuserade kunskapsbas + canonical MCP-referens.
+The skill's first laser-focused knowledge base + canonical MCP reference.
 
-**Nya filer:**
+**New files:**
 
-- **`references/snap-docs/`** — 365 markdown-sidor curated från `developers.snap.com/lens-studio/` (5.x current), organiserade i 9 must-have buckets (MCP, scripting, assets, scene, AR-tracking, try-on, publishing, performance, overview) + nice-to-have/. `00-INDEX.md` som routing-tabell. `.mirror-meta.md` för inventory + maintenance.
-- **`references/mcp-tool-schemas.md`** — empirical capture av alla 20 `mcp__lens-studio__*` tool-schemas i 6 kategorier (Scene 3, Asset 6, Panel 2, File/scripting 5, Generation 2, Runtime/Knowledge 2).
+- **`references/snap-docs/`** — 365 markdown pages curated from `developers.snap.com/lens-studio/` (5.x current), organized in 9 must-have buckets (MCP, scripting, assets, scene, AR-tracking, try-on, publishing, performance, overview) + nice-to-have/. `00-INDEX.md` as routing table. `.mirror-meta.md` for inventory + maintenance.
+- **`references/mcp-tool-schemas.md`** — empirical capture of all 20 `mcp__lens-studio__*` tool schemas in 6 categories (Scene 3, Asset 6, Panel 2, File/scripting 5, Generation 2, Runtime/Knowledge 2).
 
-**Follow-up patches till v0.6.0** (commit `c8e0a96`):
+**Follow-up patches to v0.6.0** (commit `c8e0a96`):
 
-- `references/body-anchored-calibration.md` — Step 0 "Library-first sourcing" added before hierarchy walk. Feet-sektion leder med library-scan-resultat (Try-On Pack Sneakers + Foot Tracking template).
-- `references/mcp-setup.md` — wording-note for `/exit`-restart-instruktion (löser "i terminalen där Claude Code körs"-förvirring).
-- `references/concierge-setup-flow.md` Step 7 — inspiration-coaching rewrite med value-exchange + Pinterest/AR-filter-screenshot-exempel.
+- `references/body-anchored-calibration.md` — Step 0 "Library-first sourcing" added before hierarchy walk. Feet section leads with library-scan result (Try-On Pack Sneakers + Foot Tracking template).
+- `references/mcp-setup.md` — wording note for the `/exit` restart instruction (resolves the "in the terminal where Claude Code runs" confusion).
+- `references/concierge-setup-flow.md` Step 7 — inspiration coaching rewrite with value-exchange + Pinterest/AR-filter screenshot examples.
 
 ---
 
@@ -169,17 +170,17 @@ Skillens första laser-fokuserade kunskapsbas + canonical MCP-referens.
 
 ### Body-anchored calibration awareness
 
-Skillens första canonical fil — universal probe-first protokoll för all tracker-driven content (foot, face, head, hand, body, world-anchored).
+The skill's first canonical file — universal probe-first protocol for all tracker-driven content (foot, face, head, hand, body, world-anchored).
 
-**Ny fil:**
+**New file:**
 
 - **`references/body-anchored-calibration.md`** (committed `74e9b5f`):
-  - 8 mandatory steg (hierarchy walk → defensive component disable → asymmetric experiment → tracker-overwrite detection → wrapper-anchor architecture → mesh-pivot awareness → geometry before material → ⌘S handshake)
-  - Per-body-part defaults (feet seeded med Try-On Pack Sneakers + Foot Tracking custom component)
-  - Real-device pair-test workflow med pair-test-ask-pattern (WHY + WHAT + QUESTION + REASSURANCE)
+  - 8 mandatory steps (hierarchy walk → defensive component disable → asymmetric experiment → tracker-overwrite detection → wrapper-anchor architecture → mesh-pivot awareness → geometry before material → ⌘S handshake)
+  - Per-body-part defaults (feet seeded with Try-On Pack Sneakers + Foot Tracking custom component)
+  - Real-device pair-test workflow with pair-test-ask pattern (WHY + WHAT + QUESTION + REASSURANCE)
   - Visual judgment requires correct visual context (screen-coord vs world)
-  - Empirisk data: AABB-formel under-kompenserar X med ~15-20%, Y-axeln ska skippas (sole sitter vid Y=0)
-  - First seeded från Sponsored Lens foot-AR-build för adidas Samba.
+  - Empirical data: AABB formula under-compensates X by ~15-20%, Y-axis should be skipped (sole sits at Y=0)
+  - First seeded from a foot-tracking Sponsored Lens build.
 
 ---
 
