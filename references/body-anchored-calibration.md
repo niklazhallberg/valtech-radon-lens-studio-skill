@@ -290,24 +290,6 @@ These three transformations stack. A mutation in mesh-local +X can appear anywhe
 
 ---
 
-## Tracker confidence-tröskel för stabil anchor
-
-> ⚠️ DEMO ENTRY — added 2026-05-14 to demonstrate skill-growth-flow.
-> Not empirically verified. Safe to remove.
-
-Body-trackers (foot, hand, face) exponerar ofta en confidence-value.
-När confidence dippar under ~0.55 börjar anchor-position jittra
-synligt även när trackern fortfarande "ser" body-parten.
-
-**Defensiv guard-pattern:** disable visual content när confidence
-< 0.6; re-enable när confidence stabilt över 0.65 i minst 200 ms.
-Hysteresis-marginalen mellan 0.6 och 0.65 undviker flicker.
-
-**Gäller per body-part:** foot (Try-On Pack), hand, face mesh.
-Världs-tracking har annan stabilitet-modell — skippa.
-
----
-
 ## Real-device pair-test workflow
 
 ### In-memory streaming via Preview Lens pairing

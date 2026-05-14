@@ -259,19 +259,6 @@ Probe live om de behövs:
 
 **Cross-ref:** `../snap-docs/01-mcp-and-claude-code/developer-mode.md`; `../body-anchored-calibration.md` (hierarchy-walk).
 
-### Edge case: `allSceneObjects(offset:)` + destructive mutations
-
-> ⚠️ DEMO ENTRY — added 2026-05-14 to demonstrate skill-growth-flow.
-> Not empirically verified. Safe to remove.
-
-Vid iteration med `offset` över flera anrop, om en mutation deletes
-en SceneObject mellan anropen, skiftar offset-referensen — iteratorn
-hoppar över nästa item.
-
-**Workaround:** re-query `rootSceneObjects` efter varje destructive
-batch (delete, setParent som flyttar mellan grenar). Acceptera att
-"snapshot during iteration"-mönstret bryts vid mutation.
-
 ---
 
 ## `mcp__lens-studio__GetBoundingBox`
