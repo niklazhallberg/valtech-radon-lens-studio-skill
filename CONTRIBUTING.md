@@ -36,9 +36,11 @@ When you change something user-facing in the install flow:
 2. **Manually sync the same change into `docs/MANUAL.html`** — same
    logical content, HTML formatting (`<div class="step-note">`,
    `<figure class="step-screenshot">`, etc.).
-3. **Bump `version:` in `SKILL.md` frontmatter** for any user-facing
-   change. SemVer: patch for clarity fixes, minor for new behaviors
-   or distribution changes.
+3. **Bump `version:` in `SKILL.md` frontmatter** for **minor releases
+   only** (new behaviors, capability additions, distribution changes).
+   Patch releases (e.g. 0.7.0 → 0.7.1) are tracked via git tag +
+   CHANGELOG.md entry, NOT via SKILL.md-bump. See "Version convention"
+   below for the full rule.
 4. **Commit + push** to GitHub.
 5. **Build a new `.skill` file** (see below).
 6. **Replace the `.skill` on OneDrive Desktop** (back up the old one
@@ -92,6 +94,30 @@ describe the panel/state shown (e.g., `ls-mcp-server-panel.png`,
 API keys), the credential **must be rotated/invalidated before push**
 so the token in the committed image is no longer valid. For MCP
 tokens specifically: restart Lens Studio (token rotates on restart).
+
+## Version convention
+
+The `version:` field in `SKILL.md` frontmatter tracks **minor releases
+only** — not patches.
+
+- **Minor bumps** (e.g. 0.7 → 0.8): new behaviors, new reference files,
+  voice/UX rewrites, distribution changes. Bumps `SKILL.md` frontmatter.
+- **Patch bumps** (e.g. 0.7.0 → 0.7.1): clarity fixes, single-section
+  refinements, version-stamp corrections, small protocol additions.
+  Tracked via **git tag + CHANGELOG.md entry only**. `SKILL.md`
+  frontmatter stays at the parent minor version (0.7.0 stays the
+  stamp through 0.7.1, 0.7.2, etc.).
+
+This convention was established 2026-05-14 after the v0.7.0/v0.7.1
+cycle revealed that bumping `SKILL.md` on every patch creates pointless
+churn (commit, push, `.skill`-rebuild for a 1-line version-stamp
+change). The **git tag is the authoritative version**; `SKILL.md`'s
+`version:` field is the "capability era" marker, not a per-commit
+version stamp.
+
+When in doubt: if the change adds new files, new behaviors, or rewrites
+a user-facing flow — it's minor and bumps SKILL.md. Otherwise it's a
+patch and only tag + CHANGELOG track it.
 
 ## TODO — automation
 

@@ -18,6 +18,16 @@ anpassat för skill-evolution snarare än software-API.
 
 _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
+### 2026-05-14 — [project: skill-meta]
+- **Version convention codified in CONTRIBUTING.md**: `SKILL.md`
+  `version:` field tracks minor releases only (0.7 → 0.8). Patch
+  releases (0.7.0 → 0.7.1) are tracked via git tag + CHANGELOG entry,
+  NOT via SKILL.md-bump. Avoids churn from version-stamp commits on
+  small fix-ups. Triggered by v0.7.0/v0.7.1-cycle observation that the
+  SKILL.md bump per patch wasn't worth its commit overhead.
+- File: `CONTRIBUTING.md` § Version convention
+- Type: [convention]
+
 ---
 
 ## [v0.7.1] — 2026-05-14
