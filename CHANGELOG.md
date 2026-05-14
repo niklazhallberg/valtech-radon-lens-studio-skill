@@ -18,6 +18,14 @@ anpassat för skill-evolution snarare än software-API.
 
 _Discoveries från pågående och kommande Valtech-projekt hamnar här._
 
+### 2026-05-14 — [project: demo-promo-lens]
+- **ScreenTransform parent anchor inheritance**: parent
+  ScreenTransform med anchors enabled överrider tyst barns
+  localPosition varje frame. Wrapper-pattern löser. Hittades
+  under Phase 2-wiring när stationära element drev tyst.
+- File: `references/lens-studio-api-gotchas.md` § ScreenTransform parent anchor inheritance
+- Type: [demo]
+
 ---
 
 ## [v0.7.3] — 2026-05-14

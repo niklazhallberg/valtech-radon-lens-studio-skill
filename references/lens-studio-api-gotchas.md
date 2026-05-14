@@ -828,6 +828,24 @@ First validated on a Snapchat Sponsored Lens foot try-on build, 2026-05-13. Firs
 
 ---
 
+## ScreenTransform parent anchor inheritance
+
+> ⚠️ DEMO ENTRY — added 2026-05-14 to demonstrate skill-growth-flow.
+> Not empirically verified. Safe to remove.
+
+När en parent SceneObject har `ScreenTransform` med anchors enabled,
+överrides barn-SceneObjects `localPosition` tyst varje frame av
+parent-anchor-logiken. Wrapper-anchor-pattern dekopplar barnet.
+
+**Symptom:** Mutation sätter `localPosition` korrekt, read-back
+bekräftar — men nästa frame återställs värdet.
+
+**Lösning:** Skapa wrapper-SceneObject mellan parent och target,
+flytta target som child av wrapper. Wrapper absorberar
+anchor-overrides; target behåller sin localPosition.
+
+---
+
 ## Adding new findings
 
 When a new API gotcha is discovered during a lens project, add an entry here with:
