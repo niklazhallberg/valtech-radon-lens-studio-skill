@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code — Get Started</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #050709;
+    --ink: #ffffff;
+    --accent: #3b82f6;
+    --accent-soft: rgba(59, 130, 246, 0.12);
+    --rule: rgba(255, 255, 255, 0.08);
+    --ink-85: rgba(255, 255, 255, 0.85);
+    --ink-60: rgba(255, 255, 255, 0.60);
+    --ink-45: rgba(255, 255, 255, 0.45);
+    --ink-35: rgba(255, 255, 255, 0.35);
+    --code-bg: rgba(255, 255, 255, 0.04);
+    --code-border: rgba(255, 255, 255, 0.10);
+    --ok: #34d399;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+  }
+  body { min-height: 100vh; overflow-x: hidden; }
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+  a:hover { border-bottom-color: var(--accent); }
+
+  code, pre, .mono { font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace; }
+
+  /* ── Nav ───────────────────────────────────── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 7, 9, 0.6);
+  }
+  .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-35); }
+  .nav-badge { font-size: 10px; font-weight: 500; color: var(--ink-45); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── Hero (animation only) ─────────────────── */
+  .hero {
+    min-height: 82vh;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    position: relative;
+    padding: 60px 40px 0;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    width: min(80vmin, 720px);
+    display: grid;
+    place-items: center;
+    overflow: visible;
+  }
+  .hero-stage::after {
+    content: "";
+    position: absolute;
+    inset: 18% 13% 10%;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    filter: blur(56px);
+    opacity: 0.30;
+    pointer-events: none;
+    animation: ghost-glow 5.8s ease-in-out infinite;
+  }
+  #ascii {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    white-space: pre;
+    color: #f7f7f7;
+    background: transparent;
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    font-size: clamp(7px, 1.15vw, 10px);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    text-align: center;
+    text-shadow:
+      0 0 1px rgba(255, 255, 255, 0.98),
+      0 0 5px rgba(255, 255, 255, 0.42),
+      0 0 15px rgba(255, 255, 255, 0.18);
+    filter: contrast(1.48);
+    user-select: none;
+  }
+  @keyframes ghost-glow {
+    0%, 100% { transform: scale(0.94); opacity: 0.32; }
+    50% { transform: scale(1.06); opacity: 0.62; }
+  }
+
+  /* ── Story sections ────────────────────────── */
+  .story {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 96px 40px;
+    position: relative;
+  }
+  .story:last-of-type {
+    justify-content: flex-end;
+    padding-bottom: 56px;
+  }
+  .outro {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 96px 40px 56px;
+  }
+  .outro h3 {
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(18px, 1.9vw, 28px);
+    font-weight: 500;
+    color: var(--ink-85);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    max-width: none;
+  }
+  .tw-cursor {
+    display: inline-block;
+    width: 0.32em;
+    height: 0.9em;
+    background: var(--ink-85);
+    margin-left: 2px;
+    vertical-align: -0.06em;
+    animation: tw-blink 1s steps(1) infinite;
+  }
+  .tw-cursor.typing { animation: none; opacity: 1; }
+  .tw-cursor.done { animation: tw-blink 1.4s steps(1) infinite; }
+  @keyframes tw-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tw-cursor { animation: none; opacity: 0; }
+  }
+  @media (max-width: 900px) {
+    .outro h3 { white-space: normal; font-size: clamp(16px, 2.8vw, 22px); }
+  }
+  .story-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ink-35);
+    margin-bottom: 32px;
+  }
+  .story h2 {
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+    margin-bottom: 48px;
+    max-width: 1100px;
+  }
+  .story .copy {
+    font-size: clamp(12px, 1vw, 14px);
+    color: var(--ink-45);
+    max-width: 520px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+  }
+  .story .copy:last-child { margin-bottom: 0; }
+  .story .hint {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-35);
+    margin-top: 14px;
+  }
+
+  /* ── Compact value (URL / command) ─────────── */
+  .value-block {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px 12px 18px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 8px;
+    margin: 4px 0;
+    max-width: min(640px, 92vw);
+  }
+  .value-block .value {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: clamp(13px, 1.1vw, 16px);
+    color: var(--ink);
+    line-height: 1.3;
+    word-break: break-all;
+    text-align: left;
+  }
+  .value-block .value.url { color: var(--accent); }
+  .value-block .copy-btn {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  .paste-block {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 8px;
+    padding: 12px 16px 12px 18px;
+    margin: 4px auto 0;
+    max-width: min(720px, 94vw);
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    white-space: nowrap;
+  }
+  .paste-block p {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: clamp(13px, 1.1vw, 15px);
+    color: var(--ink-85);
+    line-height: 1.3;
+    text-align: left;
+  }
+  .paste-block .copy-btn { position: static; flex-shrink: 0; }
+
+  .copy-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--code-border);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: var(--ink-60);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.10); color: var(--ink); }
+  .copy-btn.copied { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* ── Fade-in ───────────────────────────────── */
+  .story.fade-in {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .story.fade-in.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .story.fade-in { opacity: 1; transform: none; transition: none; }
+    .hero-stage::after { animation: none; }
+  }
+
+  /* ── Footer ────────────────────────────────── */
+  .footer { padding: 56px 40px; text-align: center; }
+  .footer p { font-size: 12px; color: rgba(255,255,255,0.12); letter-spacing: 1px; }
+
+  @media (max-width: 640px) {
+    .nav { padding: 16px 20px; }
+    .story { padding: 80px 20px; }
+    .value-block { padding: 12px 14px; flex-direction: column; gap: 10px; }
+    .value-block .value { text-align: center; word-break: break-word; }
+    .paste-block { padding: 12px 14px; white-space: normal; flex-direction: column; gap: 10px; }
+    .paste-block p { text-align: center; word-break: break-word; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">V_RADON | Lens Studio Skill</span>
+  <span class="nav-badge">Quick Start</span>
+</nav>
+
+<!-- HERO — animation only -->
+<section class="hero">
+  <div class="hero-stage" aria-label="Rotating 3D ASCII ghost">
+    <pre id="ascii" aria-hidden="true"></pre>
+  </div>
+</section>
+
+<!-- 01 — Install -->
+<section class="story">
+  <span class="story-num">Download and</span>
+  <h2>Install Claude Code</h2>
+  <p class="copy">Open this in your browser:</p>
+  <div class="value-block">
+    <a class="value url" href="https://claude.ai/code" target="_blank" rel="noopener">https://claude.ai/code</a>
+    <button class="copy-btn" data-copy="https://claude.ai/code">Copy</button>
+  </div>
+</section>
+
+<!-- 02 — Verify -->
+<section class="story">
+  <span class="story-num">Time to</span>
+  <h2>Verify installation</h2>
+  <p class="copy">In your terminal, run:</p>
+  <div class="value-block">
+    <span class="value">claude --version</span>
+    <button class="copy-btn" data-copy="claude --version">Copy</button>
+  </div>
+</section>
+
+<!-- 03 — Start -->
+<section class="story">
+  <span class="story-num">This is what you&rsquo;ve been waiting for</span>
+  <h2>Let&rsquo;s get started</h2>
+  <p class="copy">Write:</p>
+  <div class="value-block">
+    <span class="value">claude</span>
+    <button class="copy-btn" data-copy="claude">Copy</button>
+  </div>
+  <p class="hint">and press Enter</p>
+</section>
+
+<!-- 04 — Paste -->
+<section class="story">
+  <span class="story-num">Activate skill by</span>
+  <h2>Paste something like</h2>
+  <div class="paste-block">
+    <p id="paste-text">I&rsquo;d need some help to build a Snapchat filter</p>
+    <button class="copy-btn" data-copy-target="#paste-text">Copy</button>
+  </div>
+</section>
+
+<!-- Outro -->
+<section class="outro">
+  <h3><span class="tw-text" data-text="Just follow along &mdash; and create something unexpected! :)"></span><span class="tw-cursor" aria-hidden="true"></span></h3>
+</section>
+
+<footer class="footer">
+  <p>Lens-Studio-Snapchat-Filter-Skill · 2026 · Niklaz Hallberg, Valtech RADON</p>
+</footer>
+
+<script>
+  // Copy-button handler — supports both data-copy (inline) and data-copy-target (selector)
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      var text = '';
+      if (btn.dataset.copy) {
+        text = btn.dataset.copy;
+      } else if (btn.dataset.copyTarget) {
+        var el = document.querySelector(btn.dataset.copyTarget);
+        text = el ? el.textContent.trim() : '';
+      }
+      if (!text) return;
+
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+
+      var originalText = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.textContent = originalText;
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  });
+
+  // Fade-in on scroll for story sections
+  (function() {
+    var sections = document.querySelectorAll('.story');
+    sections.forEach(function(s) { s.classList.add('fade-in'); });
+
+    if (!('IntersectionObserver' in window)) {
+      sections.forEach(function(s) { s.classList.add('is-visible'); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    sections.forEach(function(s) { io.observe(s); });
+  })();
+
+  // Typewriter effect on outro H3
+  (function() {
+    var outro = document.querySelector('.outro');
+    var target = document.querySelector('.tw-text');
+    var cursor = document.querySelector('.tw-cursor');
+    if (!outro || !target || !cursor) return;
+
+    var fullText = target.dataset.text || '';
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      target.innerHTML = fullText;
+      cursor.style.display = 'none';
+      return;
+    }
+
+    var started = false;
+    function start() {
+      if (started) return;
+      started = true;
+      // One full blink cycle (1s) before typing starts
+      setTimeout(function() {
+        cursor.classList.add('typing');
+        var i = 0;
+        var step = function() {
+          i++;
+          target.innerHTML = fullText.substring(0, i);
+          if (i < fullText.length) {
+            // Non-linear "human typing" pacing:
+            //   slow warm-up at start, slows further through middle (hesitation),
+            //   speeds up toward the end (finishing momentum).
+            //   Extra pauses after punctuation/em-dash for natural rhythm.
+            var progress = i / fullText.length;
+            var startRamp = Math.max(0, 1 - progress * 5) * 0.7;
+            var curve = 1 + 0.95 * Math.sin(progress * Math.PI) + startRamp;
+            var prevChar = fullText.charAt(i - 1);
+            var pause = 0;
+            if (prevChar === '.' || prevChar === '!' || prevChar === '?') pause = 220;
+            else if (prevChar === ',' || prevChar === ';' || prevChar === ':') pause = 140;
+            else if (prevChar === '—' || prevChar === '-' || prevChar === '–') pause = 180;
+            var jitter = 14 + Math.random() * 16;
+            setTimeout(step, jitter * curve + pause);
+          } else {
+            // Done typing — cursor stays at end and resumes blinking, slower
+            cursor.classList.remove('typing');
+            cursor.classList.add('done');
+          }
+        };
+        step();
+      }, 1000);
+    }
+
+    if (!('IntersectionObserver' in window)) { start(); return; }
+    var io2 = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          start();
+          io2.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    io2.observe(outro);
+  })();
+</script>
+
+<script>
+(function() {
+  function spawn(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+
+  const COLS = 98;
+  const ROWS = 68;
+  const DEPTH = 18;
+  const DEPTH_SIZE = 0.42;
+  const valueRamp = "  ..,,::cloxkO0XNWM@";
+  const word = "RADON";
+  const dotChars = ".,:";
+  const points = [];
+
+  const rightSide = [
+    [0.000, -0.865], [0.115, -0.862], [0.235, -0.835], [0.340, -0.785],
+    [0.425, -0.710], [0.485, -0.610], [0.515, -0.500], [0.520, -0.385],
+    [0.512, -0.250], [0.505, -0.145], [0.555, -0.140], [0.625, -0.166],
+    [0.705, -0.196], [0.770, -0.205], [0.815, -0.185], [0.835, -0.140],
+    [0.825, -0.095], [0.780, -0.055], [0.705, -0.020], [0.625, 0.015],
+    [0.585, 0.055], [0.565, 0.115], [0.610, 0.210], [0.690, 0.295],
+    [0.800, 0.365], [0.930, 0.425], [1.020, 0.470], [1.045, 0.520],
+    [1.020, 0.565], [0.930, 0.595], [0.800, 0.615], [0.665, 0.622],
+    [0.575, 0.640], [0.535, 0.692], [0.520, 0.760], [0.455, 0.770],
+    [0.370, 0.762], [0.290, 0.755], [0.218, 0.775], [0.145, 0.825],
+    [0.070, 0.865], [0.000, 0.882]
+  ];
+
+  const polygon = [
+    ...rightSide,
+    ...rightSide.slice(0, -1).reverse().map(([x, y]) => [-x, y])
+  ];
+
+  function pointInPolygon(x, y, poly) {
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const xi = poly[i][0], yi = poly[i][1];
+      const xj = poly[j][0], yj = poly[j][1];
+      const intersect = ((yi > y) !== (yj > y)) &&
+        (x < (xj - xi) * (y - yi) / ((yj - yi) || 1e-9) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function insideGhost(x, y) {
+    return pointInPolygon(x, y, polygon);
+  }
+
+  function boundaryWeight(x, y) {
+    const e = 0.014;
+    let n = 0;
+    n += insideGhost(x + e, y) ? 1 : 0;
+    n += insideGhost(x - e, y) ? 1 : 0;
+    n += insideGhost(x, y + e) ? 1 : 0;
+    n += insideGhost(x, y - e) ? 1 : 0;
+    return n < 4 ? 1 : 0;
+  }
+
+  function distanceToOutside(x, y) {
+    const maxSteps = 18;
+    const step = 0.018;
+    let minDist = maxSteps * step;
+    for (let a = 0; a < 16; a++) {
+      const ang = (a / 16) * Math.PI * 2;
+      const dx = Math.cos(ang) * step;
+      const dy = Math.sin(ang) * step;
+      for (let s = 1; s <= maxSteps; s++) {
+        if (!insideGhost(x + dx * s, y + dy * s)) {
+          minDist = Math.min(minDist, s * step);
+          break;
+        }
+      }
+    }
+    return minDist;
+  }
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const x = (c / (COLS - 1)) * 2.18 - 1.09;
+      const y = (r / (ROWS - 1)) * 1.92 - 0.96;
+      if (!insideGhost(x, y)) continue;
+
+      const edge = boundaryWeight(x, y);
+      const dist = distanceToOutside(x, y);
+      const normalized = Math.min(1, dist / 0.25);
+
+      const headBulge = Math.exp(-((x / 0.62) ** 2 + ((y + 0.38) / 0.82) ** 2));
+      const bellyBulge = Math.exp(-((x / 0.92) ** 2 + ((y - 0.32) / 0.62) ** 2));
+      const organic = 0.34 + headBulge * 0.14 + bellyBulge * 0.08;
+      const radiusZ = DEPTH_SIZE * Math.pow(normalized, 0.55) * organic;
+
+      for (let d = 0; d < DEPTH; d++) {
+        const u = (d / (DEPTH - 1)) * 2 - 1;
+        const z = u * radiusZ;
+        const surfaceBias = Math.pow(Math.abs(u), 0.35);
+        if (!edge && surfaceBias < 0.58) continue;
+        if (edge && surfaceBias > 0.58 && d % 2 === 0) {
+          points.push({ x: x * 1.006, y: y * 1.006, z: z * 1.04, edge: 1, dist, side: 2 });
+          points.push({ x: x * 1.018, y: y * 1.018, z: z * 1.02, edge: 1, dist, side: 2 });
+        }
+        points.push({ x, y, z, edge, dist, side: 0 });
+      }
+
+      if (edge) {
+        for (let d = 0; d < DEPTH; d++) {
+          const u = (d / (DEPTH - 1)) * 2 - 1;
+          points.push({ x, y, z: u * Math.max(radiusZ, 0.08), edge: 1, dist, side: 1 });
+        }
+      }
+    }
+  }
+
+  function rotate(p, t) {
+    const ay = t;
+    const ax = 0.045 + Math.cos(t * 0.18) * 0.015;
+    const az = Math.sin(t * 0.12) * 0.01;
+
+    let x = p.x, y = p.y, z = p.z;
+
+    let cy = Math.cos(ay), sy = Math.sin(ay);
+    let x1 = x * cy - z * sy;
+    let z1 = x * sy + z * cy;
+
+    let cx = Math.cos(ax), sx = Math.sin(ax);
+    let y1 = y * cx - z1 * sx;
+    let z2 = y * sx + z1 * cx;
+
+    let cz = Math.cos(az), sz = Math.sin(az);
+    let x2 = x1 * cz - y1 * sz;
+    let y2 = x1 * sz + y1 * cz;
+
+    const perspective = 3.8 / (3.8 - z2);
+    return { x: x2 * perspective, y: y2 * perspective, z: z2, edge: p.edge, dist: p.dist, side: p.side, originalX: p.x };
+  }
+
+  function render(time) {
+    const t = time * 0.00024;
+    const grid = Array.from({ length: ROWS }, () => Array(COLS).fill(" "));
+    const sortedPoints = [...points].sort((a, b) => a.z - b.z);
+
+    for (const p of sortedPoints) {
+      const q = rotate(p, t);
+      const col = Math.round(((q.x + 1.28) / 2.56) * (COLS - 1));
+      const row = Math.round(((q.y + 1.02) / 2.04) * (ROWS - 1));
+      if (row < 0 || row >= ROWS || col < 0 || col >= COLS) continue;
+
+      const front = Math.max(0, Math.min(1, (q.z + DEPTH_SIZE) / (DEPTH_SIZE * 2)));
+      const rightLight = Math.max(0, Math.min(1, (q.x + 0.45) / 1.55));
+      const leftShadow = Math.max(0, Math.min(1, (-q.x - 0.05) / 0.9));
+      const rim = q.edge ? 0.38 : 0;
+      const shell = q.side ? (q.side === 2 ? 0.44 : 0.26) : 0;
+      const innerDark = Math.max(0, Math.min(1, q.dist / 0.24));
+
+      let shade = front * 0.26 + rightLight * 0.16 + rim + shell - leftShadow * 0.42;
+      shade += (1 - innerDark) * 0.10;
+
+      const centerShadow = Math.max(0, 1 - Math.abs(q.x + 0.08) * 2.2);
+      const verticalFade = Math.max(0, 1 - Math.abs(q.y) * 0.85);
+      const highlightBand = Math.max(0, 1 - Math.abs(q.x - 0.18) * 4.2);
+
+      shade -= centerShadow * 0.22 * verticalFade;
+      shade += highlightBand * 0.18;
+
+      const topBrightening = q.y < -0.4 ? Math.max(0, (-0.4 - q.y) / 0.5) * 0.32 : 0;
+      shade += topBrightening;
+
+      shade = Math.max(0.02, Math.min(1, Math.pow(shade, 1.85)));
+
+      const hash = Math.abs(Math.sin((row * 91.7 + col * 37.3) * 12.9898)) % 1;
+      const normalizedRotation = ((t % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      const isFrontFacing = normalizedRotation < 0.34 || normalizedRotation > Math.PI * 2 - 0.34;
+      const drop = !q.edge
+        ? leftShadow * 0.90 + (1 - shade) * 0.24 + Math.max(0, -q.x) * 0.18 + centerShadow * 0.12
+        : isFrontFacing ? leftShadow * 0.06 : leftShadow * 0.16;
+      if (hash < drop) continue;
+
+      const idx = Math.max(0, Math.min(valueRamp.length - 1, Math.floor(shade * (valueRamp.length - 1))));
+      const existing = grid[row][col];
+      const existingPower = valueRamp.indexOf(existing);
+      if (idx >= existingPower || q.edge) {
+        if (shade > 0.76 || q.side === 2) {
+          const radonSequence = "RADONRADONRADONRADONRADON";
+          const edgeFlow = Math.floor(col / 1.25) + Math.floor(row * 0.45);
+          grid[row][col] = radonSequence[((edgeFlow % radonSequence.length) + radonSequence.length) % radonSequence.length];
+        } else if (shade > 0.46) {
+          grid[row][col] = word[((Math.floor(col / 4.6) + row) % word.length + word.length) % word.length].toLowerCase();
+        } else if (shade > 0.28) {
+          grid[row][col] = dotChars[(row + col) % dotChars.length];
+        } else {
+          grid[row][col] = " ";
+        }
+      }
+    }
+
+    el.textContent = grid.map(line => line.join("")).join(String.fromCharCode(10));
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+  }
+  spawn("ascii");
+})();
+</script>
+
+</body>
+</html>
