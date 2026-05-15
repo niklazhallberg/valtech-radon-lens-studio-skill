@@ -1,29 +1,32 @@
 # Onboarding protocol
 
-The 8-question / 3-block intake CC runs after concierge setup completes. **v0.7.0 update:** the 8/3 structure is now ANNOUNCED to the user (reverses prior "internal pacing" rule). Goal: minimum questions, maximum inference, but the user always knows where they are in the flow.
+The 4-question / 2-block intake CC runs after concierge setup completes. The structure is ANNOUNCED to the user (designers want a map). Goal: minimum questions, maximum inference, zero redundancy with concierge setup.
+
+**Slimming history:** Previous versions had 8Q / 3-block intake. Vision + lens-mechanics (lens-type, trigger, end-state) are now captured in concierge Step 6; client + ad-policy in Step 3. Deadline + feeling/tempo questions removed — feeling jargon was hard for designers to answer, deadline is asked on demand when polish-pacing matters (Phase 3).
 
 ## Contents
-- Onboarding philosophy (v0.7.0)
+- Onboarding philosophy
 - The opening — handoff from concierge
-- Block 1 — Vision (3 frågor)
-- Block 2 — Ramar (3 frågor)
-- Block 3 — Assets (2 frågor)
+- Block 1 — Mechanic (2 frågor: off-limits + audio)
+- Block 2 — Assets (2 frågor: INSPIRATION-confirmation + similar-lens, brand-assets)
 - Readiness Report gate
 - Proactive clarification per phase
 - Anti-patterns
 - Good patterns
 - Cross-references
 
-## Onboarding philosophy (v0.7.0)
+## Onboarding philosophy
 
-Shifts from prior versions summarized here. For the WHY of each shift, see `voice-and-pedagogy.md`.
+Core principles. For the WHY of each, see `voice-and-pedagogy.md`.
 
-- **Announce roadmap.** Tell the user upfront: 8 frågor, 3 block, ~5-10 min. Don't hide the structure to "feel conversational" — designers want to know where they are. Implements `voice-and-pedagogy.md` #5 (Connect over time) + #7 (Value-exchange transparency).
+- **Announce roadmap.** Tell the user upfront: 4 frågor, 2 block, ~2–3 min. Don't hide the structure — designers want to know where they are. Implements `voice-and-pedagogy.md` #5 + #7.
 - **Show progress between questions.** Between each Q, signal "Block X av Y · Fråga N". Template 1 in `mentor-flow-patterns.md`.
-- **Name value-exchange per question.** Each Q says what the user GETS for their input. Implements #7.
-- **Ask minimum. Infer maximum.** Designers don't know exact specs — they know feel. After all 8 answered, CC reads INSPIRATION/ and infers concrete design decisions WITHOUT asking.
-- **Preserve creative momentum.** Even with announced structure, intake is conversational — not bureaucratic. Keep acknowledgments short (1 sentence max between questions).
+- **Name value-exchange per question.** Each Q says what the user GETS for their input.
+- **Ask minimum. Infer maximum.** Designers don't know exact specs — they know feel. After all 4 answered, CC reads INSPIRATION/ + the similar-lens reference and infers concrete design decisions WITHOUT asking.
+- **No redundancy with concierge.** Vision, lens-mechanics (lens-type / trigger / end-state), and client + ad-policy are captured in concierge Step 3 + 6. NEVER re-ask in intake.
+- **Preserve creative momentum.** Conversational, not bureaucratic. Keep acknowledgments short (1 sentence max between questions).
 - **Translate jargon on first use.** Per `glossary-translation.md` first-use-rule. If a term might confuse, drop 1 plain sentence then move on.
+- **Allow skip on every question.** Varje Q slutar med `(Skriv 'skip' om du vill hoppa över.)` som en diskret hint i parentes. Om användaren skriver "skip" svarar agenten ENDAST "Ok, då går vi vidare." och fortsätter till nästa fråga — fråga aldrig varför, kommentera aldrig antal, pressa aldrig tillbaka. Skippade frågor landar som `[Ej besvarad]` i Readiness Report.
 
 ## The opening — handoff from concierge
 
@@ -31,92 +34,56 @@ Shifts from prior versions summarized here. For the WHY of each shift, see `voic
 
 CC opens with the structure-announcement:
 
-> CC: "Bra — nu går vi från setup till själva briefen. Jag ställer ungefär **8 frågor i tre block** — vision, ramar, assets — det tar 5-10 min. Ju skarpare du svarar, desto mer kan jag dra slutsatser själv senare istället för att fråga dig om småsaker. Du kan alltid säga 'hoppa över' eller 'jag vet inte än'.
+> CC: "Bra — nu går vi från setup till själva briefen. Jag ställer **4 frågor i två block** — mechanic, assets — det tar 2–3 min. Ju skarpare du svarar, desto mer kan jag dra slutsatser själv senare istället för att fråga dig om småsaker. Skriv 'skip' på en fråga som inte känns relevant — vi går bara vidare till nästa.
 >
-> **Block 1 av 3 — Vision.**  
-> Fråga 1: Beskriv lensen i 1-2 meningar — vad ska hända för användaren?"
+> **Block 1 av 2 — Mechanic.**
+> Fråga 1: Något explicit off-limits? Exempel: 'no face liquify' (brand prefers ungimmicked face), 'no 18+ gating även om kategorin tillåter' (campaign decision), 'must be selfie-only' (no rear camera).
+>
+> (Skriv 'skip' om du vill hoppa över.)"
 
 Deliberate elements in this opening:
-- "8 frågor i tre block" — roadmap. User now has a map.
-- "5-10 min" — time-commitment expectation, set honestly.
+- "4 frågor i två block" — roadmap. User now has a map.
+- "2–3 min" — time-commitment expectation, set honestly.
 - "Ju skarpare du svarar, desto mer..." — value-exchange. User knows effort is rewarded.
-- "Du kan alltid säga 'hoppa över'" — agency. Pause valve always present.
-- "Block 1 av 3 — Vision" — first progress signal. Sets the pattern.
+- "Skriv 'skip' på en fråga..." — agency. Pause valve always present. Canonical command is `skip`.
+- "Block 1 av 2 — Mechanic" — first progress signal. Sets the pattern.
 - Then immediately first question — no further preamble. Headline first.
 
-## Block 1 — Vision (3 frågor)
+## Block 1 — Mechanic (2 frågor)
 
-**Q1.1 — The moment:**
+This block captures edges of the spec that can't be inferred safely: off-limits items and audio.
 
-> "Fråga 1: Beskriv lensen i 1-2 meningar — vad ska hända för användaren?"
+Note on what's NOT here: vision, lens-type, trigger, end-state, and client + ad-policy are all captured in concierge Steg 3 + Steg 6 — re-asking them here is an anti-pattern. Feeling/tempo/deadline are removed entirely (feeling = jargon-heavy, tempo = inferred from INSPIRATION/ + similar-lens, deadline = asked on demand when Phase 3 polish-pacing matters).
 
-Example expected answer: *"User holds up phone, lens detects mood from expression, suggests Spotify podcast. Tap-to-confirm reveals podcast art with play button."*
+**Q1 — Off-limits:**
 
-Why open-ended: at this point, CC has no design constraints to work from. Forcing a tight schema here loses creative range.
-
-**Q1.2 — The feeling (open answer + invitation):**
-
-> "Fråga 2: Vilken känsla ska lensen lämna efter sig? Ett ord räcker (lekfull / mystisk / energisk / lugn / surrealistisk / nostalgisk / filmisk / kaotisk) — men säg gärna mer om du har det i huvudet. Två meningar om varför är guld, det styr hur jag väljer rörelse, färgmättnad och easing senare."
-
-Key change from prior version: NOT "one word only". User can give one word OR a sentence OR a paragraph. The value-exchange ("två meningar om varför är guld, det styr X") makes the invitation legible.
-
-Inference rules:
-- 1-word answer → CC drives motion + color + easing defaults from mood-keyword alone
-- Sentence answer → CC pulls additional design-direction (e.g., "premium men inte stel" → muted color saturation, slower easing)
-- Paragraph → CC writes a clear `mood-direction.md` snippet for the Readiness Report
-
-**Q1.3 — Tempo (sensory examples + reference clip invitation):**
-
-> "Fråga 3: Tempo — hur snabbt ska saker hända?
-> - **Snabbt / snäppigt** — saker poppar in direkt, som en TikTok-transition eller en notis som flyger in. Bra för humor och energi.
-> - **Medel** — saker rör sig som i en välgjord app-onboarding, märkbart men inte hastigt.
-> - **Långsamt / filmiskt** — saker svävar in, som en filmtrailer eller en parfymreklam. Bra för mystik, lyx, drömskt.
+> "Fråga 1: Något explicit off-limits? Exempel: 'no face liquify' (brand prefers ungimmicked face), 'no 18+ gating även om kategorin tillåter' (campaign decision), 'must be selfie-only' (no rear camera).
 >
-> Har du klipp eller filter du sett som har rätt tempo? Släng in en länk eller skärmdump i INSPIRATION/ — då matchar jag exakt istället för att gissa."
-
-Key change from prior version: NO numeric tween durations in the question. They map to numbers internally for CC:
-- snabbt → 0.2-0.4s tweens, sharp easing
-- medel → 0.5-0.8s, standard ease-in-out
-- långsamt → 0.8-1.5s, soft easings (cubic, sine)
-
-The user picks the SENSORY label; CC handles the numbers in PROJECT-DECISIONS.md / TECH-SPEC.md.
-
-If user provides a reference clip: CC analyzes (frame-by-frame if possible) and snaps tween durations + easing curves to match.
-
-## Block 2 — Ramar (3 frågor)
-
-Block transition (Template 1 from `mentor-flow-patterns.md`):
-
-> "Klart — vi har visionen pinned. Tre frågor kvar att jobba med: ramar, assets, sen Readiness Report.
->
-> **Block 2 av 3 — Ramar** (handlar om klient, deadline, off-limits).  
-> Fråga 4: Vilken klient + ad-policy-kategori?"
-
-**Q2.1 — Client + ad-policy category:**
-
-> "Fråga 4: Vilken klient + ad-policy-kategori? T.ex. 'adidas, sportswear (general)' eller 'RFSU, sexual wellness (regulated)'. Påverkar Snap:s review-tid (1-3 dagar för general, 1-2 veckor för regulated)."
-
-Value-exchange explicit: tells user WHY this matters (review timeline).
-
-**Q2.2 — Off-limits:**
-
-> "Fråga 5: Något explicit off-limits? Exempel: 'no face liquify' (brand prefers ungimmicked face), 'no 18+ gating även om kategorin tillåter' (campaign decision), 'must be selfie-only' (no rear camera)."
+> (Skriv 'skip' om du vill hoppa över.)"
 
 Key rule: don't ask "är det några constraints?" generically — ask explicitly for off-limits items. Open questions get empty answers; specific examples prompt specific answers.
 
-**Q2.3 — Deadline:**
+**Q2 — Audio:**
 
-> "Fråga 6: När ska lensen vara live? Ett datum eller en vecka. Styr hur många Phase 3 polish-iterationer vi hinner med och om vi behöver hoppa över Phase 2.5 advanced features."
+> "Fråga 2: Ljud — ja eller nej? Om ja: musik, sound effects, eller en befintlig sonic asset (klient-jingle)?
+>
+> (Skriv 'skip' om du vill hoppa över.)"
 
-Value-exchange: explicit about how the answer shapes the plan.
+Why this is now an explicit question (NEW): Previous versions silently defaulted to no audio. But branded lenses often have a sonic identity (jingle, branded SFX) that can't be inferred from images. Asking saves a Phase 2 surprise rework. Skip is fine — default behaviour is silent.
 
-## Block 3 — Assets (2 frågor)
+Inference notes:
+- "no" → silent default, no Audio Component in scene
+- "music" → CC picks a royalty-free / licensed track based on tempo + feeling inferred from INSPIRATION/
+- "SFX" → CC plans short triggered cues at key animation beats
+- "existing sonic asset" → ask user to drop the file in `brand-assets/audio/`
+
+## Block 2 — Assets (2 frågor)
 
 Block transition:
 
 > "Bra. Två frågor kvar.
 >
-> **Block 3 av 3 — Assets.** Här kollar jag igenom inspiration-bilderna du droppade och du hjälper mig fylla i luckorna."
+> **Block 2 av 2 — Assets.** Här kollar jag igenom inspiration-bilderna du droppade och du hjälper mig fylla i luckorna."
 
 CC says one friendly context line so Anna understands why bash output is about to appear (Template 6 in `mentor-flow-patterns.md` — embodied screenshot narration applies here too):
 
@@ -133,51 +100,61 @@ CC extracts visual signals via reading the images (color analysis, composition, 
 
 When surfacing findings, present them naturally — never "I ran find ~/Projects/... and found 5 files" but "Du har 5 bilder. Jag ser mörka toner, neon-accenter, och minimalistisk stil...".
 
-**Q3.1 — Inspiration confirmation:**
+**Q3 — Inspiration confirmation + similar-lens reference:**
 
-> "Fråga 7: INSPIRATION/-foldern har [N] bilder. Jag ser [extracted summary — t.ex. 'mörk moody färgpalett med neon-accenter, långsam motion, minimalistisk komposition, Spotify-brand-element']. Matchar din vision, eller läser jag fel signaler?"
+> "Fråga 3: INSPIRATION/-foldern har [N] bilder. Jag ser [extracted summary — t.ex. 'mörk moody färgpalett med neon-accenter, långsam motion, minimalistisk komposition, Spotify-brand-element']. Stämmer det med din riktning, eller läser jag fel signaler?
+>
+> Finns det en befintlig Snapchat-lens du sett som liknar det du vill bygga? Snapcode eller länk hjälper massor — det är värt fem andra inferensfrågor.
+>
+> (Skriv 'skip' om du vill hoppa över.)"
 
-User confirms or corrects. CC adjusts inference.
+User confirms/corrects the visual summary AND (optionally) provides a Snapcode/link to a comparable lens.
 
-**Q3.2 — Brand assets:**
+The similar-lens reference is high-value: it gives CC a concrete benchmark for motion-feel, interaction-pattern, polish-level, and tween-character. If the user provides one, CC analyzes it (Snapcode → Snap web preview or frame extraction) and snaps Phase 0–3 defaults to match. Worth far more than an open "what tempo?" question.
 
-> "Fråga 8: Något specifikt i `brand-assets/` jag bör veta? Logos, brand-färger, fonts klienten har låst?"
+**Q4 — Brand assets:**
+
+> "Fråga 4: Något specifikt i `brand-assets/` jag bör veta? Logos, brand-färger, fonts klienten har låst?
+>
+> (Skriv 'skip' om du vill hoppa över.)"
 
 If `brand-assets/` empty → CC will infer brand from INSPIRATION/ + client name. If populated → CC uses those as authoritative over inference.
 
 ## Readiness Report gate
 
-After all 8 questions answered, CC drafts a Readiness Report. **v0.7.0 update:** explain each output file in plain language BEFORE naming the file (per `voice-and-pedagogy.md` Pedagogy layer + `glossary-translation.md` first-use rule).
+After all 4 questions answered, CC drafts a Readiness Report. The table consolidates everything from Steg 3, Steg 6, the 4 intake-answers, plus CC's inferences from INSPIRATION/ + similar-lens reference.
 
 CC opens with:
 
-> "Klart — alla 8 frågor besvarade. Nu sammanställer jag en **Readiness Report** — en tabell med alla beslut vi tagit i intake. Du går igenom rad-för-rad, säger OK eller ändrar, sen kör jag Phase 0 (specs)."
+> "Klart — alla 4 frågor besvarade. Nu sammanställer jag en **Readiness Report** — en tabell med alla beslut vi tagit. Du går igenom rad-för-rad, säger OK eller ändrar, sen kör jag Phase 0 (specs)."
 
 Then the table (markdown):
 
 ```markdown
 ## Readiness Report — [client] Lens
 
-| Decision | Value | |
-|---|---|---|
-| Vision | [Q1.1 verbatim] | ✔ |
-| Feeling | [Q1.2] | ✔ |
-| Pace | [Q1.3] | ✔ |
-| Client + category | [Q2.1] | ✔ |
-| Off-limits | [Q2.2] | ✔ |
-| Deadline | [Q2.3] | ✔ |
-| **CC inference** | | |
-| Color palette | [3-5 hex codes from INSPIRATION/] | ✔/✏️ |
-| Motion feel | [characterized: ambient/sharp/elastic/etc.] | ✔/✏️ |
-| Mood signals | [extracted from imagery] | ✔/✏️ |
-| Typography | [inferred: modern/classic/playful/etc.] | ✔/✏️ |
-| Composition | [centered/dramatic/minimal/etc.] | ✔/✏️ |
-| **Defaults** | | |
-| Audio | Silent (no ambient track) | ✔/✏️ |
-| Interaction | Tap-anywhere primary trigger | ✔/✏️ |
-| Reset | No auto-reset (user controls re-trigger) | ✔/✏️ |
-| Camera | Front-only (selfie) | ✔/✏️ |
+| Decision | Value | Source | |
+|---|---|---|---|
+| Vision | [one-line lens description] | Steg 6 | ✔ |
+| Lens-type | [transformation / overlay / try-on / world-lens] | Steg 6 | ✔ |
+| Trigger | [expression / tap / always-on / product-recognition] | Steg 6 | ✔ |
+| End-state | [one-shot-payoff / loop / game-loop] | Steg 6 | ✔ |
+| Client + category | [client name, ad-policy category] | Steg 3 | ✔ |
+| Off-limits | [intake Q1] | Intake | ✔ |
+| Audio | [intake Q2 — yes (music/SFX/asset) or no] | Intake | ✔ |
+| Similar-lens reference | [Snapcode/link from intake Q3, or '[Ej angiven]'] | Intake | ✔ |
+| **CC inference (from INSPIRATION/ + similar-lens)** | | | |
+| Color palette | [3-5 hex codes] | Inferred | ✔/✏️ |
+| Motion feel | [ambient / sharp / elastic / etc.] | Inferred | ✔/✏️ |
+| Mood signals | [extracted from imagery + reference] | Inferred | ✔/✏️ |
+| Typography | [modern / classic / playful / etc.] | Inferred | ✔/✏️ |
+| Composition | [centered / dramatic / minimal / etc.] | Inferred | ✔/✏️ |
+| **Defaults** | | | |
+| Reset | No auto-reset (user controls re-trigger) | Default | ✔/✏️ |
+| Camera | Front-only (selfie) | Default | ✔/✏️ |
 ```
+
+**Skipped questions:** if the user typed "skip" on a question, that row shows `[Ej besvarad]` in the Value column. CC does NOT re-ask at Readiness Report stage — if the user wanted to fill it in, they would have. CC may suggest sensible defaults during phase work where the missing answer would otherwise block, but never frames it as "you missed question N".
 
 **After the table, CC explains the docs that come next — plain language FIRST, filename SECOND:**
 
@@ -208,12 +185,13 @@ At the start of every phase, CC runs this protocol (unchanged from prior version
 
 ### Phase 0 template — concept clarification
 
-> "Reading brief + inspiration. Innan jag drar specs, 2 saker att klargöra:
+Trigger is now captured in Steg 6 (concierge), so the only remaining Phase 0 question is reset behavior:
+
+> "Reading brief + inspiration. Innan jag drar specs, en sak att klargöra:
 >
-> 1. **Trigger-modell**: tap-anywhere för att starta effekten, eller always-on (effekten startar när lensen öppnas)? Default: always-on (matchar 'lugn + filmisk' pace).
-> 2. **Reset**: tap för att återställa till baseline, eller no-reset (effekten kvarstår tills lens stängs)? Default: no-reset.
+> **Reset**: tap för att återställa till baseline, eller no-reset (effekten kvarstår tills lens stängs)? Default: no-reset.
 >
-> Svara med ett ord per fråga. Sen kör jag."
+> Svara med ett ord. Sen kör jag."
 
 ### Phase 1 template — scene placement
 
@@ -256,26 +234,36 @@ At the start of every phase, CC runs this protocol (unchanged from prior version
 >
 > Snap submission är oåterkallelig — bekräfta noga."
 
-## Anti-patterns (v0.7.0)
+## Anti-patterns
 
-❌ Asking 8 frågor i en wall-of-text utan progress-signal
+❌ Asking the 4 frågor i en wall-of-text utan progress-signal
+❌ Återfråga lens-type, trigger eller end-state under intake (redan fångat i Steg 6 — anti-redundans)
+❌ Återfråga client eller ad-policy category (redan fångat i Steg 3 — anti-redundans)
+❌ Fråga "vilken känsla?" med jargong-ordval ("lekfull / mystisk / energisk / lugn") — orden är svåra för designers att svara på; använd visuella referenser (INSPIRATION/ + similar-lens) istället
+❌ Fråga om deadline preemptivt — vänta tills det matters (Phase 3 polish-pacing eller om användaren själv nämner urgency)
 ❌ "I need exact hex codes for primary and secondary brand colors" (infer from INSPIRATION/ instead)
 ❌ "What's your preferred easing function?" (jargon for non-experts — translate or skip)
 ❌ "Are there any constraints?" (too open — ask explicitly for off-limits)
 ❌ Building blind without asking when ambiguity is genuine
 ❌ Surfacing 10 inferences in PROJECT-DECISIONS.md without asking user to confirm the critical ones
-❌ Status-log voice during transitions: "Q1.1 captured. Moving to Q1.2." (use `mentor-flow-patterns.md` Template 1 instead)
-❌ Numeric tween durations in user-facing Q1.3 (use sensory examples — TikTok-transition vs parfymreklam)
+❌ Status-log voice during transitions: "Q1 captured. Moving to Q2." (use `mentor-flow-patterns.md` Template 1 instead)
+❌ Numeric tween durations in user-facing questions (use sensory examples or rely on similar-lens reference)
+❌ Asking "varför skippade du Q2?" — never re-probe skipped questions
+❌ Status-log on skips: "✅ Skipped Q2" (use "Ok, då går vi vidare." istället)
+❌ Counting skips and commenting: "Du har skippat 4 frågor — vill du gå tillbaka?"
 
-## Good patterns (v0.7.0)
+## Good patterns
 
-✅ Announce structure upfront ("8 frågor i 3 block, ~5-10 min")
-✅ Progress signal between questions ("Block 1 av 3 — Vision. Fråga 3...")
-✅ Value-exchange in every question ("Två meningar om varför är guld, det styr...")
+✅ Announce structure upfront ("4 frågor i 2 block, ~2–3 min")
+✅ Progress signal between questions ("Block 1 av 2 — Mechanic. Fråga 2...")
+✅ Value-exchange in every question ("Snapcode hjälper massor — det är värt fem andra inferensfrågor")
 ✅ Sensory examples instead of numbers ("Som en TikTok-transition" vs "0.3s ease-out")
 ✅ Plain-language file-purpose before filename ("En logg över alla beslut" → "Lagras som PROJECT-DECISIONS.md")
 ✅ "Pulled palette from INSPIRATION/: deep blue (#1e5d8c), teal (#3a9ab8), coral (#e89880). Matchar?"
 ✅ "Bubbles: ambient (always) eller triggered (on tap/smile)?" — genuine ambiguity, no inference possible
+✅ Discreet skip-hint i parens längst ner i varje fråga: `(Skriv 'skip' om du vill hoppa över.)`
+✅ Single-line acknowledgment på skip: "Ok, då går vi vidare." — inget mer
+✅ Skipped fields → `[Ej besvarad]` i Readiness Report, aldrig re-prompted
 
 ## Cross-references
 

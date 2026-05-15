@@ -44,13 +44,15 @@ Wait for: "öppnad" / "open" / "ready".
 
 Don't ask Anna to do project-save yet — that comes after we know the project folder name.
 
-### Step 3: Capture client name, create project folder
+### Step 3: Capture client + ad-policy category, create project folder
 
-Ask one question:
+Ask one question that captures both client identity AND ad-policy category in a single turn (previously the category was re-asked in intake Q4 — now merged here to eliminate redundancy):
 
-> CC: "Vad heter klienten eller projektet? T.ex. 'spotify', 'olw', 'voi'. Jag använder det för att skapa en projektmapp."
+> CC: "Vad heter klienten och vilken ad-policy-kategori gäller? T.ex. 'adidas, sportswear (general)' eller 'RFSU, sexual wellness (regulated)'. Jag skapar projektmappen och flaggar eventuella policy-restriktioner direkt (general = 1–3 dagars review hos Snap, regulated = 1–2 veckor)."
 
-Wait for Anna's answer (e.g., "Spotify").
+Wait for Anna's answer (e.g., "Spotify, music streaming (general)").
+
+Parse client-name + category. Save category to `PROJECT-STATE.md` under `ad_policy_category` so it propagates to Phase 5 submission prep without re-asking.
 
 Then create the folder structure:
 
@@ -105,13 +107,42 @@ cp ~/.claude/skills/lens-studio-snapchat-filter/assets/project-template/.gitigno
 
 No wait — proceed directly to step 6.
 
-### Step 6: Capture client brief
+### Step 6: Capture client brief + lens mechanics
 
-One question:
+One question that captures the lens VISION + three mechanical choices in a single structured turn. The user-facing options are plain language; the internal mapping (in the comment block below) is for CC's reference only:
 
-> CC: "Berätta i ett par meningar vad lensen ska vara. T.ex.: 'Spotify pod-kampanj. Användaren håller upp telefonen, får poddtips baserat på vilken humör de visar.' Vad är din motsvarighet?"
+> CC: "Beskriv lensen i en mening — och välj sedan en rad per kategori:
+>
+> **1. Vad ska hända visuellt?**
+> - Ansiktet/kroppen förändras (filter, mask, transformation)
+> - Något läggs ovanpå bilden (logos, text, UI som flyger in)
+> - Användaren testar produkter (kläder, glasögon, smycken, skor)
+> - Miljön runt om förändras (väder, atmosfär, neon-overlay)
+>
+> **2. Vad startar effekten?**
+> - Leende, blink eller öppen mun
+> - Tap på skärmen
+> - Alltid på från start
+> - Produkt-igenkänning (logo eller objekt syns)
+>
+> **3. Hur avslutas effekten?**
+> - En stor payoff och sen kvar (one-shot)
+> - Upprepas så länge lensen är öppen (loop)
+> - Flera utfall användaren kan trigga (game-loop)
+>
+> T.ex.: 'Spotify pod-kampanj — ansiktet förändras, leende triggar, en payoff sen kvar.'"
 
-Wait for Anna's brief. Save to `project-info/client-brief.md`.
+<!--
+INTERNAL MAPPING (CC use only — never surface to user):
+- Visuellt → lens-type: transformation / overlay / try-on / world-lens
+- Trigger → trigger: expression / tap / always-on / product-recognition
+- Avslut → end-state: one-shot-payoff / loop / game-loop
+
+These three fields are saved to PROJECT-STATE.md and feed Phase 0 specs +
+Readiness Report directly. Do NOT re-ask in intake — anti-pattern.
+-->
+
+Wait for Anna's brief. Save the one-line vision to `project-info/client-brief.md` and the three mechanical choices to `PROJECT-STATE.md` (fields: `lens_type`, `trigger`, `end_state`).
 
 **Silent tier detection.** After receiving the brief, CC silently analyzes it against the capability-tier framework (see `references/capability-tiers.md`). The tier check is invisible to Anna — never mention "tiers" or present them as a menu.
 
@@ -169,24 +200,28 @@ If fewer than 3 images: ask for more. If 3+: continue.
 
 ### Step 8: Handoff to onboarding intake
 
-Move from concierge mode to onboarding-protocol.md. **v0.7.0 update — REVERSAL of prior rule:** the 8/3 structure is now ANNOUNCED to Anna. See `onboarding-protocol.md` "Onboarding philosophy (v0.7.0)" for the why-reversal (designers want a map; hiding the structure broke trust in user-testing).
+Move from concierge mode to onboarding-protocol.md. The structure is announced to Anna so she has a map.
 
-Open with the structure-announcement, then immediately go into Q1.1:
+**Update — 4Q / 2-block intake** (down from 8Q / 3-block): vision + lens-mechanics are now captured in Step 6, client + ad-policy in Step 3, so intake focuses purely on edges (off-limits, audio) and asset signals (INSPIRATION-confirmation + similar-lens reference, brand-assets).
 
-> CC: "Bra — nu går vi från setup till själva briefen. Jag ställer ungefär **8 frågor i tre block** — vision, ramar, assets — det tar 5-10 min. Ju skarpare du svarar, desto mer kan jag dra slutsatser själv senare istället för att fråga dig om småsaker. Du kan alltid säga 'hoppa över' eller 'jag vet inte än'.
+Open with the structure-announcement, then immediately go into Q1:
+
+> CC: "Bra — nu går vi från setup till själva briefen. Jag ställer **4 frågor i två block** — mechanic, assets — det tar 2–3 min. Ju skarpare du svarar, desto mer kan jag dra slutsatser själv senare istället för att fråga dig om småsaker. Skriv 'skip' om en fråga inte känns relevant.
 >
-> **Block 1 av 3 — Vision.**  
-> Fråga 1: Beskriv lensen i 1-2 meningar — vad ska hända för användaren?"
+> **Block 1 av 2 — Mechanic.**
+> Fråga 1: Något explicit off-limits? Exempel: 'no face liquify' (brand prefers ungimmicked face), 'no 18+ gating även om kategorin tillåter' (campaign decision), 'must be selfie-only' (no rear camera).
+>
+> (Skriv 'skip' om du vill hoppa över.)"
 
 Deliberate elements (full breakdown in `onboarding-protocol.md` § "The opening"):
-- "8 frågor i tre block" — roadmap. Anna now has a map.
-- "5-10 min" — honest time-commitment.
+- "4 frågor i två block" — roadmap. Anna now has a map.
+- "2–3 min" — honest time-commitment.
 - "Ju skarpare du svarar..." — value-exchange (`voice-and-pedagogy.md` #7).
-- "Du kan alltid säga 'hoppa över'" — agency (#6).
-- "Block 1 av 3 — Vision" — first progress signal. Sets pattern for remaining blocks.
+- "Skriv 'skip'" — agency (#6).
+- "Block 1 av 2 — Mechanic" — first progress signal. Sets pattern for remaining block.
 - Immediate first question — no further preamble. Headline first.
 
-This transitions CC from concierge mode into the announced 8-question intake. Full intake protocol (block-progress between Qs, value-exchange per Q, plain-language Readiness Report) lives in `onboarding-protocol.md`.
+This transitions CC from concierge mode into the announced 4-question intake. Full intake protocol (block-progress between Qs, value-exchange per Q, plain-language Readiness Report) lives in `onboarding-protocol.md`.
 
 After intake completes and Readiness Report is approved, CC enters Phase 0.
 
