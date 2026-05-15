@@ -92,6 +92,38 @@ For a designer-friendly walkthrough with screenshots, open `docs/MANUAL.html` in
 
 ---
 
+## Auto-sync: stays current automatically
+
+Once installed, the skill keeps itself up-to-date in the background. There is **no daily `git pull` to remember**.
+
+How it works: when you start Claude Code (`claude` in any terminal), a small hook runs `git pull --ff-only` on the skill repo before your session begins. If new entries have arrived since you last saw an announcement, you see something like this inline in chat:
+
+```
+💡 Lens Studio-skillen uppdaterades — 2 nya lärdomar sedan sist
+
+Senaste ändringar:
+  • feat(discovery): Text3D position via wrapper-parent
+  • docs(v0.7.5): warm-tone CHANGELOG format
+
+Se CHANGELOG.md i skill-mappen för fullständig historik.
+```
+
+If nothing has changed, the hook is silent — no noise.
+
+**Setup:** the hook is wired up by `bin/install.sh` (coming soon) or manually by adding a `SessionStart` hook to `~/.claude/settings.json` that points to `scripts/session-sync.sh` in this repo. Once configured, you can forget it exists.
+
+**Behaviour guarantees:**
+
+- Pull-only — the hook never pushes anything
+- Silent on no-op (no new entries) and on any failure (offline, auth, conflict)
+- Never blocks `claude` startup, even if the pull is slow or fails
+- Tracks "last seen" state in `~/.claude/state/lens-skill-last-head` so you only get notified about what's actually new to you
+- Works across reclone / reset — stale state is detected and reset gracefully
+
+This is what makes the "compound interest on skill investment" idea real. Your colleagues push discoveries; the next time you open `claude`, you see them. No manual sync, no Slack ping required, no one chasing anyone.
+
+---
+
 ## What's in it
 
 | File / area | Contents |
