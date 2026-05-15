@@ -52,13 +52,29 @@
     background: rgba(5, 7, 9, 0.6);
     border-bottom: 1px solid var(--rule);
   }
-  .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--ink-60); }
+  .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-60); }
   .nav-badge { font-size: 10px; font-weight: 500; color: var(--ink-45); }
 
   /* ── Sections ──────────────────────────────── */
   .section { max-width: 1080px; margin: 0 auto; padding: 96px 40px; position: relative; }
   .section + .section { border-top: 1px solid var(--rule); }
-  .micro { font-size: 10px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--ink-35); margin-bottom: 24px; display: block; }
+  .hero + .section { border-top: none; }
+
+  /* Fade-in on scroll */
+  .section.fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .section.fade-in.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .section.fade-in { opacity: 1; transform: none; transition: none; }
+  }
+  .micro { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-35); margin-bottom: 24px; display: block; }
   .section h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 24px; }
   .section .lede { font-size: clamp(17px, 1.6vw, 19px); color: var(--ink-85); max-width: 720px; margin-bottom: 48px; line-height: 1.55; }
   .section p { color: var(--ink-85); margin-bottom: 16px; }
@@ -76,17 +92,88 @@
     pointer-events: none;
   }
   .hero h1 {
-    font-size: clamp(44px, 10vw, 128px);
-    font-weight: 700; letter-spacing: -0.05em; line-height: 0.95; margin-bottom: 32px;
+    font-size: clamp(34px, 5.5vw, 76px);
+    font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 20px;
   }
   .hero h1 .accent { opacity: 0.4; font-weight: 300; }
-  .hero .tagline { font-size: clamp(18px, 2vw, 22px); color: var(--ink-60); max-width: 640px; margin-bottom: 64px; line-height: 1.4; }
-  .hero-meta { display: flex; gap: 48px; flex-wrap: wrap; font-size: 12px; font-weight: 500; color: var(--ink-45); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 64px; }
+  .hero-kicker {
+    display: block;
+    font-size: clamp(10px, 0.85vw, 12px);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-60);
+    margin-bottom: 16px;
+  }
+  .hero .tagline { font-size: clamp(15px, 1.5vw, 18px); color: var(--ink-60); max-width: 560px; margin-bottom: 32px; line-height: 1.45; }
+  .hero-meta { display: flex; gap: 20px; flex-wrap: nowrap; white-space: nowrap; font-size: 11px; font-weight: 500; color: var(--ink-45); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 0; }
+
+  /* Hero 2-column layout + ASCII ghost stage */
+  .hero-top {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 32px;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+  .hero-stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 520px;
+    justify-self: end;
+    display: grid;
+    place-items: center;
+    overflow: visible;
+    margin-top: 0;
+  }
+  .hero-stage::after {
+    content: "";
+    position: absolute;
+    inset: 18% 13% 10%;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.11);
+    filter: blur(46px);
+    opacity: 0.46;
+    pointer-events: none;
+    animation: ghost-glow 5.8s ease-in-out infinite;
+  }
+  #ascii {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    white-space: pre;
+    color: #f7f7f7;
+    background: transparent;
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    font-size: clamp(5px, 0.85vw, 7px);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    text-align: center;
+    text-shadow:
+      0 0 1px rgba(255, 255, 255, 0.98),
+      0 0 5px rgba(255, 255, 255, 0.42),
+      0 0 15px rgba(255, 255, 255, 0.18);
+    filter: contrast(1.48);
+    user-select: none;
+  }
+  @keyframes ghost-glow {
+    0%, 100% { transform: scale(0.94); opacity: 0.32; }
+    50% { transform: scale(1.06); opacity: 0.62; }
+  }
+  @media (max-width: 900px) {
+    .hero-top { grid-template-columns: 1fr; }
+    .hero-stage { max-width: 420px; margin: 0 auto; justify-self: center; }
+  }
 
   /* 4-step preview grid */
   .preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
   .preview-cell { background: var(--bg); padding: 32px 24px; }
-  .preview-num { font-size: 10px; font-weight: 600; letter-spacing: 3px; color: var(--accent); margin-bottom: 12px; display: block; }
+  .preview-num { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; display: block; }
   .preview-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
   .preview-desc { font-size: 14px; color: var(--ink-60); line-height: 1.4; }
 
@@ -108,7 +195,7 @@
     padding: 32px;
   }
   .step-do h3, .step-see h3 {
-    font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
     color: var(--ink-45); margin-bottom: 20px;
   }
   .step-do h3::before { content: '▸ '; color: var(--accent); }
@@ -189,7 +276,7 @@
     display: inline-block;
     font-size: 10px;
     font-weight: 600;
-    letter-spacing: 3px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--warn);
     margin-bottom: 8px;
@@ -234,7 +321,7 @@
     display: flex; justify-content: space-between; align-items: center;
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--accent);
   }
@@ -317,25 +404,29 @@
 <!-- ║  NAV                                    ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <nav class="nav">
-  <span class="nav-brand">Snapchat-filter via Claude Code</span>
-  <span class="nav-badge">för dig som aldrig öppnat terminalen</span>
+  <span class="nav-brand">Valtech RADON | Lens Studio Skill Installation</span>
 </nav>
 
 <!-- ╔═════════════════════════════════════════╗ -->
 <!-- ║  HERO                                   ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section hero">
-  <span class="micro">Manual · 2026-05-13</span>
-  <h1>
-    <span class="line">Snapchat-filter</span>
-    <span class="line accent">på 10 minuter.</span>
-  </h1>
-  <p class="tagline">Du installerar ett verktyg. Du klistrar in en text. Claude tar hand om resten — och guidar dig genom det som saknas.</p>
+  <div class="hero-top">
+    <div class="hero-text">
+      <span class="hero-kicker">Snapchat Filter Skill</span>
+      <h1>
+        Lens Studio
+      </h1>
+      <p class="tagline">Du installerar ett verktyg. Du klistrar in en text. Claude tar hand om resten — och guidar dig genom det som saknas.</p>
 
-  <div class="hero-meta">
-    <span>Målgrupp · digital designer</span>
-    <span>Förkunskaper · inga</span>
-    <span>Tid · ~10 minuter</span>
+      <div class="hero-meta">
+        <span>Förkunskaper · inga</span>
+        <span>Tid · 10–15 min</span>
+      </div>
+    </div>
+    <div class="hero-stage" aria-label="Roterande 3D ASCII-spöke">
+      <pre id="ascii" aria-hidden="true"></pre>
+    </div>
   </div>
 
   <div class="preview-grid">
@@ -570,7 +661,7 @@ Jag drar onboarding-frågorna när du svarat på det.</pre>
 
     <div class="stuck-option">
       <h3>3. Be en kollega</h3>
-      <p>På Valtech finns andra som kört detta. Stilla på er Slack-kanal (#snapchat-filter eller motsvarande) och peka på det steg som krånglar. Någon har troligen sett samma sak.</p>
+      <p>På Valtech finns andra som kört detta. Skriv i er Slack-kanal (#snapchat-filter eller motsvarande) och peka på det steg som krånglar. Någon har troligen sett samma sak.</p>
     </div>
 
     <div class="stuck-option">
@@ -689,6 +780,228 @@ Jag drar onboarding-frågorna när du svarat på det.</pre>
       }, 1500);
     });
   });
+
+  // Fade-in on scroll for sections
+  (function() {
+    var sections = document.querySelectorAll('.section');
+    sections.forEach(function(s) { s.classList.add('fade-in'); });
+
+    if (!('IntersectionObserver' in window)) {
+      sections.forEach(function(s) { s.classList.add('is-visible'); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    sections.forEach(function(s) { io.observe(s); });
+  })();
+</script>
+
+<script>
+(function() {
+  const el = document.getElementById("ascii");
+  if (!el) return;
+
+  const COLS = 98;
+  const ROWS = 68;
+  const DEPTH = 18;
+  const DEPTH_SIZE = 0.42;
+  const valueRamp = "  ..,,::cloxkO0XNWM@";
+  const word = "RADON";
+  const dotChars = ".,:";
+  const points = [];
+
+  const rightSide = [
+    [0.000, -0.865], [0.115, -0.862], [0.235, -0.835], [0.340, -0.785],
+    [0.425, -0.710], [0.485, -0.610], [0.515, -0.500], [0.520, -0.385],
+    [0.512, -0.250], [0.505, -0.145], [0.555, -0.140], [0.625, -0.166],
+    [0.705, -0.196], [0.770, -0.205], [0.815, -0.185], [0.835, -0.140],
+    [0.825, -0.095], [0.780, -0.055], [0.705, -0.020], [0.625, 0.015],
+    [0.585, 0.055], [0.565, 0.115], [0.610, 0.210], [0.690, 0.295],
+    [0.800, 0.365], [0.930, 0.425], [1.020, 0.470], [1.045, 0.520],
+    [1.020, 0.565], [0.930, 0.595], [0.800, 0.615], [0.665, 0.622],
+    [0.575, 0.640], [0.535, 0.692], [0.520, 0.760], [0.455, 0.770],
+    [0.370, 0.762], [0.290, 0.755], [0.218, 0.775], [0.145, 0.825],
+    [0.070, 0.865], [0.000, 0.882]
+  ];
+
+  const polygon = [
+    ...rightSide,
+    ...rightSide.slice(0, -1).reverse().map(([x, y]) => [-x, y])
+  ];
+
+  function pointInPolygon(x, y, poly) {
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const xi = poly[i][0], yi = poly[i][1];
+      const xj = poly[j][0], yj = poly[j][1];
+      const intersect = ((yi > y) !== (yj > y)) &&
+        (x < (xj - xi) * (y - yi) / ((yj - yi) || 1e-9) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function insideGhost(x, y) {
+    return pointInPolygon(x, y, polygon);
+  }
+
+  function boundaryWeight(x, y) {
+    const e = 0.014;
+    let n = 0;
+    n += insideGhost(x + e, y) ? 1 : 0;
+    n += insideGhost(x - e, y) ? 1 : 0;
+    n += insideGhost(x, y + e) ? 1 : 0;
+    n += insideGhost(x, y - e) ? 1 : 0;
+    return n < 4 ? 1 : 0;
+  }
+
+  function distanceToOutside(x, y) {
+    const maxSteps = 18;
+    const step = 0.018;
+    let minDist = maxSteps * step;
+    for (let a = 0; a < 16; a++) {
+      const ang = (a / 16) * Math.PI * 2;
+      const dx = Math.cos(ang) * step;
+      const dy = Math.sin(ang) * step;
+      for (let s = 1; s <= maxSteps; s++) {
+        if (!insideGhost(x + dx * s, y + dy * s)) {
+          minDist = Math.min(minDist, s * step);
+          break;
+        }
+      }
+    }
+    return minDist;
+  }
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const x = (c / (COLS - 1)) * 2.18 - 1.09;
+      const y = (r / (ROWS - 1)) * 1.92 - 0.96;
+      if (!insideGhost(x, y)) continue;
+
+      const edge = boundaryWeight(x, y);
+      const dist = distanceToOutside(x, y);
+      const normalized = Math.min(1, dist / 0.25);
+
+      const headBulge = Math.exp(-((x / 0.62) ** 2 + ((y + 0.38) / 0.82) ** 2));
+      const bellyBulge = Math.exp(-((x / 0.92) ** 2 + ((y - 0.32) / 0.62) ** 2));
+      const organic = 0.34 + headBulge * 0.14 + bellyBulge * 0.08;
+      const radiusZ = DEPTH_SIZE * Math.pow(normalized, 0.55) * organic;
+
+      for (let d = 0; d < DEPTH; d++) {
+        const u = (d / (DEPTH - 1)) * 2 - 1;
+        const z = u * radiusZ;
+        const surfaceBias = Math.pow(Math.abs(u), 0.35);
+        if (!edge && surfaceBias < 0.58) continue;
+        if (edge && surfaceBias > 0.58 && d % 2 === 0) {
+          points.push({ x: x * 1.006, y: y * 1.006, z: z * 1.04, edge: 1, dist, side: 2 });
+          points.push({ x: x * 1.018, y: y * 1.018, z: z * 1.02, edge: 1, dist, side: 2 });
+        }
+        points.push({ x, y, z, edge, dist, side: 0 });
+      }
+
+      if (edge) {
+        for (let d = 0; d < DEPTH; d++) {
+          const u = (d / (DEPTH - 1)) * 2 - 1;
+          points.push({ x, y, z: u * Math.max(radiusZ, 0.08), edge: 1, dist, side: 1 });
+        }
+      }
+    }
+  }
+
+  function rotate(p, t) {
+    const ay = t;
+    const ax = 0.045 + Math.cos(t * 0.18) * 0.015;
+    const az = Math.sin(t * 0.12) * 0.01;
+
+    let x = p.x, y = p.y, z = p.z;
+
+    let cy = Math.cos(ay), sy = Math.sin(ay);
+    let x1 = x * cy - z * sy;
+    let z1 = x * sy + z * cy;
+
+    let cx = Math.cos(ax), sx = Math.sin(ax);
+    let y1 = y * cx - z1 * sx;
+    let z2 = y * sx + z1 * cx;
+
+    let cz = Math.cos(az), sz = Math.sin(az);
+    let x2 = x1 * cz - y1 * sz;
+    let y2 = x1 * sz + y1 * cz;
+
+    const perspective = 3.8 / (3.8 - z2);
+    return { x: x2 * perspective, y: y2 * perspective, z: z2, edge: p.edge, dist: p.dist, side: p.side, originalX: p.x };
+  }
+
+  function render(time) {
+    const t = time * 0.00024;
+    const grid = Array.from({ length: ROWS }, () => Array(COLS).fill(" "));
+    const sortedPoints = [...points].sort((a, b) => a.z - b.z);
+
+    for (const p of sortedPoints) {
+      const q = rotate(p, t);
+      const col = Math.round(((q.x + 1.28) / 2.56) * (COLS - 1));
+      const row = Math.round(((q.y + 1.02) / 2.04) * (ROWS - 1));
+      if (row < 0 || row >= ROWS || col < 0 || col >= COLS) continue;
+
+      const front = Math.max(0, Math.min(1, (q.z + DEPTH_SIZE) / (DEPTH_SIZE * 2)));
+      const rightLight = Math.max(0, Math.min(1, (q.x + 0.45) / 1.55));
+      const leftShadow = Math.max(0, Math.min(1, (-q.x - 0.05) / 0.9));
+      const rim = q.edge ? 0.38 : 0;
+      const shell = q.side ? (q.side === 2 ? 0.44 : 0.26) : 0;
+      const innerDark = Math.max(0, Math.min(1, q.dist / 0.24));
+
+      let shade = front * 0.26 + rightLight * 0.16 + rim + shell - leftShadow * 0.42;
+      shade += (1 - innerDark) * 0.10;
+
+      const centerShadow = Math.max(0, 1 - Math.abs(q.x + 0.08) * 2.2);
+      const verticalFade = Math.max(0, 1 - Math.abs(q.y) * 0.85);
+      const highlightBand = Math.max(0, 1 - Math.abs(q.x - 0.18) * 4.2);
+
+      shade -= centerShadow * 0.22 * verticalFade;
+      shade += highlightBand * 0.18;
+
+      shade = Math.max(0.02, Math.min(1, Math.pow(shade, 1.85)));
+
+      const hash = Math.abs(Math.sin((row * 91.7 + col * 37.3) * 12.9898)) % 1;
+      const normalizedRotation = ((t % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+      const isFrontFacing = normalizedRotation < 0.34 || normalizedRotation > Math.PI * 2 - 0.34;
+      const drop = !q.edge
+        ? leftShadow * 0.90 + (1 - shade) * 0.24 + Math.max(0, -q.x) * 0.18 + centerShadow * 0.12
+        : isFrontFacing ? leftShadow * 0.06 : leftShadow * 0.16;
+      if (hash < drop) continue;
+
+      const idx = Math.max(0, Math.min(valueRamp.length - 1, Math.floor(shade * (valueRamp.length - 1))));
+      const existing = grid[row][col];
+      const existingPower = valueRamp.indexOf(existing);
+      if (idx >= existingPower || q.edge) {
+        if (shade > 0.76 || q.side === 2) {
+          const radonSequence = "RADONRADONRADONRADONRADON";
+          const edgeFlow = Math.floor(col / 1.25) + Math.floor(row * 0.45);
+          grid[row][col] = radonSequence[((edgeFlow % radonSequence.length) + radonSequence.length) % radonSequence.length];
+        } else if (shade > 0.46) {
+          grid[row][col] = word[((Math.floor(col / 4.6) + row) % word.length + word.length) % word.length].toLowerCase();
+        } else if (shade > 0.18) {
+          grid[row][col] = dotChars[(row + col) % dotChars.length];
+        } else {
+          grid[row][col] = " ";
+        }
+      }
+    }
+
+    el.textContent = grid.map(line => line.join("")).join(String.fromCharCode(10));
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+})();
 </script>
 
 </body>
