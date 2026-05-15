@@ -6,6 +6,7 @@
 <title>Claude Code — Get Started</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdn.jsdelivr.net/gh/darkroomengineering/lenis@1.1.20/dist/lenis.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -174,16 +175,16 @@
     font-weight: 600;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--ink-35);
+    color: rgba(255, 255, 255, 0.22);
     margin-bottom: 32px;
   }
   .story h2 {
     font-family: 'Handjet', 'Space Grotesk', sans-serif;
-    font-size: clamp(48px, 7vw, 96px);
+    font-size: clamp(38px, 5.5vw, 76px);
     font-weight: 500;
     letter-spacing: -0.01em;
     line-height: 1.02;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
     max-width: 1100px;
   }
   .story .copy {
@@ -210,17 +211,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 12px 16px 12px 18px;
+    gap: 10px;
+    padding: 8px 12px 8px 14px;
     background: var(--code-bg);
     border: 1px solid var(--code-border);
-    border-radius: 8px;
+    border-radius: 7px;
     margin: 4px 0;
-    max-width: min(640px, 92vw);
+    max-width: min(560px, 92vw);
   }
   .value-block .value {
     font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
-    font-size: clamp(13px, 1.1vw, 16px);
+    font-size: clamp(12px, 0.95vw, 14px);
     color: var(--ink);
     line-height: 1.3;
     word-break: break-all;
@@ -235,20 +236,20 @@
   .paste-block {
     background: var(--code-bg);
     border: 1px solid var(--code-border);
-    border-radius: 8px;
-    padding: 12px 16px 12px 18px;
+    border-radius: 7px;
+    padding: 8px 12px 8px 14px;
     margin: 4px auto 0;
-    max-width: min(720px, 94vw);
+    max-width: min(640px, 94vw);
     display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     white-space: nowrap;
   }
   .paste-block p {
     font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
-    font-size: clamp(13px, 1.1vw, 15px);
+    font-size: clamp(12px, 0.95vw, 14px);
     color: var(--ink-85);
     line-height: 1.3;
     text-align: left;
@@ -260,13 +261,13 @@
     top: 10px; right: 10px;
     background: rgba(255,255,255,0.06);
     border: 1px solid var(--code-border);
-    border-radius: 5px;
-    padding: 5px 10px;
+    border-radius: 4px;
+    padding: 4px 8px;
     color: var(--ink-60);
     font-family: inherit;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.1px;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.15s;
@@ -293,14 +294,14 @@
 
   /* ── Footer ────────────────────────────────── */
   .footer { padding: 56px 40px; text-align: center; }
-  .footer p { font-size: 12px; color: rgba(255,255,255,0.12); letter-spacing: 1px; }
+  .footer p { font-size: 10px; color: rgba(255,255,255,0.08); letter-spacing: 0.4px; }
 
   @media (max-width: 640px) {
     .nav { padding: 16px 20px; }
     .story { padding: 80px 20px; }
-    .value-block { padding: 12px 14px; flex-direction: column; gap: 10px; }
+    .value-block { padding: 8px 12px; flex-direction: column; gap: 8px; }
     .value-block .value { text-align: center; word-break: break-word; }
-    .paste-block { padding: 12px 14px; white-space: normal; flex-direction: column; gap: 10px; }
+    .paste-block { padding: 8px 12px; white-space: normal; flex-direction: column; gap: 8px; }
     .paste-block p { text-align: center; word-break: break-word; }
   }
 </style>
@@ -343,9 +344,9 @@
 
 <!-- 03 — Start -->
 <section class="story">
-  <span class="story-num">This is what you&rsquo;ve been waiting for</span>
+  <span class="story-num">And now</span>
   <h2>Let&rsquo;s get started</h2>
-  <p class="copy">Write:</p>
+  <p class="copy">Write in your terminal:</p>
   <div class="value-block">
     <span class="value">claude</span>
     <button class="copy-btn" data-copy="claude">Copy</button>
@@ -358,7 +359,7 @@
   <span class="story-num">Activate skill by</span>
   <h2>Paste something like</h2>
   <div class="paste-block">
-    <p id="paste-text">I&rsquo;d need some help to build a Snapchat filter</p>
+    <p id="paste-text">Can you help me to build a Snapchat filter?</p>
     <button class="copy-btn" data-copy-target="#paste-text">Copy</button>
   </div>
 </section>
@@ -677,8 +678,8 @@
       const existing = grid[row][col];
       const existingPower = valueRamp.indexOf(existing);
       if (idx >= existingPower || q.edge) {
-        if (shade > 0.76 || q.side === 2) {
-          const radonSequence = "RADONRADONRADONRADONRADON";
+        if (shade > 0.68 || q.side === 2) {
+          const radonSequence = "V_RADON V_RADON V_RADON V_RADON ";
           const edgeFlow = Math.floor(col / 1.25) + Math.floor(row * 0.45);
           grid[row][col] = radonSequence[((edgeFlow % radonSequence.length) + radonSequence.length) % radonSequence.length];
         } else if (shade > 0.46) {
@@ -699,6 +700,25 @@
   }
   spawn("ascii");
 })();
+</script>
+
+<script>
+  // Smooth/inertia scroll via Lenis — glides briefly after wheel/trackpad input stops.
+  (function() {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || typeof Lenis !== 'function') return;
+    var lenis = new Lenis({
+      duration: 1.15,
+      easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smoothWheel: true,
+      smoothTouch: false
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  })();
 </script>
 
 </body>
