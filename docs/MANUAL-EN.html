@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snapchat-filter på 10 minuter — Manual</title>
+<title>Lens Studio AI Skill — Manual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -310,7 +310,7 @@
   }
   .screenshot-placeholder p { font-size: 13px; color: var(--ink-60); margin: 0; }
 
-  /* ── Details / collapsible "Funkar inte?" ──── */
+  /* ── Details / collapsible "Not working?" ──── */
   .hint-collapsible {
     margin-top: 20px;
     background: rgba(255,255,255,0.02);
@@ -389,7 +389,7 @@
   .stuck-option p { font-size: 15px; color: var(--ink-85); line-height: 1.55; }
   .stuck-option em { color: var(--accent); font-style: normal; }
 
-  /* ── Härnäst / idea grid ───────────────────── */
+  /* ── What's next / idea grid ────────────────── */
   .ideas-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -433,8 +433,8 @@
 <nav class="nav">
   <span class="nav-brand">Valtech RADON | Lens Studio Skill Installation</span>
   <div class="lang-toggle" role="group" aria-label="Language selector">
-    <a href="MANUAL.html" class="lang-toggle__option is-active" aria-current="page">SV</a>
-    <a href="MANUAL-EN.html" class="lang-toggle__option">EN</a>
+    <a href="MANUAL.html" class="lang-toggle__option">SV</a>
+    <a href="MANUAL-EN.html" class="lang-toggle__option is-active" aria-current="page">EN</a>
   </div>
 </nav>
 
@@ -444,18 +444,18 @@
 <section class="section hero">
   <div class="hero-top">
     <div class="hero-text">
-      <span class="hero-kicker">Kom igång med</span>
+      <span class="hero-kicker">Get started with</span>
       <h1>
         Lens Studio
       </h1>
-      <p class="tagline">Du installerar ett verktyg. Du klistrar in en text. Claude tar hand om resten — och guidar dig genom det som saknas.</p>
+      <p class="tagline">You install a tool. You paste a piece of text. Claude handles the rest — and guides you through whatever's missing.</p>
 
       <div class="hero-meta">
-        <span>Förkunskaper · inga</span>
-        <span>Tid · 10–15 min</span>
+        <span>Prerequisites · none</span>
+        <span>Time · 10–15 min</span>
       </div>
     </div>
-    <div class="hero-stage" aria-label="Roterande 3D ASCII-spöke">
+    <div class="hero-stage" aria-label="Rotating 3D ASCII ghost">
       <pre id="ascii" aria-hidden="true"></pre>
     </div>
   </div>
@@ -463,23 +463,23 @@
   <div class="preview-grid">
     <div class="preview-cell">
       <span class="preview-num">01</span>
-      <p class="preview-title">Installera Claude Code</p>
-      <p class="preview-desc">Ladda ner och kör installer. Som vilken app som helst.</p>
+      <p class="preview-title">Install Claude Code</p>
+      <p class="preview-desc">Download and run the installer. Just like any other app.</p>
     </div>
     <div class="preview-cell">
       <span class="preview-num">02</span>
-      <p class="preview-title">Öppna terminalen</p>
-      <p class="preview-desc">Skriv <code>claude</code>, tryck Enter. Du är inne.</p>
+      <p class="preview-title">Open the terminal</p>
+      <p class="preview-desc">Type <code>claude</code>, hit Enter. You're in.</p>
     </div>
     <div class="preview-cell">
       <span class="preview-num">03</span>
-      <p class="preview-title">Klistra in setup-prompt</p>
-      <p class="preview-desc">En text vi har förberett åt dig. Kopiera, klistra, kör.</p>
+      <p class="preview-title">Paste the setup prompt</p>
+      <p class="preview-desc">A piece of text we've prepared for you. Copy, paste, run.</p>
     </div>
     <div class="preview-cell">
       <span class="preview-num">04</span>
-      <p class="preview-title">Följ Claudes guidning</p>
-      <p class="preview-desc">Claude diagnostiserar och tar dig genom det som saknas.</p>
+      <p class="preview-title">Follow Claude's guidance</p>
+      <p class="preview-desc">Claude diagnoses and walks you through what's missing.</p>
     </div>
   </div>
 </section>
@@ -488,39 +488,39 @@
 <!-- ║  STEP 1                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-1">
-  <span class="micro">Steg 01 av 04</span>
-  <h2>Installera Claude Code</h2>
-  <p class="lede">Claude Code är hjärnan som bygger ditt filter. Den körs lokalt på din egen dator — inget moln, inget eget extra konto utöver Anthropic-inloggningen.</p>
+  <span class="micro">Step 01 of 04</span>
+  <h2>Install Claude Code</h2>
+  <p class="lede">Claude Code is the brain that builds your filter. It runs locally on your own machine — no cloud, no separate account beyond your Anthropic login.</p>
 
   <div class="step-grid">
     <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Gå till nedladdningssidan i din webbläsare:</p>
+      <h3>What you do</h3>
+      <p><strong>1.</strong> Go to the download page in your browser:</p>
       <div class="code-block compact">
         <pre><code>https://claude.ai/code</code></pre>
-        <button class="copy-btn" data-copy="https://claude.ai/code">Kopiera</button>
+        <button class="copy-btn" data-copy="https://claude.ai/code">Copy</button>
       </div>
-      <p><strong>2.</strong> Klicka på "Download" — sidan känner igen din dator (Mac, Windows eller Linux).</p>
-      <p><strong>3.</strong> Öppna den nedladdade filen och följ stegen i installern. Som vilken app som helst.</p>
-      <p><strong>4.</strong> När installern säger "klart" — öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter), klistra in detta och tryck Enter:</p>
+      <p><strong>2.</strong> Click "Download" — the page detects your OS (Mac, Windows, or Linux).</p>
+      <p><strong>3.</strong> Open the downloaded file and follow the installer. Just like any other app.</p>
+      <p><strong>4.</strong> When the installer says "done" — open the Terminal app (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter), paste this and press Enter:</p>
       <div class="code-block compact">
         <pre><code>claude --version</code></pre>
-        <button class="copy-btn" data-copy="claude --version">Kopiera</button>
+        <button class="copy-btn" data-copy="claude --version">Copy</button>
       </div>
     </div>
 
     <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>I terminalen, efter <code>claude --version</code>, borde du se ett versionsnummer:</p>
+      <h3>What you see when it worked</h3>
+      <p>In the terminal, after <code>claude --version</code>, you should see a version number:</p>
       <pre class="output">claude code 1.x.x</pre>
-      <p>Exakt nummer spelar ingen roll — det viktiga är att du <em>får</em> ett svar (inte "command not found").</p>
+      <p>The exact number doesn't matter — what matters is that you <em>get</em> a response (not "command not found").</p>
 
       <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
+        <summary>Not working?</summary>
         <ul>
-          <li><strong>"command not found: claude"</strong> — installer:n körde, men terminalen vet inte var <code>claude</code> ligger. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
-          <li><strong>Installern öppnar inte</strong> — Mac: högerklicka på filen → Öppna → "Öppna ändå". Windows: högerklicka → Egenskaper → "Avblockera".</li>
-          <li><strong>Vet inte vad Terminal är</strong> — det är en svart eller mörkgrön ruta där du skriver kommandon istället för att klicka. Öppna Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) och skriv "Terminal".</li>
+          <li><strong>"command not found: claude"</strong> — the installer ran, but the terminal doesn't know where <code>claude</code> lives. Close the terminal, open a new one. Usually fixes it.</li>
+          <li><strong>Installer won't open</strong> — Mac: right-click the file → Open → "Open anyway". Windows: right-click → Properties → "Unblock".</li>
+          <li><strong>Don't know what Terminal is</strong> — it's a black or dark-green window where you type commands instead of clicking. Open Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) and type "Terminal".</li>
         </ul>
       </details>
     </div>
@@ -531,40 +531,40 @@
 <!-- ║  STEP 2                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-2">
-  <span class="micro">Steg 02 av 04</span>
-  <h2>Starta Claude Code</h2>
-  <p class="lede">Nu öppnar du själva Claude-sessionen — det är där ni två (du och Claude) snackar.</p>
+  <span class="micro">Step 02 of 04</span>
+  <h2>Start Claude Code</h2>
+  <p class="lede">Now you open the Claude session itself — that's where the two of you (you and Claude) actually talk.</p>
 
   <div class="step-grid">
     <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p>I samma terminal som nyss, skriv:</p>
+      <h3>What you do</h3>
+      <p>In the same terminal, type:</p>
       <div class="code-block compact">
         <pre><code>claude</code></pre>
-        <button class="copy-btn" data-copy="claude">Kopiera</button>
+        <button class="copy-btn" data-copy="claude">Copy</button>
       </div>
-      <p>Tryck Enter.</p>
-      <p>Första gången du startar Claude Code kommer den be dig logga in via webbläsaren — den öppnar automatiskt en sida hos Anthropic. Logga in där, kom tillbaka till terminalen.</p>
+      <p>Press Enter.</p>
+      <p>The first time you start Claude Code it'll ask you to log in via the browser — it automatically opens a page at Anthropic. Log in there, come back to the terminal.</p>
 
       <div class="hint">
-        <strong>Behöver du konto?</strong> Claude Code kräver ett Anthropic-konto. Om du inte har ett — be din närmaste chef eller IT om access via Valtechs konto. Annars kan du fastna på login utan att förstå varför.
+        <strong>Need an account?</strong> Claude Code requires an Anthropic account. If you don't have one — ask your lead or IT for access via Valtech's account. Otherwise you can get stuck at login without understanding why.
       </div>
     </div>
 
     <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>I terminalen visas en prompt — en cursor som väntar på att du ska skriva. Något i stil med:</p>
+      <h3>What you see when it worked</h3>
+      <p>The terminal shows a prompt — a cursor waiting for you to type. Something like:</p>
       <pre class="output">Welcome to Claude Code.
 
 Type your message to begin:
 &gt; _</pre>
-      <p>Det streckade understrecket (cursor) blinkar. Du är inne. Allt du skriver härifrån går direkt till Claude.</p>
+      <p>The underscore (cursor) blinks. You're in. Everything you type from here goes straight to Claude.</p>
 
       <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
+        <summary>Not working?</summary>
         <ul>
-          <li><strong>"You need to log in"</strong> men ingen webbläsare öppnas — kopiera URL:en som visas i terminalen och klistra in i webbläsaren manuellt.</li>
-          <li><strong>"Account not found / unauthorized"</strong> — ditt Anthropic-konto har inte access till Claude Code-API:n. Be Valtech-IT lägga till dig.</li>
+          <li><strong>"You need to log in"</strong> but no browser opens — copy the URL shown in the terminal and paste it into your browser manually.</li>
+          <li><strong>"Account not found / unauthorized"</strong> — your Anthropic account doesn't have access to the Claude Code API. Ask Valtech IT to add you.</li>
         </ul>
       </details>
     </div>
@@ -575,57 +575,57 @@ Type your message to begin:
 <!-- ║  STEP 3 — THE MAGIC                     ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-3">
-  <span class="micro">Steg 03 av 04 · det här är magin</span>
-  <h2>Klistra in setup-prompten</h2>
-  <p class="lede">Detta är det enda du egentligen behöver minnas. Kopiera texten nedan, klistra in i Claude Code, tryck Enter. Claude tar över därifrån — hen diagnostiserar vad du har, vad som saknas, och guidar dig genom det.</p>
+  <span class="micro">Step 03 of 04 · this is the magic</span>
+  <h2>Paste the setup prompt</h2>
+  <p class="lede">This is the only thing you really need to remember. Copy the text below, paste it into Claude Code, press Enter. Claude takes over from there — diagnoses what you have, what's missing, and walks you through it.</p>
 
   <div class="prompt-block">
     <div class="prompt-header">
-      <span>SETUP-PROMPT — kopiera hela</span>
+      <span>SETUP PROMPT — copy the whole thing</span>
     </div>
-    <pre id="setup-prompt-text">Jag är ny användare som vill bygga ett Snapchat-filter via dig och Lens Studio. Jag har just installerat dig (Claude Code) och inget annat är på plats än. Hjälp mig komma igång.
+    <pre id="setup-prompt-text">I'm a new user who wants to build a Snapchat filter via you and Lens Studio. I just installed you (Claude Code) and nothing else is in place yet. Help me get started.
 
-Kör först en diagnostik på vad som finns / saknas på min maskin:
+First, run a diagnostic on what exists / is missing on my machine:
 
-1. Lens Studio installerat? Kolla om mappen `/Applications/Lens Studio.app` finns på Mac, eller om `lens-studio` finns i PATH på Windows/Linux.
+1. Lens Studio installed? Check if the folder `/Applications/Lens Studio.app` exists on Mac, or if `lens-studio` is in PATH on Windows/Linux.
 
-2. lens-studio-snapchat-filter-skillen installerad? Kolla om `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` existerar.
+2. Is the lens-studio-snapchat-filter skill installed? Check if `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` exists.
 
-3. MCP-server registrerad mellan dig och Lens Studio? Kör `claude mcp list` och leta efter en rad med `lens-studio`.
+3. MCP server registered between you and Lens Studio? Run `claude mcp list` and look for a row with `lens-studio`.
 
-Rapportera vad du hittade — vad finns, vad saknas. Sen guida mig genom det som saknas, ett steg i taget. Vänta på mitt 'klar' efter varje steg innan du går vidare.
+Report what you found — what's there, what's missing. Then guide me through what's missing, one step at a time. Wait for my 'done' after each step before moving on.
 
-Förklara varje steg i klarspråk. Jag är digital designer, inte tekniker. Använd mentor-tone — du är en kollega som hjälper mig, inte ett system som kör en setup-wizard. Berätta vad jag ser i Lens Studio och i terminalen när varje steg lyckas.
+Explain each step in plain language. I'm a digital designer, not a developer. Use mentor tone — you're a colleague helping me, not a system running a setup wizard. Tell me what I'll see in Lens Studio and in the terminal when each step succeeds.
 
-När allt är på plats: fråga vad mitt lens-projekt ska handla om (klient + grov idé) och kör dina vanliga onboarding-frågor. Du är expert på filter-bygge nu — guida mig hela vägen från idé till submission.</pre>
-    <button class="copy-btn" data-copy-target="#setup-prompt-text">Kopiera hela</button>
+When everything is in place: ask what my lens project is about (client + rough idea) and run your usual onboarding questions. You're the filter-build expert now — guide me all the way from idea to submission.</pre>
+    <button class="copy-btn" data-copy-target="#setup-prompt-text">Copy all</button>
   </div>
 
   <div class="step-grid">
     <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Klicka "Kopiera hela" på block:et ovan.</p>
-      <p><strong>2.</strong> Gå tillbaka till Claude Code-terminalen (där cursor:n blinkade).</p>
-      <p><strong>3.</strong> Klistra in: <kbd>⌘</kbd>+<kbd>V</kbd> på Mac, <kbd>Ctrl</kbd>+<kbd>V</kbd> på Windows.</p>
-      <p><strong>4.</strong> Tryck Enter.</p>
+      <h3>What you do</h3>
+      <p><strong>1.</strong> Click "Copy all" on the block above.</p>
+      <p><strong>2.</strong> Go back to the Claude Code terminal (where the cursor was blinking).</p>
+      <p><strong>3.</strong> Paste: <kbd>⌘</kbd>+<kbd>V</kbd> on Mac, <kbd>Ctrl</kbd>+<kbd>V</kbd> on Windows.</p>
+      <p><strong>4.</strong> Press Enter.</p>
 
       <div class="hint">
-        Det är OK att klistra in en lång text i terminalen. Claude Code kan ta emot flera rader samtidigt. Du behöver inte trycka Enter mellan raderna.
+        It's fine to paste a long block of text into the terminal. Claude Code can handle multiple lines at once. You don't need to press Enter between lines.
       </div>
     </div>
 
     <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Claude börjar svara — först med "Jag kör en diagnostik..." eller liknande. Sen listar hen vad som finns och vad som saknas på din maskin. Något i stil med:</p>
-      <pre class="output">Kollar din maskin nu...
+      <h3>What you see when it worked</h3>
+      <p>Claude starts replying — first with "Running a diagnostic..." or similar. Then lists what's there and what's missing on your machine. Something like:</p>
+      <pre class="output">Checking your machine now...
 
-✓ Claude Code: igång (det är du som pratar med mig)
-✗ Lens Studio: hittade inte appen
-✗ Filter-skill: ej installerad
-✗ MCP-server: ej registrerad
+✓ Claude Code: running (that's you talking to me)
+✗ Lens Studio: app not found
+✗ Filter skill: not installed
+✗ MCP server: not registered
 
-Vi behöver fixa tre saker. Vi tar dem en i taget...</pre>
-      <p>Sen pratar Claude dig genom första steget — installera Lens Studio. Du följer hens guidning. Det här är HEN nu, inte manualen.</p>
+We need to fix three things. We'll take them one at a time...</pre>
+      <p>Then Claude walks you through the first step — installing Lens Studio. You follow their guidance. From here it's THEM, not the manual.</p>
     </div>
   </div>
 </section>
@@ -634,39 +634,39 @@ Vi behöver fixa tre saker. Vi tar dem en i taget...</pre>
 <!-- ║  STEP 4                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-4">
-  <span class="micro">Steg 04 av 04</span>
-  <h2>Följ Claudes guidning</h2>
-  <p class="lede">Härifrån är det inte längre du som följer en manual. Du följer Claude. Hen är en kollega som vet vad hen gör.</p>
+  <span class="micro">Step 04 of 04</span>
+  <h2>Follow Claude's guidance</h2>
+  <p class="lede">From here you're no longer following a manual. You're following Claude. They're a colleague who knows what they're doing.</p>
 
   <div class="step-grid">
     <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p>Claude kommer säga vad nästa steg är. Det kan vara att:</p>
+      <h3>What you do</h3>
+      <p>Claude will tell you what the next step is. It might be:</p>
       <ul style="color: var(--ink-85); margin: 12px 0 0 20px; line-height: 1.8;">
-        <li>Ladda ner Lens Studio från ar.snap.com</li>
-        <li>Klicka på en specifik knapp i Lens Studio</li>
-        <li>Klistra in en konfiguration i terminalen</li>
-        <li>Spara en fil</li>
+        <li>Download Lens Studio from ar.snap.com</li>
+        <li>Click a specific button in Lens Studio</li>
+        <li>Paste a configuration into the terminal</li>
+        <li>Save a file</li>
       </ul>
-      <p style="margin-top: 16px;">När du gjort steget — skriv <strong>"klar"</strong> i terminalen, tryck Enter. Claude verifierar och går vidare.</p>
+      <p style="margin-top: 16px;">When you've done the step — type <strong>"done"</strong> in the terminal, press Enter. Claude verifies and moves on.</p>
 
       <div class="hint">
-        Är du osäker på något steg? Säg det till Claude i klartext: <em>"Jag förstår inte vad du menar med [X]"</em>. Hen omformulerar och förklarar enklare.
+        Unsure about a step? Tell Claude in plain language: <em>"I don't understand what you mean by [X]"</em>. They'll rephrase and explain it more simply.
       </div>
     </div>
 
     <div class="step-see">
-      <h3>Vad du ser när allt är klart</h3>
-      <p>När alla tre saknade delar (Lens Studio, skill, MCP) är på plats, säger Claude:</p>
-      <pre class="output">Allt på plats — nu kan vi börja bygga.
+      <h3>What you see when everything's ready</h3>
+      <p>When all three missing pieces (Lens Studio, skill, MCP) are in place, Claude says:</p>
+      <pre class="output">Everything in place — now we can start building.
 
-Berätta lite om filtret du vill göra:
-- Vilken klient/projekt?
-- Grov idé — vad ska användaren uppleva?
-- Tidsplan om du har en
+Tell me a bit about the filter you want to make:
+- Which client/project?
+- Rough idea — what should the user experience?
+- Timeline if you have one
 
-Jag drar onboarding-frågorna när du svarat på det.</pre>
-      <p>Det är start-skottet. Härifrån är det filter-bygge — Claude vet hela vägen från idé till färdig lens.</p>
+I'll pull up the onboarding questions once you answer.</pre>
+      <p>That's the starting gun. From here on it's filter-building — Claude knows the whole path from idea to a finished lens.</p>
     </div>
   </div>
 </section>
@@ -675,92 +675,92 @@ Jag drar onboarding-frågorna när du svarat på det.</pre>
 <!-- ║  STUCK                                  ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section stuck">
-  <span class="micro">Allt går inte enligt plan</span>
-  <h2>Fastnar du?</h2>
-  <p class="lede">Det här är nytt och ovanligt. Du kommer fastna på något. Det är okej, och det finns flera vägar framåt.</p>
+  <span class="micro">Not everything goes to plan</span>
+  <h2>Stuck?</h2>
+  <p class="lede">This is new and unusual. You'll get stuck on something. That's OK, and there are several ways forward.</p>
 
   <div class="stuck-grid">
     <div class="stuck-option">
-      <h3>1. Fråga Claude Code direkt</h3>
-      <p>Har du fått Claude Code att starta? Skriv bara <em>"Jag fastnar på &lt;steg&gt;: &lt;vad du ser&gt;"</em>. Claude växlar till felsökning automatiskt — hen frågar tillbaka tills hen förstår, och föreslår en fix.</p>
+      <h3>1. Ask Claude Code directly</h3>
+      <p>Got Claude Code running? Just type <em>"I'm stuck on &lt;step&gt;: &lt;what you see&gt;"</em>. Claude switches to troubleshooting automatically — asks back until it understands, and suggests a fix.</p>
     </div>
 
     <div class="stuck-option">
-      <h3>2. Fråga en annan AI</h3>
-      <p>Ingen Claude Code att fråga än? Kopiera kommandot eller felmeddelandet, klistra in i <a href="https://claude.ai">claude.ai</a>, <a href="https://chatgpt.com">ChatGPT</a> eller <a href="https://gemini.google.com">Gemini</a>. Lägg till <em>"jag försöker installera Claude Code för att bygga Snapchat-filter"</em> så de förstår kontexten.</p>
+      <h3>2. Ask another AI</h3>
+      <p>No Claude Code yet to ask? Copy the command or the error message, paste it into <a href="https://claude.ai">claude.ai</a>, <a href="https://chatgpt.com">ChatGPT</a>, or <a href="https://gemini.google.com">Gemini</a>. Add <em>"I'm trying to install Claude Code to build Snapchat filters"</em> so they understand the context.</p>
     </div>
 
     <div class="stuck-option">
-      <h3>3. Be en kollega</h3>
-      <p>På Valtech finns andra som kört detta. Skriv i er Slack-kanal (#snapchat-filter eller motsvarande) och peka på det steg som krånglar. Någon har troligen sett samma sak.</p>
+      <h3>3. Ask a colleague</h3>
+      <p>Others at Valtech have done this. Post in your Slack channel (#snapchat-filter or equivalent) and point at the step that's misbehaving. Someone has probably seen the same thing.</p>
     </div>
 
     <div class="stuck-option">
-      <h3>4. Visa mig din skärm</h3>
-      <p>Använd din dators skärmdump-funktion (Mac: <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>4</kbd>, Windows: <kbd>Win</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>). Ta bild på vad du ser i terminalen. Klistra in bilden direkt i Claude.ai eller ChatGPT — de kan SE vad som gått fel.</p>
-      <p style="font-size: 13px; color: var(--ink-60); margin-top: 12px;">Många nybörjare vet inte hur man <em>beskriver</em> ett fel i text. En screenshot är enklare.</p>
+      <h3>4. Show me your screen</h3>
+      <p>Use your computer's screenshot tool (Mac: <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>4</kbd>, Windows: <kbd>Win</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>). Grab what you see in the terminal. Paste the image straight into Claude.ai or ChatGPT — they can SEE what went wrong.</p>
+      <p style="font-size: 13px; color: var(--ink-60); margin-top: 12px;">Many beginners don't know how to <em>describe</em> an error in text. A screenshot is easier.</p>
     </div>
   </div>
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  VAD HÄRNÄST                            ║ -->
+<!-- ║  WHAT'S NEXT                            ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section">
-  <span class="micro">När setup är klart</span>
-  <h2>Vad du kan bygga</h2>
-  <p class="lede">Lens Studio + Claude Code låter dig bygga ungefär vad som helst. Här är några vanliga första-projekt för att få en känsla för vad som är möjligt.</p>
+  <span class="micro">Once setup is done</span>
+  <h2>What you can build</h2>
+  <p class="lede">Lens Studio + Claude Code lets you build pretty much anything. Here are a few common first projects to get a feel for what's possible.</p>
 
   <div class="ideas-grid">
     <div class="idea">
-      <p class="idea-name">Logo som följer ansiktet</p>
-      <p class="idea-desc">Brand-logo eller text som flyger in när användaren öppnar filtret, fäster vid pannan eller över axeln. Enkelt face tracking + 2D-bild.</p>
+      <p class="idea-name">Logo that follows the face</p>
+      <p class="idea-desc">Brand logo or text that flies in when the user opens the filter, anchored to the forehead or above the shoulder. Simple face tracking + 2D image.</p>
     </div>
     <div class="idea">
-      <p class="idea-name">Hatt, glasögon eller smycken</p>
-      <p class="idea-desc">3D-modell som "bärs" av användaren. Funkar för cap, snapback, ringar, halsband, örhängen. Snap har färdiga Try-On Packs att börja från.</p>
+      <p class="idea-name">Hat, glasses, or jewelry</p>
+      <p class="idea-desc">3D model "worn" by the user. Works for caps, snapbacks, rings, necklaces, earrings. Snap has ready-made Try-On Packs to start from.</p>
     </div>
     <div class="idea">
-      <p class="idea-name">Sneakers på fötterna</p>
-      <p class="idea-desc">Klassiskt try-on-filter: skor som följer användarens fötter. Vi har empirisk erfarenhet av detta i skill:en — Claude vet vägen.</p>
+      <p class="idea-name">Sneakers on the feet</p>
+      <p class="idea-desc">Classic try-on filter: shoes that follow the user's feet. We've got empirical experience with this in the skill — Claude knows the way.</p>
     </div>
     <div class="idea">
-      <p class="idea-name">Tap-to-reveal-effekt</p>
-      <p class="idea-desc">Användaren tappar på skärmen, något fades in eller animeras — bra för kampanj-reveal eller "scratch the surface"-mekaniker.</p>
+      <p class="idea-name">Tap-to-reveal effect</p>
+      <p class="idea-desc">User taps the screen, something fades in or animates — great for campaign reveals or "scratch the surface" mechanics.</p>
     </div>
   </div>
 
-  <p style="margin-top: 32px; color: var(--ink-60);">När du har en idé — säg den till Claude och hen drar onboarding-frågorna. ~8 frågor i 3 block (vision, ramar, assets), ~10 min totalt. Sen börjar bygget.</p>
+  <p style="margin-top: 32px; color: var(--ink-60);">When you have an idea — tell Claude and they'll pull up the onboarding questions. ~8 questions in 3 blocks (vision, constraints, assets), ~10 min total. Then the build begins.</p>
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  FÖR NYFIKNA                            ║ -->
+<!-- ║  FOR THE CURIOUS                        ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section">
-  <span class="micro">För nyfikna</span>
-  <h2>Vill du veta mer?</h2>
-  <p class="lede">Manualen ovan är kortaste vägen. Här är några länkar om du vill djupdyka.</p>
+  <span class="micro">For the curious</span>
+  <h2>Want to know more?</h2>
+  <p class="lede">The manual above is the shortest path. Here are some links if you want to go deeper.</p>
 
   <div class="ideas-grid">
     <div class="idea">
       <p class="idea-name">INSTALL-REFERENCE.md</p>
-      <p class="idea-desc">Steg-för-steg installation manuellt (för dig som hellre läser komplett innan du börjar, eller behöver setupa flera maskiner).</p>
+      <p class="idea-desc">Manual step-by-step installation (for those who'd rather read it all before starting, or need to set up multiple machines).</p>
     </div>
     <div class="idea">
       <p class="idea-name">TROUBLESHOOTING.md</p>
-      <p class="idea-desc">Vanliga fel + fixar. Bra att kolla om Claude inte själv kan lösa något.</p>
+      <p class="idea-desc">Common errors + fixes. Worth checking if Claude can't resolve something on its own.</p>
     </div>
     <div class="idea">
       <p class="idea-name">references/mcp-tool-schemas.md</p>
-      <p class="idea-desc">Vad Claude kan göra i Lens Studio via MCP — alla 20 verktyg dokumenterade med parametrar.</p>
+      <p class="idea-desc">What Claude can do in Lens Studio via MCP — all 20 tools documented with their parameters.</p>
     </div>
     <div class="idea">
       <p class="idea-name">references/snap-docs/00-INDEX.md</p>
-      <p class="idea-desc">Routing-tabell till Snap:s officiella docs (365 sidor speglade, klassificerade per kategori).</p>
+      <p class="idea-desc">Routing table to Snap's official docs (365 pages mirrored, classified by category).</p>
     </div>
     <div class="idea">
       <p class="idea-name">CHANGELOG.md</p>
-      <p class="idea-desc">Se hur skillen har vuxit — varje upptäckt loggad med datum + projekt. En lång lista över all kunskap som flowat in från riktiga Valtech-projekt över tid. Skillens biografi.</p>
+      <p class="idea-desc">See how the skill has grown — every discovery logged with date + project. A long list of all the knowledge that's flowed in from real Valtech projects over time. The skill's biography.</p>
     </div>
   </div>
 </section>
@@ -799,7 +799,7 @@ Jag drar onboarding-frågorna när du svarat på det.</pre>
       }
 
       var originalText = btn.textContent;
-      btn.textContent = 'Kopierat!';
+      btn.textContent = 'Copied!';
       btn.classList.add('copied');
       setTimeout(function() {
         btn.textContent = originalText;
