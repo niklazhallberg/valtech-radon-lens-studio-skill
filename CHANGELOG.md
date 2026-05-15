@@ -21,6 +21,33 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 
 ---
 
+## [v0.8.0] — 2026-05-15
+
+### 💡 2026-05-15 10:35 — [project: skill-meta]
+- **One-line installer + auto-sync — non-technical designers can onboard
+  themselves**: Three pieces that together close the "designer can't set up
+  the skill alone" gap.
+  - `bin/install.sh` — idempotent installer with mentor-tone output. Nine
+    steps: OS check, Node.js/git pre-reqs, Claude Code install, Lens Studio
+    verify, skill clone check, SessionStart hook config (via Python
+    JSON-merge so existing settings are preserved), state folder, smoke test,
+    success summary. Fail-fast with concrete recovery instructions per step.
+  - `scripts/session-sync.sh` — SessionStart hook that runs `git pull --ff-only`
+    on the skill repo when Claude Code starts. Silent on no-op, friendly
+    inline announcement when new entries arrive. Pull-only, never pushes.
+  - `README.md` — new "Auto-sync" section documenting the mechanic so
+    colleagues understand what they see when the hook fires.
+- Value for user: A designer who has been invited as a collaborator can now
+  go from zero to working `claude` session in 2–3 minutes — without a
+  technical colleague holding their hand. And once installed, every new
+  lesson pushed by any colleague reaches their machine automatically the next
+  time they open Claude Code. The compound-interest promise becomes real
+  instead of aspirational.
+- Files: `bin/install.sh`, `scripts/session-sync.sh`, `README.md`, `SKILL.md` (version bump 0.7.0 → 0.8.0)
+- Type: [feature]
+
+---
+
 ## [v0.7.4] — 2026-05-14
 
 ### 💡 2026-05-14 18:30 — [project: skill-meta]
