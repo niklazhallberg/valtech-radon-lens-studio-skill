@@ -359,14 +359,14 @@
   <span class="story-num">Activate skill by</span>
   <h2>Paste something like</h2>
   <div class="paste-block">
-    <p id="paste-text">Can you help me to build a Snapchat filter?</p>
+    <p id="paste-text">Time to wake up! Let&rsquo;s create a Snapchat lens.</p>
     <button class="copy-btn" data-copy-target="#paste-text">Copy</button>
   </div>
 </section>
 
 <!-- Outro -->
 <section class="outro">
-  <h3><span class="tw-text" data-text="Just follow along &mdash; and create something unexpected! :)"></span><span class="tw-cursor" aria-hidden="true"></span></h3>
+  <h3><span class="tw-text" data-text="Just follow along &mdash; and create something fun! :)"></span><span class="tw-cursor" aria-hidden="true"></span></h3>
 </section>
 
 <footer class="footer">
@@ -459,19 +459,23 @@
           target.innerHTML = fullText.substring(0, i);
           if (i < fullText.length) {
             // Non-linear "human typing" pacing:
-            //   slow warm-up over the first ~40% (extra deliberate),
-            //   slows further through middle (hesitation),
-            //   speeds up toward the end (finishing momentum).
-            //   Extra pauses after punctuation/em-dash for natural rhythm.
+            //   slow warm-up over first ~40% (deliberate),
+            //   gradual hesitation through middle,
+            //   slows again through last ~45% with random "thinking" hesitations
+            //   so the closing phrase ('and create something fun! :)') lands varied & unhurried.
+            //   Extra pauses after punctuation/em-dash.
             var progress = i / fullText.length;
             var startRamp = Math.max(0, 1 - progress * 2.5) * 1.3;
-            var curve = 1 + 0.95 * Math.sin(progress * Math.PI) + startRamp;
+            var endRamp = Math.max(0, (progress - 0.55) * 2.2) * 1.1;
+            var curve = 1 + 0.65 * Math.sin(progress * Math.PI) + startRamp + endRamp;
             var prevChar = fullText.charAt(i - 1);
             var pause = 0;
-            if (prevChar === '.' || prevChar === '!' || prevChar === '?') pause = 220;
-            else if (prevChar === ',' || prevChar === ';' || prevChar === ':') pause = 140;
-            else if (prevChar === '—' || prevChar === '-' || prevChar === '–') pause = 180;
-            var jitter = 16 + Math.random() * 18;
+            if (prevChar === '.' || prevChar === '!' || prevChar === '?') pause = 240;
+            else if (prevChar === ',' || prevChar === ';' || prevChar === ':') pause = 160;
+            else if (prevChar === '—' || prevChar === '-' || prevChar === '–') pause = 360;
+            // Occasional micro-hesitation in the latter half — adds varied rhythm
+            if (progress > 0.55 && Math.random() < 0.14) pause += 80 + Math.random() * 130;
+            var jitter = 20 + Math.random() * 26;
             setTimeout(step, jitter * curve + pause);
           } else {
             // Done typing — cursor stays at end and resumes blinking, slower
