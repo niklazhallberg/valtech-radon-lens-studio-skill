@@ -107,7 +107,7 @@ The skill is empirically validated from multiple production builds, primarily RF
 ### Prerequisites
 
 - **macOS, Windows, or Linux** with ~10 GB of free disk space
-- **Claude Code** installed (https://claude.ai/code)
+- **Claude Code** installed (run `curl -fsSL https://claude.ai/install.sh | bash` in your terminal)
 - **Lens Studio 5.21+** installed (https://ar.snap.com/download)
 - **Admin rights** to install applications
 

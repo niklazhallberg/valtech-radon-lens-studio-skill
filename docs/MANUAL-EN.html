@@ -587,14 +587,12 @@
   <div class="step-grid">
     <div class="step-do">
       <h3>What you do</h3>
-      <p><strong>1.</strong> Go to the download page in your browser:</p>
+      <p><strong>1.</strong> Open the Terminal app (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter). Paste this and press Enter — the install takes a minute or so:</p>
       <div class="code-block compact">
-        <pre><code>https://claude.ai/code</code></pre>
-        <button class="copy-btn" data-copy="https://claude.ai/code">Copy</button>
+        <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+        <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Copy</button>
       </div>
-      <p><strong>2.</strong> Click "Download" — the page detects your OS (Mac, Windows, or Linux).</p>
-      <p><strong>3.</strong> Open the downloaded file and follow the installer. Just like any other app.</p>
-      <p><strong>4.</strong> When the installer says "done" — open the Terminal app (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter), paste this and press Enter:</p>
+      <p><strong>2.</strong> When the install is done — verify with this in the same terminal:</p>
       <div class="code-block compact">
         <pre><code>claude --version</code></pre>
         <button class="copy-btn" data-copy="claude --version">Copy</button>
@@ -610,8 +608,8 @@
       <details class="hint-collapsible">
         <summary>Not working?</summary>
         <ul>
-          <li><strong>"command not found: claude"</strong> — the installer ran, but the terminal doesn't know where <code>claude</code> lives. Close the terminal, open a new one. Usually fixes it.</li>
-          <li><strong>Installer won't open</strong> — Mac: right-click the file → Open → "Open anyway". Windows: right-click → Properties → "Unblock".</li>
+          <li><strong>"command not found: claude"</strong> — the install ran, but the terminal doesn't know where <code>claude</code> lives yet. Close the terminal, open a new one. Usually fixes it.</li>
+          <li><strong>The curl command crashes</strong> — most common cause is the internet broke mid-install. Run the same command again.</li>
           <li><strong>Don't know what Terminal is</strong> — it's a black or dark-green window where you type commands instead of clicking. Open Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) and type "Terminal".</li>
         </ul>
       </details>

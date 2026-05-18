@@ -34,7 +34,8 @@ If you'd prefer interactive help, return to Claude Code and describe the symptom
 # Check install
 which claude
 
-# If nothing returned, install from https://claude.ai/code
+# If nothing returned, install:
+#   curl -fsSL https://claude.ai/install.sh | bash
 
 # If installed but command not found:
 echo $PATH

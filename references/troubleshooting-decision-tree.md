@@ -29,11 +29,11 @@ Two iterations max in CC. After that, the issue is either non-standard or needs 
 ### "claude command not found"
 
 **Clarify**:
-- "Did you install Claude Code from claude.ai/code?"
+- "Did you install Claude Code via the one-line installer?"
 - "What does `which claude` return?"
 
 **Try fix**:
-- If install missing: "Install from https://claude.ai/code (download the CLI installer). Re-open terminal after install."
+- If install missing: "Run `curl -fsSL https://claude.ai/install.sh | bash` in your terminal. Re-open the terminal after install."
 - If `which claude` returns path but command fails: "Path issue. Run `echo $PATH` — does it include the install dir?"
 - If on macOS and install dir is `/opt/homebrew/bin/`: ensure it's in PATH (`export PATH=/opt/homebrew/bin:$PATH` in `~/.zshrc`).
 

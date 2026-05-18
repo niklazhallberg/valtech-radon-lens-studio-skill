@@ -107,7 +107,7 @@ Skill:en är empiriskt validerad från flera produktionsbyggen, primärt RFSU BA
 ### Förutsättningar
 
 - **macOS, Windows eller Linux** med ~10 GB ledigt diskutrymme
-- **Claude Code** installerat (https://claude.ai/code)
+- **Claude Code** installerat (kör `curl -fsSL https://claude.ai/install.sh | bash` i terminalen)
 - **Lens Studio 5.21+** installerat (https://ar.snap.com/download)
 - **Admin-rättigheter** för att installera applikationer
 

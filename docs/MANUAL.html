@@ -587,14 +587,12 @@
   <div class="step-grid">
     <div class="step-do">
       <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Gå till nedladdningssidan i din webbläsare:</p>
+      <p><strong>1.</strong> Öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter). Klistra in detta och tryck Enter — installationen tar någon minut:</p>
       <div class="code-block compact">
-        <pre><code>https://claude.ai/code</code></pre>
-        <button class="copy-btn" data-copy="https://claude.ai/code">Kopiera</button>
+        <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+        <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Kopiera</button>
       </div>
-      <p><strong>2.</strong> Klicka på "Download" — sidan känner igen din dator (Mac, Windows eller Linux).</p>
-      <p><strong>3.</strong> Öppna den nedladdade filen och följ stegen i installern. Som vilken app som helst.</p>
-      <p><strong>4.</strong> När installern säger "klart" — öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter), klistra in detta och tryck Enter:</p>
+      <p><strong>2.</strong> När installationen är klar — verifiera med detta i samma terminal:</p>
       <div class="code-block compact">
         <pre><code>claude --version</code></pre>
         <button class="copy-btn" data-copy="claude --version">Kopiera</button>
@@ -610,8 +608,8 @@
       <details class="hint-collapsible">
         <summary>Funkar inte?</summary>
         <ul>
-          <li><strong>"command not found: claude"</strong> — installer:n körde, men terminalen vet inte var <code>claude</code> ligger. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
-          <li><strong>Installern öppnar inte</strong> — Mac: högerklicka på filen → Öppna → "Öppna ändå". Windows: högerklicka → Egenskaper → "Avblockera".</li>
+          <li><strong>"command not found: claude"</strong> — installationen körde, men terminalen hittar inte <code>claude</code> än. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
+          <li><strong>Curl-kommandot kraschar</strong> — vanligast att internet bröts mitt i. Kör samma kommando igen.</li>
           <li><strong>Vet inte vad Terminal är</strong> — det är en svart eller mörkgrön ruta där du skriver kommandon istället för att klicka. Öppna Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) och skriv "Terminal".</li>
         </ul>
       </details>

@@ -34,7 +34,11 @@ If you get stuck at any step, return to Claude Code and say "I'm stuck on step [
 
 If you already have Claude Code working (you're talking to it), skip to Step 2.
 
-Download from <https://claude.ai/code>. Follow installer prompts.
+In your terminal, run the one-line installer:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
 
 Verify:
 
