@@ -269,11 +269,10 @@
   .tw-icon.jumping { animation: tw-jump 720ms ease-out 2; }
   .tw-icon.ready { cursor: pointer; }
   @keyframes tw-wave {
-    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
-    50%  { transform: translateY(-2px); animation-timing-function: cubic-bezier(0.55, 0, 0.7, 0.3); }
-    100% { transform: translateY(0); }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-2px); }
   }
-  .tw-icon.waving .tw-arm-r { animation: tw-wave 520ms 2; }
+  .tw-icon.waving .tw-arm-r { animation: tw-wave 640ms ease-in-out 2; }
   @media (prefers-reduced-motion: reduce) {
     .tw-icon.jumping { animation: none; }
     .tw-icon.waving .tw-arm-r { animation: none; }
@@ -683,10 +682,10 @@
       icon.classList.add('jumping');
       setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
       setTimeout(function() { icon.classList.add('waving'); }, 1700);
-      setTimeout(function() { icon.classList.remove('waving'); }, 2740);
-      setTimeout(function() { icon.classList.add('blink'); }, 2900);
-      setTimeout(function() { icon.classList.remove('blink'); }, 3080);
-      setTimeout(function() { isPlaying = false; }, 3200);
+      setTimeout(function() { icon.classList.remove('waving'); }, 2980);
+      setTimeout(function() { icon.classList.add('blink'); }, 3140);
+      setTimeout(function() { icon.classList.remove('blink'); }, 3320);
+      setTimeout(function() { isPlaying = false; }, 3440);
     }
 
     icon.addEventListener('mouseenter', playHover);
