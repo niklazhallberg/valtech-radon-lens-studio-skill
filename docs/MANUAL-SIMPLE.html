@@ -141,8 +141,8 @@
   }
   .tw-icon {
     display: inline-block;
-    width: clamp(32px, 3.5vw, 48px);
-    height: clamp(32px, 3.5vw, 48px);
+    width: clamp(42px, 4.6vw, 62px);
+    height: clamp(42px, 4.6vw, 62px);
     transform-origin: 50% 100%;
     will-change: transform;
   }
@@ -157,10 +157,10 @@
     background: var(--ink-85);
     color: var(--bg);
     font-family: 'Handjet', 'Space Grotesk', sans-serif;
-    font-size: clamp(11px, 1.2vw, 15px);
+    font-size: clamp(13px, 1.4vw, 17px);
     font-weight: 500;
     letter-spacing: 0.5px;
-    padding: 2px 6px;
+    padding: 3px 8px;
     white-space: nowrap;
     border-radius: 0;
     opacity: 0;
@@ -182,8 +182,8 @@
   .speech-bubble::before {
     content: '';
     position: absolute;
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
     background: var(--bg);
     pointer-events: none;
     z-index: 2;
@@ -196,11 +196,11 @@
   }
   @keyframes bubble-bite {
     0%, 17%   { opacity: 0; }
-    18%, 35%  { opacity: 1; width: 3px; height: 3px; top: 0; left: 0; right: auto; bottom: auto; }
+    18%, 35%  { opacity: 1; width: 4px; height: 4px; top: 0; left: 0; right: auto; bottom: auto; }
     36%, 47%  { opacity: 0; }
-    48%, 62%  { opacity: 1; width: 4px; height: 2px; top: 0; right: 0; left: auto; bottom: auto; }
+    48%, 62%  { opacity: 1; width: 5px; height: 3px; top: 0; right: 0; left: auto; bottom: auto; }
     63%, 74%  { opacity: 0; }
-    75%, 93%  { opacity: 1; width: 2px; height: 4px; bottom: 0; right: 0; top: auto; left: auto; }
+    75%, 93%  { opacity: 1; width: 3px; height: 5px; bottom: 0; right: 0; top: auto; left: auto; }
     94%, 100% { opacity: 0; }
   }
   .bubble-ghost {
@@ -213,24 +213,35 @@
     left: 8px;
     white-space: nowrap;
   }
+  .bubble-bite-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+  }
   .speech-bubble::after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: -4px;
-    width: 4px;
-    height: 4px;
+    bottom: -5px;
+    width: 5px;
+    height: 5px;
     background: var(--ink-85);
     box-shadow:
-      -4px 0 0 var(--ink-85),
-      4px 0 0 var(--ink-85),
-      0 4px 0 var(--ink-85);
+      -5px 0 0 var(--ink-85),
+      5px 0 0 var(--ink-85),
+      0 5px 0 var(--ink-85);
   }
   .tw-icon .tw-eye {
     opacity: 0;
     transition: opacity 60ms linear;
   }
   .tw-icon.blink .tw-eye { opacity: 1; }
+  .tw-icon.wink .tw-eye-r { opacity: 1; }
   @keyframes tw-jump {
     0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
     28%  { transform: translateY(-8px); animation-timing-function: linear; }
@@ -467,15 +478,42 @@
 <section class="story">
   <span class="story-num">Then</span>
   <h2>Accept the invitation</h2>
-  <p class="copy">Open the email from Niklaz Hallberg and click <em>View invitation</em>.</p>
-  <p class="copy">No GitHub account? Create one for free:</p>
-  <div class="value-block">
-    <a class="value url" href="https://github.com/signup" target="_blank" rel="noopener">https://github.com/signup</a>
-    <button class="copy-btn" data-copy="https://github.com/signup">Copy</button>
-  </div>
+  <p class="copy">Open the email from Niklaz Hallberg. Click <strong>View invitation</strong>.</p>
+  <p class="copy">If GitHub asks you to sign in &mdash; sign in. If you don&rsquo;t have an account yet, click &ldquo;Create an account&rdquo;, sign up, and verify your email.</p>
+  <p class="hint">Click <em>Accept invitation</em> on the GitHub page once you&rsquo;re signed in.</p>
 </section>
 
-<!-- 04 — Clone repo -->
+<!-- 04 — Install GitHub CLI -->
+<section class="story">
+  <span class="story-num">And then</span>
+  <h2>Install GitHub CLI</h2>
+  <p class="copy">Download the installer:</p>
+  <div class="value-block">
+    <a class="value url" href="https://cli.github.com/" target="_blank" rel="noopener">https://cli.github.com/</a>
+    <button class="copy-btn" data-copy="https://cli.github.com/">Copy</button>
+  </div>
+  <p class="hint">Run the <code>.pkg</code> installer like any other Mac app.</p>
+</section>
+
+<!-- 05 — Sign in to GitHub -->
+<section class="story">
+  <span class="story-num">Now</span>
+  <h2>Sign in to GitHub from your terminal</h2>
+  <p class="copy">In your terminal, run:</p>
+  <div class="value-block">
+    <span class="value">gh auth login</span>
+    <button class="copy-btn" data-copy="gh auth login">Copy</button>
+  </div>
+  <p class="hint">Follow the prompts: choose <em>GitHub.com</em>, use <em>HTTPS</em>, log in via the browser.</p>
+  <p class="copy">Then run:</p>
+  <div class="value-block">
+    <span class="value">gh auth setup-git</span>
+    <button class="copy-btn" data-copy="gh auth setup-git">Copy</button>
+  </div>
+  <p class="hint">This makes future <code>git</code> commands use your GitHub login automatically &mdash; no more prompts.</p>
+</section>
+
+<!-- 06 — Clone repo -->
 <section class="story">
   <span class="story-num">And then</span>
   <h2>Download the Lens Skill</h2>
@@ -484,9 +522,10 @@
     <span class="value">git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</span>
     <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Copy</button>
   </div>
+  <p class="hint">If you see <code>Repository not found</code> or a 404 &mdash; go back to Step 03 and make sure the invitation was accepted with the same GitHub account you signed in with in Step 05.</p>
 </section>
 
-<!-- 05 — Start -->
+<!-- 07 — Start -->
 <section class="story">
   <span class="story-num">And now</span>
   <h2>Let&rsquo;s get started</h2>
@@ -498,7 +537,7 @@
   <p class="hint">and press Enter</p>
 </section>
 
-<!-- 06 — Paste -->
+<!-- 08 — Paste -->
 <section class="story">
   <span class="story-num">Activate skill by</span>
   <h2>Paste something like</h2>
@@ -511,13 +550,13 @@
 <!-- Outro -->
 <section class="outro">
   <div class="icon-wrap">
-    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg>
-    <div class="speech-bubble" aria-hidden="true"><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg>
+    <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
   </div>
 </section>
 
 <footer class="footer">
-  <p>Lens-Studio-Snapchat-Filter-Skill · 2026 · Niklaz Hallberg, Valtech RADON</p>
+  <p>valtech-radon-lens-studio-skill · 2026 · Niklaz Hallberg, Valtech RADON</p>
 </footer>
 
 <script>
@@ -601,12 +640,16 @@
         function step() {
           i++;
           typeEl.textContent = fullText.substring(0, i);
-          if (i < fullText.length) setTimeout(step, 70);
+          if (i < fullText.length) {
+            setTimeout(step, 70);
+          } else {
+            // Typing complete — pause 800ms, then a single wink held a little longer (;))
+            setTimeout(function() { icon.classList.add('wink'); }, 800);
+            setTimeout(function() { icon.classList.remove('wink'); }, 1050);
+          }
         }
-        setTimeout(step, 200);
+        setTimeout(step, 600);
       }, 1500);
-      setTimeout(function() { icon.classList.add('blink'); }, 1600);
-      setTimeout(function() { icon.classList.remove('blink'); }, 1780);
       setTimeout(function() { isPlaying = false; }, 1900);
     }
 
