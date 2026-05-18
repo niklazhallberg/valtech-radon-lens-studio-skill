@@ -16,9 +16,9 @@ Before starting the setup sequence, ensure ALL of these hold:
 1. **Trigger matched**: domain keyword + action intent (see `SKILL.md` — concierge entry-point triggers)
 2. **Platform confirmation received**: CC asked "I'll help you build a Snapchat Lens Studio project. Is that what you're working on?" and Anna said yes
 3. **Environment detection complete**: readiness report surfaced to Anna (see `environment-detection.md`)
-4. **Anna agreed to start**: she answered "yes"/"redo"/"go" to the readiness report's closing question
+4. **Anna agreed to start**: she answered "yes" / "ready" / "go" to the readiness report's closing question
 
-If any prerequisite missing, do not start step 1 — handle the missing piece first.
+If any prerequisite is missing, do not start step 1 — handle the missing piece first.
 
 ## The setup sequence
 
@@ -30,25 +30,25 @@ Eight steps. One step per CC message. Wait for explicit confirmation before adva
 
 **If LS missing**:
 
-> CC: "Steg 1: Ladda ner Lens Studio 5.20+ från https://ar.snap.com/download. Det tar 5-10 minuter att installera. Säg 'klar' när det är gjort."
+> CC: "Step 1: Download Lens Studio 5.20+ from https://ar.snap.com/download. It takes 5–10 minutes to install. Say 'done' when it's finished."
 
-Wait for: "klar" / "done" / "installed" / "ja".
+Wait for: "done" / "klar" / "installed" / "ja".
 
-If Anna reports problem: use `troubleshooting-decision-tree.md` — section "LS won't open".
+If Anna reports a problem: use `troubleshooting-decision-tree.md` — section "LS won't open".
 
 ### Step 2: Open LS and confirm
 
-> CC: "Bra. Öppna Lens Studio nu. Du ser en welcome-skärm. Klicka 'New Project' så får du en tom scen. Säg 'öppnad' när du ser den."
+> CC: "Good. Open Lens Studio now. You'll see a welcome screen. Click 'New Project' to get an empty scene. Say 'open' when you see it."
 
-Wait for: "öppnad" / "open" / "ready".
+Wait for: "open" / "öppnad" / "ready".
 
-Don't ask Anna to do project-save yet — that comes after we know the project folder name.
+Don't ask Anna to do a project-save yet — that comes after we know the project folder name.
 
 ### Step 3: Capture client + ad-policy category, create project folder
 
 Ask one question that captures both client identity AND ad-policy category in a single turn (previously the category was re-asked in intake Q4 — now merged here to eliminate redundancy):
 
-> CC: "Vad heter klienten och vilken ad-policy-kategori gäller? T.ex. 'adidas, sportswear (general)' eller 'RFSU, sexual wellness (regulated)'. Jag skapar projektmappen och flaggar eventuella policy-restriktioner direkt (general = 1–3 dagars review hos Snap, regulated = 1–2 veckor)."
+> CC: "What's the client called and which ad-policy category applies? E.g. 'adidas, sportswear (general)' or 'RFSU, sexual wellness (regulated)'. I'll create the project folder and flag any policy restrictions directly (general = 1–3 days of review at Snap, regulated = 1–2 weeks)."
 
 Wait for Anna's answer (e.g., "Spotify, music streaming (general)").
 
@@ -65,21 +65,21 @@ Slug: lowercase, kebab-case (`spotify` → `spotify`, `H&M Sverige` → `hm-sver
 
 Surface the result:
 
-> CC: "Skapade `~/Projects/spotify-lens/` med sub-foldrar för project-info, INSPIRATION, brand-assets, lens, docs. Nu sparar vi LS-projektet där:
+> CC: "Created `~/Projects/spotify-lens/` with sub-folders for project-info, INSPIRATION, brand-assets, lens, docs. Now save the LS project there:
 >
-> I LS: File → Save As → navigera till `~/Projects/spotify-lens/lens/` → spara projektet som t.ex. `SpotifyLens.esproj`. Säg 'sparat' när du är klar."
+> In LS: File → Save As → navigate to `~/Projects/spotify-lens/lens/` → save the project as e.g. `SpotifyLens.esproj`. Say 'saved' when you're done."
 
-Wait for: "sparat" / "saved".
+Wait for: "saved" / "sparat".
 
 ### Step 4: Register MCP
 
 Two-part instruction (one message, but two clear paste actions):
 
-> CC: "Steg 4 — vi kopplar LS till mig så jag kan göra ändringar direkt i scenen.
+> CC: "Step 4 — we connect LS to me so I can make changes directly in the scene.
 >
-> I LS-menyn: **AI Assistant → AI Model Context Protocol (MCP) → Configure Server**. Du ser en URL (något i stil med http://localhost:50040/mcp) och en Bearer-token (lång slumpmässig sträng).
+> In the LS menu: **AI Assistant → AI Model Context Protocol (MCP) → Configure Server**. You'll see a URL (something like http://localhost:50040/mcp) and a Bearer token (a long random string).
 >
-> Klistra in **både URL och token** här i chatten."
+> Paste **both the URL and the token** here in chat."
 
 Wait for Anna to paste. Parse the URL and token from her message.
 
@@ -92,7 +92,7 @@ claude mcp list
 
 If `✓ Connected`: continue. If `✗ Failed`: use `troubleshooting-decision-tree.md` — section "MCP not connecting".
 
-> CC: "✅ MCP connected. LS pratar med mig nu."
+> CC: "✅ MCP connected. LS is talking to me now."
 
 ### Step 5: Create PROJECT-STATE.md
 
@@ -103,7 +103,7 @@ cp ~/.claude/skills/lens-studio-snapchat-filter/assets/project-template/PROJECT-
 cp ~/.claude/skills/lens-studio-snapchat-filter/assets/project-template/.gitignore ./.gitignore
 ```
 
-> CC: "Setup klar. Jag skapade `PROJECT-STATE.md` som vi fyller i tillsammans medan vi går igenom briefen. Och en `.gitignore` så vi inte committar LS:s cache."
+> CC: "Setup done. I created `PROJECT-STATE.md` which we fill in together as we go through the brief. And a `.gitignore` so we don't commit LS's cache."
 
 No wait — proceed directly to step 6.
 
@@ -111,32 +111,32 @@ No wait — proceed directly to step 6.
 
 One question that captures the lens VISION + three mechanical choices in a single structured turn. The user-facing options are plain language; the internal mapping (in the comment block below) is for CC's reference only:
 
-> CC: "Beskriv lensen i en mening — och välj sedan en rad per kategori:
+> CC: "Describe the lens in one sentence — then pick one row per category:
 >
-> **1. Vad ska hända visuellt?**
-> - Ansiktet/kroppen förändras (filter, mask, transformation)
-> - Något läggs ovanpå bilden (logos, text, UI som flyger in)
-> - Användaren testar produkter (kläder, glasögon, smycken, skor)
-> - Miljön runt om förändras (väder, atmosfär, neon-overlay)
+> **1. What should happen visually?**
+> - The face/body changes (filter, mask, transformation)
+> - Something is overlaid on the image (logos, text, UI flying in)
+> - The user tries on products (clothes, glasses, jewelry, shoes)
+> - The environment around changes (weather, atmosphere, neon overlay)
 >
-> **2. Vad startar effekten?**
-> - Leende, blink eller öppen mun
-> - Tap på skärmen
-> - Alltid på från start
-> - Produkt-igenkänning (logo eller objekt syns)
+> **2. What starts the effect?**
+> - Smile, blink, or open mouth
+> - Tap on the screen
+> - Always on from start
+> - Product recognition (logo or object visible)
 >
-> **3. Hur avslutas effekten?**
-> - En stor payoff och sen kvar (one-shot)
-> - Upprepas så länge lensen är öppen (loop)
-> - Flera utfall användaren kan trigga (game-loop)
+> **3. How does the effect end?**
+> - One big payoff and then stays (one-shot)
+> - Repeats as long as the lens is open (loop)
+> - Multiple outcomes the user can trigger (game-loop)
 >
-> T.ex.: 'Spotify pod-kampanj — ansiktet förändras, leende triggar, en payoff sen kvar.'"
+> E.g.: 'Spotify pod campaign — the face changes, smile triggers, one payoff then stays.'"
 
 <!--
 INTERNAL MAPPING (CC use only — never surface to user):
-- Visuellt → lens-type: transformation / overlay / try-on / world-lens
+- Visual → lens-type: transformation / overlay / try-on / world-lens
 - Trigger → trigger: expression / tap / always-on / product-recognition
-- Avslut → end-state: one-shot-payoff / loop / game-loop
+- End → end-state: one-shot-payoff / loop / game-loop
 
 These three fields are saved to PROJECT-STATE.md and feed Phase 0 specs +
 Readiness Report directly. Do NOT re-ask in intake — anti-pattern.
@@ -149,15 +149,15 @@ Wait for Anna's brief. Save the one-line vision to `project-info/client-brief.md
 - **Tier 1 or Tier 2 detected** → proceed to Step 7 as normal. No mention of tiers.
 - **Tier 3 detected** (custom GAN, Snap-internal ML, realistic face/skin/hair replacement, GAN-based age/gender swap, "Snapchat Beauty filter" equivalent) → CC responds honestly using the language template:
 
-  > CC: "Det filtret du beskriver går faktiskt inte att producera med standard Lens Studio — inte för oss, inte för någon vanlig byrå.
+  > CC: "The filter you describe actually can't be produced with standard Lens Studio — not for us, not for any normal agency.
   >
-  > [Explain WHY in plain language — no jargon. 1-2 sentences. Example: 'Avatar Na'vi-filtret krävde specialiserade AI-verktyg som Snap byggde internt tillsammans med Disney, med tillgång till film-data som inte finns utanför Snap.']
+  > [Explain WHY in plain language — no jargon. 1–2 sentences. Example: 'The Avatar Na'vi filter required specialized AI tools that Snap built internally together with Disney, with access to film data that doesn't exist outside Snap.']
   >
-  > Vad vi däremot kan bygga är:
+  > What we CAN build is:
   >
-  > [Concrete Tier 1 version that captures campaign spirit — e.g., 'Blå face-tint + gula ögon-texturer + Na'vi-skin overlay + Avatar-logo lockup. 1-2 dagars bygge.']
+  > [Concrete Tier 1 version that captures campaign spirit — e.g., 'Blue face tint + yellow eye textures + Na'vi-skin overlay + Avatar logo lockup. 1–2 days of build.']
   >
-  > Vill du att vi går vidare med det?"
+  > Want us to move forward with that?"
 
   Key rules: never say "with more budget", never say "we could try", always propose a concrete Tier 1 alternative immediately, use plain language. Full language templates + detection signals + scope-down patterns in `references/capability-tiers.md`.
 
@@ -169,24 +169,24 @@ Wait for Anna's brief. Save the one-line vision to `project-info/client-brief.md
 
 This is the **non-expert coaching moment** — don't jargon her into the sub-folder taxonomy, and don't assume she knows what "inspiration" means in this context. Spell it out + show the value-exchange.
 
-> CC: "Nu behöver jag inspiration-bilder. Med 'inspiration' menar jag inte mockups eller färdiga designer av lensen — det är referenser som visar mig *känslan* du vill att lensen ska ha. Sånt som:
+> CC: "Now I need inspiration images. By 'inspiration' I don't mean mockups or finished designs of the lens — these are references that show me the *feel* you want the lens to have. Things like:
 >
-> - **Screenshots** från andra AR-filter du gillar (Snap, TikTok, Insta — vad som helst)
-> - **Foton** som fångar stämningen — Pinterest-bilder, kampanjbilder, Instagram-fynd, streetstyle, produktfoton
-> - **Färgreferenser** — paletter, gradients, en bild med 'rätt' färgkänsla
-> - **Rörelseklipp** — om du har sett en animation/transition du gillar, droppa screenshot eller länk
-> - **Logos / brand-element** från klienten (om sådana finns)
+> - **Screenshots** from other AR filters you like (Snap, TikTok, Insta — whatever)
+> - **Photos** that capture the mood — Pinterest images, campaign imagery, Instagram finds, streetstyle, product shots
+> - **Color references** — palettes, gradients, an image with the 'right' color feel
+> - **Motion clips** — if you've seen an animation/transition you like, drop a screenshot or link
+> - **Logos / brand elements** from the client (if any exist)
 >
-> Vad det INTE behöver vara: mockups, wireframes, eller färdiga lens-designer. Råmaterial räcker.
+> What it does NOT need to be: mockups, wireframes, or finished lens designs. Raw material is enough.
 >
-> **Value-exchange — vad jag gör med dem:**
-> - **3 bilder**: jag drar en grov tonalitet (mörkt/ljust, varmt/kallt, lugnt/energiskt) och föreslår en startpalett — du får godkänna eller justera senare.
-> - **6-8 bilder**: jag kan dra slutsatser om motion-feel (mjukt vs snabbt), kompositionstyp (centrerat vs dramatiskt), och typografi-känsla — färre frågor till dig senare.
-> - **10+ bilder**: jag har mycket mer underlag att korsreferera; risken för 'fel tonalitet'-överraskningar i Phase 1 blir nästan noll. Lönsamt om du har materialet redan.
+> **Value-exchange — what I do with them:**
+> - **3 images**: I get a rough tonality (dark/light, warm/cool, calm/energetic) and propose a starting palette — you approve or adjust later.
+> - **6–8 images**: I can draw conclusions about motion feel (soft vs fast), composition type (centered vs dramatic), and typographic feel — fewer questions to you later.
+> - **10+ images**: I have much more material to cross-reference; the risk of 'wrong tonality' surprises in Phase 1 becomes nearly zero. Worth it if you have the material already.
 >
-> **3-5 bilder räcker för att börja**. Drop dem i `~/Projects/spotify-lens/INSPIRATION/` (samma folder vi precis skapade — undermapparna är frivilliga, släng dem i huvudmappen om du inte vill sortera). Säg 'klar' när du har minst 3 där."
+> **3–5 images is enough to start**. Drop them in `~/Projects/spotify-lens/INSPIRATION/` (the same folder we just created — sub-folders are optional, just toss them in the main folder if you don't want to sort). Say 'done' when you have at least 3 in there."
 
-Wait for: "klar".
+Wait for: "done" / "klar".
 
 Then validate:
 
@@ -202,36 +202,36 @@ If fewer than 3 images: ask for more. If 3+: continue.
 
 Move from concierge mode to onboarding-protocol.md. The structure is announced to Anna so she has a map.
 
-**Update — 4Q / 2-block intake** (down from 8Q / 3-block): vision + lens-mechanics are now captured in Step 6, client + ad-policy in Step 3, so intake focuses purely on edges (off-limits, audio) and asset signals (INSPIRATION-confirmation + similar-lens reference, brand-assets).
+**Update — 4Q / 2-block intake** (down from 8Q / 3-block): vision + lens mechanics are now captured in Step 6, client + ad-policy in Step 3, so intake focuses purely on edges (off-limits, audio) and asset signals (INSPIRATION-confirmation + similar-lens reference, brand-assets).
 
 Open with the structure-announcement, then immediately go into Q1:
 
-> CC: "Bra — nu går vi från setup till själva briefen. Jag ställer **4 frågor i två block** — mechanic, assets — det tar 2–3 min. Ju skarpare du svarar, desto mer kan jag dra slutsatser själv senare istället för att fråga dig om småsaker. Skriv 'skip' om en fråga inte känns relevant.
+> CC: "Good — now we move from setup to the actual brief. I'll ask **4 questions in two blocks** — mechanic, assets — it takes 2–3 min. The sharper you answer, the more I can infer on my own later instead of asking about small things. Type 'skip' if a question doesn't feel relevant.
 >
-> **Block 1 av 2 — Mechanic.**
-> Fråga 1: Något explicit off-limits? Exempel: 'no face liquify' (brand prefers ungimmicked face), 'no 18+ gating även om kategorin tillåter' (campaign decision), 'must be selfie-only' (no rear camera).
+> **Block 1 of 2 — Mechanic.**
+> Question 1: Anything explicitly off-limits? Examples: 'no face liquify' (brand prefers ungimmicked face), 'no 18+ gating even though the category allows it' (campaign decision), 'must be selfie-only' (no rear camera).
 >
-> (Skriv 'skip' om du vill hoppa över.)"
+> (Type 'skip' if you want to skip it.)"
 
 Deliberate elements (full breakdown in `onboarding-protocol.md` § "The opening"):
-- "4 frågor i två block" — roadmap. Anna now has a map.
+- "4 questions in two blocks" — roadmap. Anna now has a map.
 - "2–3 min" — honest time-commitment.
-- "Ju skarpare du svarar..." — value-exchange (`voice-and-pedagogy.md` #7).
-- "Skriv 'skip'" — agency (#6).
-- "Block 1 av 2 — Mechanic" — first progress signal. Sets pattern for remaining block.
+- "The sharper you answer..." — value-exchange (`voice-and-pedagogy.md` #7).
+- "Type 'skip'" — agency (#6).
+- "Block 1 of 2 — Mechanic" — first progress signal. Sets the pattern for the remaining block.
 - Immediate first question — no further preamble. Headline first.
 
-This transitions CC from concierge mode into the announced 4-question intake. Full intake protocol (block-progress between Qs, value-exchange per Q, plain-language Readiness Report) lives in `onboarding-protocol.md`.
+This transitions CC from concierge mode into the announced 4-question intake. Full intake protocol (block progress between Qs, value-exchange per Q, plain-language Readiness Report) lives in `onboarding-protocol.md`.
 
-After intake completes and Readiness Report is approved, CC enters Phase 0.
+After intake completes and the Readiness Report is approved, CC enters Phase 0.
 
 ## Pacing rules
 
 - One user action per CC message
-- Wait for explicit confirmation signal (typed value, "done", "saved", "klar", file paste, etc.)
-- Never say "do steps 1-3 then say done" — always serialize
-- Acknowledge each completion briefly ("✅ klart" or similar) before moving to next step
-- If Anna seems lost: pause, ask "var fastnar du?", troubleshoot 1-2 fixes, escalate if needed
+- Wait for an explicit confirmation signal (typed value, "done", "saved", "klar", file paste, etc.)
+- Never say "do steps 1–3 then say done" — always serialize
+- Acknowledge each completion briefly ("✅ done" or similar) before moving to the next step
+- If Anna seems lost: pause, ask "where are you getting stuck?", troubleshoot 1–2 fixes, escalate if needed
 
 ## Resume-from-partial flow
 
@@ -239,26 +239,26 @@ If Anna abandons setup mid-flow and comes back later (new session, same project)
 
 1. Re-run environment detection
 2. Compare with expected post-step state — which steps are done?
-3. Surface to Anna: "Vi var mitt i setup. ✅ LS installerat, ✅ projekt-folder skapat, ❌ MCP inte konfigurerat än. Fortsätter vi från MCP?"
-4. Wait for "ja"/"fortsätt"
+3. Surface to Anna: "We were in the middle of setup. ✅ LS installed, ✅ project folder created, ❌ MCP not configured yet. Should we continue from MCP?"
+4. Wait for "yes" / "continue"
 5. Resume at the first incomplete step
 
-If `PROJECT-STATE.md` exists: read it to confirm the resume point. If `PROJECT-STATE.md` shows phase is past setup (Phase 1+), skip concierge entirely.
+If `PROJECT-STATE.md` exists: read it to confirm the resume point. If `PROJECT-STATE.md` shows the phase is past setup (Phase 1+), skip concierge entirely.
 
 ## Decline patterns — "I'll do it myself"
 
 If Anna explicitly opts out of guidance:
 
 - "Just give me the install steps"
-- "Är det ingen manual jag kan läsa?"
+- "Isn't there a manual I can read?"
 - "Show me everything upfront, I'll figure it out"
 
 Respond:
 
-> CC: "Klart. Komplett self-service-guide: `docs/INSTALL-REFERENCE.md` (i skill-foldern). Den täcker LS-installation, MCP-registrering, projekt-folder-struktur, och INSPIRATION-coaching.
+> CC: "Sure. Complete self-service guide: `docs/INSTALL-REFERENCE.md` (in the skill folder). It covers LS installation, MCP registration, project folder structure, and INSPIRATION coaching.
 >
-> Om du fastnar nånstans, kom tillbaka hit och säg 'hjälp på steg X' så hoppar jag in interaktivt."
+> If you get stuck somewhere, come back here and say 'help at step X' and I'll jump in interactively."
 
 Do NOT continue the stepped sequence after a decline. Anna chose self-service; respect it.
 
-If she returns later mid-task ("MCP-tokenen funkar inte"), enter troubleshooting decision tree directly — don't restart concierge from step 1.
+If she returns later mid-task ("the MCP token isn't working"), enter the troubleshooting decision tree directly — don't restart concierge from step 1.

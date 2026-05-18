@@ -16,23 +16,23 @@ Phase-by-phase reference for Snapchat Lens projects. Read the phase relevant to 
 
 ---
 
-## Magic moments — översikt
+## Magic moments — overview
 
-Varje fas har EN definierad "magic moment" där något konkret manifesterar sig. CC är **SKYLDIG** att stoppa upp och göra en "kom och titta i LS"-inbjudan när det händer — inte passera tyst. Mall: `mentor-flow-patterns.md` Template 2 (celebration) + Template 3 (LS-invite).
+Every phase has ONE defined "magic moment" where something concrete manifests. CC is **REQUIRED** to stop and do a "come look in LS" invite when it happens — not pass silently. Templates: `mentor-flow-patterns.md` Template 2 (celebration) + Template 3 (LS invite).
 
-| Fas | Magic moment | Var användaren tittar |
+| Phase | Magic moment | Where the user looks |
 |---|---|---|
-| 0 | Tre planerings-dokument landade. Projektet har skelett. | `docs/`-foldern i editorn |
-| B | En osäker LS-API-feature fungerar empiriskt. | LS Preview-panelen |
-| 1 | Första synliga asset i scenen — lensen är "på riktigt". | Scene Hierarchy + Preview |
-| 1.5 | Final copy + custom font renderar korrekt. | Preview-panelen |
-| 2 | Första tap-to-state-cykeln fungerar. Interaktivitet född. | Preview (klicka för att se övergång) |
-| 2.5 | Avancerad feature togglar utan att bryta kärnloopen. | Inspector + Preview parallellt |
-| 3 | User signs off i Preview — lensen är polerad. Phase 3 stängd. | Preview + telefon, jämför mot Day 1-screenshot |
-| 4 | Lensen lever på RIKTIG telefon för första gången. | Snapchat-appen + telefon-kamera |
-| 5 | Snap accepterat submission. Review-klockan tickar. | Snap Ads Manager → Lenses |
+| 0 | Three planning documents landed. The project has a skeleton. | the `docs/` folder in the editor |
+| B | An uncertain LS API feature works empirically. | the LS Preview panel |
+| 1 | First visible asset in the scene — the lens is "real". | Scene Hierarchy + Preview |
+| 1.5 | Final copy + custom font renders correctly. | the Preview panel |
+| 2 | First tap-to-state cycle works. Interactivity born. | Preview (click to see the transition) |
+| 2.5 | Advanced feature toggles without breaking the core loop. | Inspector + Preview in parallel |
+| 3 | User signs off in Preview — the lens is polished. Phase 3 closed. | Preview + phone, compare against Day 1 screenshot |
+| 4 | The lens lives on a REAL phone for the first time. | the Snapchat app + phone camera |
+| 5 | Snap accepted the submission. The review clock is ticking. | Snap Ads Manager → Lenses |
 
-Detaljer per fas: se respektive "Magic moment + invite to look"-subsektion nedan.
+Details per phase: see the respective "Magic moment + invite to look" subsection below.
 
 ---
 
@@ -50,7 +50,7 @@ Concierge mode has completed (LS installed, project folder created, MCP register
 - Read all `INSPIRATION/` images, infer concrete design decisions (colors, typography, motion, mood)
 - Read `brand-assets/` if present
 - Surface inferences in `docs/PROJECT-DECISIONS.md` for user validation
-- Surface 2-4 targeted clarifying questions (Phase 0 template — see `prompt-templates.md`)
+- Surface 2–4 targeted clarifying questions (Phase 0 template — see `prompt-templates.md`)
 - After user answers: draft `docs/TECH-SPEC.md` (scene hierarchy, scripts, performance, state machine) and `docs/USER-EXPERIENCE.md` (second-by-second user journey)
 - Initial git commit of spec drafts
 - Lock `lensApplicability` early (e.g., `[Front]` for selfie-only) — see `lens-studio-api-gotchas.md` Category 6 for transient-view pattern when setting via MCP
@@ -83,15 +83,15 @@ Specs concrete enough that CC could generate scene-mutation sequence and TypeScr
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** Tre planerings-dokument landade. Projektet har bones nu — inte bara en brief, en konkret plan.
+**WHAT just happened:** Three planning documents landed. The project has bones now — not just a brief, a concrete plan.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Klart — vi har en plan. Tre dokument landade i `docs/`-foldern: **TECH-SPEC.md** (vad vi bygger), **USER-EXPERIENCE.md** (vad användaren upplever sekund-för-sekund), **PROJECT-DECISIONS.md** (varje liten inference jag gjort). Öppna `docs/`-foldern i din editor (VS Code, Cursor, Sublime — vad du gillar) och läs igenom så du känner vad jag planerat. Säg till när du är klar."
+> "Done — we have a plan. Three documents landed in the `docs/` folder: **TECH-SPEC.md** (what we're building), **USER-EXPERIENCE.md** (what the user experiences second-by-second), **PROJECT-DECISIONS.md** (every small inference I made). Open the `docs/` folder in your editor (VS Code, Cursor, Sublime — whichever you like) and read through so you feel what I've planned. Tell me when you're done."
 
-**Why obligatory:** First time the user can SEE the project as something more than a brief. Skipping the invite misses the project's first concrete artifact-moment.
+**Why required:** First time the user can SEE the project as something more than a brief. Skipping the invite misses the project's first concrete artifact moment.
 
-**Patterns:** `mentor-flow-patterns.md` Template 2 (Magic moment celebration) + Template 3 ("Kom och titta"-inbjudan).
+**Patterns:** `mentor-flow-patterns.md` Template 2 (Magic moment celebration) + Template 3 ("Come look" invitation).
 
 ---
 
@@ -147,13 +147,13 @@ All blocking API patterns validated. Production code generation in Phase 2 will 
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** En LS-API-feature du var osäker på FUNGERAR empiriskt — verifierad i din specifika LS-version, inte bara antagen från docs.
+**WHAT just happened:** An LS API feature you were uncertain about WORKS empirically — verified in your specific LS version, not just assumed from docs.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase B klar — [feature/API] funkar empiriskt i din LS-version. Öppna Preview-panelen så ser du test-artefakten köra. Vi vet nu att [feature] inte är en silent-drop eller en stale-doc-feature, så Phase 2 kan generera production-kod utan oro. Test-scaffoldingen är cleanad bort innan vi går till Phase 1 — scenen är tom igen."
+> "Phase B done — [feature/API] works empirically in your LS version. Open the Preview panel and you'll see the test artifact running. We now know [feature] isn't a silent-drop or a stale-doc feature, so Phase 2 can generate production code without worry. The test scaffolding is cleaned up before we move to Phase 1 — the scene is empty again."
 
-**Why obligatory:** Phase B är där osäkerhet blir säkerhet. Att passera tyst förbi den vändpunkten lämnar användaren utan visuell bekräftelse på den learning som just landat.
+**Why required:** Phase B is where uncertainty becomes certainty. Passing that turning point silently leaves the user without visual confirmation of the learning that just landed.
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -230,9 +230,9 @@ z-order via `renderOrder` on visual components (see `lens-studio-api-gotchas.md`
 2. **Closed-state layout review** — Preview screenshot, pause for "ok" or adjustment.
 3. **Pulse animation feel** (if pulse is in spec) — 3-frame screenshot, pause for magnitude direction.
 
-### Mutations: typical ~20-25
+### Mutations: typical ~20–25
 
-Per RFSU project metrics. Roughly: scene-hierarchy creates (5-8) + asset imports (3-5) + anchor sets (8-12) + initial renderOrder/visual properties (2-5).
+Per RFSU project metrics. Roughly: scene-hierarchy creates (5–8) + asset imports (3–5) + anchor sets (8–12) + initial renderOrder/visual properties (2–5).
 
 ### DoD signal
 
@@ -244,17 +244,17 @@ Scene visually matches the post-interaction frozen state from USER-EXPERIENCE.md
 
 **WHAT just happened:** First visible asset is now in your scene. The lens has a *body* — not just a spec on paper. Phase 1's scaffolding is real.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase 1-scaffoldingen landade — **din lens-scen är på riktigt nu**. Camera + [asset-name] + lighting, alla på plats.
+> "The Phase 1 scaffolding landed — **your lens scene is real now**. Camera + [asset-name] + lighting, all in place.
 >
-> Öppna Scene Hierarchy (vänster panel i LS) — du ser [asset-name]-noden under camera. Klicka på den så markeras den i Scene Editor och properties dyker upp i Inspector (höger).
+> Open Scene Hierarchy (left panel in LS) — you see the [asset-name] node under camera. Click it and it's selected in Scene Editor; properties show up in Inspector (right).
 >
-> Sen Preview (eller den panel som visar render-output) — du ser asseten onscreen. Det här är skelettet vi ska bygga på.
+> Then Preview (or the panel showing render output) — you see the asset onscreen. This is the skeleton we'll build on.
 >
-> Säg till när du orienterat dig så fortsätter vi."
+> Tell me when you've oriented yourself and we'll keep going."
 
-**Why obligatory:** Phase 1 är första gången användaren ser sitt lens som ETT objekt i världen. Att passera tyst förbi första-synliga-asset bryter `voice-and-pedagogy.md` #4 (Celebrate progress) + #8 (Embodied voice).
+**Why required:** Phase 1 is the first time the user sees their lens as ONE object in the world. Passing silently past first-visible-asset breaks `voice-and-pedagogy.md` #4 (Celebrate progress) + #8 (Embodied voice).
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -288,7 +288,7 @@ Phase 1 DoD met. Final copy approved by user/client.
 1. **Copy fidelity** — every Text component shows exactly the approved copy. Surface inline.
 2. **Typography correctness** — font, size, line breaks per spec. Visual verification.
 
-### Mutations: typical ~5-10
+### Mutations: typical ~5–10
 
 Font imports + Text component property writes.
 
@@ -298,13 +298,13 @@ User signs off that copy + fonts render as approved by client.
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** Final copy + custom fonts renderar. Texten ser ut som den ska i produktion.
+**WHAT just happened:** Final copy + custom fonts render. The text looks the way it should in production.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase 1.5 klar — final copy + fonts landade. Öppna Preview och läs igenom alla texter. Typsnitt, position, line-breaks, storlek — allt matchar specen. Det här är hur lensen kommer läsa för slutanvändaren. Säg om något inte sitter rätt, annars går vi vidare till scripting."
+> "Phase 1.5 done — final copy + fonts landed. Open Preview and read through all the texts. Typeface, position, line breaks, size — everything matches the spec. This is how the lens will read for the end user. Say if anything doesn't sit right; otherwise we move on to scripting."
 
-**Why obligatory:** Typography är ett känsligt design-beslut. Användaren har sista ordet på typsnitt + line-breaks; att passera den moment utan invite stjäl användarens design-agency (`voice-and-pedagogy.md` #6).
+**Why required:** Typography is a sensitive design decision. The user has the final word on typeface + line breaks; passing this moment without an invite robs the user of design agency (`voice-and-pedagogy.md` #6).
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -387,7 +387,7 @@ Run UX-principle code-audit (see `ux-principle-locking.md`) BEFORE committing �
 2. **@input wiring** — all @input fields populated correctly. Read-back table.
 3. **Core loop verification** — 3 key frames of tap → animation → end-state. Surface screenshots.
 
-### Mutations: typical ~30+ + 4-6 script files
+### Mutations: typical ~30+ + 4–6 script files
 
 Component creation + Inspector wiring + Tween Manager config.
 
@@ -397,15 +397,15 @@ User can tap in Preview → animation plays → end-state reached → reroll/loo
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** First tap-to-state-cycle works. Interaktivitet född. Lensen reagerar på dig nu — inte bara hänger där.
+**WHAT just happened:** First tap-to-state cycle works. Interactivity born. The lens reacts to you now — not just hangs there.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase 2 klar — **core loop:en är levande**. Öppna Preview och tappa anywhere på den. Du ser [animation/state-change] — lensen reagerar på dig nu. Tappa igen för att se reroll/loop-cykel (om den finns).
+> "Phase 2 done — **the core loop is alive**. Open Preview and tap anywhere on it. You see [animation/state-change] — the lens reacts to you now. Tap again to see the reroll/loop cycle (if there is one).
 >
-> Det här är hjärtat i lensen — om det här känns rätt är resten finputs. Säg vad du ser; om något känns off-feel åker det till Phase 3 polish."
+> This is the heart of the lens — if this feels right, the rest is fine-tuning. Tell me what you see; if anything feels off-feel, that goes to Phase 3 polish."
 
-**Why obligatory:** First interactive cycle is one of the biggest emotional moments in the entire project. The lens has crossed from "static scene" to "responsive thing". Silence here = robot voice (`voice-and-pedagogy.md` #4 + #8).
+**Why required:** First interactive cycle is one of the biggest emotional moments in the entire project. The lens has crossed from "static scene" to "responsive thing". Silence here = robot voice (`voice-and-pedagogy.md` #4 + #8).
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -449,7 +449,7 @@ Phase 2 DoD met. Core loop works in Preview. Brief explicitly requires advanced 
 2. **ML init timing** — read-back component state to verify enabled at scene start if using callbacks.
 3. **Entanglement check** — verify face effects still work after deleting unrelated face-tracking-driven assets.
 
-### Mutations: typical ~20-30
+### Mutations: typical ~20–30
 
 ### DoD signal
 
@@ -457,13 +457,13 @@ Each advanced feature works independently. Core loop unaffected by feature toggl
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** Avancerad feature togglar utan att bryta kärnloopen. Komplexitet hanterad utan att förstöra det som redan funkade.
+**WHAT just happened:** Advanced feature toggles without breaking the core loop. Complexity handled without destroying what was already working.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase 2.5 klar — [feature] funkar parallellt med core loop. Öppna Inspector, toggla [feature]-komponenten on/off — Preview växlar live. Bekräftar att Phase 2:s logik fortfarande håller även med extra-komplexitet on top. Säg till när du verifierat så går vi till Phase 3 polish."
+> "Phase 2.5 done — [feature] works in parallel with the core loop. Open Inspector, toggle the [feature] component on/off — Preview switches live. Confirms that Phase 2's logic still holds even with extra complexity on top. Tell me when you've verified and we'll move to Phase 3 polish."
 
-**Why obligatory:** Phase 2.5 är dubbel-risk-moment — kunde brutit core loop. Att INTE invite användaren att bekräfta isolation = lämnar dem osäkra om byggets stabilitet.
+**Why required:** Phase 2.5 is a double-risk moment — it could have broken the core loop. NOT inviting the user to confirm isolation = leaves them unsure about the build's stability.
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -503,13 +503,13 @@ User says "lens feels right in Preview". All Phase 3 iterations approved. Ready 
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** User signs off i Preview — lensen är polerad. Phase 3 stängd.
+**WHAT just happened:** User signs off in Preview — the lens is polished. Phase 3 closed.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Ta en sista titt i Preview och på telefon. Jämför mot Day 1-screenshotten om du har den. Säg 'godkänd' när du är nöjd — sen är Phase 3 klar och vi paketerar för submission."
+> "Take one last look in Preview and on the phone. Compare against the Day 1 screenshot if you have it. Say 'approved' when you're happy — then Phase 3 is done and we package for submission."
 
-**Why obligatory:** Phase 3 är hela polish-resans slutpunkt. Att passera tyst förbi end-of-phase = den känslomässiga lönen för all iterationsarbete försvinner.
+**Why required:** Phase 3 is the endpoint of the entire polish journey. Passing silently past end-of-phase = the emotional payoff for all the iteration work disappears.
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -572,17 +572,17 @@ If any item fails, return to iteration. Don't proceed to Phase 5 with open issue
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** Lensen lever på RIKTIG telefon för första gången. **DET HÄR är ögonblicket allt vänder** — från Lens Studio-Preview till verklig telefon, verkligt ljus, verkliga händer.
+**WHAT just happened:** The lens lives on a REAL phone for the first time. **THIS is the moment everything turns** — from Lens Studio Preview to a real phone, real light, real hands.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase 4 första pair-test — **DET HÄR är ögonblicket allt vänder**.
+> "Phase 4 first pair-test — **THIS is the moment everything turns**.
 >
-> Öppna Snapchat-appen på telefonen, scanna pair-koden (eller hitta lensen i din Try-tab). Du ser ditt filter i kameran NU, in real-life. Vänd telefonen, rör dig framför kameran, tap.
+> Open the Snapchat app on the phone, scan the pair code (or find the lens in your Try tab). You see your filter in the camera NOW, in real life. Turn the phone, move in front of the camera, tap.
 >
-> Sluta läs den här texten en stund — leva med lensen i världen ett par minuter innan du kommer tillbaka. Säg vad som händer (FPS, känsla, edge cases) när du är klar."
+> Stop reading this for a moment — live with the lens in the world for a couple of minutes before you come back. Tell me what happens (FPS, feel, edge cases) when you're done."
 
-**Why obligatory:** Phase 4 first device test is THE watershed moment in the entire lens project. The skill's voice mandate (Celebrate progress + Embodied voice) is literally written FOR this moment. Skipping it = the entire mentor-tone effort is wasted.
+**Why required:** Phase 4 first device test is THE watershed moment in the entire lens project. The skill's voice mandate (Celebrate progress + Embodied voice) is literally written FOR this moment. Skipping it = the entire mentor-tone effort is wasted.
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -611,7 +611,7 @@ Phase 4 DoD met fully (no exceptions).
   - Final preview video
   - Submission checklist
 - Media agency uploads to Snap Ads Manager
-- Snap ad-review (1-3 business days for general categories; 1-2 weeks for regulated like Sexual Wellness, Alcohol, Gambling, Pharmaceutical)
+- Snap ad-review (1–3 business days for general categories; 1–2 weeks for regulated like Sexual Wellness, Alcohol, Gambling, Pharmaceutical)
 
 ### Phase 5 Definition of Done
 
@@ -644,7 +644,7 @@ Submission-ready when ALL of these are true:
 - [ ] Snap Ad Account permissions verified (target Org accessible in Submit panel dropdown)
 - [ ] Handed off to media agency for Snap Ads Manager upload
 
-If any item is open, the project is not done — even if it "feels" done. Snap's review process catches gaps and adds 1-2 weeks of delay. Be disciplined here.
+If any item is open, the project is not done — even if it "feels" done. Snap's review process catches gaps and adds 1–2 weeks of delay. Be disciplined here.
 
 ### Typical watch points
 
@@ -653,15 +653,15 @@ If any item is open, the project is not done — even if it "feels" done. Snap's
 
 ### Magic moment + invite to look
 
-**WHAT just happened:** Snap accepterat submission. Review-klockan tickar. Allt arbete är inlämnat.
+**WHAT just happened:** Snap accepted the submission. The review clock is ticking. All the work is submitted.
 
-**OBLIGATORISK invitation (CC must not skip):**
+**REQUIRED invitation (CC must not skip):**
 
-> "Phase 5 klar — **lensen är inlämnad**. Öppna Snap Ads Manager (ads.snapchat.com) → Lenses → [client]. Du ser lensen listad med Status: 'Pending Review' eller 'In Review'. Snaps team granskar inom 1-3 dagar (general category) eller 1-2 veckor (regulated).
+> "Phase 5 done — **the lens is submitted**. Open Snap Ads Manager (ads.snapchat.com) → Lenses → [client]. You see the lens listed with Status: 'Pending Review' or 'In Review'. Snap's team reviews within 1–3 days (general category) or 1–2 weeks (regulated).
 >
-> När statusen växlar till 'Approved' eller 'Live' — då är projektet klart på riktigt. Tills dess: andas ut. Du har skickat in."
+> When the status flips to 'Approved' or 'Live' — that's when the project is actually done. Until then: breathe out. You've shipped."
 
-**Why obligatory:** Phase 5:s magic är "skickat in"-ögonblicket. Att passera tyst förbi det = användaren förlorar känslan av "klar"-stamp på projektet.
+**Why required:** Phase 5's magic is the "submitted" moment. Passing silently past it = the user loses the feeling of "done" stamp on the project.
 
 **Patterns:** `mentor-flow-patterns.md` Template 2 + Template 3.
 
@@ -670,7 +670,7 @@ If any item is open, the project is not done — even if it "feels" done. Snap's
 ## Cross-references
 
 - `operational-rules.md` — 11 locked policies that apply across all phases
-- `watch-points-methodology.md` — how to declare 3-5 watch points per phase
+- `watch-points-methodology.md` — how to declare 3–5 watch points per phase
 - `ux-principle-locking.md` — lock principles before Phase 2 scripting
 - `scope-creep-detection.md` — discipline against feature drift mid-build
 - `capability-validation-protocol.md` — full Phase B protocol

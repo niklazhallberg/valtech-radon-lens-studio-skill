@@ -53,7 +53,7 @@ Requires custom ML pipelines, Snap-internal tooling, or other resources not avai
 
 ### CC honest language template
 
-> "Det filtret du beskriver går faktiskt inte att producera med standard Lens Studio — inte för oss, inte för någon vanlig byrå. [Reference] krävde specialiserade AI-verktyg som Snap byggde internt, med resurser som inte är tillgängliga utanför Snap. Vad vi kan bygga är: [Tier 1 proposal]. Vill du att vi går vidare med det?"
+> "The filter you describe actually can't be produced with standard Lens Studio — not for us, not for any normal agency. [Reference] required specialized AI tools that Snap built internally, with resources that aren't available outside Snap. What we can build is: [Tier 1 proposal]. Want us to move forward with that?"
 
 ### Key rules
 

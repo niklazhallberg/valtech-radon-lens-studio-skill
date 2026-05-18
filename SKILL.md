@@ -34,11 +34,11 @@ Eight principles (full breakdown + worked examples in `references/voice-and-peda
 5. **Connect over time** — reference prior decisions + probe outcomes
 6. **Give agency** — never large changes without approval
 7. **Value-exchange transparency** (NEW v0.7.0) — every Q/action says what the user gets back
-8. **Embodied first-person voice** (NEW v0.7.0) — "jag ser" / "jag installerar", not status-log
+8. **Embodied first-person voice** (NEW v0.7.0) — "I see" / "I'm installing", not status-log
 
-For concrete templates per situation (progress-bar between Qs, celebration at magic moments, "kom och titta i LS"-inbjudan, long-call narration): `references/mentor-flow-patterns.md`.
+For concrete templates per situation (progress-bar between Qs, celebration at magic moments, "come look in LS" invitation, long-call narration): `references/mentor-flow-patterns.md`.
 
-For first-use translation of technical terms (GLB, FBX, MCP, scen-hierarki, ObjectPrefab, etc.): `references/glossary-translation.md`.
+For first-use translation of technical terms (GLB, FBX, MCP, scene hierarchy, ObjectPrefab, etc.): `references/glossary-translation.md`.
 
 If unsure about tone in any moment: read `references/voice-and-pedagogy.md` first.
 
@@ -176,13 +176,9 @@ Users describe what they want, not what the API is called. CC must map natural-l
 | "3D character / avatar" | GenAI Body Generator (5.21+) — Tier 2 | Generated asset still needs FBX/glTF integration — Tier 2 (external asset) per `capability-tiers.md` |
 | "spin / rotate / animate text" | Text3D Animator block (5.21+); fallback `TweenTransform` on `Text3D` | Block install path unverified — fallback is production-safe |
 
-**Confirmation pattern** (Swedish, matches project bilingual tone):
+**Confirmation pattern:**
 
-> "Jag tolkar det som att du vill ha [feature]. Jag kan lägga till [concrete primitive] som [does X]. Stämmer det, eller menar du något annat?"
-
-English equivalent:
-
-> "I read that as wanting [feature]. I can add [concrete primitive] which [does X]. Right read, or did you mean something else?"
+> "I'm reading this as you wanting [feature]. I can add [concrete primitive] which [does X]. Does that match, or did you mean something else?"
 
 Wait for explicit confirmation before any install / mutation. If the user confirms, proceed; if they describe a different intent, re-map.
 
@@ -235,12 +231,12 @@ Don't read all of these upfront — pull each when relevant.
 **Building scripts or mutating scenes**:
 - `references/lens-studio-api-gotchas.md` — empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager, setProperty categories, FaceLiquify quirks, transient-view persistence, Try-On Pack Sneakers + Foot Tracking calibration, ~21 entries)
 - `references/body-anchored-calibration.md` — MANDATORY for any tracker-driven content (foot, face, hand, head, full-body, world-anchored). Universal probe-first protocol, mesh-pivot awareness, wrapper-anchor pattern, desktop-preview-limitations matrix, per-body-part defaults. Read FIRST before proposing any architecture for tracker-driven Phase 1 builds.
-- `references/3d-asset-import-doctrine.md` — GLB-first import priority, two-pass optimization (before import + inside Lens Studio), skill-internal per-asset budgets, mentor-checklista för format/import/size/optimering. Load when user mentions 3D-objekt, GLB/FBX/OBJ, "lens size too big", custom modeller, eller accessoarer (hatt, glasögon, prop).
-- `references/image-to-3d-generation.md` — Pass 0 för custom 3D-content: bildkrav, prompt→bild-tips, tjänsteval-heuristik (Meshy/Tripo/Hunyuan3D/Rodin), kvalitetschecklista, beslutspunkt generera om vs optimera vidare. Load when user wants to create a custom 3D-modell från en bild/idé och inte har en .glb-fil än, eller nämner image-to-3D, fal.ai, Meshy, Tripo, Rodin, Hunyuan3D, Luma Genie.
+- `references/3d-asset-import-doctrine.md` — GLB-first import priority, two-pass optimization (before import + inside Lens Studio), skill-internal per-asset budgets, mentor checklist for format/import/size/optimization. Load when the user mentions 3D objects, GLB/FBX/OBJ, "lens size too big", custom models, or accessories (hat, glasses, prop).
+- `references/image-to-3d-generation.md` — Pass 0 for custom 3D content: image requirements, prompt→image tips, service-selection heuristic (Meshy/Tripo/Hunyuan3D/Rodin), quality checklist, decision point regenerate vs optimize further. Load when the user wants to create a custom 3D model from an image/idea and doesn't have a .glb file yet, or mentions image-to-3D, fal.ai, Meshy, Tripo, Rodin, Hunyuan3D, Luma Genie.
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
 
 **User documentation (human-facing — Anna reads these herself)**:
-- `docs/MANUAL-SV.md` — Användarhandbok (svenska): vad skill:en gör, hur den fungerar, var gränserna går
+- `docs/MANUAL-SV.md` — User manual (Swedish): what the skill does, how it works, where the boundaries are
 - `docs/MANUAL-EN.md` — User manual (English): what the skill does, how it works, where the limits are
 - `docs/INSTALL-REFERENCE.md` — full install steps (read after the manual confirms this fits the project)
 - `docs/TROUBLESHOOTING.md` — debug guide for when something breaks after install
@@ -257,7 +253,7 @@ Default targets — adjust per brief, but don't loosen without explicit reason.
 | Tap-to-primary-feedback | ≤ 3 s | 5 s |
 | Texture compression | ASTC | — |
 
-For lenses with custom 3D-objekt: see `references/3d-asset-import-doctrine.md` for GLB-first format priority, two-pass optimization flow, and per-asset budgets (accessoar ~1 MB komprimerat). 3D-tunga lenser kan acceptabelt landa upp till ~6 MB; håll fortfarande < 8 MB hårt.
+For lenses with custom 3D objects: see `references/3d-asset-import-doctrine.md` for GLB-first format priority, two-pass optimization flow, and per-asset budgets (accessory ~1 MB compressed). 3D-heavy lenses can acceptably land up to ~6 MB; still keep < 8 MB hard.
 
 ## Project documentation pattern
 

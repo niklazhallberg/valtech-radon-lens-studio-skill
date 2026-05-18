@@ -1,214 +1,214 @@
-# `lens-studio-snapchat-filter` — översikt v1.0
+# `lens-studio-snapchat-filter` — overview v1.0
 
-> 📌 Detta är en snapshot från v0.7.1 (2026-05-14). Skillen är nu på **v0.10.0**. Se [CHANGELOG.md](../CHANGELOG.md) för aktuellt läge.
+> 📌 This is a snapshot from v0.7.1 (2026-05-14). The skill is now at **v0.10.0**. See [CHANGELOG.md](../CHANGELOG.md) for the current state.
 
-Skillens version vid skrivande stund: **v0.7.1**
-Underhålls inom Valtech RADON.
+Skill version at time of writing: **v0.7.1**
+Maintained within Valtech RADON.
 
-Detta dokument är en självständig översikt över skillen — vad den är, hur den används, hur den växer, hur den hanterar säkerhet och vilket affärsvärde den representerar. Tänkt att läsas av en designer, teamlead, teknikchef eller beslutsfattare — alla får relevant information.
-
----
-
-## 1. Vad är detta — Executive Summary
-
-`lens-studio-snapchat-filter` är en AI-assisterad arbetsmetod som låter en designer på Valtech Radon — utan tidigare Snapchat-erfarenhet — bygga ett produktionsklart Sponsored Lens-filter åt en kund på dagar istället för veckor.
-
-Tekniskt: en "skill" som plug:ar in i Claude Code (Anthropics utvecklarverktyg) och förvandlar AI:n från en generell assistent till en **specialiserad mentor** för Snapchat Lens Studio. Skillen kan vår process, vår kvalitetsnivå, och fångar löpande in kunskap från riktiga projekt.
-
-**Affärsvärdet i en mening:** Vi går från "kunskapen sitter hos enskilda personer" till "kunskapen är en produkt som växer med varje projekt".
+This document is a standalone overview of the skill — what it is, how it's used, how it grows, how it handles security, and what business value it represents. Written to be readable by a designer, team lead, tech lead, or decision-maker — all get relevant information.
 
 ---
 
-## 2. Alla kunskapslager
+## 1. What is this — Executive Summary
 
-Skillen är byggd i **7 lager**. Varje lager existerar för att lösa ett specifikt problem som annars kostar tid eller orsakar fel.
+`lens-studio-snapchat-filter` is an AI-assisted working method that lets a designer at Valtech Radon — without prior Snapchat experience — build a production-ready Sponsored Lens filter for a client in days instead of weeks.
 
-### a) Officiell Snap-dokumentation (365 sidor)
-**Vad:** Hela `developers.snap.com/lens-studio/` curaterat och organiserat lokalt i 9 buckets (MCP, scripting, assets, scene, AR-tracking, try-on, publishing, performance, overview).
-**Vad det kostar att INTE ha det:** Designern googlar fragmenterat, fastnar på inaktuella StackOverflow-svar, blandar API-versioner från olika år.
-**Värde:** ~2–4 timmar/projekt sparad sök-tid. AI:n citerar rätt källa istället för att hallucinera.
+Technically: a "skill" that plugs into Claude Code (Anthropic's developer tool) and turns the AI from a general assistant into a **specialized mentor** for Snapchat Lens Studio. The skill knows our process, our quality bar, and continuously captures knowledge from real projects.
 
-### b) Empirisk kunskap från verkliga projekt
-**Vad:** `lens-studio-api-gotchas.md` (~21 entries) + `body-anchored-calibration.md` — saker som **inte** finns i Snaps officiella docs. T.ex. att Try-On Pack Sneakers har mesh-pivot 6–12 units off-center, eller att MCP-token roterar vid varje LS-restart.
-**Vad det kostar att INTE ha det:** Varje designer hittar samma fallgrop på nytt. På pilotprojektet kostade en specifik gotcha ~3 timmar att hitta.
-**Värde:** Det här lagret är skillens **moat** — det är inte googlebart.
+**Business value in one sentence:** We go from "knowledge lives with individuals" to "knowledge is a product that grows with every project".
+
+---
+
+## 2. All knowledge layers
+
+The skill is built in **7 layers**. Each layer exists to solve a specific problem that otherwise costs time or causes errors.
+
+### a) Official Snap documentation (365 pages)
+**What:** All of `developers.snap.com/lens-studio/` curated and organized locally into 9 buckets (MCP, scripting, assets, scene, AR-tracking, try-on, publishing, performance, overview).
+**What it costs NOT to have it:** The designer googles fragmentarily, gets stuck on outdated StackOverflow answers, mixes API versions from different years.
+**Value:** ~2–4 hours/project of saved search time. The AI cites the right source instead of hallucinating.
+
+### b) Empirical knowledge from real projects
+**What:** `lens-studio-api-gotchas.md` (~21 entries) + `body-anchored-calibration.md` — things that **don't** exist in Snap's official docs. E.g. that Try-On Pack Sneakers has a mesh pivot 6–12 units off-center, or that the MCP token rotates on every LS restart.
+**What it costs NOT to have it:** Every designer re-discovers the same pitfall. On the pilot project, one specific gotcha cost ~3 hours to find.
+**Value:** This layer is the skill's **moat** — it's not googleable.
 
 ### c) MCP capability map (20 tools)
-**Vad:** Komplett schema för alla 20 verktyg som Claude Code kan anropa i Lens Studio (scene-mutationer, asset-hantering, screenshots, GraphQL-queries).
-**Vad det kostar att INTE ha det:** AI:n provar fel verktyg, får cryptiska fel, ger upp.
-**Värde:** Sparar minuter per tool-anrop × hundratals anrop per projekt.
+**What:** Complete schema for all 20 tools Claude Code can call in Lens Studio (scene mutations, asset handling, screenshots, GraphQL queries).
+**What it costs NOT to have it:** The AI tries the wrong tool, gets cryptic errors, gives up.
+**Value:** Saves minutes per tool call × hundreds of calls per project.
 
-### d) Voice + pedagogik — "mentor mode" (v0.7.0)
-**Vad:** 3 lager (Voice/Pace/Pedagogy) × 8 principer som styr **hur AI:n pratar**. Översätt jargong vid första användning, fira magic moments, var ärlig om osäkerhet, ge agency till designern.
-**Vad det kostar att INTE ha det:** Designern känner sig dum, drar sig ur halvvägs, ger upp på AI:n.
-**Värde:** Det här är skillens **affärslogik**. Tekniken är medel — mentorrollen är produkten.
+### d) Voice + pedagogy — "mentor mode" (v0.7.0)
+**What:** 3 layers (Voice/Pace/Pedagogy) × 8 principles that govern **how the AI talks**. Translate jargon on first use, celebrate magic moments, be honest about uncertainty, give agency to the designer.
+**What it costs NOT to have it:** The designer feels dumb, drops out halfway, gives up on the AI.
+**Value:** This is the skill's **business logic**. The tech is the means — the mentor role is the product.
 
-### e) Onboarding-system
-**Vad:** Concierge mode (8 steg setup) + onboarding intake (8 frågor i 3 grupper, ~7 minuter) + Readiness Report.
-**Vad det kostar att INTE ha det:** Designern kastas in i Lens Studio, vet inte var de börjar, frågar någon kollega om hjälp.
-**Värde:** En kollega kan starta ensam. Ingen enskild person blir flaskhals.
+### e) Onboarding system
+**What:** Concierge mode (8-step setup) + onboarding intake (8 questions in 3 groups, ~7 minutes) + Readiness Report.
+**What it costs NOT to have it:** The designer gets thrown into Lens Studio, doesn't know where to start, asks a colleague for help.
+**Value:** A colleague can start alone. No single person becomes a bottleneck.
 
 ### f) Self-growth protocol
-**Vad:** `skill-growth-protocol.md` v0.4 — protokoll för hur **nya lärdomar fångas i flowet** under riktiga projekt och flödar in i skillen.
-**Vad det kostar att INTE ha det:** Skillen stagnerar efter dag 1. Kunskap från projekt 2, 3, 4 hamnar i folks huvuden eller Slack-trådar och försvinner.
-**Värde:** Compound interest. Se sektion 4.
+**What:** `skill-growth-protocol.md` v0.4 — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill.
+**What it costs NOT to have it:** The skill stagnates after day 1. Knowledge from projects 2, 3, 4 ends up in people's heads or Slack threads and disappears.
+**Value:** Compound interest. See section 4.
 
 ### g) CHANGELOG + discovery history
-**Vad:** Skillens biografi. Varje release + varje discovery loggad med datum, källa, motivering.
-**Vad det kostar att INTE ha det:** Ingen synlighet i hur skillen växer. Ingen ROI-spårbarhet. Nya kollegor förstår inte varför reglerna ser ut som de gör.
-**Värde:** Spårbarhet. Auditerbarhet. Story-telling till nästa kund.
+**What:** The skill's biography. Every release + every discovery logged with date, source, motivation.
+**What it costs NOT to have it:** No visibility into how the skill grows. No ROI traceability. New colleagues don't understand why the rules look the way they do.
+**Value:** Traceability. Auditability. Storytelling to the next client.
 
 ---
 
-## 3. Användarvänlighet — hur fungerar det i praktiken
+## 3. User-friendliness — how it works in practice
 
-### Dag 1 — designer Anna, har aldrig byggt ett Snap-filter
+### Day 1 — designer Anna, has never built a Snap filter
 
-1. **00:00** — Anna öppnar `MANUAL.html` i webbläsaren. 4 steg på svenska. Klistrar in en setup-prompt i terminalen.
-2. **00:05** — Claude Code aktiverar skillen automatiskt när Anna nämner "Snapchat-filter åt [kund]". Bekräftar platform.
-3. **00:10** — Concierge mode kör miljödetektering. Säger "✅ LS installerat, ❌ MCP ej registrerat — vill du att jag fixar det?". Ett steg i taget.
-4. **00:30** — Setup klar. Onboarding intake börjar: 8 frågor om vision, känsla, tempo, målgrupp. Anna får löpande "vad du får tillbaka för svaret"-feedback.
-5. **00:45** — Readiness Report genererad. Phase 0 (spec-drafts) börjar. AI:n drar TECH-SPEC och USER-EXPERIENCE från briefen + inspirationsbilderna.
-6. **Dag 1 slut** — Anna har Phase 1 scaffolding live i Lens Studio. Något syns. Magic moment firat.
+1. **00:00** — Anna opens `MANUAL.html` in her browser. 4 steps in Swedish. Pastes a setup prompt into the terminal.
+2. **00:05** — Claude Code activates the skill automatically when Anna mentions "Snapchat filter for [client]". Confirms platform.
+3. **00:10** — Concierge mode runs environment detection. Says "✅ LS installed, ❌ MCP not registered — want me to fix it?". One step at a time.
+4. **00:30** — Setup done. Onboarding intake starts: 8 questions on vision, feel, tempo, audience. Anna gets ongoing "what you get back for the answer" feedback.
+5. **00:45** — Readiness Report generated. Phase 0 (spec drafts) begins. The AI pulls TECH-SPEC and USER-EXPERIENCE from the brief + inspiration images.
+6. **End of Day 1** — Anna has Phase 1 scaffolding live in Lens Studio. Something is visible. Magic moment celebrated.
 
-### Under projektet — hur skillen guidar
+### During the project — how the skill guides
 
-- **9 faser med tydliga DoD** (definition of done). Ingen "vad ska jag göra nu?"-känsla.
-- **Watch points per fas** — 3–5 explicita pauser där Anna får godkänna.
-- **Probe-first discipline** — AI:n provar EN sak, läser tillbaka resultatet, bekräftar att det funkade, innan den applicerar i bulk.
-- **Inspector handoff** — När det handlar om "feel" (animationskurvor, färg, position-tuning) skickar AI:n över rodret till Anna i LS Inspector. AI:n vet sin gräns.
+- **9 phases with clear DoD** (definition of done). No "what do I do now?" feeling.
+- **Watch points per phase** — 3–5 explicit pauses where Anna gets to approve.
+- **Probe-first discipline** — the AI tries ONE thing, reads back the result, confirms it worked, before applying in bulk.
+- **Inspector handoff** — when it's about "feel" (animation curves, color, position tuning) the AI hands the wheel to Anna in the LS Inspector. The AI knows its limit.
 
-### Vid problem
+### When problems happen
 
 - **Troubleshooting decision tree** — clarify → fix → escalate.
-- **Silent-drop recovery** — när MCP säger "success: true" men ingenting hände, finns det ett protokoll för det.
-- **Mentor-mode under setbacks** — AI:n säger "jag tror" istället för att fejka säkerhet. Inga gas-lit moments.
+- **Silent-drop recovery** — when MCP says "success: true" but nothing happened, there's a protocol for it.
+- **Mentor mode under setbacks** — the AI says "I think" instead of faking certainty. No gas-lit moments.
 
 ### BEFORE / AFTER
 
-| | UTAN skillen | MED skillen |
+| | WITHOUT the skill | WITH the skill |
 |---|---|---|
-| Setup-tid (designer utan Snap-erfarenhet) | 1–2 dagar googling + kollege-frågor | **30 min concierge** |
-| Första filter live i Preview | 3–5 dagar trial-and-error | **~Dag 1 eftermiddag** |
-| Antal blockerande frågor till senior kollega | 10–20 per projekt | **1–3** |
-| Risk för dolda gotchas i submission | Hög (Snap rejection vanlig) | Lägre — gotchas-fil fångar de kända |
+| Setup time (designer without Snap experience) | 1–2 days googling + colleague questions | **30 min concierge** |
+| First filter live in Preview | 3–5 days trial-and-error | **~Day 1 afternoon** |
+| Number of blocking questions to senior colleague | 10–20 per project | **1–3** |
+| Risk of hidden gotchas in submission | High (Snap rejection common) | Lower — gotchas file catches the known ones |
 
 ---
 
-## 4. Hur skillen blir smartare över tid
+## 4. How the skill gets smarter over time
 
-### När en designer löser något nytt
+### When a designer solves something new
 
-1. AI:n märker att en lösning inte finns i `references/`. Grep:ar för att bevisa det.
-2. Den säger **mitt i flowet** till designern: "Vi har en discovery: X. Den regeln finns inte i skillen. Ska vi skriva in den?"
-3. Designern säger ja / nej / spara för senare.
-4. Vid ja: **Generaliseringsregeln** kör (se sektion 5b nedan) — den projektspecifika lösningen skrivs om till en universell regel.
-5. Diff visas. Designern godkänner. Commit + CHANGELOG-entry. **~2 minuter**.
+1. The AI notices a solution isn't in `references/`. Greps to prove it.
+2. It says **in the middle of the flow** to the designer: "We have a discovery: X. That rule isn't in the skill. Should we write it in?"
+3. The designer says yes / no / save for later.
+4. On yes: the **Generalization rule** runs (see [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md)) — the project-specific solution gets rewritten into a universal rule.
+5. Diff shown. Designer approves. Commit + CHANGELOG entry. **~2 minutes**.
 
-### Hur kunskapen når nästa kollega
+### How the knowledge reaches the next colleague
 
-Nästa designer som gör `git pull` får automatiskt alla nya regler. AI:n läser dem som kontext nästa session. **Ingen utbildning, ingen Slack-tråd, ingen wiki att underhålla parallellt.**
+The next designer who runs `git pull` automatically gets all the new rules. The AI reads them as context in the next session. **No training, no Slack thread, no parallel wiki to maintain.**
 
-### Vad det kräver av designern
+### What it requires of the designer
 
-Två minuter av godkännande mitt i ett projekt. Inget batch-arbete vid sessionsslut. Inget separat dokumentationsmoment.
+Two minutes of approval mid-project. No batch work at session end. No separate documentation step.
 
-### Generaliseringsregeln — varför kritisk
+### The Generalization rule — why critical
 
-Utan den landar discoveries som **anekdoter** ("för det här projektet behövde vi X=-80"). Med den landar de som **regler** ("Try-On Pack-pivoten är typiskt off-center, så här detekterar och löser du det").
+Without it, discoveries land as **anecdotes** ("for this project we needed X=-80"). With it, they land as **rules** ("the Try-On Pack pivot is typically off-center, here's how you detect and solve it").
 
-Det är skillnaden mellan en logg och en lärobok.
+That's the difference between a log and a textbook.
 
-### CHANGELOG.md om 12 månader
+### CHANGELOG.md 12 months from now
 
-Om Valtech kör 10–20 lens-projekt per år och varje projekt bidrar 2–5 discoveries, har vi om ett år en CHANGELOG med **40–100 entries**. Varje entry är en regel som någon kollega lärde sig på riktig produktionstid. Det är compound interest på investerad tid.
+If Valtech runs 10–20 lens projects per year and each project contributes 2–5 discoveries, in a year we have a CHANGELOG with **40–100 entries**. Each entry is a rule that a colleague learned on real production time. That's compound interest on invested time.
 
-**Ärligt:** Idag är endast **ett** projekt faktiskt seedat in. Mekaniken är bevisad — volymen är inte. Det är det nästkommande projekt får visa.
-
----
-
-## 5. Säkerhet och sekretess
-
-Skillen är säker by design via tre mekanismer:
-
-- **Generaliseringsregeln** filtrerar bort projektspecifika värden (klientnamn, koordinater, deadlines) innan något committas.
-- **Lokal exekvering** — skillen körs på designerns dator; Lens Studio-projekt med kunddata ligger i separat mapp som ALDRIG pushas till skill-repot.
-- **Privat repo + manuella commit-godkännanden** — ingen auto-push, varje förändring godkänns explicit av människa.
-
-Se [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md) för fullständigt resonemang (vad lagras, Generaliseringsregelns trestegs-checklist, repo-status, kunddata under projekt, jämförelse med alternativet).
+**Honest:** Today only **one** project is actually seeded in. The mechanism is proven — the volume is not. That's what the next projects will show.
 
 ---
 
-## 6. Affärsvärde — konkret ROI
+## 5. Security and privacy
 
-### Tid sparad per projekt
+The skill is secure by design via three mechanisms:
 
-| Moment | UTAN skill | MED skill | Sparat |
+- **The Generalization rule** filters out project-specific values (client names, coordinates, deadlines) before anything gets committed.
+- **Local execution** — the skill runs on the designer's machine; Lens Studio projects with client data live in a separate folder that's NEVER pushed to the skill repo.
+- **Private repo + manual commit approvals** — no auto-push, every change is approved explicitly by a human.
+
+See [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md) for the full reasoning (what's stored, the Generalization rule's three-step checklist, repo status, client data during projects, comparison with the alternative).
+
+---
+
+## 6. Business value — concrete ROI
+
+### Time saved per project
+
+| Step | WITHOUT skill | WITH skill | Saved |
 |---|---|---|---|
-| Designer-onboarding (Snap-specifikt) | 1–2 dagar | 30 min concierge | **~12 h** |
-| Setup (LS, MCP, project struktur) | 4–6 h trial-and-error | 30 min | **~5 h** |
-| Troubleshooting kända gotchas | 2–4 h × N gotchas | <30 min | **~3–6 h** |
-| Kalibrering (foot-tracking, face, hand) | 1–2 dagar med tracker-överraskningar | 4–6 h med protokoll | **~8–12 h** |
-| **Totalt per lens-projekt** | ~5–7 dagar setup/troubleshoot | ~1–2 dagar | **~3–5 arbetsdagar** |
+| Designer onboarding (Snap-specific) | 1–2 days | 30 min concierge | **~12 h** |
+| Setup (LS, MCP, project structure) | 4–6 h trial-and-error | 30 min | **~5 h** |
+| Troubleshooting known gotchas | 2–4 h × N gotchas | <30 min | **~3–6 h** |
+| Calibration (foot-tracking, face, hand) | 1–2 days with tracker surprises | 4–6 h with protocol | **~8–12 h** |
+| **Total per lens project** | ~5–7 days setup/troubleshoot | ~1–2 days | **~3–5 working days** |
 
-Vid Valtech-rate ~10–12k SEK/dag = **30–60 kSEK sparat per projekt**.
+At Valtech rate ~10–12k SEK/day = **30–60 kSEK saved per project**.
 
-### Kunskapsbevaring
+### Knowledge preservation
 
-Idag bor stora delar av kunskapen i enskilda personers huvuden. Om en ansvarig kollega är sjuk, på semester eller upptagen i annat projekt under leverans — är kunskapen otillgänglig.
+Today, large parts of the knowledge live in individual people's heads. If a key colleague is sick, on vacation, or busy on another project during delivery — the knowledge is unavailable.
 
-Med skillen: kunskapen är **kod**. Den finns i git, den följer med kollegor, den finns kvar.
+With the skill: the knowledge is **code**. It's in git, it travels with colleagues, it stays.
 
-**Bus factor: går från 1 till N.**
+**Bus factor: goes from 1 to N.**
 
-### Skalbarhet
+### Scalability
 
-Idag är Snap-projekt beroende av en eller två seniorer.
+Today, Snap projects depend on one or two seniors.
 
-Med skillen + 2–3 utbildade designers: **3–5 parallella lens-projekt** möjliga.
+With the skill + 2–3 trained designers: **3–5 parallel lens projects** become possible.
 
 ### Competitive advantage
 
-Inget motsvarande har observerats från andra svenska byråer. Det här är inte en hemlighet att gömma — det är en **kapacitet att paketera**.
+Nothing comparable has been observed from other Swedish agencies. This isn't a secret to hide — it's a **capability to package**.
 
-Pitch-värde mot kunder: "Vi har en intern AI-mentor som garanterar kvalitet och konsistens på alla våra Snap-leveranser, oavsett vilken designer som bygger."
+Client pitch value: "We have an internal AI mentor that guarantees quality and consistency on every Snap delivery, regardless of which designer is building."
 
-### Ärlighetsdisclaimer
+### Honest disclaimer
 
-- **v0.7.1** är 2 dagar gammal. Seedet är **ETT** verkligt projekt (ett Sponsored Lens-projekt).
-- Volymvärdet ovan är **extrapolerat**, inte bevisat över portfölj.
-- Det vi vet: pipelinen funkade för pilotprojektet i realtid. Mentor-läget upplevdes av designern som starkt nog att fortsätta investera.
-- Det vi inte vet ännu: hur kraftigt compound interest blir när 5–10 projekt har kört igenom. Det är vad nästa 6 månader bevisar.
-
----
-
-## 7. Rekommenderade nästa steg
-
-### Nu (denna vecka)
-
-1. **Säkerhetsgranskning** — låt relevant funktion läsa `skill-growth-protocol.md` + detta dokument. Konfirma att Generaliseringsregeln + manuella commit-godkännanden möter Valtechs policy.
-2. **Migrera repo till Valtech-organisationskonto** på GitHub. Två klick. Eliminerar "personligt konto"-frågetecknet.
-3. **Sätt upp 30-min demo** för 2–3 utvalda designers + 1 stakeholder. Live walk-through av onboarding-flödet.
-
-### Snart (denna månad)
-
-4. **Pilotprojekt nr 2** — välj ett kommande Snap-lens-uppdrag och kör det med skillen från dag 1, med en designer som inte var med på första pilotprojektet. Verkligt empiriskt test av onboarding.
-5. ✅ **CONTRIBUTING.md** för kollegor — **Klart**. Se [`CONTRIBUTING.md`](../CONTRIBUTING.md) i repots root: canonical docs per topic, install-step workflow, `.skill`-build process och version-konvention.
-6. **`@valtech.com` SSO** för repo-access via GitHub Enterprise eller motsvarande.
-7. **Slack-kanal** (`#lens-studio-skill` eller liknande) för skill-updates, discoveries och frågor.
-
-### Framöver (detta kvartal)
-
-8. **Mät ROI på riktigt** efter 3–4 körda projekt. Jämför verklig tid mot estimaten i sektion 6.
-9. **Utforska generalisering** — kan samma skill-arkitektur lyfta över till TikTok Effect House? Meta Spark? Frågan är öppen, men growth-protokollet skulle vara identiskt.
-10. **Story-paketering mot kunder** — om mätningen i steg 8 håller, paketera som sales-narrative för Sponsored Lens-erbjudanden.
+- **v0.7.1** is 2 days old. The seed is **ONE** real project (a Sponsored Lens project).
+- The volume value above is **extrapolated**, not proven across a portfolio.
+- What we know: the pipeline worked for the pilot project in real time. The mentor mode felt strong enough to the designer to keep investing in.
+- What we don't know yet: how powerful the compound interest gets once 5–10 projects have run through. That's what the next 6 months will prove.
 
 ---
 
-## Slutord
+## 7. Recommended next steps
 
-Det som finns idag är en **fungerande v0.7.1** seeded från ett verkligt projekt, med en mekanik för att växa under varje framtida projekt. Det är inte färdigt — det är **levande**.
+### Now (this week)
 
-Det starka: voice-mandatet är **kod**, inte kultur som dör med personalomsättning. Generaliseringsregeln gör skill-tillväxt **säker by default**, inte som en eftertanke.
+1. **Security review** — have the relevant function read `skill-growth-protocol.md` + this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy.
+2. **Migrate repo to Valtech organization account** on GitHub. Two clicks. Eliminates the "personal account" question mark.
+3. **Set up a 30-min demo** for 2–3 selected designers + 1 stakeholder. Live walk-through of the onboarding flow.
 
-Det ärliga: empirin är tunn. Mekaniken är bevisad, volymen är inte. Nästa 3–6 månader bevisar (eller motbevisar) hypotesen.
+### Soon (this month)
+
+4. **Pilot project no. 2** — pick an upcoming Snap lens assignment and run it with the skill from day 1, with a designer who wasn't part of the first pilot. A real empirical test of onboarding.
+5. ✅ **CONTRIBUTING.md** for colleagues — **Done**. See [`CONTRIBUTING.md`](../CONTRIBUTING.md) in the repo root: canonical docs per topic, install-step workflow, `.skill`-build process, and version convention.
+6. **`@valtech.com` SSO** for repo access via GitHub Enterprise or equivalent.
+7. **Slack channel** (`#lens-studio-skill` or similar) for skill updates, discoveries, and questions.
+
+### Going forward (this quarter)
+
+8. **Measure ROI for real** after 3–4 completed projects. Compare actual time against the estimates in section 6.
+9. **Explore generalization** — can the same skill architecture lift over to TikTok Effect House? Meta Spark? The question is open, but the growth protocol would be identical.
+10. **Story packaging toward clients** — if the measurement in step 8 holds, package as a sales narrative for Sponsored Lens offerings.
+
+---
+
+## Closing
+
+What exists today is a **working v0.7.1** seeded from a real project, with a mechanism to grow with every future project. It's not finished — it's **alive**.
+
+The strong: the voice mandate is **code**, not culture that dies with staff turnover. The Generalization rule makes skill growth **safe by default**, not as an afterthought.
+
+The honest: the empirical base is thin. The mechanism is proven, the volume is not. The next 3–6 months will prove (or disprove) the hypothesis.

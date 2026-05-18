@@ -1,164 +1,164 @@
-# Image-to-3D Generation — Pass 0 för custom 3D-content
+# Image-to-3D Generation — Pass 0 for custom 3D content
 
-Load this when the user wants to create a custom 3D-modell från en bild eller idé och inte har en .glb-fil än. Skippa den här filen om användaren redan har modellfilen — då börjar du direkt i `3d-asset-import-doctrine.md` Pass 1b (post-process) eller Pass 2 (Lens Studio-import).
+Load this when the user wants to create a custom 3D model from an image or idea and doesn't have a .glb file yet. Skip this file if the user already has the model file — then go straight into `3d-asset-import-doctrine.md` Pass 1b (post-process) or Pass 2 (Lens Studio import).
 
-Den här filen täcker steget *innan* `3d-asset-import-doctrine.md`: hur man tar sig från idé eller källbild till en användbar .glb-fil. När .glb finns, lämnar denna doktrin över till Pass 1b.
+This file covers the step *before* `3d-asset-import-doctrine.md`: how to get from an idea or source image to a usable .glb file. Once the .glb exists, this doctrine hands over to Pass 1b.
 
 ---
 
-## A. När denna fil gäller
+## A. When this file applies
 
-- *Användaren har en idé eller källbild men ingen 3D-fil* — t.ex. "jag vill ha en stiliserad hatt som matchar varumärkets identitet" eller "kan vi göra en 3D-version av den här produkten?".
-- *Library-first sourcing landade inte rätt* — vi kollade Snapchat Asset Library, Lens Studio Templates och eventuella import-pack först, men inget motsvarade användarens förväntningar (estetik, varumärke, specifikt motiv). Då lyfter agenten image-to-3D som fallback-väg. Kom ihåg att fortfarande föreslå library-checken om den inte redan gjorts — pre-optimerade Snap-assets slipper hela Pass 0–Pass 2-kedjan.
-- *Användaren använder en image-to-3D-tjänst* — fal.ai/Hunyuan3D, Meshy, Tripo, Rodin, Luma Genie m.fl.
-- *Inte aktuellt om* användaren redan har en .glb från DCC-verktyg (Blender, Maya, Cinema 4D) eller från Snapchat Asset Library — då är vägen rakt in i Pass 1b/Pass 2.
+- *The user has an idea or source image but no 3D file* — e.g. "I want a stylized hat that matches the brand's identity" or "can we make a 3D version of this product?".
+- *Library-first sourcing didn't land right* — we checked Snapchat Asset Library, Lens Studio Templates, and any import packs first, but nothing matched the user's expectations (aesthetic, brand, specific motif). Then the agent lifts image-to-3D as a fallback path. Remember to still suggest the library check if it hasn't been done yet — pre-optimized Snap assets skip the entire Pass 0–Pass 2 chain.
+- *The user is using an image-to-3D service* — fal.ai/Hunyuan3D, Meshy, Tripo, Rodin, Luma Genie, etc.
+- *Not relevant if* the user already has a .glb from a DCC tool (Blender, Maya, Cinema 4D) or from the Snapchat Asset Library — then the path is straight into Pass 1b/Pass 2.
 
-**Library-first som default-vana:** innan agenten föreslår image-to-3D, ska den ha gått igenom (eller åtminstone nämnt) library-alternativen. Image-to-3D är inte fel — men det är dyrare i tid och risk än en färdig Snap-prefab. Reservera Pass 0 för när library-vägen genuint inte räcker.
+**Library-first as default habit:** before the agent suggests image-to-3D, it should have gone through (or at least mentioned) the library alternatives. Image-to-3D isn't wrong — but it's more expensive in time and risk than a finished Snap prefab. Reserve Pass 0 for when the library path genuinely isn't enough.
 
 ---
 
 ## B. Pipeline overview
 
-`idé → källbild → image-to-3D-tjänst → .glb-fil → Pass 1b post-process → Pass 2 Lens Studio-import → publish`
+`idea → source image → image-to-3D service → .glb file → Pass 1b post-process → Pass 2 Lens Studio import → publish`
 
-Den här filen ansvarar för de tre första pilarna. När .glb-filen finns lämnar vi över till `3d-asset-import-doctrine.md`.
+This file is responsible for the first three arrows. Once the .glb file exists, we hand over to `3d-asset-import-doctrine.md`.
 
-**Varför separera Pass 0 från Pass 1b:** problem som dyker upp tidigt i pipelinen (dålig källbild → konstig mesh → konstiga texturer) går inte att fixa nedströms. Post-process-verktyg som `optimizeglb.com` komprimerar en bra mesh till en mindre fil; de räddar inte en mesh som blev fel från start. När någon i pipelinen är trasig vill du veta vilken — annars optimerar du på fel ställe.
+**Why separate Pass 0 from Pass 1b:** problems that surface early in the pipeline (bad source image → weird mesh → weird textures) can't be fixed downstream. Post-process tools like `optimizeglb.com` compress a good mesh into a smaller file; they don't rescue a mesh that came out wrong from the start. When something in the pipeline is broken, you want to know which part — otherwise you optimize in the wrong place.
 
 ---
 
-## C. Bildkrav — vad gör en bra källbild
+## C. Image requirements — what makes a good source image
 
-Image-to-3D-tjänster "ser" en 2D-bild och gissar 3D-formen bakom. Ju mindre tjänsten behöver gissa, desto bättre output. Varje krav nedan finns för att minska gissningsmängden.
+Image-to-3D services "see" a 2D image and guess the 3D shape behind it. The less the service has to guess, the better the output. Every requirement below exists to reduce the amount of guessing.
 
-### Bakgrund
-Ren, enfärgad eller transparent — gärna kontrasterande mot motivet (mörk bakgrund för ljust objekt, ljus för mörkt).
+### Background
+Clean, single-color, or transparent — preferably contrasting with the subject (dark background for a light object, light for a dark one).
 
-**Varför:** tjänsten segmenterar objektet från bakgrunden innan den genererar mesh. Otydlig kant → tjänsten tar med delar av bakgrunden i meshen, eller hugger av delar av objektet.
+**Why:** the service segments the object from the background before generating the mesh. Unclear edge → the service includes parts of the background in the mesh, or cuts off parts of the object.
 
-### Vinkel
-Front- eller 3/4-vy. Hela objektet synligt, centrerat i bilden, inte beskuret i kanterna.
+### Angle
+Front or 3/4 view. The full object visible, centered in the image, not cropped at the edges.
 
-**Varför:** bortre sidan av objektet är alltid en gissning baserad på framsidan. 3/4 ger tjänsten lite mer information om djup än rak front — men *bara om* den fortfarande visar de viktigaste detaljerna tydligt. Profilvy där ena halvan av objektet är dold ger sämre resultat än rak front.
+**Why:** the far side of the object is always a guess based on the front. 3/4 gives the service a bit more depth information than straight front — but *only if* it still shows the most important details clearly. A profile view where half the object is hidden gives worse results than straight front.
 
-### Upplösning
-Minst 1024×1024, gärna 2048×2048. Skarp i fokus.
+### Resolution
+At least 1024×1024, preferably 2048×2048. Sharp in focus.
 
-**Varför:** texturen som hamnar på meshen baseras direkt på källbilden. Suddig eller lågupplöst bild → suddig textur på 3D-modellen som inte går att rädda i optimeringen nedströms.
+**Why:** the texture that ends up on the mesh is based directly on the source image. Blurry or low-resolution image → blurry texture on the 3D model that can't be rescued in optimization downstream.
 
-### Belysning
-Jämn, mjuk, neutral. Inga skarpa skuggor mot objektet, inga starka highlights.
+### Lighting
+Even, soft, neutral. No sharp shadows on the object, no strong highlights.
 
-**Varför:** tjänsten skiljer inte alltid på "skugga på objektet" och "form i objektet". Skarp skugga under ett hattbrätte kan tolkas som ett hål eller en utskjutning. Mjukt allmänljus ger renast mesh.
+**Why:** the service doesn't always distinguish between "shadow on the object" and "shape in the object". A sharp shadow under a hat brim can be interpreted as a hole or a protrusion. Soft ambient lighting gives the cleanest mesh.
 
-### Motivet ensamt
-Inga hjälpobjekt, ingen hand som håller, inga reflekterade ytor i bakgrunden.
+### The subject alone
+No helper objects, no hand holding it, no reflected surfaces in the background.
 
-**Varför:** allt som syns i bilden är kandidat att bli mesh. En hand som håller ett smycke kan resultera i en hand-formad utskjutning i 3D-output.
+**Why:** everything visible in the image is a candidate to become mesh. A hand holding a piece of jewelry can result in a hand-shaped protrusion in the 3D output.
 
-### Prompt → bild (om källbilden genereras med ChatGPT Image / Midjourney)
-Skriv prompten så att kraven ovan uppfylls automatiskt. Användbara fraser:
+### Prompt → image (if the source image is generated with ChatGPT Image / Midjourney)
+Write the prompt so the requirements above are met automatically. Useful phrases:
 - "studio lighting, soft even illumination, no harsh shadows"
 - "isolated on plain [white/black/transparent] background"
 - "front view, centered, full object visible"
 - "high resolution, sharp focus, product photography style"
 
-Skippa fraser som ofta skapar problem: "dramatic lighting", "lifestyle shot", "in use", "held in hand".
+Skip phrases that often cause problems: "dramatic lighting", "lifestyle shot", "in use", "held in hand".
 
-**Varför detta:** prompten är där du har mest kontroll i hela pipelinen. Ett par minuter på en bättre prompt sparar ofta en hel iteration nedströms.
+**Why this matters:** the prompt is where you have the most control in the entire pipeline. A couple of minutes on a better prompt often saves a full iteration downstream.
 
 ---
 
-## D. Tjänsteval — heuristik per objekt-typ
+## D. Service selection — heuristic per object type
 
-| Tjänst | Bäst för | Svaghet | Var den körs |
+| Service | Best for | Weakness | Where it runs |
 |--------|----------|---------|--------------|
-| **Hunyuan3D (via fal.ai)** | Stiliserade/cartoony objekt, accessoarer (hatt, glasögon, prop) | Realistiska material kan bli platta | `fal.ai/models/hunyuan3d` |
-| **Meshy** | Realistiska props, breddare motiv-typer | Texture-detaljer kan bli mjuka | `meshy.ai` |
-| **Tripo** | Snabba iterationer, lägre poly default | Mindre fin-kontroll | `tripo3d.ai` |
-| **Rodin** | Hög-detalj sculpts, karaktärer | Långsammare; större output | `hyperhuman.deemos.com` |
+| **Hunyuan3D (via fal.ai)** | Stylized/cartoony objects, accessories (hat, glasses, prop) | Realistic materials can come out flat | `fal.ai/models/hunyuan3d` |
+| **Meshy** | Realistic props, broader motif types | Texture details can come out soft | `meshy.ai` |
+| **Tripo** | Fast iterations, lower poly default | Less fine control | `tripo3d.ai` |
+| **Rodin** | High-detail sculpts, characters | Slower; larger output | `hyperhuman.deemos.com` |
 
-**Detta är startpunkter, inte facit.** Heuristiken bygger på den empiri skillen har just nu. Förvänta dig att uppdatera den när du provat ett par tjänster på samma motiv — och flagga gärna nya insikter så att CHANGELOG kan fånga dem.
+**These are starting points, not gospel.** The heuristic is built on the empirical data the skill has right now. Expect to update it once you've tried a couple of services on the same motif — and flag new insights so the CHANGELOG can capture them.
 
-**När du är osäker:** prova två tjänster på samma källbild parallellt. Det är billigare än att försöka rädda en dålig generering med optimering nedströms.
+**When you're unsure:** try two services on the same source image in parallel. It's cheaper than trying to rescue a bad generation with optimization downstream.
 
-**Varför detta är heuristik och inte regel:** image-to-3D-tjänsterna förändras snabbt (modellversioner, prismodeller, kapacitet). En tjänst som var bäst för accessoarer i januari kan vara omsprungen sex månader senare. Behandla tabellen som ett startbet, inte ett facit.
-
----
-
-## E. Kvalitetschecklista innan post-process
-
-Innan du tar .glb-filen vidare till `optimizeglb.com` (Pass 1b) — kontrollera följande direkt i tjänstens preview eller via `optimizeglb.com`-dashboarden som också visar mesh-statistik.
-
-### Poly-count (i ordning för en accessoar)
-- *Under 5k tris:* ofta för lågt — risk att modellen ser kantig ut nära kameran.
-- *5k–50k tris:* normalzon för image-to-3D-output. Hanterbart att komprimera till accessoar-budget i Pass 1b.
-- *50k–100k tris:* går att jobba med, men kräver mer aggressiv mesh-reduktion i Pass 1b.
-- *Över 100k tris:* tjänsten gav rik default-output. Funkar fortfarande, men det är ett tecken på att be tjänsten om lägre poly om alternativet finns.
-
-**Varför detta är första kollen:** poly-count är det enklaste att mäta och säger snabbt om meshen är i rätt storleksordning för en Snap-lens.
-
-### Texturupplösning
-- *512×512 eller 1024×1024:* idealiskt för en accessoar.
-- *2048×2048:* OK, kommer komprimeras ner i Pass 1b/Pass 2.
-- *4096×4096+:* onödigt stort för Snap; tjänsten levererar default-print-kvalitet. Pass 1b fixar det, men det är ett tecken på att du kan be tjänsten om lägre upplösning från start om alternativet finns.
-
-**Varför textur också mäts här:** texturer är ofta största boven i lens size. Att veta storleken redan i Pass 0 gör att du kan justera tjänstens inställningar eller välja en annan tjänst innan optimeringen ens börjar.
-
-### Typiska artefakter att leta efter
-- *Hängande mesh-flikar* — bitar av geometri som sticker ut från objektet, ofta från otydlig kant mot bakgrund i källbilden.
-- *Konstiga skuggor inbakade i texturen* — om källbilden hade skarpa skuggor hamnar de ofta som mörka fläckar i texturen som inte går att lyfta bort senare.
-- *Smetade ytor* — låg textur-detalj i områden där källbilden var suddig eller överbelyst.
-- *Phantom-objekt* — geometri som motsvarar något som *inte* var huvudmotivet (hand, bakgrundsdetalj, reflektion).
-- *Asymmetri som inte fanns i källan* — tjänsten gissade fel på bortre sidan. Vanligt vid ren frontvy utan 3/4-information.
-- *Hål i meshen* — saknad geometri i områden tjänsten inte kunde tolka (typiskt under hattbrätten eller bakom utskjutande detaljer).
-
-### Proportioner
-Jämför mot källbilden. Tjänsten skalar ibland om objektet på oväntade sätt, särskilt i djupled (objektet blir grundare eller djupare än det "borde" vara).
+**Why this is heuristic and not rule:** image-to-3D services change quickly (model versions, pricing, capacity). A service that was best for accessories in January can be overtaken six months later. Treat the table as a starting bet, not gospel.
 
 ---
 
-## F. Generera om vs optimera vidare — beslutspunkten
+## E. Quality checklist before post-process
 
-Det här är den viktigaste frågan i Pass 0. När du har en .glb och har gått igenom checklistan ovan, finns det två vägar framåt.
+Before you take the .glb file forward to `optimizeglb.com` (Pass 1b) — check the following directly in the service's preview or via the `optimizeglb.com` dashboard which also shows mesh statistics.
 
-**Generera om (tillbaka till källbild eller tjänst)** — om något av detta stämmer:
-- Hängande mesh-flikar eller phantom-objekt i meshen
-- Smetade/oläsbara texturer i synliga områden
-- Proportionerna är märkbart fel jämfört med källbilden
-- Hål i mesh där det inte ska vara hål
-- Inbakade skuggor som dominerar texturen
-- Asymmetri som inte fanns i källan och som syns från fram-/sidvy
+### Poly-count (in order, for an accessory)
+- *Under 5k tris:* often too low — risk that the model looks faceted near the camera.
+- *5k–50k tris:* normal zone for image-to-3D output. Manageable to compress to accessory budget in Pass 1b.
+- *50k–100k tris:* workable, but requires more aggressive mesh reduction in Pass 1b.
+- *Over 100k tris:* the service produced rich default output. Still works, but it's a sign to ask the service for lower poly if the option exists.
 
-→ Justera *källbilden* (renare bakgrund, mjukare ljus, bättre vinkel) eller *byt tjänst*. Optimering nedströms räddar inte detta.
+**Why this is the first check:** poly-count is the easiest thing to measure and quickly tells you whether the mesh is in the right size range for a Snap lens.
 
-**Gå vidare till Pass 1b** — om alla dessa stämmer:
-- Mesh-formen är korrekt, även om poly-count är högt
-- Texturen är läsbar, även om upplösningen är stor
-- Inga phantom-objekt eller synliga hål
-- Proportioner stämmer mot källbilden
+### Texture resolution
+- *512×512 or 1024×1024:* ideal for an accessory.
+- *2048×2048:* OK, will be compressed down in Pass 1b/Pass 2.
+- *4096×4096+:* unnecessarily large for Snap; the service is delivering default print quality. Pass 1b fixes it, but it's a sign you can ask the service for lower resolution from the start if the option exists.
 
-→ Filen är redo för `optimizeglb.com` enligt `3d-asset-import-doctrine.md` Section D Pass 1b.
+**Why texture is also measured here:** textures are often the biggest culprit in lens size. Knowing the size already in Pass 0 lets you adjust the service's settings or pick a different service before optimization even starts.
 
-**Varför detta beslut spelar roll:** att optimera en dålig mesh ger en mindre dålig mesh, inte en bra mesh. Tio minuters omgenerering är nästan alltid billigare än en timmes försök att rädda en trasig output i Lens Studio. När du står och tvekar — generera om.
+### Typical artifacts to look for
+- *Hanging mesh tabs* — bits of geometry sticking out from the object, often from an unclear edge against the background in the source image.
+- *Weird shadows baked into the texture* — if the source image had sharp shadows, they often end up as dark patches in the texture that can't be lifted out later.
+- *Smeared surfaces* — low texture detail in areas where the source image was blurry or overexposed.
+- *Phantom objects* — geometry that corresponds to something that *wasn't* the main subject (hand, background detail, reflection).
+- *Asymmetry that wasn't in the source* — the service guessed wrong on the far side. Common with pure front view without 3/4 information.
+- *Holes in the mesh* — missing geometry in areas the service couldn't interpret (typically under hat brims or behind protruding details).
 
----
-
-## G. Vanliga fallgropar
-
-- *Reflekterande material i källbilden* — chrome, glas, blank metall förvirrar mesh-genereringen. Be tjänsten om matt referens, eller måla över reflektionerna i källbilden innan upload.
-- *Tunna detaljer försvinner* — glasögonbågar, smycken, smala remmar. Gör dem märkbart tjockare i källbilden än de "borde" vara; tjänsten tappar tunna strukturer.
-- *Transparens fungerar inte automatiskt* — alpha-effekter måste byggas i Lens Studio som material-inställning, inte förväntas från generationen.
-- *Animation finns inte i output* — image-to-3D ger statisk mesh. Behöver du animation, behöver du rigging i ett DCC-verktyg eller en animation-pack från Snapchat Asset Library.
-- *Service-prompt vs bild-prompt* — om tjänsten har ett separat text-fält ("describe the object"), använd det. Det ger tjänsten en andra signal vid sidan av bilden.
-- *Att optimera först, generera om sen* — fel ordning. Optimera bara när Pass 0 är grön, annars optimerar du på fel underlag.
+### Proportions
+Compare against the source image. The service sometimes rescales the object in unexpected ways, especially in depth (the object becomes shallower or deeper than it "should" be).
 
 ---
 
-## H. Handover till Pass 1b
+## F. Regenerate vs optimize further — the decision point
 
-När checklistan i E är grön och beslutet i F pekar mot "gå vidare":
+This is the most important question in Pass 0. Once you have a .glb and have gone through the checklist above, there are two paths forward.
 
-→ `3d-asset-import-doctrine.md` Section D Pass 1b — kör .glb-filen genom `optimizeglb.com/dashboard` för mesh- och textur-kompression innan Lens Studio-import.
+**Regenerate (back to source image or service)** — if any of these are true:
+- Hanging mesh tabs or phantom objects in the mesh
+- Smeared/unreadable textures in visible areas
+- Proportions noticeably wrong compared to the source image
+- Holes in the mesh where there shouldn't be holes
+- Baked-in shadows dominating the texture
+- Asymmetry not in the source that's visible from front/side view
 
-Allt nedströms (Pass 1b → Pass 2 → publish) hanteras av `3d-asset-import-doctrine.md`.
+→ Adjust the *source image* (cleaner background, softer light, better angle) or *switch service*. Optimization downstream doesn't rescue this.
+
+**Go on to Pass 1b** — if all of these are true:
+- The mesh shape is correct, even if poly-count is high
+- The texture is readable, even if resolution is large
+- No phantom objects or visible holes
+- Proportions match the source image
+
+→ The file is ready for `optimizeglb.com` per `3d-asset-import-doctrine.md` Section D Pass 1b.
+
+**Why this decision matters:** optimizing a bad mesh gives you a less bad mesh, not a good mesh. Ten minutes of regeneration is almost always cheaper than an hour of trying to rescue a broken output in Lens Studio. When you hesitate — regenerate.
+
+---
+
+## G. Common pitfalls
+
+- *Reflective material in the source image* — chrome, glass, polished metal confuse the mesh generation. Ask the service for a matte reference, or paint over the reflections in the source image before upload.
+- *Thin details disappear* — glasses frames, jewelry, narrow straps. Make them noticeably thicker in the source image than they "should" be; the service loses thin structures.
+- *Transparency doesn't work automatically* — alpha effects must be built in Lens Studio as a material setting, not expected from the generation.
+- *Animation isn't in the output* — image-to-3D gives a static mesh. If you need animation, you need rigging in a DCC tool or an animation pack from the Snapchat Asset Library.
+- *Service prompt vs image prompt* — if the service has a separate text field ("describe the object"), use it. It gives the service a second signal alongside the image.
+- *Optimizing first, regenerating later* — wrong order. Optimize only when Pass 0 is green, otherwise you're optimizing on the wrong foundation.
+
+---
+
+## H. Handover to Pass 1b
+
+When the checklist in E is green and the decision in F points to "go on":
+
+→ `3d-asset-import-doctrine.md` Section D Pass 1b — run the .glb file through `optimizeglb.com/dashboard` for mesh and texture compression before Lens Studio import.
+
+Everything downstream (Pass 1b → Pass 2 → publish) is handled by `3d-asset-import-doctrine.md`.

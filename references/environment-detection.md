@@ -75,14 +75,14 @@ After detection, surface results to Anna in coaching-friendly format. Use ✅ fo
 
 Example output to Anna:
 
-> Här är vad jag ser på din maskin:
-> - ✅ Claude Code igång (vi pratar)
-> - ✅ Skillen installerad
-> - ❌ Lens Studio inte installerat
-> - ❌ Inget projekt-folder än
-> - ❌ MCP inte registrerat
+> Here's what I see on your machine:
+> - ✅ Claude Code running (we're talking)
+> - ✅ The skill is installed
+> - ❌ Lens Studio not installed
+> - ❌ No project folder yet
+> - ❌ MCP not registered
 >
-> Vi gör det här tillsammans. Tre steg, ungefär 20 minuter totalt. Redo att börja?
+> We'll do this together. Three steps, about 20 minutes total. Ready to start?
 
 Always end with a yes/no question so Anna confirms before CC starts the stepped sequence. Never just barrel into "OK first install LS, then…".
 

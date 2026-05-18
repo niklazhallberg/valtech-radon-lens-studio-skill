@@ -105,7 +105,7 @@ Senaste ändringar:
   • feat(discovery): Text3D position via wrapper-parent
   • docs(v0.7.5): warm-tone CHANGELOG format
 
-Se CHANGELOG.md i skill-mappen för fullständig historik.
+See CHANGELOG.md in the skill folder for full history.
 ```
 
 If nothing has changed, the hook is silent — no noise.

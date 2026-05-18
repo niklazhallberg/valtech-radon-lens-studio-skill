@@ -20,103 +20,108 @@ but adapted for skill evolution rather than a software API.
 _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-18 15:05 — [project: skill-meta]
-- **Pass 0 — Image-to-3D Generation: skillen kan nu mentorera hela kedjan
-  idé → bild → 3D → komprimering → import → publish**: tidigare började
-  3D-doktrinen vid "du har en .glb"; allt uppströms var en blank ruta.
-  Ny referensfil `references/image-to-3d-generation.md` täcker det första
-  steget i pipelinen:
-  - **Bildkrav med "varför"** — bakgrund, vinkel, upplösning, belysning,
-    motivet ensamt; varje krav förklarat utifrån hur image-to-3D-tjänsten
-    segmenterar och genererar (mindre gissning = bättre output).
-  - **Prompt → bild-tips** för ChatGPT Image / Midjourney som
-    automatiskt uppfyller bildkraven; med exempel på fraser att undvika.
-  - **Tjänsteval-heuristik** (Meshy / Tripo / Hunyuan3D via fal.ai /
-    Rodin) — som tabell med bäst-för / svaghet / var den körs. Tydligt
-    flaggad som startpunkter, inte facit; uppdateras när skillen ser
-    mer empiri.
-  - **Kvalitetschecklista innan post-process** — poly-count-ordning,
-    texturupplösning, typiska artefakter (hängande mesh-flikar, inbakade
-    skuggor, smetade ytor, phantom-objekt, asymmetri, hål) som explicita
-    punktlistor.
-  - **Beslutspunkt generera om vs optimera vidare** — kriterier för
-    bägge vägarna + principen "att optimera en dålig mesh ger en mindre
-    dålig mesh, inte en bra mesh".
-- **Library-first sourcing förstärkt i 3D-doktrinen**: agenten ska alltid
-  börja med Snapchat Asset Library / Templates / redan importerade
-  prefabs innan custom 3D-generering föreslås. Image-to-3D är fallback —
-  inte default — när library-vägen genuint inte motsvarar användarens
-  förväntningar. Snap-officiella assets är pre-optimerade och slipper
-  hela Pass 0–Pass 2-kedjan; att hoppa över library-checken är den
-  vanligaste anledningen till att en lens onödigt landar i 3D-pipelinen.
-  - Tillägg i `3d-asset-import-doctrine.md` Section A (agent doctrine)
-    och nytt Pass 0-block i Section D som pekar till nya filen.
-  - Tillägg i `image-to-3d-generation.md` Section A som tar emot
-    "library-first matchade inte"-triggern och påminner om
-    library-checken som default-vana.
-- Value for user: nästa kollega som vill skapa en helt egen 3D-modell
-  får mentor-stöd från första pennstrecket — vilken källbild, vilken
-  tjänst, vad man tittar efter i output — innan optimering ens börjar.
-  Och om kollegan börjar med "jag behöver något i scenen" föreslår
-  agenten library-vägen först; image-to-3D kommer som ett medvetet val
-  när library inte räcker, inte som default-reflex.
-- Files: `references/image-to-3d-generation.md` (ny),
+- **Pass 0 — Image-to-3D Generation: the skill can now mentor the whole
+  chain idea → image → 3D → compression → import → publish**: previously,
+  the 3D doctrine started at "you have a .glb"; everything upstream was
+  a blank box. New reference file `references/image-to-3d-generation.md`
+  covers the first step of the pipeline:
+  - **Image requirements with "why"** — background, angle, resolution,
+    lighting, subject alone; each requirement explained based on how the
+    image-to-3D service segments and generates (less guessing = better
+    output).
+  - **Prompt → image tips** for ChatGPT Image / Midjourney that
+    automatically meet the image requirements; with examples of phrases
+    to avoid.
+  - **Service selection heuristic** (Meshy / Tripo / Hunyuan3D via fal.ai /
+    Rodin) — as a table with best-for / weakness / where it runs. Clearly
+    flagged as starting points, not gospel; updated as the skill sees
+    more empirical data.
+  - **Quality checklist before post-process** — poly-count order, texture
+    resolution, typical artifacts (hanging mesh tabs, baked-in shadows,
+    smeared surfaces, phantom objects, asymmetry, holes) as explicit
+    bullet lists.
+  - **Decision point regenerate vs optimize further** — criteria for
+    both paths + the principle "optimizing a bad mesh gives you a less
+    bad mesh, not a good mesh".
+- **Library-first sourcing reinforced in the 3D doctrine**: the agent
+  should always start with Snapchat Asset Library / Templates / already-
+  imported prefabs before custom 3D generation is suggested. Image-to-3D
+  is a fallback — not a default — when the library path genuinely doesn't
+  match the user's expectations. Snap-official assets are pre-optimized
+  and skip the entire Pass 0–Pass 2 chain; skipping the library check is
+  the most common reason a lens unnecessarily lands in the 3D pipeline.
+  - Addition in `3d-asset-import-doctrine.md` Section A (agent doctrine)
+    and a new Pass 0 block in Section D that points to the new file.
+  - Addition in `image-to-3d-generation.md` Section A that catches the
+    "library-first didn't match" trigger and reminds about the library
+    check as default habit.
+- Value for user: the next colleague who wants to create their own 3D
+  model from scratch gets mentor support from the first pen stroke —
+  which source image, which service, what to look for in the output —
+  before optimization even starts. And if the colleague starts with "I
+  need something in the scene," the agent suggests the library path
+  first; image-to-3D comes as a deliberate choice when the library
+  isn't enough, not as a default reflex.
+- Files: `references/image-to-3d-generation.md` (new),
   `references/3d-asset-import-doctrine.md` (Section A + Section D Pass 0),
-  `SKILL.md` (References-pointer + version bump 0.9.0 → 0.10.0)
+  `SKILL.md` (References pointer + version bump 0.9.0 → 0.10.0)
 - Type: [doctrine]
 
 ### 💡 2026-05-18 14:20 — [project: rfsu-bang-fortune-lens]
-- **GLB post-process: byter rekommenderat verktyg från `gltf.report` till
-  `optimizeglb.com/dashboard`**: empiriskt fynd från RFSU-projektet där samma
-  ren källa-.glb gav synliga mesh-artifakter (tearing/distortion) efter
-  `gltf.report`-optimering — även med lossless-inställningar, även med PNG
-  istället för JPEG, och även på 2K-textur-output. Artifakterna uppstod *i
-  webbverktyget*, innan filen ens nådde Lens Studio, och följde sedan med
-  vidare. Samma källa-.glb genom `optimizeglb.com/dashboard` gav ren output
-  utan artifakter. Doktrinen uppdaterad: `optimizeglb.com` är nu primär
-  drag-and-drop-rekommendation för designers; `gltfpack`/`gltf-pipeline`
-  kvar som CLI-alternativ; `gltf.report` flaggat med "undvik just nu"-not.
-- Value for user: nästa kollega som tar in en image-to-3D-output (Hunyuan3D
-  via fal.ai, Meshy, Tripo m.fl.) och behöver krympa filen innan
-  Lens Studio-import får direkt rätt verktyg, slipper iterera på samma
-  artifakt-problem som löstes här. Skillen flaggar också tydligt att
-  problemet uppstår i post-process-verktyget — inte i Lens Studio — så
-  felsökningen hamnar på rätt ställe direkt.
-- Files: `references/3d-asset-import-doctrine.md` (Pass 1b-sektionen)
+- **GLB post-process: switching the recommended tool from `gltf.report` to
+  `optimizeglb.com/dashboard`**: empirical finding from the RFSU project where
+  the same clean source .glb produced visible mesh artifacts
+  (tearing/distortion) after `gltf.report` optimization — even with lossless
+  settings, even with PNG instead of JPEG, and even at 2K texture output.
+  The artifacts appeared *in the web tool*, before the file even reached
+  Lens Studio, and then carried over. The same source .glb through
+  `optimizeglb.com/dashboard` produced clean output without artifacts. The
+  doctrine is updated: `optimizeglb.com` is now the primary drag-and-drop
+  recommendation for designers; `gltfpack`/`gltf-pipeline` remain as CLI
+  alternatives; `gltf.report` is flagged with an "avoid for now" note.
+- Value for user: the next colleague who takes in an image-to-3D output
+  (Hunyuan3D via fal.ai, Meshy, Tripo, etc.) and needs to shrink the file
+  before Lens Studio import gets the right tool directly, avoids iterating
+  on the same artifact problem that was solved here. The skill also flags
+  clearly that the problem arises in the post-process tool — not in Lens
+  Studio — so troubleshooting lands in the right place immediately.
+- Files: `references/3d-asset-import-doctrine.md` (Pass 1b section)
 - Type: [doctrine-correction]
 
 ### 💡 2026-05-18 10:49 — [project: rfsu-bang-fortune-lens]
-- **GLB-first 3D import doctrine + två-pass optimization — systematiskt sätt
-  att hålla lens size under Snaps gräns när egna 3D-modeller importeras**:
-  ett RFSU-projekt visade hur snabbt en hatt-FBX kunde blåsa upp lensen från
-  ~3 MB till 34 MB. Skillen får nu en `references/3d-asset-import-doctrine.md`
-  som etablerar GLB/glTF som default-format (Snap har dedikerad importguide
-  för glTF), med FBX och OBJ som fallback-format. Doktrinen klargör
-  skillnaden mellan Asset Browser-import (resource only, prefab måste dras
-  till scenen) och Scene Hierarchy-import (resource + instans i ett steg),
-  och separerar optimeringen i två tydliga pass:
-  - **Pass 1 — före import**: optimera mesh, texturer och format i
-    3D-källan (oavsett om det är DCC-verktyg eller image-to-3D-service),
-    gärna GLB med Draco-kompression
-  - **Pass 1b — valfri post-process**: `gltf.report` rekommenderas för
-    designers (drag-and-drop i browser), `gltfpack`/`gltf-pipeline` för
-    CLI-folk när Pass 1 inte räckte
-  - **Pass 2 — inne i Lens Studio**: BC1/BC3 texture compression per asset
-    + Resource Inspector öppen tidigt i flödet, inte vid publish
+- **GLB-first 3D import doctrine + two-pass optimization — a systematic way
+  to keep lens size under Snap's limit when custom 3D models are imported**:
+  an RFSU project showed how quickly a hat FBX could blow up the lens from
+  ~3 MB to 34 MB. The skill now has a `references/3d-asset-import-doctrine.md`
+  that establishes GLB/glTF as the default format (Snap has a dedicated
+  import guide for glTF), with FBX and OBJ as fallback formats. The
+  doctrine clarifies the difference between Asset Browser import (resource
+  only, prefab must be dragged to the scene) and Scene Hierarchy import
+  (resource + instance in one step), and separates the optimization into
+  two clear passes:
+  - **Pass 1 — before import**: optimize mesh, textures, and format in the
+    3D source (whether DCC tool or image-to-3D service), preferably GLB
+    with Draco compression
+  - **Pass 1b — optional post-process**: `gltf.report` recommended for
+    designers (drag-and-drop in browser), `gltfpack`/`gltf-pipeline` for
+    CLI folks when Pass 1 wasn't enough
+  - **Pass 2 — inside Lens Studio**: BC1/BC3 texture compression per asset
+    + Resource Inspector open early in the flow, not at publish time
   
-  Skillens interna budget per 3D-accessoar: ~1 MB komprimerat. Total
-  lens-size håller sig till `SKILL.md`'s Performance budget (≤ 4 MB target,
-  8 MB hård gräns); 3D-tunga lenser kan acceptabelt landa upp till ~6 MB.
-- Value for user: nästa gång användaren tar in en custom-modell börjar
-  skillen flagga storleksrisken *innan* importen sker, inte när
-  Publishing-dialogen lyser rött. Användaren får också en mentor-checklista
-  som svarar på fyra kärnfrågor (vilket format är bäst, hur importerar jag
-  i Lens Studio, vad påverkar lens size, vilka optimeringssteg ska tas
-  innan publish) utan att behöva googla Snap-docsen. Doktrinen är
-  verktygsagnostisk så den fungerar för både Blender-folk och designers
-  som använder image-to-3D-services som Meshy, Tripo eller Hunyuan3D
+  The skill's internal budget per 3D accessory: ~1 MB compressed. Total
+  lens size stays within `SKILL.md`'s Performance budget (≤ 4 MB target,
+  8 MB hard limit); 3D-heavy lenses can acceptably land up to ~6 MB.
+- Value for user: next time the user imports a custom model, the skill
+  starts flagging the size risk *before* the import happens, not when the
+  Publishing dialog lights up red. The user also gets a mentor checklist
+  that answers four core questions (which format is best, how do I import
+  in Lens Studio, what affects lens size, which optimization steps should
+  be taken before publish) without having to google the Snap docs. The
+  doctrine is tool-agnostic, so it works for both Blender folks and
+  designers using image-to-3D services like Meshy, Tripo, or Hunyuan3D
   via fal.ai.
-- Files: `references/3d-asset-import-doctrine.md` (ny), `SKILL.md` (pointer
-  i References + inline-mening i Performance budget + version bump
+- Files: `references/3d-asset-import-doctrine.md` (new), `SKILL.md` (pointer
+  in References + inline sentence in Performance budget + version bump
   0.8.0 → 0.9.0)
 - Type: [doctrine]
 

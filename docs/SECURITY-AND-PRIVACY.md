@@ -1,95 +1,95 @@
-# Säkerhet och sekretess
+# Security and privacy
 
-> Detta dokument beskriver hur skillen `valtech-radon-lens-studio-skill` hanterar säkerhet, sekretess och kunddata. Tänkt att läsas av säkerhets-, legal- eller compliance-ansvariga inom Valtech RADON — eller den kollega som vill förstå hur projektdata isoleras från skill-repot. Originalkällan är `docs/VALTECH-PRESENTATION.md` sektion 5; här bryts den ut för att kunna granskas och delas isolerat.
+> This document describes how the `valtech-radon-lens-studio-skill` handles security, privacy, and client data. Written to be readable by security, legal, or compliance reviewers within Valtech RADON — or the colleague who wants to understand how project data is isolated from the skill repo. The original source is `docs/VALTECH-PRESENTATION.md` section 5; it's extracted here so it can be reviewed and shared on its own.
 
-## Vad lagras i skill-filen?
+## What is stored in the skill file?
 
-**Finns i repot:**
+**In the repo:**
 
-| Typ | Innehåll | Risknivå |
+| Type | Content | Risk level |
 |---|---|---|
-| Snaps publika dokumentation | 365 markdown-sidor mirrored från `developers.snap.com` | Noll — redan publikt |
-| Empiriska protokoll | `body-anchored-calibration.md`, `lens-studio-api-gotchas.md` etc. — generaliserade mönster, **inga projektspecifika värden** | Noll — Generaliseringsregeln säkrar detta (se nedan) |
-| MCP tool schemas | Tekniska API-signaturer för Lens Studio MCP-server | Noll — teknisk info, ej känslig |
-| Voice-principer | Pedagogiska riktlinjer på svenska | Noll — metodologi, inte data |
+| Snap's public documentation | 365 markdown pages mirrored from `developers.snap.com` | Zero — already public |
+| Empirical protocols | `body-anchored-calibration.md`, `lens-studio-api-gotchas.md` etc. — generalized patterns, **no project-specific values** | Zero — the Generalization rule safeguards this (see below) |
+| MCP tool schemas | Technical API signatures for the Lens Studio MCP server | Zero — technical info, not sensitive |
+| Voice principles | Pedagogical guidelines | Zero — methodology, not data |
 
-**Finns INTE i repot — bekräftat genom genomgång:**
+**NOT in the repo — confirmed by review:**
 
-- ❌ Inga klientnamn i empiriska protokoll
-- ❌ Inga projektspecifika värden (X-koordinater, kampanjbudgetar, leveransdatum)
-- ❌ Inga personuppgifter
-- ❌ Ingen Valtech-intern affärsinformation
-- ❌ Inga API-nycklar, tokens, credentials
+- ❌ No client names in empirical protocols
+- ❌ No project-specific values (X coordinates, campaign budgets, delivery dates)
+- ❌ No personal data
+- ❌ No Valtech-internal business information
+- ❌ No API keys, tokens, credentials
 
-## Generaliseringsregeln som aktiv säkerhetsmekanism
+## The Generalization rule as active security mechanism
 
-`skill-growth-protocol.md` har en **trestegs-checklist som körs INNAN något committas**:
+`skill-growth-protocol.md` has a **three-step checklist that runs BEFORE anything gets committed**:
 
-**Steg 1 — Identifiera kärnan.** Vad är den generella regeln bakom det specifika fyndet?
+**Step 1 — Identify the core.** What's the general rule behind the specific finding?
 
-**Steg 2 — Explicit borttagnings-checklist:**
+**Step 2 — Explicit removal checklist:**
 
 ```
-❌ Ta bort: klientnamn
-❌ Ta bort: exakta projektmått som bara gäller detta case
-❌ Ta bort: interna projektnamn och filsökvägar
-❌ Ta bort: datum och deadlines
+❌ Remove: client names
+❌ Remove: exact project measurements that only apply to this case
+❌ Remove: internal project names and file paths
+❌ Remove: dates and deadlines
 ```
 
-**Steg 3 — "Nästa kollega"-test (gate):**
+**Step 3 — "Next colleague" test (gate):**
 
-> "Om en kollega på Valtech nästa månad bygger ett ANNAT try-on-filter för ett ANNAT varumärke — kan de läsa detta utan att veta vilket projekt det kom från?"
+> "If a colleague at Valtech next month builds ANOTHER try-on filter for ANOTHER brand — can they read this without knowing which project it came from?"
 
-**Två lager av godkännande:**
+**Two layers of approval:**
 
-1. AI:n som gate-keeper kör checklistan
-2. **Människa godkänner varje commit explicit** — inget auto-push, inget auto-commit
+1. The AI as gate-keeper runs the checklist
+2. **Human approves every commit explicitly** — no auto-push, no auto-commit
 
-Protokollet kan granskas i [`references/skill-growth-protocol.md`](../references/skill-growth-protocol.md) rad 18–82.
+The protocol can be reviewed in [`references/skill-growth-protocol.md`](../references/skill-growth-protocol.md) lines 18–82.
 
-## Repo-säkerhet
+## Repo security
 
-| Aspekt | Status idag |
+| Aspect | Status today |
 |---|---|
-| Repo-typ | **Privat GitHub-repo** |
-| Access idag | Begränsad — på personligt GitHub-konto hos underhållaren |
-| Plan | Migrera till Valtech-organisationskonto |
-| Framtid | `@valtech.com` SSO-autentisering |
-| Auto-push | **Avstängt** — varje push kräver explicit godkännande |
+| Repo type | **Private GitHub repo** |
+| Access today | Limited — on the maintainer's personal GitHub account |
+| Plan | Migrate to Valtech organization account |
+| Future | `@valtech.com` SSO authentication |
+| Auto-push | **Disabled** — every push requires explicit approval |
 
-Migration till Valtech-org är en öppen punkt i [VALTECH-PRESENTATION.md sektion 7](VALTECH-PRESENTATION.md#7-rekommenderade-nästa-steg).
+Migration to a Valtech org is an open item in [VALTECH-PRESENTATION.md section 7](VALTECH-PRESENTATION.md#7-recommended-next-steps).
 
-## Vad händer med kunddata under ett projekt?
+## What happens with client data during a project?
 
-Det här är viktigt att förstå rent strukturellt:
+This is important to understand structurally:
 
-1. **Skillen körs LOKALT** på designerns dator. Inget skickas till GitHub utan explicit godkännande.
-2. **Lens Studio-projektet** (med kundens 3D-modeller, briefer, kampanjmaterial) finns i en HELT SEPARAT mapp, t.ex. `~/Projects/<klient>-lens/`. **Denna mapp pushas ALDRIG till skill-repot.**
-3. **Discovery-protokollet** filtrerar bort allt projektspecifikt INNAN något ens föreslås för commit (Steg 2-checklistan).
-4. Det enda som flödar från projekt till skill är **det generaliserade mönstret** — inte data.
+1. **The skill runs LOCALLY** on the designer's machine. Nothing is sent to GitHub without explicit approval.
+2. **The Lens Studio project** (with the client's 3D models, briefs, campaign material) lives in a COMPLETELY SEPARATE folder, e.g. `~/Projects/<client>-lens/`. **This folder is NEVER pushed to the skill repo.**
+3. **The discovery protocol** filters out everything project-specific BEFORE anything is even proposed for commit (Step 2 checklist).
+4. The only thing that flows from project to skill is **the generalized pattern** — not data.
 
-Konkret exempel ur `skill-growth-protocol.md`:
+Concrete example from `skill-growth-protocol.md`:
 
 ```
-BEFORE (skulle INTE committas):
-"För <klient>-lensen behövde vi sätta
-shoe_mesh_l position till X=-80, Y=-40, Z=-20..."
+BEFORE (would NOT be committed):
+"For the <client> lens we needed to set
+shoe_mesh_l position to X=-80, Y=-40, Z=-20..."
 
-AFTER (committas):
-"Try-On Pack Sneakers: mesh-pivot är off-center
-relativt foot-anchor. Kompensera med wrapper-
-anchor arkitektur..."
+AFTER (committed):
+"Try-On Pack Sneakers: mesh pivot is off-center
+relative to the foot anchor. Compensate with a
+wrapper anchor architecture..."
 ```
 
-## Jämförelse med alternativet
+## Comparison with the alternative
 
-Risken om Valtech **inte** har ett system som detta:
+The risk if Valtech **doesn't** have a system like this:
 
-| Risk utan skill | Konsekvens |
+| Risk without the skill | Consequence |
 |---|---|
-| Designers googlar fritt | Okontrollerade källor, okontrollerade kodsnuttar in i kundprojekt |
-| Kunskap stannar hos individen | Om personen är otillgänglig → tyst dataförlust |
-| Slack-trådar som "wiki" | Sökbar bara av interna, inget audit-trail, inget format-skydd |
-| Inget audit-trail på lärdomar | Ingen synlighet i vad agenten lär sig från projekt till projekt |
+| Designers google freely | Uncontrolled sources, uncontrolled code snippets into client projects |
+| Knowledge stays with the individual | If the person is unavailable → silent knowledge loss |
+| Slack threads as "wiki" | Searchable only by insiders, no audit trail, no format protection |
+| No audit trail on learnings | No visibility into what the agent learns from project to project |
 
-**Skillen är inte en ny säkerhetsrisk — den är en strukturerad lösning på en risk som redan existerar.**
+**The skill isn't a new security risk — it's a structured solution to a risk that already exists.**

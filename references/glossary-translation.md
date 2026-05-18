@@ -16,7 +16,7 @@ When you (the agent) use a technical term for the FIRST TIME in a session:
 
 **The shape:** `[term] — [plain-language clause]. [Rest of message uses term freely from here.]`
 
-Example: "Vi behöver en GLB-fil av skon — det är ett 3D-format, tänk som JPEG men för 3D-objekt. GLB:n droppas i Assets/3D/-foldern så importerar Lens Studio den automatiskt."
+Example: "We need a GLB file of the shoe — it's a 3D format, think JPEG but for 3D objects. Drop the GLB into Assets/3D/ and Lens Studio imports it automatically."
 
 When the same user has heard a term before (e.g., second session, term defined in earlier message), skip the translation. Re-translating after first-use feels condescending.
 
@@ -24,98 +24,98 @@ When the same user has heard a term before (e.g., second session, term defined i
 
 ## Term list
 
-### Filformat
+### File formats
 
 **GLB**  
-Plain: ett 3D-filformat som buntar ihop geometri, texturer och material i en fil. Tänk JPEG, men för 3D-objekt.  
-First-use: "Vi behöver en GLB av skon — det är ett 3D-format, ett standardalternativ som funkar direkt i Lens Studio."
+Plain: a 3D file format that bundles geometry, textures, and materials in one file. Think JPEG, but for 3D objects.  
+First-use: "We need a GLB of the shoe — it's a 3D format, a standard option that works directly in Lens Studio."
 
 **FBX**  
-Plain: ett äldre 3D-filformat, vanligt när innehållet kommer från Maya, Blender eller Cinema4D.  
-First-use: "FBX är sibling till GLB — också ett 3D-format. Det dyker upp ofta när 3D-modellerare jobbar i Maya eller Blender."
+Plain: an older 3D file format, common when content comes from Maya, Blender, or Cinema4D.  
+First-use: "FBX is a sibling to GLB — also a 3D format. It shows up often when 3D modelers work in Maya or Blender."
 
 ---
 
-### Lens Studio scene-koncept
+### Lens Studio scene concepts
 
-**Scene Hierarchy** (scen-hierarki)  
-Plain: trädet av allt som finns i din lens — kamera, ljus, modeller, scripts. Visas som en mapp-struktur i en panel som heter Scene Hierarchy.  
-First-use: "Scene Hierarchy är trädet av allt i din lens. Tänk som en mapp-struktur i Finder, fast med 3D-objekt — kameran i en gren, ljuset i en, dina assets i en tredje."
+**Scene Hierarchy** (scene hierarchy)  
+Plain: the tree of everything in your lens — camera, light, models, scripts. Shown as a folder structure in a panel called Scene Hierarchy.  
+First-use: "Scene Hierarchy is the tree of everything in your lens. Think of it like the folder structure in Finder, but with 3D objects — the camera in one branch, the light in another, your assets in a third."
 
 **ObjectPrefab**  
-Plain: en återanvändbar grupp av scen-objekt, sparad som EN enhet. Kan instansieras flera gånger; varje instans kopplas till "mallen".  
-First-use: "Try-On Pack kommer som en ObjectPrefab — en gruppering av flera scen-objekt (vänster + höger sko + material) som Lens Studio behandlar som en enhet."
+Plain: a reusable group of scene objects, saved as ONE unit. Can be instantiated multiple times; each instance links back to the "template".  
+First-use: "Try-On Pack comes as an ObjectPrefab — a grouping of several scene objects (left + right shoe + materials) that Lens Studio treats as one unit."
 
 **Try-On Pack**  
-Plain: ett färdigpaketerat Snap-asset med meshes, material och scripts för ett specifikt try-on-scenario (t.ex. sneakers, eyewear). Installeras via Asset Library med ett klick.  
-First-use: "Try-On Pack är ett färdigt paket från Snap — meshes, material och scripts för foot try-on, allt buntat. Installerar det nu via Asset Library."
+Plain: a pre-packaged Snap asset with meshes, materials, and scripts for a specific try-on scenario (e.g. sneakers, eyewear). Installed via Asset Library with one click.  
+First-use: "Try-On Pack is a ready-made package from Snap — meshes, materials, and scripts for foot try-on, all bundled. Installing it now via Asset Library."
 
 **Anchor**  
-Plain: en 3D-punkt som tracker:n uppdaterar varje bildruta. Asseten du vill ska följa kroppsdelen sätts som child till anchor-punkten.  
-First-use: "Foot Tracking ger oss två anchors — en per fot. Vänster sko sätts som child till `leftFootAnchor`; tracker:n uppdaterar anchor:n så skon följer foten."
+Plain: a 3D point the tracker updates every frame. The asset you want to follow the body part is set as a child of the anchor point.  
+First-use: "Foot Tracking gives us two anchors — one per foot. The left shoe is set as a child of `leftFootAnchor`; the tracker updates the anchor so the shoe follows the foot."
 
 **Mesh pivot**  
-Plain: 'origo'-punkten i en 3D-modell — där modellen 'hänger' från. Om pivot är förskjuten från mitten hamnar modellen snett när du sätter den vid en anchor.  
-First-use: "Mesh-pivot är 3D-modellens hängpunkt — där modellen 'fästs' när vi sätter den vid foot-anchorn. Om pivot ligger utanför mitten av skon hamnar skon snett."
+Plain: the 'origin' point of a 3D model — where the model 'hangs' from. If the pivot is offset from the center, the model ends up crooked when you place it at an anchor.  
+First-use: "Mesh pivot is the 3D model's hanging point — where the model 'attaches' when we place it at the foot anchor. If the pivot lies outside the center of the shoe, the shoe ends up crooked."
 
 **AABB** (axis-aligned bounding box)  
-Plain: minsta rätvinkliga 'lådan' som rymmer ett 3D-objekt. Jag använder den för att räkna ut var mesh-mitten ligger relativt pivot-punkten.  
-First-use: "AABB är den osynliga lådan runt en 3D-modell. Jag läser AABB:n via MCP för att räkna ut hur långt off-center pivot:en är."
+Plain: the smallest right-angled 'box' that contains a 3D object. I use it to compute where the mesh center sits relative to the pivot point.  
+First-use: "AABB is the invisible box around a 3D model. I read the AABB via MCP to compute how far off-center the pivot is."
 
 ---
 
-### Tracker-beteende
+### Tracker behavior
 
 **Tracker overwrite**  
-Plain: när tracker:n skriver över din ändring varje bildruta, så din scale- eller position-ändring försvinner direkt. Lösningen är wrapper-anchor (ett mellanlager).  
-First-use: "Tracker:n skrev över min scale-ändring — det är 'tracker overwrite', betyder att tracker:n äger den property:n och vi inte kan ändra den direkt. Lösningen kommer i probe-4: wrapper-anchor."
+Plain: when the tracker overwrites your change every frame, so your scale or position change disappears immediately. The solution is a wrapper anchor (a middle layer).  
+First-use: "The tracker overwrote my scale change — that's 'tracker overwrite', meaning the tracker owns that property and we can't change it directly. The solution comes in probe 4: wrapper anchor."
 
-**Wrapper-anchor**  
-Plain: ett tomt mellan-objekt mellan tracker:n och din asset. Tracker skriver till mellanobjektet; din asset (som child) behåller sin egen transform orörd.  
-First-use: "Wrapper-anchor är ett tomt 'mellanlager' mellan tracker:n och skon. Tracker:n får skriva till wrapper:n, din scale på skon (som ligger som child) blir orörd."
+**Wrapper anchor**  
+Plain: an empty intermediate object between the tracker and your asset. The tracker writes to the intermediate object; your asset (as a child) keeps its own transform untouched.  
+First-use: "Wrapper anchor is an empty 'middle layer' between the tracker and the shoe. The tracker gets to write to the wrapper, your scale on the shoe (which sits as a child) stays untouched."
 
 ---
 
-### Beteende / logik
+### Behavior / logic
 
 **State machine**  
-Plain: en sekvens av tillstånd lensen kan vara i — t.ex. 'väntar på fot', 'fot hittad', 'skon visas', 'användaren tappade CTA'. Övergångar mellan tillstånden triggas av händelser.  
-First-use: "State machine är 'flödesschemat' för lensen — vilka lägen den kan vara i och hur den växlar mellan dem. T.ex.: 'väntar' → 'fot hittad' → 'skon visas' → 'tappad'. Vi specificerar dessa i TECH-SPEC."
+Plain: a sequence of states the lens can be in — e.g. 'waiting for foot', 'foot found', 'shoe showing', 'user tapped CTA'. Transitions between states are triggered by events.  
+First-use: "State machine is the 'flowchart' for the lens — which modes it can be in and how it switches between them. E.g.: 'waiting' → 'foot found' → 'shoe showing' → 'tapped'. We specify these in TECH-SPEC."
 
 **Tween**  
-Plain: en jämn övergång mellan två värden över tid — t.ex. fade-in (0 → 100 % opacitet över 1 sekund).  
-First-use: "Tween är en mjuk övergång mellan två värden. Animationen 'skon poppar upp' är en tween från scale 0 till scale 1 över ~0.4 sekunder."
+Plain: a smooth transition between two values over time — e.g. fade-in (0 → 100% opacity over 1 second).  
+First-use: "Tween is a soft transition between two values. The 'shoe pops up' animation is a tween from scale 0 to scale 1 over ~0.4 seconds."
 
 **Easing**  
-Plain: hur en tween accelererar och decelererar — linear (rakt), ease-out (saktar ner i slutet), cubic (mjuk båge).  
-First-use: "Easing styr hur tween:en känns — 'ease-out' saktar ner i slutet, 'linear' är konstant fart, 'cubic' är en mjuk båge. Olika easings ger olika känsla i samma sekund."
+Plain: how a tween accelerates and decelerates — linear (straight), ease-out (slows down at the end), cubic (smooth arc).  
+First-use: "Easing controls how the tween feels — 'ease-out' slows down at the end, 'linear' is constant speed, 'cubic' is a smooth arc. Different easings give different feel in the same second."
 
 ---
 
-### Byggprocess
+### Build process
 
 **Scaffolding**  
-Plain: lensens statiska skelett — scen-objekt, anchors, texturer, material — UTAN scripts eller animation. Just nog för att se att placeringen är rätt innan vi lägger till logik.  
-First-use: "Phase 1 är scaffolding — vi bygger lensens statiska 'skelett' (assets på rätt plats, material tilldelade) men ingen scripting eller animation än. Bekräftar geometry innan vi addar beteende."
+Plain: the lens's static skeleton — scene objects, anchors, textures, materials — WITHOUT scripts or animation. Just enough to see that the placement is right before we add logic.  
+First-use: "Phase 1 is scaffolding — we build the lens's static 'skeleton' (assets in the right place, materials assigned) but no scripting or animation yet. Confirms geometry before we add behavior."
 
 **Performance budget**  
-Plain: maxgränser för storlek och hastighet — lens ≤ 4 MB, ≥ 25 FPS på mellanklass-Android. Snap granskar på mellanklass-telefoner, inte högend.  
-First-use: "Performance budget är våra hårda gränser: lens ≤ 4 MB total storlek, minst 25 FPS på en medel-Android. Snap testar på medel-Android, inte top-end iPhone — så vi optimerar mot lägsta nivån."
+Plain: max limits for size and speed — lens ≤ 4 MB, ≥ 25 FPS on mid-range Android. Snap reviews on mid-range phones, not high-end.  
+First-use: "Performance budget is our hard limits: lens ≤ 4 MB total size, at least 25 FPS on a mid-range Android. Snap tests on mid-range Android, not top-end iPhone — so we optimize against the lowest tier."
 
 ---
 
-### Projektdokumentation / process-jargong
+### Project documentation / process jargon
 
 **Readiness Report**  
-Plain: en sammanställning av alla beslut vi tagit i intake-fasen, som en tabell. Du godkänner rad-för-rad innan vi går till Phase 0.  
-First-use: "När alla intake-frågor är besvarade sammanställer jag en 'Readiness Report' — en tabell med alla beslut vi tagit. Du går igenom raderna, säger OK eller ändrar, sen kör vi Phase 0."
+Plain: a summary of all the decisions we made in the intake phase, as a table. You approve row-by-row before we move to Phase 0.  
+First-use: "When all intake questions are answered, I summarize a 'Readiness Report' — a table with all the decisions we've made. You go through the rows, say OK or change, then we run Phase 0."
 
 **Watch points**  
-Plain: risker eller okända saker som kan kräva ändringar senare. Vi listar dem så vi inte glömmer dem mellan sessioner.  
-First-use: "Watch points är 'sånt vi bör hålla ögon på' — risker eller öppna frågor som inte är akuta nu men kan bita oss senare. Jag listar dem i PROJECT-STATE.md så vi inte glömmer."
+Plain: risks or unknowns that may require changes later. We list them so we don't forget between sessions.  
+First-use: "Watch points are 'things to keep an eye on' — risks or open questions that aren't urgent now but may bite us later. I list them in PROJECT-STATE.md so we don't forget."
 
-**Spec-drafter**  
-Plain: ❌ **avoid** — intern jargong. Säg "när jag skriver TECH-SPEC och USER-EXPERIENCE för dig" i stället.  
+**Spec drafter**  
+Plain: ❌ **avoid** — internal jargon. Say "when I write TECH-SPEC and USER-EXPERIENCE for you" instead.  
 First-use: [SKIP — don't use this term in conversation]
 
 ---
@@ -123,60 +123,60 @@ First-use: [SKIP — don't use this term in conversation]
 ### MCP / system
 
 **MCP** (Model Context Protocol)  
-Plain: ett kommunikations-system som låter mig (Claude Code) prata direkt med Lens Studio — läsa scenen och göra ändringar utan att du behöver klippa-och-klistra.  
-First-use: "MCP är 'bron' mellan oss — Model Context Protocol. När den är registrerad kan jag läsa och ändra direkt i din Lens Studio-scen istället för att be dig klicka. Som om jag satt bredvid dig vid datorn."
+Plain: a communication system that lets me (Claude Code) talk directly to Lens Studio — read the scene and make changes without you having to copy-and-paste.  
+First-use: "MCP is the 'bridge' between us — Model Context Protocol. Once it's registered, I can read and edit directly in your Lens Studio scene instead of asking you to click. Like sitting next to you at the computer."
 
 **GraphQL**  
-Plain: ett frågespråk för strukturerad data — typ SQL men för objekt-grafer. Snap använder GraphQL för MCP-anrop som rör scen och assets.  
-First-use: "GraphQL är frågespråket Snap:s MCP använder. För dig syns det inte — jag hanterar query:erna. Det betyder bara att jag kan be om specifika delar av scenen utan att läsa hela."
+Plain: a query language for structured data — like SQL but for object graphs. Snap uses GraphQL for MCP calls dealing with scene and assets.  
+First-use: "GraphQL is the query language Snap's MCP uses. You don't see it — I handle the queries. It just means I can ask for specific parts of the scene without reading the whole thing."
 
 **Asset directory**  
-Plain: foldern i ditt LS-projekt där alla assets (modeller, ljud, texturer) ligger. Synkas automatiskt med Asset Browser-panelen i Lens Studio.  
-First-use: "Asset directory är den folder där alla assets bor — speglar Asset Browser-panelen i Lens Studio. Dropping en GLB där dyker upp i Asset Browser direkt."
+Plain: the folder in your LS project where all assets (models, sounds, textures) live. Auto-syncs with the Asset Browser panel in Lens Studio.  
+First-use: "Asset directory is the folder where all assets live — mirrors the Asset Browser panel in Lens Studio. Dropping a GLB in there shows up in Asset Browser immediately."
 
 ---
 
-### Arbetsflöde
+### Workflow
 
 **Probe-first**  
-Plain: innan vi ändrar något komplext gör vi en isolerad mini-ändring för att verifiera vår hypotes. Inga 'big bang'-mutations.  
-First-use: "Probe-first betyder: jag testar en liten kontrollerad ändring först — t.ex. bara vänster sko — innan jag committar till hela approachen. Säkrare iteration."
+Plain: before we change anything complex, we make an isolated mini-change to verify our hypothesis. No 'big bang' mutations.  
+First-use: "Probe-first means: I test a small controlled change first — e.g. just the left shoe — before committing to the whole approach. Safer iteration."
 
 **Pair-test**  
-Plain: test där agenten (via MCP) och användaren (via telefon eller preview) kollar samma resultat parallellt. Probe → pair-test → reaktion → nästa probe.  
-First-use: "Pair-test är att vi båda kollar resultatet samtidigt — jag via MCP-läsningen, du via Preview eller telefonen. Du säger vad du ser; jag justerar."
+Plain: a test where the agent (via MCP) and the user (via phone or preview) check the same result in parallel. Probe → pair-test → reaction → next probe.  
+First-use: "Pair-test is when we both check the result at the same time — me via the MCP read, you via Preview or the phone. You say what you see; I adjust."
 
 **⌘S handshake** (Cmd-S handshake)  
-Plain: efter varje lyckad probe-pair-test-cykel: spara projektet i LS (⌘S på Mac, Ctrl-S på PC). MCP:s ändringar är annars bara i RAM och försvinner vid LS-restart.  
-First-use: "Innan vi går vidare — tryck ⌘S i Lens Studio. Mina MCP-ändringar är just nu bara i RAM, så utan save förlorar vi dem om LS startar om."
+Plain: after every successful probe-pair-test cycle: save the project in LS (⌘S on Mac, Ctrl-S on PC). MCP's changes are otherwise just in RAM and disappear on LS restart.  
+First-use: "Before we move on — press ⌘S in Lens Studio. My MCP changes are only in RAM right now, so without a save we lose them if LS restarts."
 
 ---
 
 ## Anti-patterns
 
 ❌ Chains of unexplained terms in one message:  
-"Use the MCP scene-graphql endpoint to query the scene-hierarchy for a tracker-overwritten anchor."
+"Use the MCP scene-graphql endpoint to query the scene hierarchy for a tracker-overwritten anchor."
 
 ✅ Translate the WHOLE chain (or break into smaller messages):  
-"Jag läser scenen via MCP — så pass jag ser hur 'foot-trackerns ankarpunkt' ligger i förhållande till resten. Tracker:n skriver över den varje frame, så jag behöver en wrapper innan jag kan ändra position."
+"I'm reading the scene via MCP — that's how I see where the 'foot tracker's anchor point' sits relative to the rest. The tracker overwrites it every frame, so I need a wrapper before I can change position."
 
 ❌ Translating a term every time it appears (after first-use it's unlocked):  
 [Same explanation 3 messages in a row]
 
 ❌ Translating words that aren't really technical:  
-"Scene" — användaren förstår "scen" från vanligt språk; behöver inte förklaras.
+"Scene" — the user understands "scene" from everyday language; doesn't need explaining.
 
 ---
 
 ## When NOT to translate
 
 Some terms have everyday meanings the user already maps to correctly:
-- **scene, object, camera, light** — vardagsord med teknisk användning. Translation ≠ värde här.
-- **animation, color, texture** — domain-shared mellan design och teknik.
-- **File extensions användaren själv nämner** — om de säger "FBX", de vet FBX.
-- **Verb-baserade terms** — "save", "import", "export", "drag" — universella.
+- **scene, object, camera, light** — everyday words with technical use. Translation ≠ value here.
+- **animation, color, texture** — domain-shared between design and tech.
+- **File extensions the user mentions themselves** — if they say "FBX", they know FBX.
+- **Verb-based terms** — "save", "import", "export", "drag" — universal.
 
-When in doubt: if a designer with 5 years' Photoshop / Figma experience would understand the term, skip the translation.
+When in doubt: if a designer with 5 years of Photoshop / Figma experience would understand the term, skip the translation.
 
 ---
 
@@ -201,5 +201,5 @@ When in doubt: err on the side of including the translation.
 - `voice-and-pedagogy.md` — principle #1 (Believe in user), Pedagogy layer
 - `lens-studio-api-gotchas.md` — terms here are also discussed there empirically (tracker overwrite, mesh pivot, etc.)
 - `mcp-tool-schemas.md` — MCP-specific terminology
-- `body-anchored-calibration.md` — wrapper-anchor, tracker overwrite, AABB in deeper context
-- `snap-docs/01-mcp-and-claude-code/developer-mode.md` — Snap's prosabeskrivning av MCP-tools
+- `body-anchored-calibration.md` — wrapper anchor, tracker overwrite, AABB in deeper context
+- `snap-docs/01-mcp-and-claude-code/developer-mode.md` — Snap's prose description of MCP tools

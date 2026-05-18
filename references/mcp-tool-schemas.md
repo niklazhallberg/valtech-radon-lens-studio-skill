@@ -3,23 +3,23 @@
 **Source:** ToolSearch probe via Claude Code MCP connection to Lens Studio
 **Captured:** 2026-05-13
 **LS version:** 5.x (current at capture)
-**Status:** Empirisk. Snap kan ändra detta API utan varsel. Re-probe vid större LS-bumps.
-**Use:** Lookup-referens för exakt parameter-struktur när Claude Code anropar MCP-tools.
+**Status:** Empirical. Snap can change this API without warning. Re-probe at major LS bumps.
+**Use:** Lookup reference for exact parameter structure when Claude Code calls MCP tools.
 
 ---
 
-## Viktiga caveats (mentor-ärligt)
+## Important caveats (mentor-honest)
 
-1. **JSONSchema ≠ usage example.** Schemas visar parametrar; för HUR-man-använder, läs `snap-docs/01-mcp-and-claude-code/developer-mode.md` + `custom-prompt-for-mcp.md`.
-2. **GraphQL-tools har TRUNKERADE beskrivningar.** `scene-graphql` och `asset-graphql` har för långa schema-strängar för ToolSearch att returnera komplett. Jag fångar de queries jag SER och flaggar att fler finns. För ej-listade queries: kör en bad query via tool:en och läs error-output (queries listas där).
-3. **Probe live före tillit.** Om en parameter inte beter sig som dokumenterat, anropa med medvetet dåligt värde och inspektera error.
-4. **Use-cases är min syntes**, inte officiella Snap-uttalanden. Kontrollera mot live-körning vid tveksamhet.
+1. **JSONSchema ≠ usage example.** Schemas show parameters; for HOW-to-use, read `snap-docs/01-mcp-and-claude-code/developer-mode.md` + `custom-prompt-for-mcp.md`.
+2. **GraphQL tools have TRUNCATED descriptions.** `scene-graphql` and `asset-graphql` have schema strings too long for ToolSearch to return in full. I capture the queries I SEE and flag that more exist. For unlisted queries: run a bad query via the tool and read the error output (queries are listed there).
+3. **Probe live before trust.** If a parameter doesn't behave as documented, call it with a deliberately bad value and inspect the error.
+4. **Use cases are my synthesis**, not official Snap statements. Verify against a live run when in doubt.
 
 ---
 
-## Tool inventory (20 tools, 6 kategorier)
+## Tool inventory (20 tools, 6 categories)
 
-| Tool | Kategori |
+| Tool | Category |
 |---|---|
 | `scene-graphql` | Scene mutation / inspection |
 | `GetBoundingBox` | Scene mutation / inspection |
@@ -44,181 +44,181 @@
 
 ---
 
-# Vad MCP INTE kan göra
+# What MCP CANNOT do
 
-MCP-servern täcker introspection, mutation, scripting, asset/music
-library, AI-generation — men en del Lens Studio-operationer kan
-**inte** drivas via MCP. Att känna gränserna innan probe sparar tid
-och frustration.
+The MCP server covers introspection, mutation, scripting, asset/music
+library, AI generation — but some Lens Studio operations **cannot**
+be driven via MCP. Knowing the boundaries before probing saves time
+and frustration.
 
-Källa: Snap's officiella docs (`snap-docs/01-mcp-and-claude-code/custom-prompt-for-mcp.md`,
-`snap-docs/01-mcp-and-claude-code/developer-mode.md`) cross-validerat
-mot extern kapacitetskartläggning 2026-05-13.
+Source: Snap's official docs (`snap-docs/01-mcp-and-claude-code/custom-prompt-for-mcp.md`,
+`snap-docs/01-mcp-and-claude-code/developer-mode.md`) cross-validated
+against external capability mapping 2026-05-13.
 
-| Operation | Typ | Notering |
+| Operation | Type | Note |
 |---|---|---|
-| Skapa nytt projekt från template | UI-only | New Project-dialogen kan ej triggas via MCP. Använd LS UI; därefter kan MCP ta vid |
-| Importera 3D-filer från disk (FBX/GLB/OBJ) | UI-only | Inget `Import3DModel`-tool finns. Drag-and-drop till Asset Browser eller `File → Import Asset`. Alternativ via MCP: `GenerateFast3DAssets` för AI-genererade modeller (ej brand-assets) |
-| Öppna FBX Import Options-dialogen | UI-only | Material-, animation-, vertex-color-flaggor sätts via dialogen, ej via MCP |
-| Initiera lens-submission | UI-only | Inget `SubmitLens`-tool. Submission via `my-lenses.snapchat.com` eller LS UI |
-| Köpa premium-assets från Asset Library | UI-only | Köpflöde kräver UI/webbportal. `InstallLensStudioPackage` hanterar free assets — premium-flödet är ej publikt dokumenterat |
-| Redigera Visual Script-grafer | UI-only | Visual Script-noder finns ej i MCP-schema. Påverkar ej TypeScript-agent-flöden |
-| Modifiera Material Editor-noder grafiskt | UI-only | PBR-properties (baseColor etc.) kan sättas via `scene-graphql`/`asset-graphql` mutations på `mainMaterial.passInfos.0.*`. Shader-graphens nod-yta kräver UI |
-| Paira mobil device med Lens Studio | UI-only | Device-pairing-flow är UI-driven. MCP kan inte trigga QR-kod-generering |
-| Ändra Project Settings (lens name, ikon, applicability) | Mestadels UI | `lensApplicability` + `trackingModes` kan sättas via Editor.Model.MetaInfo write-back (se `mcp-setup.md` §Transient-view-persistence). Andra Project Settings-fält oklart |
-| Starta/stoppa MCP-servern | UI-only | Kräver AI Assistant → MCP → Configure Server. MCP kan ej omstarta sig själv |
-| Trigga ⌘S (spara) | UI-only / manuell | Mutationer lever in-memory. Användaren måste manuellt spara. Se Operational Rule 2 (⌘S-handshake) |
+| Create new project from template | UI-only | The New Project dialog can't be triggered via MCP. Use the LS UI; MCP can take over afterward |
+| Import 3D files from disk (FBX/GLB/OBJ) | UI-only | No `Import3DModel` tool exists. Drag-and-drop to Asset Browser or `File → Import Asset`. MCP alternative: `GenerateFast3DAssets` for AI-generated models (not brand assets) |
+| Open the FBX Import Options dialog | UI-only | Material, animation, vertex-color flags are set via the dialog, not via MCP |
+| Initiate lens submission | UI-only | No `SubmitLens` tool. Submission via `my-lenses.snapchat.com` or the LS UI |
+| Buy premium assets from Asset Library | UI-only | The purchase flow requires UI/web portal. `InstallLensStudioPackage` handles free assets — the premium flow is not publicly documented |
+| Edit Visual Script graphs | UI-only | Visual Script nodes are not in the MCP schema. Doesn't affect TypeScript agent flows |
+| Modify Material Editor nodes graphically | Mostly UI | PBR properties (baseColor etc.) can be set via `scene-graphql`/`asset-graphql` mutations on `mainMaterial.passInfos.0.*`. The shader graph's node surface requires UI |
+| Pair a mobile device with Lens Studio | UI-only | The device-pairing flow is UI-driven. MCP cannot trigger QR code generation |
+| Change Project Settings (lens name, icon, applicability) | Mostly UI | `lensApplicability` + `trackingModes` can be set via Editor.Model.MetaInfo write-back (see `mcp-setup.md` §Transient-view-persistence). Other Project Settings fields unclear |
+| Start/stop the MCP server | UI-only | Requires AI Assistant → MCP → Configure Server. MCP cannot restart itself |
+| Trigger ⌘S (save) | UI-only / manual | Mutations live in-memory. The user has to save manually. See Operational Rule 2 (⌘S handshake) |
 
-## Desktop Preview-begränsningar (separat från MCP-gränser)
+## Desktop Preview limitations (separate from MCP limits)
 
-Desktop Preview kör INTE alla ML-modeller — bl.a. foot-tracking. MCP
-kan förbereda scenen perfekt, men visuell verifiering kräver real
-device via QR-kod preview. Detaljer + per-body-part-matris:
+Desktop Preview does NOT run all ML models — including foot tracking. MCP
+can prepare the scene perfectly, but visual verification requires a real
+device via QR code preview. Details + per-body-part matrix:
 `../body-anchored-calibration.md` §Desktop-preview-limitations.
 
-## Implication för agent-flöden
+## Implication for agent flows
 
-- **Phase 0 spec**: Notera om brief kräver något UI-only. Om ja:
-  planera manuella steg in i timeline.
-- **Phase 1 scaffolding**: Vid 3D-asset från klient: pausa för
-  user-driven import innan MCP-positionering tar vid.
-- **Phase 4 device-test**: Pairing måste vara förberett före
+- **Phase 0 spec**: Note if the brief requires anything UI-only. If yes:
+  plan manual steps into the timeline.
+- **Phase 1 scaffolding**: For 3D assets from the client: pause for
+  user-driven import before MCP positioning takes over.
+- **Phase 4 device test**: Pairing must be prepared before
   phase-start.
-- **Phase 5 submission**: Submission är 100% manuell. MCP-flödet
-  slutar vid "lens fungerar i preview".
+- **Phase 5 submission**: Submission is 100% manual. The MCP flow
+  ends at "lens works in preview".
 
 ---
 
-# Officiella tool-namn ↔ MCP-client-namn
+# Official tool names ↔ MCP client names
 
-Snap's officiella dokumentation (system-prompt-exempel,
-ChatTool API) använder "normalized names" som
+Snap's official documentation (system-prompt examples,
+ChatTool API) uses "normalized names" like
 `GetLensStudioSceneGraph`, `SetLensStudioProperty`,
-`CreateSceneObjectFromPresetTool`. Vår empiriska capture via
-ToolSearch ser MCP-client-namn som `scene-graphql`,
-`asset-graphql` etc.
+`CreateSceneObjectFromPresetTool`. Our empirical capture via
+ToolSearch sees MCP client names like `scene-graphql`,
+`asset-graphql`, etc.
 
-Dessa är **samma server, två olika abstraction-lager**:
+These are **the same server, two different abstraction layers**:
 
-- **Officiella namn** = procedurella wrappers dokumenterade i
-  Snap's agent-system-prompt (se
+- **Official names** = procedural wrappers documented in
+  Snap's agent system prompt (see
   `snap-docs/01-mcp-and-claude-code/custom-prompt-for-mcp.md`)
-- **MCP-client-namn** = vad Claude Code/Cursor/VS Code faktiskt
-  ser via `localhost:[port]/mcp` — primärt GraphQL-transport
-  plus specialiserade tools
+- **MCP client names** = what Claude Code/Cursor/VS Code actually
+  sees via `localhost:[port]/mcp` — primarily GraphQL transport
+  plus specialized tools
 
-> **Version-disclaimer:** Tool-namn kan variera mellan
-> LS-versioner. Vår capture är från LS 5.x 2026-05-13.
-> Verifiera med live probe vid avvikelse.
+> **Version disclaimer:** Tool names may vary between
+> LS versions. Our capture is from LS 5.x 2026-05-13.
+> Verify with a live probe on discrepancy.
 
-## Identiska namn (inga aliaser)
+## Identical names (no aliases)
 
-| Tool | Funktion |
+| Tool | Function |
 |---|---|
-| `SearchLensStudioAssetLibrary` | Asset Library-sökning |
-| `InstallLensStudioPackage` | Installation från Asset Library |
-| `SearchLensStudioMusicLibrary` | Musik-sökning |
-| `InstallLicensedMusic` | Musik-install |
-| `ListInstalledPackagesTool` | Installerade paket-list |
+| `SearchLensStudioAssetLibrary` | Asset Library search |
+| `InstallLensStudioPackage` | Installation from Asset Library |
+| `SearchLensStudioMusicLibrary` | Music search |
+| `InstallLicensedMusic` | Music install |
+| `ListInstalledPackagesTool` | List installed packages |
 | `RunAndCollectLogsTool` | Preview refresh + log capture |
-| `GenerateFast3DAssets` | AI-3D-generering |
+| `GenerateFast3DAssets` | AI 3D generation |
 
-## Olika namn, samma funktion
+## Different names, same function
 
-| Snap docs | Vår capture | Sannolik orsak |
+| Snap docs | Our capture | Likely reason |
 |---|---|---|
-| `QueryLensStudioRag` | `QueryLensStudioKnowledgeBase` | Namn-evolution; vår empiriska är aktuell per 2026-05-13 |
-| `CompileWithLogsTool` | `RecompileTypeScriptTool` | Samma underlying tool; vår exponeras med tydligare action-verb |
-| `ReadWriteTextFile` (1 tool) | `FileReadTool` + `FileEditTool` + `FileGrepTool` (3 tools) | Snap's prompt-exempel beskriver konsoliderat read+write; vår client ser tre granulärare ytor |
+| `QueryLensStudioRag` | `QueryLensStudioKnowledgeBase` | Name evolution; our empirical is current as of 2026-05-13 |
+| `CompileWithLogsTool` | `RecompileTypeScriptTool` | Same underlying tool; ours is exposed with a clearer action verb |
+| `ReadWriteTextFile` (1 tool) | `FileReadTool` + `FileEditTool` + `FileGrepTool` (3 tools) | Snap's prompt example describes consolidated read+write; our client sees three more granular surfaces |
 
-## Officiella tools → vår client-equivalent (GraphQL-transport)
+## Official tools → our client equivalent (GraphQL transport)
 
-Många officiella tools är exponerade som GraphQL-queries inom
-`scene-graphql` eller `asset-graphql`. Använd dessa GraphQL-
-queries i client-anrop.
+Many official tools are exposed as GraphQL queries within
+`scene-graphql` or `asset-graphql`. Use these GraphQL
+queries in client calls.
 
-### Scene-introspektion
+### Scene introspection
 
-| Snap docs | Vår client-väg |
+| Snap docs | Our client path |
 |---|---|
-| `GetLensStudioSceneGraph` | `scene-graphql` med `rootSceneObjects { ... }` |
-| `GetLensStudioSceneObjectById` | `scene-graphql` med `sceneObject(id) { ... }` |
-| `GetLensStudioSceneObjectByName` | `scene-graphql` med `allSceneObjects(nameContains: "X") { ... }` |
+| `GetLensStudioSceneGraph` | `scene-graphql` with `rootSceneObjects { ... }` |
+| `GetLensStudioSceneObjectById` | `scene-graphql` with `sceneObject(id) { ... }` |
+| `GetLensStudioSceneObjectByName` | `scene-graphql` with `allSceneObjects(nameContains: "X") { ... }` |
 
-### Asset-introspektion
+### Asset introspection
 
-| Snap docs | Vår client-väg |
+| Snap docs | Our client path |
 |---|---|
-| `ListLensStudioAssets` | `asset-graphql` med `allAssets { ... }` |
-| `GetLensStudioAssetById` | `asset-graphql` med `asset(id) { ... }` |
-| `GetLensStudioAssetByPath` | `asset-graphql` med `assetByPath(path) { ... }` |
-| `GetLensStudioAssetsByName` | `asset-graphql` med `assetsByName(name) { ... }` |
+| `ListLensStudioAssets` | `asset-graphql` with `allAssets { ... }` |
+| `GetLensStudioAssetById` | `asset-graphql` with `asset(id) { ... }` |
+| `GetLensStudioAssetByPath` | `asset-graphql` with `assetByPath(path) { ... }` |
+| `GetLensStudioAssetsByName` | `asset-graphql` with `assetsByName(name) { ... }` |
 
-### Scene-mutation
+### Scene mutation
 
-| Snap docs | Vår client-väg |
+| Snap docs | Our client path |
 |---|---|
 | `CreateLensStudioSceneObject` | `scene-graphql` mutation |
 | `DeleteLensStudioSceneObject` | `scene-graphql` mutation |
 | `RenameLensStudioSceneObject` | `scene-graphql` mutation |
 | `DuplicateLensStudioSceneObject` | `scene-graphql` mutation |
 | `SetLensStudioParent` | `scene-graphql` mutation |
-| `SetLensStudioProperty` | `scene-graphql` mutation (för scene-target) eller `asset-graphql` mutation (för asset-target som material) |
+| `SetLensStudioProperty` | `scene-graphql` mutation (for scene target) or `asset-graphql` mutation (for asset target like material) |
 | `CreateLensStudioComponent` | `scene-graphql` mutation |
 
-### Asset-mutation
+### Asset mutation
 
-| Snap docs | Vår client-väg |
+| Snap docs | Our client path |
 |---|---|
-| `CreateLensStudioAsset` | `asset-graphql` med `createAsset(type, name)` |
-| `DeleteLensStudioAsset` | `asset-graphql` med `deleteAsset(id)` |
-| `RenameAsset` | `asset-graphql` med `renameAsset(id, newName)` |
+| `CreateLensStudioAsset` | `asset-graphql` with `createAsset(type, name)` |
+| `DeleteLensStudioAsset` | `asset-graphql` with `deleteAsset(id)` |
+| `RenameAsset` | `asset-graphql` with `renameAsset(id, newName)` |
 | `MoveLensStudioAsset` | `asset-graphql` mutation |
 | `DuplicateLensStudioAsset` | `asset-graphql` mutation |
 
-### Preset-flöden
+### Preset flows
 
-| Snap docs | Vår client-väg |
+| Snap docs | Our client path |
 |---|---|
-| `GetPresetRegistryTool` | `scene-graphql` med `presets(type?)` eller `asset-graphql` med `presets` |
-| `CreateSceneObjectFromPresetTool` | `scene-graphql` mutation med preset-referens |
-| `CreateComponentFromPresetTool` | `scene-graphql` mutation med preset-referens |
-| `CreateAssetFromPresetTool` | `asset-graphql` mutation med preset-referens |
+| `GetPresetRegistryTool` | `scene-graphql` with `presets(type?)` or `asset-graphql` with `presets` |
+| `CreateSceneObjectFromPresetTool` | `scene-graphql` mutation with preset reference |
+| `CreateComponentFromPresetTool` | `scene-graphql` mutation with preset reference |
+| `CreateAssetFromPresetTool` | `asset-graphql` mutation with preset reference |
 
-## Tools i vår capture, ej i Snap's docs
+## Tools in our capture, not in Snap's docs
 
-Specialiserade verktyg som inte exponeras som "normalized names"
-i Snap's system-prompt-exempel men som finns via ToolSearch.
-Operationellt viktiga för agent-flöden:
+Specialized tools not exposed as "normalized names" in Snap's
+system-prompt examples but present via ToolSearch.
+Operationally important for agent flows:
 
-| Tool | Använd för |
+| Tool | Use for |
 |---|---|
-| `SetLensStudioSelection` | Highlight SceneObject i LS Inspector (Inspector handoff) |
-| `CapturePanelScreenshotTool` | Visuell verifiering via panel-screenshots |
-| `ListAllPanels` | Discover panel-IDs |
-| `GetBoundingBox` | AABB-mätning för mesh-pivot/scale-kalibrering |
-| `ExecuteEditorCode` | Direkt Editor API-access via TypeScript |
-| `GenerateLensIcon` | AI-genererad lens-ikon för draft/WIP |
+| `SetLensStudioSelection` | Highlight SceneObject in LS Inspector (Inspector handoff) |
+| `CapturePanelScreenshotTool` | Visual verification via panel screenshots |
+| `ListAllPanels` | Discover panel IDs |
+| `GetBoundingBox` | AABB measurement for mesh-pivot/scale calibration |
+| `ExecuteEditorCode` | Direct Editor API access via TypeScript |
+| `GenerateLensIcon` | AI-generated lens icon for draft/WIP |
 
-## Tools i Snap's docs, ej i vår capture
+## Tools in Snap's docs, not in our capture
 
-Listade i Snap's system-prompt-exempel men ej fångade via vår
-ToolSearch 2026-05-13. Möjligt att de exponeras vid annan LS-
-config eller med specifika ChatTool-packages installerade.
-Probe live om de behövs:
+Listed in Snap's system-prompt examples but not captured via our
+ToolSearch 2026-05-13. Possible they're exposed under a different LS
+config or with specific ChatTool packages installed.
+Probe live if needed:
 
-| Snap docs | Beskriven funktion |
+| Snap docs | Described function |
 |---|---|
-| `GetLensStudioLogsTool` | Ad-hoc log-read utan preview-refresh |
-| `InstantiateLensStudioPrefab` | Prefab-instansering i scen |
-| `CreatePrefabFromSceneObject` | Konvertera SceneObject till prefab |
-| `GenerateThreeDAssetTool` | Detaljerad 3D-AI-generering (vs Fast3D) |
-| `GenerateTexture` | AI-texturer från text-prompt |
-| `GenerateFaceMaskTexture` | AI-ansiktsmask för face-filter |
-| `GetLensStudioContextMenuQueue` | Läsa "Use as AI Context"-kö |
-| `CheckAiContextQueue` | Polla AI-context-state |
-| `GetAiContextMenuQueue` | Läs AI-context-menu-state |
-| `LensStudio` | Allmän miljökontext (env-info) |
+| `GetLensStudioLogsTool` | Ad-hoc log read without preview refresh |
+| `InstantiateLensStudioPrefab` | Prefab instantiation in scene |
+| `CreatePrefabFromSceneObject` | Convert SceneObject to prefab |
+| `GenerateThreeDAssetTool` | Detailed 3D AI generation (vs Fast3D) |
+| `GenerateTexture` | AI textures from text prompt |
+| `GenerateFaceMaskTexture` | AI face mask for face filter |
+| `GetLensStudioContextMenuQueue` | Read the "Use as AI Context" queue |
+| `CheckAiContextQueue` | Poll AI context state |
+| `GetAiContextMenuQueue` | Read AI context menu state |
+| `LensStudio` | General environment context (env info) |
 
 ---
 
@@ -226,81 +226,81 @@ Probe live om de behövs:
 
 ## `mcp__lens-studio__scene-graphql`
 
-**Kategori:** Scene mutation / inspection
-**Description:** Query och mutate Lens Studio scene graph via GraphQL.
+**Category:** Scene mutation / inspection
+**Description:** Query and mutate the Lens Studio scene graph via GraphQL.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `query` | string | ✅ | GraphQL query eller mutation som sträng |
+| `query` | string | ✅ | GraphQL query or mutation as a string |
 
-**Tillgängliga queries (partial — schema-beskrivningen var trunkerad):**
+**Available queries (partial — the schema description was truncated):**
 
 - `rootSceneObjects(hasComponent?, nameContains?, hasProperty?, limit?, offset?) -> [SceneObject]`
-- `allSceneObjects(...)` — alla scene-objekt med filter
+- `allSceneObjects(...)` — all scene objects with filter
 - `sceneObject(id) -> SceneObject` — single object by UUID
 - `sceneObjectCount(...) -> Int`
 - `prefabSceneObjects(prefabId, ...) -> [SceneObject]`
 - `presets(type?: ScenePresetType) -> [ScenePreset]`
 - `preset(presetName)`
-- *(fler finns — schema trunkerades; probe live för komplett lista)*
+- *(more exist — the schema was truncated; probe live for a complete list)*
 
-**Filter-arg-format:**
-- `hasComponent`: partial match, case-insensitive (ex. `"Camera"`, `"Foot Tracking"`)
+**Filter arg format:**
+- `hasComponent`: partial match, case-insensitive (e.g. `"Camera"`, `"Foot Tracking"`)
 - `nameContains`: partial match, case-insensitive
 - `hasProperty: PropertyFilter` — filter by component property key/value
 
-**Use-cases i filter design:**
-- Hierarchy walk (step 1 av body-anchored-calibration probe-protokoll)
-- Hitta komponenter by type (`hasComponent: "Foot Tracking"`)
-- Verifiera mutation-resultat (read-back efter setProperty / createSceneObject)
+**Use cases:**
+- Hierarchy walk (step 1 of the body-anchored-calibration probe protocol)
+- Find components by type (`hasComponent: "Foot Tracking"`)
+- Verify mutation result (read-back after setProperty / createSceneObject)
 - Probe-driven calibration
 
-**Cross-ref:** `../snap-docs/01-mcp-and-claude-code/developer-mode.md`; `../body-anchored-calibration.md` (hierarchy-walk).
+**Cross-ref:** `../snap-docs/01-mcp-and-claude-code/developer-mode.md`; `../body-anchored-calibration.md` (hierarchy walk).
 
 ---
 
 ## `mcp__lens-studio__GetBoundingBox`
 
-**Kategori:** Scene mutation / inspection
-**Description:** Få en single axis-aligned bounding box (AABB). Returnerar EN encompassing boundary för ett objekt, flera objekt, eller hela scenen.
+**Category:** Scene mutation / inspection
+**Description:** Get a single axis-aligned bounding box (AABB). Returns ONE encompassing boundary for an object, multiple objects, or the whole scene.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `action` | enum | ✅ | `"get_object_bounds"` eller `"get_scene_bounds"` |
-| `boundingObjectIds` | string[] | conditional | För `get_object_bounds`: ett eller flera scene object UUIDs; resultatet är single encompassing AABB av alla |
-| `includeChildren` | boolean | optional (default false) | Inkludera givna objekt + alla descendants |
-| `includeDisabled` | boolean | optional (default false) | Inkludera disabled scene-objekt + disabled components |
-| `colliderOnly` | boolean | optional (default false) | Endast collider-bounds; om false, prefererar collider men faller tillbaka till mesh sen transform AABB |
+| `action` | enum | ✅ | `"get_object_bounds"` or `"get_scene_bounds"` |
+| `boundingObjectIds` | string[] | conditional | For `get_object_bounds`: one or more scene object UUIDs; the result is a single encompassing AABB of all |
+| `includeChildren` | boolean | optional (default false) | Include given objects + all descendants |
+| `includeDisabled` | boolean | optional (default false) | Include disabled scene objects + disabled components |
+| `colliderOnly` | boolean | optional (default false) | Only collider bounds; if false, prefers collider but falls back to mesh + transform AABB |
 
-**Use-cases i filter design:**
-- Probe FileMesh AABB innan scale mutations (body-anchored-calibration step 6 — mesh-pivot awareness)
-- Verifiera att content är inom scen-bounds
-- Center-of-mass-beräkning för objekt-grupper
+**Use cases:**
+- Probe FileMesh AABB before scale mutations (body-anchored-calibration step 6 — mesh-pivot awareness)
+- Verify that content is within scene bounds
+- Center-of-mass calculation for object groups
 
-**Cross-ref:** `../body-anchored-calibration.md` step 6 (AABB-formel + scale-dependent compensation).
+**Cross-ref:** `../body-anchored-calibration.md` step 6 (AABB formula + scale-dependent compensation).
 
 ---
 
 ## `mcp__lens-studio__SetLensStudioSelection`
 
-**Kategori:** Scene mutation / inspection
-**Description:** Hanterar current selection i Lens Studio. Stödjer 3 modes: `set` (replace), `add` (add to), `clear`. För `set` och `add`: bara items av samma typ (scene objects ELLER assets, inte mix).
+**Category:** Scene mutation / inspection
+**Description:** Manages the current selection in Lens Studio. Supports 3 modes: `set` (replace), `add` (add to), `clear`. For `set` and `add`: only items of the same type (scene objects OR assets, not a mix).
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `mode` | enum | optional (default `"set"`) | `"set"` / `"add"` / `"clear"` |
-| `ids` | string[] | conditional | UUIDs att välja. Krav för `set` och `add`. Alla samma typ. Ej krav för `clear`. |
+| `ids` | string[] | conditional | UUIDs to select. Required for `set` and `add`. All the same type. Not required for `clear`. |
 
-**Use-cases i filter design:**
-- Highlight ett objekt i Scene Editor för användaren ("titta på den här noden")
-- Sätta selection innan en manuell action i LS (t.ex. innan användaren ska kolla Inspector)
-- Cleanup mellan probes
+**Use cases:**
+- Highlight an object in Scene Editor for the user ("look at this node")
+- Set selection before a manual action in LS (e.g., before the user is going to check Inspector)
+- Cleanup between probes
 
 **Cross-ref:** `../snap-docs/04-scene-and-components/lens-studio-interface/`.
 
@@ -310,60 +310,60 @@ Probe live om de behövs:
 
 ## `mcp__lens-studio__asset-graphql`
 
-**Kategori:** Asset mutation / inspection
-**Description:** Query och mutate Lens Studio project assets via GraphQL.
+**Category:** Asset mutation / inspection
+**Description:** Query and mutate Lens Studio project assets via GraphQL.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `query` | string | ✅ | GraphQL query eller mutation som sträng |
+| `query` | string | ✅ | GraphQL query or mutation as a string |
 
-**Tillgängliga queries (partial):**
+**Available queries (partial):**
 
 - `allAssets(typeFilter?, nameContains?, pathFilter?, showPackedContent?, limit?, offset?) -> [Asset]`
 - `asset(id) -> Asset` — single by UUID
-- `assetByPath(path) -> Asset` — t.ex. `"Assets/Materials/MyMaterial.mat"`
+- `assetByPath(path) -> Asset` — e.g. `"Assets/Materials/MyMaterial.mat"`
 - `assetsByName(name, exactMatch?) -> [Asset]`
 - `assetTypes -> [String]` — valid creatable types
 - `assetCount(...) -> Int`
 - `presets -> [AssetPreset]`
 - `preset(presetName) -> AssetPreset`
 
-**Tillgängliga mutations (partial):**
+**Available mutations (partial):**
 
 - `createAsset(type, name, destinationPath?) -> AssetMutationResult`
 - `renameAsset(id, newName) -> AssetMutationResult`
-- `deleteAsset(id) -> AssetMutationResult` — raderar även underliggande fil för file-backed assets
-- *(fler finns — schema trunkerades)*
+- `deleteAsset(id) -> AssetMutationResult` — also deletes the underlying file for file-backed assets
+- *(more exist — the schema was truncated)*
 
-**Use-cases i filter design:**
-- Probe FileMesh properties innan scale mutations
-- Inspect material properties innan mutation
+**Use cases:**
+- Probe FileMesh properties before scale mutations
+- Inspect material properties before mutation
 - Create runtime assets (materials, render targets)
-- Asset audit innan Phase 5 submission
+- Asset audit before Phase 5 submission
 
-**Cross-ref:** `../snap-docs/03-assets-pipeline/asset-library/`; `../body-anchored-calibration.md` (AABB-read step 6).
+**Cross-ref:** `../snap-docs/03-assets-pipeline/asset-library/`; `../body-anchored-calibration.md` (AABB read step 6).
 
 ---
 
 ## `mcp__lens-studio__InstallLensStudioPackage`
 
-**Kategori:** Asset mutation / inspection
-**Description:** Installerar ett package från en URI. Funkar med både lokala och remote URIs. Använd detta för att importera/installera assets från Asset Library. Note: Vissa packages auto-instantieras i scenen efter install — använd scene-introspection före instantiation för att undvika dubbletter.
+**Category:** Asset mutation / inspection
+**Description:** Installs a package from a URI. Works with both local and remote URIs. Use this to import/install assets from Asset Library. Note: Some packages auto-instantiate in the scene after install — use scene introspection before instantiation to avoid duplicates.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `packageUri` | string | ✅ | URI av package att installera |
-| `assetName` | string | optional | Asset-bibliotek-name (om filnamnet inte är tydligt nog) |
+| `packageUri` | string | ✅ | URI of the package to install |
+| `assetName` | string | optional | Asset library name (if the filename isn't clear enough) |
 
-**Use-cases i filter design:**
-- Installera Try-On Pack Sneakers från Asset Library (foot-tracking startpunkt)
-- Installera Foot Tracking template
-- Installera Snap-curerade Try-On Packs för andra body-parts
-- Installera ML-modeller från Snap's bibliotek
+**Use cases:**
+- Install Try-On Pack Sneakers from Asset Library (foot tracking starting point)
+- Install Foot Tracking template
+- Install Snap-curated Try-On Packs for other body parts
+- Install ML models from Snap's library
 
 **Cross-ref:** `../body-anchored-calibration.md` Step 0 (Library-first sourcing); `../snap-docs/03-assets-pipeline/asset-library/`.
 
@@ -371,92 +371,92 @@ Probe live om de behövs:
 
 ## `mcp__lens-studio__InstallLicensedMusic`
 
-**Kategori:** Asset mutation / inspection
-**Description:** Installerar en licensed music track från music library i projektet som en LicensedAudioTrack asset. Musikfilerna laddas ner automatiskt vid behov; lagras inte permanent (legal compliance).
+**Category:** Asset mutation / inspection
+**Description:** Installs a licensed music track from the music library into the project as a LicensedAudioTrack asset. Music files are downloaded automatically on demand; not stored permanently (legal compliance).
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `musicAsset` | object | ✅ | Music asset-objekt från search-resultat (assetUUID + name minimum) |
-| `folderPath` | string | optional | Target folder path i projektet |
+| `musicAsset` | object | ✅ | Music asset object from search results (assetUUID + name minimum) |
+| `folderPath` | string | optional | Target folder path in the project |
 
-`musicAsset`-objektets fält:
+`musicAsset` object fields:
 - `assetUUID` (string, ✅) — unique ID
-- `name` (string, ✅) — track-namn
-- `artistName`, `bpm`, `duration`, `genre`, `mood`, `isExplicit` (alla optional)
+- `name` (string, ✅) — track name
+- `artistName`, `bpm`, `duration`, `genre`, `mood`, `isExplicit` (all optional)
 
-**Use-cases i filter design:**
-- Lägga till bakgrundsmusik / sound-design till en lens
-- Snap-policy-compliant ad-soundtrack för Sponsored Lens
-- Match-musik till lens-tempo (snappy / cinematic)
+**Use cases:**
+- Add background music / sound design to a lens
+- Snap-policy-compliant ad soundtrack for Sponsored Lens
+- Match music to lens tempo (snappy / cinematic)
 
-**Cross-ref:** `../snap-docs/02-scripting-api/audio/`; `SearchLensStudioMusicLibrary` (för att hitta musiken först).
+**Cross-ref:** `../snap-docs/02-scripting-api/audio/`; `SearchLensStudioMusicLibrary` (to find the music first).
 
 ---
 
 ## `mcp__lens-studio__SearchLensStudioAssetLibrary`
 
-**Kategori:** Asset mutation / inspection
-**Description:** Söker LS asset library efter assets som matchar specificerade filters. Resultat paginerade (limit=20, offset = index av första). `onlyMostRecent` returnerar bara senaste versionen (reducerar duplikater).
+**Category:** Asset mutation / inspection
+**Description:** Searches the LS asset library for assets matching the specified filters. Results are paginated (limit=20, offset = index of first). `onlyMostRecent` returns only the most recent version (reduces duplicates).
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `keywordFilter` | string[] | ✅ | Keywords (broad — t.ex. `["cat", "dog"]` returnerar assets som matchar ENDERA) |
-| `onlyMostRecent` | boolean | ✅ | True = bara senaste versionen per asset |
-| `offset` | number | optional | Pagination-offset |
+| `keywordFilter` | string[] | ✅ | Keywords (broad — e.g. `["cat", "dog"]` returns assets matching EITHER) |
+| `onlyMostRecent` | boolean | ✅ | True = only the most recent version per asset |
+| `offset` | number | optional | Pagination offset |
 
-**Use-cases i filter design:**
-- Library-first sourcing (body-anchored-calibration Step 0) — söka existerande Try-On Packs innan custom-modellering
-- Hitta sample-meshes, materials, ML-modeller
-- Inventory inför Phase 1 scaffolding
+**Use cases:**
+- Library-first sourcing (body-anchored-calibration Step 0) — search existing Try-On Packs before custom modeling
+- Find sample meshes, materials, ML models
+- Inventory before Phase 1 scaffolding
 
-**Cross-ref:** `../body-anchored-calibration.md` Step 0; `InstallLensStudioPackage` (för att installera ett hittat asset).
+**Cross-ref:** `../body-anchored-calibration.md` Step 0; `InstallLensStudioPackage` (to install a found asset).
 
 ---
 
 ## `mcp__lens-studio__SearchLensStudioMusicLibrary`
 
-**Kategori:** Asset mutation / inspection
-**Description:** Söker LS music library efter licensed music tracks och audio assets. Använd för musik, songs, audio tracks, eller när användare nämner artister / låttitlar.
+**Category:** Asset mutation / inspection
+**Description:** Searches the LS music library for licensed music tracks and audio assets. Use for music, songs, audio tracks, or when the user mentions artists / song titles.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `keywordFilter` | string[] | optional | Keywords (song titles, artists, descriptive terms som 'upbeat', 'calm') |
+| `keywordFilter` | string[] | optional | Keywords (song titles, artists, descriptive terms like 'upbeat', 'calm') |
 | `genreFilter` | string | optional | Genre (`"Pop"`, `"Rock"`, `"Electronic"`, etc.) |
 | `moodFilter` | string | optional | Mood (`"Happy"`, `"Sad"`, `"Energetic"`, etc.) |
 | `explicitContentFilter` | enum | optional (default `"exclude"`) | `"include"` / `"exclude"` / `"only"` |
-| `countryCode` | string | optional | 2-char (för geographic licensing — auto-detect om ej angivet) |
+| `countryCode` | string | optional | 2-char (for geographic licensing — auto-detect if not provided) |
 | `onlyMostRecent` | boolean | optional (default true) | |
 
-**Use-cases i filter design:**
-- Hitta brand-passande musik för Sponsored Lens
-- Mood-matchad audio (match user's pace-input — snappy/medium/slow-cinematic)
-- Pre-flight licensing-check (countryCode-aware)
+**Use cases:**
+- Find brand-fitting music for Sponsored Lens
+- Mood-matched audio (match the user's pace input — snappy/medium/slow-cinematic)
+- Pre-flight licensing check (countryCode-aware)
 
-**Cross-ref:** `InstallLicensedMusic` (för att installera valt track); `../snap-docs/02-scripting-api/audio/`.
+**Cross-ref:** `InstallLicensedMusic` (to install the chosen track); `../snap-docs/02-scripting-api/audio/`.
 
 ---
 
 ## `mcp__lens-studio__ListInstalledPackagesTool`
 
-**Kategori:** Asset mutation / inspection
-**Description:** Listar alla packages installerade i Lens Studio. Useful för att förstå vilka capabilities som finns i nuvarande projekt.
+**Category:** Asset mutation / inspection
+**Description:** Lists all packages installed in Lens Studio. Useful for understanding which capabilities exist in the current project.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `includeDetails` | boolean | optional (default true) | Inkludera detaljerad info per package inkl. README |
+| `includeDetails` | boolean | optional (default true) | Include detailed info per package incl. README |
 
-**Use-cases i filter design:**
-- Audit av installed packages vid project-resume
-- Identifiera om Try-On Pack redan finns (innan re-install)
-- Avgöra capability-yta innan Phase 1 scaffolding
+**Use cases:**
+- Audit installed packages on project resume
+- Identify whether Try-On Pack is already installed (before re-install)
+- Determine capability surface before Phase 1 scaffolding
 
 **Cross-ref:** `InstallLensStudioPackage`; `../snap-docs/03-assets-pipeline/package-management/`.
 
@@ -466,40 +466,40 @@ Probe live om de behövs:
 
 ## `mcp__lens-studio__CapturePanelScreenshotTool`
 
-**Kategori:** Panel / UI inspection
-**Description:** Fångar screenshot av en dock-panel som base64-encoded JPEG. För Preview-panelen: bara renderad lens-output (ingen chrome).
+**Category:** Panel / UI inspection
+**Description:** Captures a screenshot of a dock panel as a base64-encoded JPEG. For the Preview panel: only rendered lens output (no chrome).
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `pluginId` | string | ✅ | Panel plugin-ID. Använd `ListAllPanels` om osäker. |
-| `detail` | enum | optional (default `"auto"`) | `"auto"` / `"low"` / `"high"` — bild-kvalitet för AI-reasoning |
+| `pluginId` | string | ✅ | Panel plugin ID. Use `ListAllPanels` if unsure. |
+| `detail` | enum | optional (default `"auto"`) | `"auto"` / `"low"` / `"high"` — image quality for AI reasoning |
 
-**Vanliga `pluginId`-värden:**
-- `Snap.Plugin.Gui.PreviewPanel` — lens-output
-- `Snap.Plugin.Gui.SceneEditor` — 3D-viewport
-- `Snap.Plugin.Gui.InspectorPanel` — properties för vald objekt
+**Common `pluginId` values:**
+- `Snap.Plugin.Gui.PreviewPanel` — lens output
+- `Snap.Plugin.Gui.SceneEditor` — 3D viewport
+- `Snap.Plugin.Gui.InspectorPanel` — properties for the selected object
 
-**Use-cases i filter design:**
-- Visuell verifiering efter mutation (screenshot Preview)
-- Dokumentera calibration-state (före/efter probe)
-- Debug när API-state ser rätt ut men visual fel
+**Use cases:**
+- Visual verification after mutation (screenshot Preview)
+- Document calibration state (before/after probe)
+- Debug when API state looks right but visual is wrong
 
-**Cross-ref:** `../body-anchored-calibration.md` (image-interpretation reliability — visa screenshot till användaren, lita på deras text-rapport för screen-coord-judgments).
+**Cross-ref:** `../body-anchored-calibration.md` (image interpretation reliability — show screenshot to user, trust their text report for screen-coord judgments).
 
 ---
 
 ## `mcp__lens-studio__ListAllPanels`
 
-**Kategori:** Panel / UI inspection
-**Description:** Returnerar lista av alla panel plugin-IDs i dock manager. Inga argument; returnerar array av available panel IDs.
+**Category:** Panel / UI inspection
+**Description:** Returns a list of all panel plugin IDs in the dock manager. No arguments; returns an array of available panel IDs.
 
-**Parameters:** Inga.
+**Parameters:** None.
 
-**Use-cases i filter design:**
-- Discover panel-IDs innan `CapturePanelScreenshotTool`
-- Diagnostik vid icke-standard LS-konfigurationer
+**Use cases:**
+- Discover panel IDs before `CapturePanelScreenshotTool`
+- Diagnostics in non-standard LS configurations
 
 **Cross-ref:** `CapturePanelScreenshotTool`.
 
@@ -509,21 +509,21 @@ Probe live om de behövs:
 
 ## `mcp__lens-studio__FileReadTool`
 
-**Kategori:** File / scripting
-**Description:** Läs file contents eller listar directory entries. Stödjer line-based slicing för stora filer. Kräver URI-scheme. Skippar binary files.
+**Category:** File / scripting
+**Description:** Read file contents or list directory entries. Supports line-based slicing for large files. Requires a URI scheme. Skips binary files.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `uri` | string | ✅ | URI av fil/directory. Schemes: `assets://` (project assets), `packages://` (installed `.lspkg`, read-only), `project://` (project root, read-only). Append `/` för directory listing. |
-| `offset` | number | optional | 0-indexed line att starta från. Negativ = från slutet (t.ex. `-10` = last 10 lines). |
-| `limit` | number | optional | Max lines (eller directory entries) att returnera |
+| `uri` | string | ✅ | URI of file/directory. Schemes: `assets://` (project assets), `packages://` (installed `.lspkg`, read-only), `project://` (project root, read-only). Append `/` for directory listing. |
+| `offset` | number | optional | 0-indexed line to start from. Negative = from the end (e.g., `-10` = last 10 lines). |
+| `limit` | number | optional | Max lines (or directory entries) to return |
 
-**Use-cases i filter design:**
-- Läsa script-filer i `assets://Scripts/`
+**Use cases:**
+- Read script files in `assets://Scripts/`
 - Inspect installed package README via `packages://`
-- Audit project-state via `project://`
+- Audit project state via `project://`
 
 **Cross-ref:** `FileEditTool`, `FileGrepTool`; `../snap-docs/02-scripting-api/scripting/`.
 
@@ -531,57 +531,57 @@ Probe live om de behövs:
 
 ## `mcp__lens-studio__FileEditTool`
 
-**Kategori:** File / scripting
-**Description:** Skapa nya filer eller applicera targeted edits via en `edits`-array. Stödjer både overwrite (hela filen) och surgical modifications (replace/insert_before/insert_after/delete) via text-match eller line-number.
+**Category:** File / scripting
+**Description:** Create new files or apply targeted edits via an `edits` array. Supports both overwrite (whole file) and surgical modifications (replace/insert_before/insert_after/delete) via text match or line number.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `uri` | string | ✅ | URI av fil. ENDAST `assets://`-scheme. Filer inuti sealed packages (`.lsc`/`.lspkg`) är read-only. |
-| `edits` | array | ✅ | Ordnad lista av edit-operations |
+| `uri` | string | ✅ | URI of the file. ONLY `assets://` scheme. Files inside sealed packages (`.lsc`/`.lspkg`) are read-only. |
+| `edits` | array | ✅ | Ordered list of edit operations |
 
-Per edit-objekt:
+Per edit object:
 - `action` (enum, ✅) — `"overwrite"` / `"replace"` / `"insert_before"` / `"insert_after"` / `"delete"`
-- `target` (string) — locator. För `text`-match: exakt sträng. För `line`-match: 0-indexed line eller range (t.ex. `"10-15"`).
-- `match` (enum) — `"text"` (default) eller `"line"`
-- `content` (string) — ny content. Required för overwrite/replace/insert_*; ignored för delete.
-- `occurrence` (int, default 1) — vilken match (1-indexed); `0` = alla.
+- `target` (string) — locator. For `text` match: exact string. For `line` match: 0-indexed line or range (e.g., `"10-15"`).
+- `match` (enum) — `"text"` (default) or `"line"`
+- `content` (string) — new content. Required for overwrite/replace/insert_*; ignored for delete.
+- `occurrence` (int, default 1) — which match (1-indexed); `0` = all.
 
-**Use-cases i filter design:**
-- Skapa nya TypeScript-controllers i Phase 2
-- Surgical edit av existerande scripts
-- Multi-edit i ett anrop (atomic semantik per fil)
+**Use cases:**
+- Create new TypeScript controllers in Phase 2
+- Surgical edit of existing scripts
+- Multi-edit in one call (atomic semantics per file)
 
-**Cross-ref:** `../snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool` (efter edit).
+**Cross-ref:** `../snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool` (after edit).
 
 ---
 
 ## `mcp__lens-studio__FileGrepTool`
 
-**Kategori:** File / scripting
-**Description:** Sök efter text patterns i project files via regex. Returnerar matching lines med optional context. Defaults till `assets://`.
+**Category:** File / scripting
+**Description:** Search for text patterns in project files via regex. Returns matching lines with optional context. Defaults to `assets://`.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `pattern` | string | ✅ | Regex pattern (undvik nested quantifiers — performance) |
+| `pattern` | string | ✅ | Regex pattern (avoid nested quantifiers — performance) |
 | `uri` | string | ✅ | Schemes: `assets://`, `packages://`, `project://` |
 | `caseInsensitive` | boolean | optional | Default false |
-| `fileExtensions` | string[] | optional | T.ex. `[".ts", ".js", ".json"]` |
+| `fileExtensions` | string[] | optional | E.g. `[".ts", ".js", ".json"]` |
 | `contextLinesBefore`, `contextLinesAfter` | number | optional (default 0, max 5) | |
 | `maxDepth` | number | optional (default 25, max 100) | Directory depth |
 | `maxFileSize` | number | optional (default 1 MB) | Skip files larger than this |
 | `maxResults` | number | optional (default 50, max 200) | Max matching lines |
-| `multiline` | boolean | optional | `^`/`$` matchar line start/end |
+| `multiline` | boolean | optional | `^`/`$` matches line start/end |
 | `offset` | number | optional | Pagination |
 | `includeDebug` | boolean | optional | Include debug info |
 
-**Use-cases i filter design:**
-- Hitta var en specifik component-typ används i scripts
-- Audit för deprecated API-calls
-- Söka efter TODO/FIXME-comments
+**Use cases:**
+- Find where a specific component type is used in scripts
+- Audit for deprecated API calls
+- Search for TODO/FIXME comments
 
 **Cross-ref:** `FileReadTool`, `FileEditTool`.
 
@@ -589,22 +589,22 @@ Per edit-objekt:
 
 ## `mcp__lens-studio__ExecuteEditorCode`
 
-**Kategori:** File / scripting
-**Description:** Compile + execute TypeScript-kod inside LS editor. Koden körs som async function body med `pluginSystem` som single available parameter. Type-checked mot Editor API (`editor.d.ts`). Returnerar `{ status, returnValue, console }` vid success eller `{ status, errors/error, console }` vid failure.
+**Category:** File / scripting
+**Description:** Compile + execute TypeScript code inside the LS editor. The code runs as an async function body with `pluginSystem` as the only available parameter. Type-checked against the Editor API (`editor.d.ts`). Returns `{ status, returnValue, console }` on success or `{ status, errors/error, console }` on failure.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `code` | string | ✅ | TypeScript att compile + execute. Använd `pluginSystem.findInterface()` för Editor-APIs. `return <value>` för att producera result. |
-| `timeoutMs` | number | optional (default 30000) | Max ms för compile + execute |
+| `code` | string | ✅ | TypeScript to compile + execute. Use `pluginSystem.findInterface()` for Editor APIs. `return <value>` to produce a result. |
+| `timeoutMs` | number | optional (default 30000) | Max ms for compile + execute |
 
-**Use-cases i filter design:**
-- Editor-level introspektion bortom GraphQL-API
-- Köra one-off TypeScript-snutts utan att skapa permanent fil
-- Probe Editor-API-funktioner som inte exponeras via andra MCP-tools
+**Use cases:**
+- Editor-level introspection beyond the GraphQL API
+- Run one-off TypeScript snippets without creating a permanent file
+- Probe Editor API functions not exposed via other MCP tools
 
-**Risker:** Detta är full Editor-API access — använd med disciplin. Vid tveksamhet, probe scene-graphql först innan ExecuteEditorCode.
+**Risks:** This is full Editor API access — use with discipline. When in doubt, probe scene-graphql first before ExecuteEditorCode.
 
 **Cross-ref:** `../snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool`.
 
@@ -612,15 +612,15 @@ Per edit-objekt:
 
 ## `mcp__lens-studio__RecompileTypeScriptTool`
 
-**Kategori:** File / scripting
-**Description:** Triggar forced TypeScript-recompilation. Returnerar `{ status: 'succeeded' | 'failed', errors?: string[], logFile?: string }`. Vid failure: `errors` innehåller compiler error-meddelanden. Använd `Read`/`Grep` på `logFile` för deeper log-analys.
+**Category:** File / scripting
+**Description:** Triggers a forced TypeScript recompilation. Returns `{ status: 'succeeded' | 'failed', errors?: string[], logFile?: string }`. On failure: `errors` contains compiler error messages. Use `Read`/`Grep` on `logFile` for deeper log analysis.
 
-**Parameters:** Inga.
+**Parameters:** None.
 
-**Use-cases i filter design:**
-- Efter `FileEditTool`-edits av `.ts`-filer — recompile innan probe
-- Verifiera att script-ändringar inte bröt typing
-- Diagnostik vid runtime-errors
+**Use cases:**
+- After `FileEditTool` edits of `.ts` files — recompile before probing
+- Verify that script changes didn't break typing
+- Diagnostics on runtime errors
 
 **Cross-ref:** `FileEditTool`; `RunAndCollectLogsTool`.
 
@@ -630,28 +630,28 @@ Per edit-objekt:
 
 ## `mcp__lens-studio__GenerateFast3DAssets`
 
-**Kategori:** Generation (AI)
-**Description:** Genererar 3D-assets via AI. Supports multiple assets i en request. Varje generation tar ~60s; parallell-genereras. Använd när detail-kvalitet inte är primärt. **SCALE NOTE:** Generated meshes är uniformly scaled så longest axis = 1 cm. Vid import som prefab appliceras default scale 100 per axis (=> ~100 cm longest axis). Justera prefab-scale efter instantiation till expected real-world size.
+**Category:** Generation (AI)
+**Description:** Generates 3D assets via AI. Supports multiple assets in one request. Each generation takes ~60s; generated in parallel. Use when detail quality isn't primary. **SCALE NOTE:** Generated meshes are uniformly scaled so the longest axis = 1 cm. On import as a prefab, default scale 100 per axis is applied (=> ~100 cm longest axis). Adjust the prefab scale after instantiation to the expected real-world size.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `assets` | array | ✅ | Array av asset-objekt att generera |
-| `assetDirectory` | string | optional (default `"GeneratedModels"`) | Folder för saved assets |
+| `assets` | array | ✅ | Array of asset objects to generate |
+| `assetDirectory` | string | optional (default `"GeneratedModels"`) | Folder for saved assets |
 
-Per asset-objekt:
-- `simpleName` (string, ✅) — t.ex. `"oak tree"`, `"yellow car"`
-- `prompt` (string, ✅) — text att beskriva modellen
-- `negativePrompt` (string, optional) — vad som INTE ska vara med
+Per asset object:
+- `simpleName` (string, ✅) — e.g. `"oak tree"`, `"yellow car"`
+- `prompt` (string, ✅) — text describing the model
+- `negativePrompt` (string, optional) — what should NOT be included
 - `shadowless` (boolean, optional, default true)
 
-**Use-cases i filter design:**
-- Snabba placeholder-assets innan custom 3D landar
-- Genererat content för Phase 1 scaffolding
-- Procedural variants (t.ex. 5 olika trees-variations)
+**Use cases:**
+- Quick placeholder assets before custom 3D lands
+- Generated content for Phase 1 scaffolding
+- Procedural variants (e.g., 5 different tree variations)
 
-**Risker:** Detaljer är ofta dåliga. Använd EJ för brand-specifika assets (logos, characters). Library-first (`SearchLensStudioAssetLibrary`) före AI-generation.
+**Risks:** Details are often poor. Do NOT use for brand-specific assets (logos, characters). Library-first (`SearchLensStudioAssetLibrary`) before AI generation.
 
 **Cross-ref:** `../body-anchored-calibration.md` Step 0 (Library-first); `../snap-docs/01-mcp-and-claude-code/ai-cc-example.md`.
 
@@ -659,23 +659,23 @@ Per asset-objekt:
 
 ## `mcp__lens-studio__GenerateLensIcon`
 
-**Kategori:** Generation (AI)
-**Description:** Genererar image för lens icon från text-prompt och sätter den till project metainfo.
+**Category:** Generation (AI)
+**Description:** Generates an image for the lens icon from a text prompt and sets it in the project metainfo.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `prompt` | string | ✅ | Descriptive prompt (t.ex. `"hot-dog"`, `"dragon"`, `"anime"`) |
+| `prompt` | string | ✅ | Descriptive prompt (e.g. `"hot-dog"`, `"dragon"`, `"anime"`) |
 
-**Use-cases i filter design:**
-- Generera placeholder-ikon för WIP-projekt
-- Snabba ikon-variants för A/B-test
-- Phase 5 submission-prep (om ingen brand-ikon finns ännu)
+**Use cases:**
+- Generate placeholder icon for WIP project
+- Quick icon variants for A/B testing
+- Phase 5 submission prep (if no brand icon exists yet)
 
-**Risker:** Brand-projekt (typ adidas) kräver brand-approved ikon — AI-genererad funkar EJ för final submission. Använd för WIP/draft only.
+**Risks:** Brand projects (like adidas) require a brand-approved icon — AI-generated does NOT work for final submission. Use for WIP/draft only.
 
-**Cross-ref:** `../snap-docs/07-publishing/configuring/` (icon-spec).
+**Cross-ref:** `../snap-docs/07-publishing/configuring/` (icon spec).
 
 ---
 
@@ -683,61 +683,61 @@ Per asset-objekt:
 
 ## `mcp__lens-studio__RunAndCollectLogsTool`
 
-**Kategori:** Runtime / Knowledge
-**Description:** Refreshar alla preview-paneler och väntar på lens reset-signal. Returnerar `{ status, logFile, byteOffset }`. Efter successful reset: använd `Read` eller `Grep` på `logFile` (från `byteOffset`) för runtime output + errors.
+**Category:** Runtime / Knowledge
+**Description:** Refreshes all preview panels and waits for the lens reset signal. Returns `{ status, logFile, byteOffset }`. After a successful reset: use `Read` or `Grep` on `logFile` (from `byteOffset`) for runtime output + errors.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `timeoutMs` | number | optional (default 10000) | Max ms att vänta för preview-reset + log-collection |
+| `timeoutMs` | number | optional (default 10000) | Max ms to wait for preview reset + log collection |
 
-**Use-cases i filter design:**
-- Verifiera att scripts exekverar utan runtime errors
-- Läsa state-machine transition-logs
-- Fånga `console.log`-output från controllers
-- Force Preview-refresh efter script-recompile
+**Use cases:**
+- Verify that scripts execute without runtime errors
+- Read state-machine transition logs
+- Capture `console.log` output from controllers
+- Force Preview refresh after script recompile
 
-**Cross-ref:** `RecompileTypeScriptTool`; `FileGrepTool` (för log-search); `../snap-docs/04-scene-and-components/previewing-your-lens.md`.
+**Cross-ref:** `RecompileTypeScriptTool`; `FileGrepTool` (for log search); `../snap-docs/04-scene-and-components/previewing-your-lens.md`.
 
 ---
 
 ## `mcp__lens-studio__QueryLensStudioKnowledgeBase`
 
-**Kategori:** Runtime / Knowledge
-**Description:** **DEFINITIVE SOURCE** för Lens Studio documentation och internal scripting repos. Använd för LS APIs, AR Development, code debugging. **Do NOT rely on prior knowledge** för LS-specifika detaljer.
+**Category:** Runtime / Knowledge
+**Description:** **DEFINITIVE SOURCE** for Lens Studio documentation and internal scripting repos. Use for LS APIs, AR Development, code debugging. **Do NOT rely on prior knowledge** for LS-specific details.
 
 **Parameters:**
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `q` | string | ✅ | Search query. Extract core technical concepts (t.ex. `"AudioComponent API"`). Om paginerar via `offset`: ANVÄND EXAKT SAMMA query-sträng. |
-| `source` | enum | optional (default `"doc"`) | `"doc"` (web docs, ~300-word chunks, fast) eller `"script"` (internal repos, full files, high latency — använd sparingly). |
-| `limit` | integer | optional (default 3) | Number of snippets. För `script`: max 3 för att undvika context-limit-errors. |
-| `offset` | integer | optional (default 0) | Pagination. Bara använd om previous results var relevanta men inkompletta. |
+| `q` | string | ✅ | Search query. Extract core technical concepts (e.g. `"AudioComponent API"`). If paginating via `offset`: USE THE EXACT SAME query string. |
+| `source` | enum | optional (default `"doc"`) | `"doc"` (web docs, ~300-word chunks, fast) or `"script"` (internal repos, full files, high latency — use sparingly). |
+| `limit` | integer | optional (default 3) | Number of snippets. For `script`: max 3 to avoid context-limit errors. |
+| `offset` | integer | optional (default 0) | Pagination. Only use if previous results were relevant but incomplete. |
 
-**Auth note:** `source: "doc"` är unauthenticated. För `source: "script"`: kräver Snap-login i LS (`My Lenses → Login`).
+**Auth note:** `source: "doc"` is unauthenticated. For `source: "script"`: requires Snap login in LS (`My Lenses → Login`).
 
-**Use-cases i filter design:**
-- Hitta exakt API-syntax för en LS-component
-- Verifiera att antagande om en feature stämmer innan probe
-- Debug deprecated API-error genom KB-search
-- Cross-check när snap-docs-mirror är stale
+**Use cases:**
+- Find exact API syntax for an LS component
+- Verify that an assumption about a feature holds before probing
+- Debug deprecated API error via KB search
+- Cross-check when the snap-docs mirror is stale
 
-**Cross-ref:** `../snap-docs/` (curated mirror — KB är mer komplett); `../snap-docs/01-mcp-and-claude-code/developer-mode.md`.
+**Cross-ref:** `../snap-docs/` (curated mirror — the KB is more complete); `../snap-docs/01-mcp-and-claude-code/developer-mode.md`.
 
 ---
 
 # Maintenance
 
-**Re-probe trigger:** Vid större LS-version-bump, eller när ett tool börjar bete sig oväntat.
+**Re-probe trigger:** On a major LS version bump, or when a tool starts behaving unexpectedly.
 
 **Re-probe procedure:**
-1. Kör ToolSearch på alla 20 tool-namn (`select:mcp__lens-studio__<name>,...`)
-2. Jämför mot detta dokument — diff parameter-strukturer
-3. Notera vilka tools som ändrats; uppdatera sektioner + bump datestamp
-4. Commit som `chore(v0.6.x): re-probe MCP schemas YYYY-MM-DD`
+1. Run ToolSearch on all 20 tool names (`select:mcp__lens-studio__<name>,...`)
+2. Compare against this document — diff parameter structures
+3. Note which tools have changed; update sections + bump datestamp
+4. Commit as `chore(v0.6.x): re-probe MCP schemas YYYY-MM-DD`
 
-**Truncation workaround för GraphQL-tools:**
-- För komplett query-lista i `scene-graphql` / `asset-graphql`: anropa tool:en med bad query (`{ invalidField }`) och läs error — Snap returnerar lista över valid queries i error-meddelandet.
-- Alternativt: använd `QueryLensStudioKnowledgeBase` med `q: "scene-graphql queries"` för bredare prosa-coverage.
+**Truncation workaround for GraphQL tools:**
+- For a complete query list in `scene-graphql` / `asset-graphql`: call the tool with a bad query (`{ invalidField }`) and read the error — Snap returns a list of valid queries in the error message.
+- Alternatively: use `QueryLensStudioKnowledgeBase` with `q: "scene-graphql queries"` for broader prose coverage.

@@ -102,7 +102,7 @@ Working directory matters — see Prerequisites above.
 
 **Wording note for the assistant (mentor-tone):** Never coach the user with "in the terminal where Claude Code is running" — they are typing into Claude Code right now, so the phrasing is ambiguous and confusing. Use this pattern instead:
 
-> "Här i den här chatten där du skriver till mig nu: skriv `/exit` och tryck enter. Det stänger vår nuvarande session. Sen — i samma terminalfönster du startade mig från första gången — kör `claude` igen, så är vi tillbaka med MCP omladdat."
+> "Here in this chat where you're typing to me now: type `/exit` and press enter. That closes our current session. Then — in the same terminal window where you started me the first time — run `claude` again, and we're back with MCP reloaded."
 
 The principle: name what the user is looking at (this chat) and name what they need to do next (exit + restart) in concrete first-person language, not abstract "the terminal".
 

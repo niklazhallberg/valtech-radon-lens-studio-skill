@@ -276,12 +276,12 @@ These three transformations stack. A mutation in mesh-local +X can appear anywhe
 1. **NEVER predict which screen-direction a mesh-local mutation will appear in.** Probe + observe. Reasoning ahead-of-empirics about "this offset will look like X on screen" is a trap — the rotation chain has too many degrees of freedom to predict reliably.
 
 2. **Pair-test questions must be framed in screen-space**, never in coord-axis names.
-   - ❌ "Ser du en X-offset?" / "Has the Z-position changed?"
-   - ✅ "Ser du vänster sko åt sidan av foten?" / "Is the shoe in front of, behind, or to the side of the foot?"
+   - ❌ "Do you see an X offset?" / "Has the Z position changed?"
+   - ✅ "Is the shoe in front of, behind, or to the side of the foot?"
    - The user is reporting from screen-coordinates. Translate to coord-axes on your side; don't push the translation work onto the user.
 
-3. **Camera angle matters for calibration validity.** Pair-test in *typical user-position* (~30-45° down for foot, ~chest-level distance for hands, head-on for face), NOT in stress-test extremes like rakt-nedåt-only.
-   - A lens perfectly calibrated for `rakt-ned` view can fail in normal use.
+3. **Camera angle matters for calibration validity.** Pair-test in *typical user position* (~30–45° down for foot, ~chest-level distance for hands, head-on for face), NOT in stress-test extremes like straight-down-only.
+   - A lens perfectly calibrated for a `straight-down` view can fail in normal use.
    - Default user pose is what the lens must look correct in. Edge poses (extreme angles, very close, very far) are stretch-validation, not the calibration target.
 
 4. **Document the calibration camera-pose** alongside numeric values. "Shoe scale 2.5 at pivot offset (-50, 0, -15)" without context is incomplete — the calibration is only valid relative to the pose it was validated in. Capture: distance, angle, what the user was doing (standing, sitting, looking down).
@@ -306,8 +306,8 @@ MCP `scene-graphql` and `asset-graphql` mutations stream LIVE to active Preview 
 
 NEVER just say "pair-test now". ALWAYS include four elements:
 
-1. **WHY** — what hypothesis is being tested. "Detta testar om position-offset persisterar i wrapper-child eller om tracker:n också skriver position på child-nivå."
-2. **WHAT to look for** — specific screen-space visual signal. "Är vänster sko nu på (eller nära) foten? Eller är den fortfarande lika långt bort som tidigare?"
+1. **WHY** — what hypothesis is being tested. "This tests whether the position offset persists in the wrapper-child or whether the tracker also writes position at the child level."
+2. **WHAT to look for** — specific screen-space visual signal. "Is the left shoe on (or near) the foot now? Or is it still as far away as before?"
 3. **Specific question to answer** — explicit binary or short-answer question, not open-ended observation.
 4. **Reassurance that iteration is normal** — both outcomes (success and failure) are useful information. Iteration is the norm, not the exception. Failure is the protocol working, not the user doing something wrong.
 
@@ -316,21 +316,21 @@ NEVER just say "pair-test now". ALWAYS include four elements:
 Between probes, briefly acknowledge what was just learned BEFORE moving on. Don't barrel forward silently.
 
 - ❌ Immediately after pair-test success: "Probe-4 next."
-- ✅ "Bra fynd — wrapper-arkitekturen håller, scale persisterar. Det betyder vi äger geometry-layern. Probe-3 (position) kommer nu, samma princip."
+- ✅ "Good find — the wrapper architecture holds, scale persists. That means we own the geometry layer. Probe-3 (position) is coming up next, same principle."
 
 ### Setback handling
 
 Tracker overwrites, mutations rejected, unexpected device behavior: NEVER blame the user, NEVER blame the tooling. Normalize, explain in plain language, reassure next step exists, show next step clearly.
 
 - ❌ "Mutation failed — tracker overwrote it."
-- ✅ "OK, så tracker:n skriver över scale varje frame — det är faktiskt det vanligare beteendet, nu vet vi det. Probe-4 (wrapper-arkitektur) är planerad just för det här fallet. Vi byter rute. Ingen tid förlorad, vi lärde oss något konkret."
+- ✅ "OK, so the tracker overwrites scale every frame — that's actually the more common behavior, now we know it. Probe-4 (wrapper architecture) is planned for exactly this case. We change route. No time lost, we learned something concrete."
 
 ### Celebrations
 
 Explicit acknowledgment when probe confirms a hypothesis. Don't move silently past wins.
 
-- "Vänster sko är dubbelt så stor — vi äger scale-lagret. Det betyder probe-4 kan skippas."
-- "Position-offset persisterar — wrapper-arkitekturen håller hela vägen. Vi kan nu mirror till höger."
+- "The left shoe is twice as big — we own the scale layer. That means probe-4 can be skipped."
+- "The position offset persists — the wrapper architecture holds the whole way. We can now mirror to the right."
 
 ---
 

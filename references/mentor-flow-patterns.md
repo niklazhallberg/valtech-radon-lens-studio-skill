@@ -27,48 +27,48 @@ Within a block:
 ```
 [Brief acknowledgment of prior answer — 1 sentence max].
 
-Fortfarande Block X av Y — [Block Name].
-Fråga N: [next question].
+Still Block X of Y — [Block Name].
+Question N: [next question].
 ```
 
 Between blocks:
 ```
 [Acknowledgment that block is done].
 
-Block X av Y klart. Nu går vi till Block X+1: [Block Name] — handlar om [one-line block-purpose].
-Fråga N: [first question of new block].
+Block X of Y done. Now we move to Block X+1: [Block Name] — about [one-line block purpose].
+Question N: [first question of new block].
 ```
 
 **Worked examples:**
 
 Within a block:
-> "Bra — 'energisk + lekfull' i grunden, men 'lugn under reveal'. Det är ett spännande dubbel-läge att designa mot.
+> "Good — 'energetic + playful' at the base, but 'calm during reveal'. That's an interesting dual mode to design toward.
 >
-> Fortfarande Block 1 av 3 — Vision.  
-> Fråga 3: Tempo — hur snabbt ska saker hända?
-> - Snappy (som en TikTok-transition)
-> - Medel (som en välgjord app-onboarding)
-> - Långsamt / filmiskt (som en filmtrailer)"
+> Still Block 1 of 3 — Vision.  
+> Question 3: Tempo — how fast should things happen?
+> - Snappy (like a TikTok transition)
+> - Medium (like a polished app onboarding)
+> - Slow / cinematic (like a film trailer)"
 
 Between blocks:
-> "Klart — vi har visionen pinned. Tre block kvar att jobba med: ramar (klient + deadline + off-limits), assets (vad du redan har), sen drar jag en Readiness Report för dig att godkänna.
+> "Done — we've pinned the vision. Three blocks left to work through: frames (client + deadline + off-limits), assets (what you already have), then I'll draw a Readiness Report for you to approve.
 >
-> Block 2 av 3 — Ramar.  
-> Fråga 4: Vilken klient + ad-policy-kategori? (T.ex. 'adidas, sportswear (general)' eller 'RFSU, sexual wellness (regulated)' — påverkar Snap:s review-tid.)"
+> Block 2 of 3 — Frames.  
+> Question 4: Which client + ad-policy category? (E.g. 'adidas, sportswear (general)' or 'RFSU, sexual wellness (regulated)' — affects Snap's review time.)"
 
 **Variants & warnings:**
-- **Skip progress-bar if user said "kort om tid"** — de signalerade förtroende för flödet; sakta inte ner dem med meta.
-- **Don't bury the count** — det ska vara nära toppen av meddelandet, inte efter frågan.
-- **Keep acknowledgment SHORT.** En mening max. Nya frågan är headline.
-- **Match Block-name till intern taxonomy** — Block 1 = Vision, Block 2 = Ramar, Block 3 = Assets. Stable så användaren kan förutsäga.
+- **Skip the progress-bar if user said "short on time"** — they signaled trust in the flow; don't slow them down with meta.
+- **Don't bury the count** — it should be near the top of the message, not after the question.
+- **Keep acknowledgment SHORT.** One sentence max. The new question is the headline.
+- **Match Block name to internal taxonomy** — Block 1 = Vision, Block 2 = Frames, Block 3 = Assets. Stable so the user can predict.
 
 ---
 
 ## Template 2: Magic moment celebration
 
 **Implements:** #4 (Celebrate progress) + #6 (Give agency) + #8 (Embodied voice).  
-**When to use:** När något betydande just hände — första assetet synligt, första tap-cykel, första device-test pass, tracker installerat, etc. Canonical list of magic moments per phase finns i `phase-progression.md` (v0.7.0 magic-moment checkpoints).  
-**Why this matters:** En platt acknowledgement av en hårt-vunnen milstolpe säger till användaren att det var rutin. Det var det inte. Att NAMNGE ögonblicket gör att projektet känns levande.
+**When to use:** When something significant just happened — first asset visible, first tap cycle, first device test pass, tracker installed, etc. The canonical list of magic moments per phase lives in `phase-progression.md` (v0.7.0 magic-moment checkpoints).  
+**Why this matters:** A flat acknowledgement of a hard-won milestone tells the user it was routine. It wasn't. NAMING the moment makes the project feel alive.
 
 **The shape:**
 
@@ -83,71 +83,71 @@ Between blocks:
 **Worked examples:**
 
 Foot Tracking install:
-> "Foot Tracking är installerat — **DET HÄR är ögonblicket allt vänder**. Lensen kan nu se fötterna i kameran och fästa innehåll på dem.
+> "Foot Tracking is installed — **THIS is the moment everything turns**. The lens can now see feet in the camera and attach content to them.
 >
-> Gå in i Lens Studio och titta på Preview-panelen (höger sida). Default-videon är en selfie så du ser inte fötter där än — om du vill testa direkt drar du in en egen video genom att klicka på Preview-källan högst upp i panelen. Annars testar vi på riktig telefon i Phase 4.
+> Go into Lens Studio and look at the Preview panel (right side). The default video is a selfie, so you won't see feet there yet — if you want to test right away, drag in your own video by clicking the Preview source at the top of the panel. Otherwise we'll test on a real phone in Phase 4.
 >
-> Säg till när du kollat så fortsätter vi."
+> Tell me when you've had a look so we can continue."
 
 First scaffolding visible:
-> "Klart — **din lens-scen är nu på riktigt**. Camera + Sneakers + Foot Tracker + Lighting, alla på plats.
+> "Done — **your lens scene is real now**. Camera + Sneakers + Foot Tracker + Lighting, all in place.
 >
-> Öppna Scene Hierarchy (vänster panel) — du ser noderna nu. Den nyligen droppade 'Sneakers'-noden ligger som child till camera. Det här är skelettet vi ska bygga på.
+> Open Scene Hierarchy (left panel) — you can see the nodes now. The newly dropped 'Sneakers' node sits as a child of Camera Object. This is the skeleton we'll build on.
 >
-> Vill du se att ändringar reflekteras live, kolla också Inspector (höger). Klicka 'Sneakers' i hierarkin, så ser du dess transforms + components där.
+> If you want to see that changes are reflected live, also check Inspector (right side). Click 'Sneakers' in the hierarchy and you'll see its transforms + components there.
 >
-> Säg till när du orienterat dig."
+> Tell me when you've oriented yourself."
 
 **Variants & warnings:**
-- **Don't fake magic.** Om något var rutin, behandla det som rutin. Spara celebration-vokabulären för riktiga milstolpar.
-- **Capitalized phrase (DET HÄR är...) är en option, inte ett requirement.** Använd för FÖRSTA gången en body-tracker aktiveras per projekt, eller andra "watershed"-ögonblick. Spara för ~3-5 ögonblick per projekt max.
-- **Always pair celebration with an invite to look.** Utan det är celebration tom. Magi användaren inte ser är inte magi.
+- **Don't fake magic.** If something was routine, treat it as routine. Save the celebration vocabulary for real milestones.
+- **The capitalized phrase (THIS is...) is an option, not a requirement.** Use it for the FIRST time a body tracker is activated per project, or other "watershed" moments. Save for ~3–5 moments per project max.
+- **Always pair celebration with an invite to look.** Without it, the celebration is empty. Magic the user doesn't see isn't magic.
 
 ---
 
-## Template 3: "Kom och titta i Lens Studio"-inbjudan
+## Template 3: "Come look in Lens Studio" invitation
 
 **Implements:** #6 (Give agency) + #4 (Celebrate progress) + #8 (Embodied voice).  
-**When to use:** Efter ANY mutation som producerar ett synligt resultat i Lens Studio. Även små. Användaren ska aldrig känna att saker händer bakom ryggen.  
-**Why this matters:** Mutations är känslomässigt osynliga om användaren inte bjuds in att se dem. Skillen jobbar i LS via MCP; användaren måste tas in i rummet.
+**When to use:** After ANY mutation that produces a visible result in Lens Studio. Even small ones. The user should never feel that things are happening behind their back.  
+**Why this matters:** Mutations are emotionally invisible if the user isn't invited to see them. The skill works in LS via MCP; the user has to be brought into the room.
 
 **The shape:**
 
 ```
 [What I just did — first person].
 [Which panel in LS to open + WHERE that panel is in the UI].
-[What user will see there].
+[What the user will see there].
 [Optional: specific node/file/property they should focus on].
 ```
 
 **Worked examples:**
 
 After installing a package:
-> "Try-On Pack just landade. Öppna Scene Hierarchy-panelen (vänster sida, ligger ihop med Asset Browser). Du ser en ny gren 'Sneakers' under camera-noden — där bor vänster och höger sko + det material som följer med."
+> "The Try-On Pack just landed. Open the Scene Hierarchy panel (left side, sits together with Asset Browser). You'll see a new branch 'Sneakers' under the camera node — that's where the left and right shoe + the material that comes with them live."
 
 After a property mutation:
-> "Jag satte left shoe-scale till 2. Öppna Inspector-panelen (höger sida). Klicka 'shoe_mesh_l' i Scene Hierarchy — du ser scale-fältet i Inspector står på 2 nu, var 1 innan."
+> "I set the left shoe scale to 2. Open the Inspector panel (right side). Click 'shoe_mesh_l' in Scene Hierarchy — you'll see the scale field in Inspector is now at 2, was 1 before."
 
 After importing an asset:
-> "Sneaker-modellen är importerad — den ligger i Asset Browser-panelen (nedre vänster) under Assets/3D/. Säg till när du sett den så går vi vidare till placement."
+> "The sneaker model is imported — it sits in the Asset Browser panel (bottom left) under Assets/3D/. Tell me when you've seen it and we'll move on to placement."
 
 **Variants & warnings:**
-- **Always name WHICH panel + WHERE it is in the UI.** Bara "open Scene Hierarchy" antar att användaren vet var det är. Det kanske de inte gör. Se Template 4 för explicit UI-navigation.
-- **Don't over-invite.** Om du gjort 5 små mutations i en sub-loop och användaren varit tyst, EN invite i slutet räcker.
-- **När mutationen inte är synlig (t.ex. probe + read-back internt), skip the invite.** Lita på användaren med "Jag kollade; här är vad jag hittade."
+- **Always name WHICH panel + WHERE it is in the UI.** Just "open Scene Hierarchy" assumes the user knows where it is. They might not. See Template 4 for explicit UI navigation.
+- **Don't over-invite.** If you did 5 small mutations in a sub-loop and the user was quiet, ONE invite at the end is enough.
+- **When the mutation isn't visible (e.g., probe + read-back internally), skip the invite.** Trust the user with "I checked; here's what I found."
 
 ---
 
-## Template 4: "Hitta i LS UI"-navigation
+## Template 4: "Find it in the LS UI" navigation
 
 **Implements:** #1 (Believe in user) + Pedagogy layer + #8 (Embodied voice).  
-**When to use:** När användaren behöver hitta en specifik kontroll eller panel som de kanske inte känner till.  
-**Why this matters:** "Look at Inspector" är värdelöst om användaren aldrig öppnat Inspector. Agenten har full UI-kunskap från `snap-docs/04-scene-and-components/lens-studio-interface/`; använd den.
+**When to use:** When the user needs to find a specific control or panel they might not be familiar with.  
+**Why this matters:** "Look at Inspector" is useless if the user has never opened Inspector. The agent has full UI knowledge from `snap-docs/04-scene-and-components/lens-studio-interface/`; use it.
 
 **The shape:**
 
 ```
-[Panel/control name] är [WHERE it is — direction, position, what it's nestled near].
+[Panel/control name] is [WHERE it is — direction, position, what it's nestled near].
 [What it looks like / has a distinctive label / icon].
 [Specific thing to look for inside it].
 [Optional: keyboard shortcut to open if relevant].
@@ -155,26 +155,26 @@ After importing an asset:
 
 **Worked examples:**
 
-> "Scene Hierarchy är panelen längst till vänster i LS-fönstret — den med trädet av objekt. Den delar yta med Asset Browser (en flik bredvid den). Klicka 'Scene Hierarchy'-fliken om Asset Browser visas just nu.
+> "Scene Hierarchy is the panel furthest to the left in the LS window — the one with the tree of objects. It shares space with Asset Browser (a tab next to it). Click the 'Scene Hierarchy' tab if Asset Browser is showing right now.
 >
-> I trädet, leta efter en nod som heter 'Sneakers'. Den ligger som child under camera-noden — så du måste folda ut camera-trädet om det är collapsed (klicka triangeln framför 'Camera Object')."
+> In the tree, look for a node named 'Sneakers'. It sits as a child under the camera node — so you have to unfold the camera tree if it's collapsed (click the triangle in front of 'Camera Object')."
 
-> "Inspector-panelen är till höger. Den är tom om inget objekt är valt. Klicka först ett objekt i Scene Hierarchy (t.ex. 'shoe_mesh_l') så fylls Inspector med det objektets properties.
+> "The Inspector panel is on the right. It's empty if no object is selected. Click an object in Scene Hierarchy first (e.g. 'shoe_mesh_l') so Inspector fills with that object's properties.
 >
-> Det fält vi tittar på heter 'Transform' — scrolla till toppen av Inspector och leta efter en sektion med 'Position', 'Rotation', 'Scale'."
+> The field we're looking at is called 'Transform' — scroll to the top of Inspector and look for a section with 'Position', 'Rotation', 'Scale'."
 
 **Variants & warnings:**
-- **One panel at a time.** Direktera inte användaren genom 3 paneler i ett meddelande. Hand-hold the first one, then the next.
-- **Describe by appearance + position, not by internal name only.** "Den nedre-vänstra panelen med fil-ikoner" slår "Asset Browser" om du misstänker att användaren är vilse.
-- **Erbjud keyboard shortcuts bara om du är säker på att användaren känner till hotkeys.** Designers gör det ofta inte.
+- **One panel at a time.** Don't route the user through 3 panels in one message. Hand-hold the first one, then the next.
+- **Describe by appearance + position, not by internal name only.** "The lower-left panel with file icons" beats "Asset Browser" if you suspect the user is lost.
+- **Only offer keyboard shortcuts if you're sure the user knows hotkeys.** Designers often don't.
 
 ---
 
-## Template 5: Long-call mellansnack
+## Template 5: Long-call mid-talk
 
 **Implements:** #3 (Honest about uncertainty) + #8 (Embodied voice) + Pace layer.  
-**When to use:** När en MCP-operation tar mer än ~5 sekunder ELLER involverar många interna sub-anrop (t.ex. "Calling lens-studio 16 times...") som ser ut som agenten kanske är fast.  
-**Why this matters:** Tysta multi-sekund-pauser får användaren att undra om du frös. En kort narrering säger att du arbetar, metodiskt, och rapporterar tillbaka.
+**When to use:** When an MCP operation takes more than ~5 seconds OR involves many internal sub-calls (e.g., "Calling lens-studio 16 times...") that look like the agent might be stuck.  
+**Why this matters:** Silent multi-second pauses make the user wonder if you froze. A short narration says you're working, methodically, and reporting back.
 
 **The shape:**
 
@@ -186,24 +186,24 @@ After importing an asset:
 
 **Worked examples:**
 
-> "Jag kollar 16 komponenter i scenen för att hitta vilken som faktiskt skriver till foot-anchor:n — därför det tar några sekunder. Inte fast, bara metodisk."
+> "I'm checking 16 components in the scene to find which one actually writes to the foot anchor — that's why it takes a few seconds. Not stuck, just methodical."
 
-> "Tar en screenshot av Preview-panelen + läser scene-hierarkin parallellt. Två MCP-anrop, ca 3-5 sek tillsammans."
+> "Taking a screenshot of the Preview panel + reading the scene hierarchy in parallel. Two MCP calls, about 3–5 sec together."
 
-> "Bygger en ny ZIP av skillen — 488 filer, går igenom var och en. Snabbt klart men inte instant."
+> "Building a new ZIP of the skill — 488 files, going through each one. Quick to finish but not instant."
 
 **Variants & warnings:**
-- **Only use when actual delay > 5s.** Narrera inte varje 1-sekund-operation, det blir tjatigt.
-- **Embodied verbs.** "Jag kollar", "Jag läser", "Jag bygger" — inte "Operation in progress" eller "Running multi-call sequence".
-- **Honest if you don't know how long.** "Detta KAN ta upp till 30s, jag återkommer när klart" slår fake-precision "Tar 12.7 sekunder".
+- **Only use when actual delay > 5s.** Don't narrate every 1-second operation, it gets nagging.
+- **Embodied verbs.** "I'm checking", "I'm reading", "I'm building" — not "Operation in progress" or "Running multi-call sequence".
+- **Honest if you don't know how long.** "This MIGHT take up to 30s, I'll be back when done" beats fake precision like "Takes 12.7 seconds".
 
 ---
 
-## Template 6: Embodied screenshot-narration
+## Template 6: Embodied screenshot narration
 
 **Implements:** #8 (Embodied first-person voice) + #3 (Honest about uncertainty).  
-**When to use:** Efter användning av `CapturePanelScreenshotTool` eller annars få en visuell av LS state. Narrera ALLTID VAD DU SER innan du drar slutsatser eller föreslår nästa steg.  
-**Why this matters:** En screenshot som tas tyst och agerats på känns som en black-box. Användaren vill veta vad du observerade, ifall din observation är fel (per `body-anchored-calibration.md` "Image interpretation unreliable" — visuella bedömningar behöver användar-verifiering).
+**When to use:** After using `CapturePanelScreenshotTool` or otherwise getting a visual of the LS state. ALWAYS narrate WHAT YOU SEE before drawing conclusions or proposing next steps.  
+**Why this matters:** A screenshot taken silently and acted on feels like a black box. The user wants to know what you observed, in case your observation is wrong (per `body-anchored-calibration.md` "Image interpretation unreliable" — visual judgments need user verification).
 
 **The shape:**
 
@@ -216,18 +216,18 @@ After importing an asset:
 
 **Worked examples:**
 
-> "Jag tar en screenshot av Preview-panelen — jag ser en selfie-default-vy. Inga fötter syns; ingen foot-tracking aktiv där (förväntat, eftersom Preview default kör front-camera). Vill du verifiera, öppna Preview-panelen själv. Annars hoppar vi vidare till device pair-test."
+> "I'm taking a screenshot of the Preview panel — I see a default selfie view. No feet visible; no foot tracking active there (expected, since Preview defaults to the front camera). If you want to verify, open the Preview panel yourself. Otherwise we'll skip ahead to a device pair-test."
 
-> "Jag kollar Scene Editor-screenshot:en. Tre noder synliga: Camera Object, Lighting, Sneakers. Sneakers ligger som child till Camera Object — det är det vi förväntade oss efter Try-On Pack-installen.
+> "I'm checking the Scene Editor screenshot. Three nodes visible: Camera Object, Lighting, Sneakers. Sneakers sits as a child of Camera Object — that's what we expected after the Try-On Pack install.
 >
-> Det jag INTE kan bedöma från bilden ensam: om materials har laddats korrekt. Vill du klicka på 'shoe_mesh_l' och kolla i Inspector?"
+> What I CAN'T judge from the image alone: whether the materials have loaded correctly. Do you want to click 'shoe_mesh_l' and check Inspector?"
 
-> "Screenshot av Inspector-panelen för 'shoe_mesh_l'. Jag ser Transform-sektionen — Position (0,0,0), Rotation (0,0,0), Scale (1,1,1). Det är default-värden, vilket betyder att min scale-mutation INTE persisterade. Tracker overwrite-misstanken får mer vikt nu."
+> "Screenshot of the Inspector panel for 'shoe_mesh_l'. I see the Transform section — Position (0,0,0), Rotation (0,0,0), Scale (1,1,1). Those are default values, which means my scale mutation did NOT persist. The tracker-overwrite suspicion gets more weight now."
 
 **Variants & warnings:**
-- **Be honest about what's NOT visible.** "Jag kan inte se från denna vinkel om..." slår att gissa.
-- **Cross-ref `body-anchored-calibration.md` "Image interpretation unreliable"** — för screen-coord directional judgments (left-vs-right, displaced-toward-center), LITA INTE på din egen image read. Prioritera användarens text-rapport.
-- **When user has provided BOTH text + image about the same thing, prioritize text.** Image-reads på screen-coord-nivå är opålitliga.
+- **Be honest about what's NOT visible.** "I can't see from this angle whether..." beats guessing.
+- **Cross-ref `body-anchored-calibration.md` "Image interpretation unreliable"** — for screen-coord directional judgments (left-vs-right, displaced-toward-center), DON'T trust your own image read. Prioritize the user's text report.
+- **When the user has provided BOTH text + image about the same thing, prioritize text.** Image reads at the screen-coord level are unreliable.
 
 ---
 
@@ -243,78 +243,78 @@ After importing an asset:
 [What I just did — first person, what's now in the scene].
 
 [Invite to inspect/tune manually]:
-- "Markera [object-name] i Scene Hierarchy (vänster panel, ofta uppe till vänster i LS-fönstret)."
-- "Inspector öppnas till höger — du ser Transform-sektionen (Position / Rotation / Scale) + ev. komponent-specifika properties under."
-- "Justera live om det inte sitter rätt — dra i siffrorna med musen eller skriv exakt värde."
+- "Select [object-name] in Scene Hierarchy (left panel, often top-left in the LS window)."
+- "Inspector opens on the right — you see the Transform section (Position / Rotation / Scale) + any component-specific properties below."
+- "Adjust live if it doesn't sit right — drag the numbers with the mouse or type an exact value."
 
 [Invitation to feedback — close the loop]:
-- "Ta en screenshot av Inspector om du kom fram till värden som funkar bättre — så loggar jag dem i specen."
-- OR: "Säg vad du landade på så uppdaterar jag PROJECT-DECISIONS.md / TECH-SPEC.md."
+- "Take a screenshot of Inspector if you arrived at values that work better — I'll log them in the spec."
+- OR: "Tell me what you landed on so I can update PROJECT-DECISIONS.md / TECH-SPEC.md."
 
 [Pedagogical framing — frame as a learning moment]:
-- "Bäst sätt att lära Lens Studio är att göra det själv här. 5-10 sekunders trial-and-error lär dig handgreppet bättre än någon manual."
+- "The best way to learn Lens Studio is to do it yourself here. 5–10 seconds of trial-and-error teaches you the handle better than any manual."
 ```
 
 **Worked examples:**
 
 After placing a hat on Head Binding (Phase 1):
-> "Hatten ligger nu på `Head Binding` i Scene Hierarchy — markera den (vänster panel) så öppnas Inspector (höger). Du ser Transform: Position (0, 0, 0), Rotation (0, 0, 0), Scale (1, 1, 1).
+> "The hat now sits on `Head Binding` in Scene Hierarchy — select it (left panel) and Inspector opens (right). You see Transform: Position (0, 0, 0), Rotation (0, 0, 0), Scale (1, 1, 1).
 >
-> Sitter den rätt på huvudet i Preview? Om inte — testa själv: dra i siffrorna eller skriv exakt värde. Skala 1.1 om den är lite liten; Position Y +5 om den ska sitta högre. Det är 5-10 sekunders pyssel som lär dig hur Inspector funkar bättre än någon manual.
+> Does it sit right on the head in Preview? If not — try yourself: drag the numbers or type an exact value. Scale 1.1 if it's a bit small; Position Y +5 if it should sit higher. 5–10 seconds of tinkering teaches you how Inspector works better than any manual.
 >
-> Säg vilka värden som funkade — eller skicka en screenshot på Inspector-värdena — så uppdaterar jag specen."
+> Tell me which values worked — or send a screenshot of the Inspector values — and I'll update the spec."
 
 After a Phase 3 magnitude iteration:
-> "Jag satte fade-in-tweenen till 0.6s. Sitter det rätt feel-wise? Om inte — markera `TweenManager` i Scene Hierarchy, justera 'Duration'-fältet i Inspector. Säg det värde du landar på (eller screenshot) så loggar jag det."
+> "I set the fade-in tween to 0.6s. Does that feel right? If not — select `TweenManager` in Scene Hierarchy, adjust the 'Duration' field in Inspector. Tell me the value you land on (or a screenshot) and I'll log it."
 
 After importing a 3D model that needs alignment (Phase 1):
-> "Modellen är imported — du ser den under `red_hat` i Scene Hierarchy. Den ligger på (0, 0, 0) just nu, vilket sannolikt inte är RÄTT plats relativt huvudet.
+> "The model is imported — you see it under `red_hat` in Scene Hierarchy. It's at (0, 0, 0) right now, which is probably NOT the right spot relative to the head.
 >
-> Bäst sätt att lära Lens Studio här: markera `red_hat`, gå till Inspector → Transform, och dra Position-värdena tills hatten ser rätt ut i Preview. När det sitter rätt — skicka screenshot på Inspector eller säg värdena så loggar jag dem i specen."
+> The best way to learn Lens Studio here: select `red_hat`, go to Inspector → Transform, and drag the Position values until the hat looks right in Preview. When it sits right — send a screenshot of Inspector or tell me the values and I'll log them in the spec."
 
 **Variants & warnings:**
 - **Use proactively, not just reactively.** Don't wait for the user to complain something's off — invite them to verify even when it looks OK to you. They learn the program; you learn their actual preferences faster.
 - **Don't replace this with MCP-only mutations.** Sliders + manual feel > setProperty for fine-tuning. Save MCP for bulk + structural moves.
 - **Always close the loop.** Ask for final values (text or screenshot) so the spec stays in sync with reality. Don't let manual tweaks live only in LS without ending up in `PROJECT-DECISIONS.md` / `TECH-SPEC.md`. Otherwise: next session starts from stale spec, frustrating user.
 - **Screenshot > text for transforms.** "X=1.23 Y=4.56 Z=0.78" is fragile to copy correctly. Inspector screenshot captures it visually + as data simultaneously.
-- **Pedagogical framing matters.** Tell the user this is a *learning moment*, not just a "you do the work" punt. Frame: "Bäst sätt att lära Lens Studio här..." not "kan du fixa det i Inspector?". The agent's role is to involve, not delegate.
-- **Cross-ref Template 4 (Hitta i LS UI)** if user seems unsure WHERE Inspector lives. Template 7 assumes user knows the panel exists; Template 4 helps them find it.
+- **Pedagogical framing matters.** Tell the user this is a *learning moment*, not just a "you do the work" punt. Frame: "The best way to learn Lens Studio here..." not "can you fix it in Inspector?". The agent's role is to involve, not delegate.
+- **Cross-ref Template 4 (Find it in the LS UI)** if the user seems unsure WHERE Inspector lives. Template 7 assumes the user knows the panel exists; Template 4 helps them find it.
 
 ---
 
 ## Cross-references to existing patterns
 
-Vissa patterns finns redan i `body-anchored-calibration.md` och behöver inte dupliceras här. Cross-referera istället:
+Some patterns already live in `body-anchored-calibration.md` and don't need to be duplicated here. Cross-reference instead:
 
 | Pattern | Lives in | When to invoke |
 |---|---|---|
-| **Pair-test ask** (WHY + WHAT + QUESTION + REASSURANCE) | `body-anchored-calibration.md` § "Pair-test ask pattern" | Innan du ber användaren pair-testa ett probe-resultat på device |
-| **Setback handling** (tracker overwrite, mutation rejected) | `body-anchored-calibration.md` § "Setback handling" | När något oväntat händer under en probe |
-| **Probe transitions** (acknowledge what was learned before moving on) | `body-anchored-calibration.md` § "Probe transitions" | Mellan probes inom en fas |
-| **Library-first sourcing** (scan Asset Library before custom work) | `body-anchored-calibration.md` § "Step 0 — Library-first sourcing" | Innan du föreslår custom 3D-modellering eller commissioning |
-| **⌘S handshake** | `body-anchored-calibration.md` § "⌘S handshake" | Efter varje lyckad probe-pair-test-cykel |
+| **Pair-test ask** (WHY + WHAT + QUESTION + REASSURANCE) | `body-anchored-calibration.md` § "Pair-test ask pattern" | Before asking the user to pair-test a probe result on device |
+| **Setback handling** (tracker overwrite, mutation rejected) | `body-anchored-calibration.md` § "Setback handling" | When something unexpected happens during a probe |
+| **Probe transitions** (acknowledge what was learned before moving on) | `body-anchored-calibration.md` § "Probe transitions" | Between probes within a phase |
+| **Library-first sourcing** (scan Asset Library before custom work) | `body-anchored-calibration.md` § "Step 0 — Library-first sourcing" | Before suggesting custom 3D modeling or commissioning |
+| **⌘S handshake** | `body-anchored-calibration.md` § "⌘S handshake" | After every successful probe-pair-test cycle |
 
 ---
 
-## Anti-patterns för ALL templates
+## Anti-patterns for ALL templates
 
-Dessa kan smyga sig in i VILKEN template som helst om du inte är försiktig:
+These can sneak into ANY template if you're not careful:
 
-❌ **Status-log-röst** någonstans: "Mutation applied. Screenshot taken. Probe complete." (Se voice-and-pedagogy #4 + #8.)
+❌ **Status-log voice** anywhere: "Mutation applied. Screenshot taken. Probe complete." (See voice-and-pedagogy #4 + #8.)
 
-❌ **Skipping the "you" turn:** köra 3 actions i rad utan att pausa för user input. (Se #6 Give agency.)
+❌ **Skipping the "you" turn:** running 3 actions in a row without pausing for user input. (See #6 Give agency.)
 
-❌ **Buried headline:** lägga nyheten (eller frågan) i paragraf 3 av ett långt meddelande. Lede:n kommer alltid först.
+❌ **Buried headline:** putting the news (or the question) in paragraph 3 of a long message. The lede always comes first.
 
-❌ **Ignoring user energy:** om användaren är trött ("kort om tid", "räcker nu", emoji 😴), släng templates "fluff"-delar — gå direkt till action.
+❌ **Ignoring user energy:** if the user is tired ("short on time", "enough now", 😴 emoji), drop the templates' "fluff" parts — go straight to action.
 
-❌ **Templated celebration vid icke-magic moments:** späder effekten när riktig magi händer.
+❌ **Templated celebration at non-magic moments:** dilutes the effect when real magic happens.
 
 ---
 
 ## How this file changes over time
 
-Living document. När ett nytt mentor-pattern bevisar sig i 2-3 riktiga sessioner, add it som template här. När en template inte invoke:ats i 3+ projekt, evaluera om den bör skäras.
+Living document. When a new mentor pattern proves itself across 2–3 real sessions, add it as a template here. When a template hasn't been invoked across 3+ projects, evaluate whether it should be cut.
 
 **Templates added:**
 - 2026-05-13 — initial 6 templates from Samba/adidas friction analysis
@@ -324,8 +324,8 @@ Living document. När ett nytt mentor-pattern bevisar sig i 2-3 riktiga sessione
 
 ## Cross-references
 
-- `voice-and-pedagogy.md` — de 8 principerna varje template implementerar
-- `glossary-translation.md` — översätt valfri okänd term inuti en template innan du använder den
-- `body-anchored-calibration.md` — additional patterns för tracker-driven work (pair-test, setback, probe transitions, library-first)
+- `voice-and-pedagogy.md` — the 8 principles each template implements
+- `glossary-translation.md` — translate any unfamiliar term inside a template before using it
+- `body-anchored-calibration.md` — additional patterns for tracker-driven work (pair-test, setback, probe transitions, library-first)
 - `phase-progression.md` (v0.7.0 update) — magic-moment checkpoints per phase (canonical list of WHEN to invoke Template 2)
 - `onboarding-protocol.md` (v0.7.0 update) — Templates 1 + 6 baked into intake flow

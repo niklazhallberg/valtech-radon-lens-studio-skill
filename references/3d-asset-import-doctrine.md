@@ -1,167 +1,167 @@
 # 3D Asset Import Doctrine — GLB-first + Two-pass Optimization
 
-Load this when the user mentions a 3D-object, GLB/FBX/OBJ files, "lens size too big", custom modeller, or any AR accessory (hatt, glasögon, smycke, prop). Also load proactively in Phase 0/1 when the brief mentions custom 3D content.
+Load this when the user mentions a 3D object, GLB/FBX/OBJ files, "lens size too big", custom models, or any AR accessory (hat, glasses, jewelry, prop). Also load proactively in Phase 0/1 when the brief mentions custom 3D content.
 
 Snap officially supports **FBX, glTF/GLB, and OBJ** for 3D import. Snap has a dedicated official glTF import guide and glTF is the format the platform pipeline is built around. This doctrine reflects that preference order — without locking the skill to any specific upstream tool.
 
 ---
 
-## A. Agent doctrine — när användaren vill lägga till ett 3D-objekt
+## A. Agent doctrine — when the user wants to add a 3D object
 
-Detta är mina (agentens) beslutsregler, *inte* en checklista jag dumpar på användaren.
+These are my (the agent's) decision rules, *not* a checklist I dump on the user.
 
-- *Jag föredrar GLB/glTF som default-format för egna 3D-objekt.* Snap har en dedikerad importguide för glTF/GLB och formatet är native-stöttat. FBX och OBJ är giltiga fallback-format, inte förstahandsval.
-- *Jag kontrollerar lens-size-risk tidigt — så snart 3D-objekt nämns i briefen.* Många 3D-källor (särskilt image-to-3D-tjänster) producerar default rik geometri och stora texturer som kan blåsa upp en Snap lens snabbt. Jag flaggar risken innan användaren kommit långt i sin pipeline.
-- *Jag tänker i två pass när jag resonerar om size.* (i) Före import: mesh/format/texturer från valfri 3D-källa, ev. post-process. (ii) Inne i Lens Studio: texture compression + Resource Inspector. När storleken sticker iväg vet jag direkt vilket pass som behöver fixas.
-- *Jag behandlar texturer som sannolik huvudbov.* Texturer är ofta största boven i en 3D-assets storlek. Jag börjar diagnostisera där, inte med meshen.
-- *Jag frågar kort om källa när det spelar roll för nästa steg.* Image-to-3D-service, asset-bibliotek, eller DCC-verktyg? Annars antar jag inget specifikt verktyg.
-- *Jag använder skillens interna budget för att flagga risk.* Om en enskild accessoar markant överstiger ~1 MB komprimerat, eller hela lensen närmar sig 6 MB, flaggar jag. Detta är *skillens* arbetsbudget; Snap:s hårda tak är 8 MB (se Performance budget-tabellen i `SKILL.md` för skillens default-target).
-- *Jag börjar alltid med library-first sourcing.* Innan jag föreslår custom 3D-generering kollar jag Snapchat Asset Library, Lens Studio Templates och redan importerade prefabs. Snap-officiella assets är pre-optimerade och slipper hela Pass 0–Pass 2-kedjan. När library/templates inte motsvarar användarens förväntningar — *då* lyfter jag image-to-3D som väg framåt och hänvisar till `image-to-3d-generation.md`. Att hoppa över library-checken är den vanligaste anledningen till att en lens onödigt landar i 3D-pipelinen från början.
+- *I prefer GLB/glTF as the default format for custom 3D objects.* Snap has a dedicated import guide for glTF/GLB and the format is natively supported. FBX and OBJ are valid fallback formats, not first choice.
+- *I check lens size risk early — as soon as 3D objects are mentioned in the brief.* Many 3D sources (especially image-to-3D services) produce rich geometry and large textures by default that can quickly blow up a Snap lens. I flag the risk before the user gets far into their pipeline.
+- *I think in two passes when reasoning about size.* (i) Before import: mesh/format/textures from any 3D source, optional post-process. (ii) Inside Lens Studio: texture compression + Resource Inspector. When the size shoots up, I know immediately which pass needs fixing.
+- *I treat textures as the likely main culprit.* Textures are often the biggest culprit in a 3D asset's size. I start diagnosing there, not with the mesh.
+- *I ask briefly about the source when it matters for the next step.* Image-to-3D service, asset library, or DCC tool? Otherwise I don't assume any specific tool.
+- *I use the skill's internal budget to flag risk.* If a single accessory significantly exceeds ~1 MB compressed, or the whole lens approaches 6 MB, I flag it. This is the *skill's* working budget; Snap's hard cap is 8 MB (see the Performance budget table in `SKILL.md` for the skill's default target).
+- *I always start with library-first sourcing.* Before I suggest custom 3D generation, I check the Snapchat Asset Library, Lens Studio Templates, and already-imported prefabs. Snap-official assets are pre-optimized and skip the entire Pass 0–Pass 2 chain. When library/templates don't match the user's expectations — *then* I lift image-to-3D as a path forward and refer to `image-to-3d-generation.md`. Skipping the library check is the most common reason a lens unnecessarily lands in the 3D pipeline from the start.
 
 ---
 
 ## B. Format priority — GLB-first doctrine
 
-| Format | Roll | När |
+| Format | Role | When |
 |--------|------|-----|
-| `.glb` / `.gltf` | **Förstahandsval** | Default för alla egna 3D-objekt. Aktivera Draco-kompression om källan stödjer det. |
-| `.fbx` | Fallback | När källan inte kan exportera GLB rent. Bocka av "Embed Media" om möjligt; leverera texturer separat. |
-| `.obj` | Fallback | Endast för enkla statiska props utan PBR-material eller animation. |
+| `.glb` / `.gltf` | **First choice** | Default for all custom 3D objects. Enable Draco compression if the source supports it. |
+| `.fbx` | Fallback | When the source can't export GLB cleanly. Uncheck "Embed Media" if possible; deliver textures separately. |
+| `.obj` | Fallback | Only for simple static props without PBR materials or animation. |
 
-**Varför denna ordning:**
-- **GLB** är binärt, kompakt och designat för web/AR-delivery. Det är formatet Snap:s import-pipeline är optimerad för.
-- **FBX** är ett DCC-mellanlagringsformat — bra för utbyte mellan modelleringsverktyg, mindre bra för slutleverans. Embeddade texturer komprimeras inte automatiskt.
-- **OBJ** är ett legacy-format utan modern material-stöd (ingen PBR, ingen animation).
+**Why this order:**
+- **GLB** is binary, compact, and designed for web/AR delivery. It's the format Snap's import pipeline is optimized for.
+- **FBX** is a DCC interchange format — good for swapping between modeling tools, less good for final delivery. Embedded textures aren't compressed automatically.
+- **OBJ** is a legacy format without modern material support (no PBR, no animation).
 
-**Om Draco-kompression:** kan ge betydande reduktion av geometri-data — typisk vinst varierar med modellens komplexitet, ofta halvering eller mer. Inte ett hårt löfte, men en värdefull default när källan tillåter det.
-
----
-
-## C. User playbook — så här importerar du 3D i Lens Studio
-
-Två tydliga vägar in. Snap dokumenterar båda i den officiella importguiden.
-
-### Asset Browser (vanligast — flexibel)
-
-1. I Asset Browser-panelen: klicka `+` → `Import Asset`, eller drag-and-drop din `.glb`-fil direkt på Asset Browser.
-2. Resultat: filen blir en **resource** i `Assets/`. Den syns *inte* i scenen ännu.
-3. För att placera den i scenen: dra prefaben från Asset Browser → Scene Hierarchy.
-
-**Varför två steg:** det skiljer på "filen finns i projektet" (resource) och "filen är aktiverad i scenen" (instans). Du kan ha tunga assets liggandes som resources utan att de räknas i scenens render-budget, så länge de inte är instansierade. Bra för att hålla scenen ren medan du experimenterar med olika varianter.
-
-### Scene Hierarchy (snabb — direkt-instans)
-
-1. Dra GLB-filen *direkt* från Finder/Explorer på Scene Hierarchy-panelen.
-2. Resultat: filen importeras som resource *och* instansieras i scenen i ett steg.
-
-**Varför detta:** kortast väg till "objekt i scenen". Använd när du vet att du vill ha objektet i scenen direkt och inte behöver flera varianter.
+**About Draco compression:** can give significant reduction in geometry data — typical wins vary with model complexity, often halving or more. Not a hard promise, but a valuable default when the source allows it.
 
 ---
 
-## D. Två-pass-optimering (verktygsagnostisk)
+## C. User playbook — how to import 3D in Lens Studio
 
-### Pass 0 — Generering av .glb (om användaren inte redan har filen)
+Two clear paths in. Snap documents both in the official import guide.
 
-Om användaren inte har en .glb än utan vill *skapa* en custom modell från bild/idé — t.ex. för att Snapchat Asset Library inte hade något passande, eller för att varumärket kräver något unikt — börja i `image-to-3d-generation.md`. Den filen täcker bildkrav, prompt → bild, tjänsteval (Meshy/Tripo/Hunyuan3D/Rodin) och kvalitetschecklista innan .glb-filen tas vidare till Pass 1b.
+### Asset Browser (most common — flexible)
 
-Hoppa över Pass 0 om användaren redan har en .glb (från DCC-verktyg, asset-bibliotek eller annan källa) — då börjar du direkt i Pass 1 nedan.
+1. In the Asset Browser panel: click `+` → `Import Asset`, or drag-and-drop your `.glb` file directly on the Asset Browser.
+2. Result: the file becomes a **resource** in `Assets/`. It is *not* visible in the scene yet.
+3. To place it in the scene: drag the prefab from Asset Browser → Scene Hierarchy.
 
-### Pass 1 — Före import (i 3D-källan, oavsett verktyg)
+**Why two steps:** it separates "the file exists in the project" (resource) from "the file is active in the scene" (instance). You can keep heavy assets sitting as resources without them counting toward the scene's render budget, as long as they aren't instantiated. Good for keeping the scene clean while you experiment with different variants.
 
-**Mål:** producera så liten och välformad asset som möjligt *innan* den når Lens Studio.
+### Scene Hierarchy (fast — direct instance)
 
-- **Format:** exportera/ladda ner som `.glb` när möjligt. Aktivera Draco-kompression om källan stödjer det.
-- **Mesh:** håll polygon-antalet så lågt som visuell kvalitet tillåter. För en liten accessoar (hatt, glasögon, mindre prop) är en rimlig **målzon 1k–3k trianglar** — en riktlinje för accessoarer, inte en universell regel. Större eller mer detaljerade objekt får ta mer, men gör ett aktivt val baserat på hur stort objektet är i bilden.
-- **Texturer:** målzon **1024×1024**, eller **512×512** för mindre objekt. JPG om alpha inte behövs, PNG bara när transparens faktiskt krävs. Slå ihop till en PBR-atlas om källan tillåter, istället för flera separata texturer.
+1. Drag the GLB file *directly* from Finder/Explorer onto the Scene Hierarchy panel.
+2. Result: the file is imported as a resource *and* instantiated in the scene in one step.
 
-**Pipeline-kontext:** Snap stöder många 3D-källor. DCC-verktyg (Blender, Maya, Cinema 4D), Snapchat Asset Library, eller image-to-3D-services (Meshy, Tripo, Luma Genie, Rodin, Hunyuan3D via fal.ai m.fl.) är alla legitima starter. Många image-to-3D-tjänster har begränsade export-parametrar — använd vad som finns och förlita dig på Pass 1b vid behov.
-
-### Pass 1b — Valfri post-process på .glb-filen
-
-Om Pass 1 inte räckte hela vägen (vanligt med image-to-3D-output som tenderar mot rik geometri och stora texturer), kör .glb-filen genom ett post-process-verktyg innan Lens Studio-import:
-
-- **`optimizeglb.com/dashboard`** (https://optimizeglb.com/dashboard) — **rekommenderat förstahandsval för designers.** Drag-and-drop i browser, kör mesh- och textur-kompression på din .glb och ger en optimerad fil tillbaka. Empiriskt verifierat i Valtech-projekt: bevarar visuell kvalitet rent utan synliga artifakter på image-to-3D-output.
-- **`gltfpack`** (CLI, för advanced/batch): `npm install -g gltfpack`, sedan `gltfpack -i in.glb -o out.glb -cc -tc`. Flaggorna: `-cc` = mesh compression (meshopt), `-tc` = texture compression.
-- **`gltf-pipeline`** (CLI, Cesium): alternativ med liknande kapacitet om gltfpack saknar något specifikt.
-
-**Detta steg är en rekommendation, inte ett universalkrav** — men ofta praktiskt när 3D-källan inte gav full kontroll över output-storleken.
-
-**Verktyg att undvika just nu:** `gltf.report` (https://gltf.report) har observerats introducera synliga artifakter (tearing/distortion i mesh-ytor) i optimize-output även när källans .glb är ren och även med lossless-inställningar. Artifakterna uppstår i webbverktyget — innan filen ens når Lens Studio — och följer sedan med vidare. Använd `optimizeglb.com` istället tills detta är verifierat löst.
-
-### Pass 2 — Inne i Lens Studio
-
-1. Importera den optimerade .glb-filen (via Asset Browser eller Scene Hierarchy, se C ovan).
-2. Markera varje textur i Resources → Inspector → sätt Texture Compression till `BC3` (med alpha) eller `BC1` (utan). **Aldrig `RGBA8 Uncompressed`** — det är default-fällan som ger 4–8× för stora texturer.
-3. Öppna **Resource Inspector** / Lens Stats **tidigt i flödet**, inte vid publish. Sortera på "Compressed Size" och bekräfta att den enskilda 3D-asseten ligger inom skillens budget för accessoarer (se E nedan).
-
-**Varför Resource Inspector tidigt:** vid publish är det för sent att fixa något billigt. Tidigt i flödet kan du iterera per asset — testa en kompressionsinställning, läs av resultatet, justera. Det förvandlar optimering från "krisåtgärd när röd siffra dyker upp" till "kontinuerlig design-disciplin".
+**Why this:** the shortest path to "object in the scene". Use this when you know you want the object in the scene immediately and don't need multiple variants.
 
 ---
 
-## E. Skillens interna arbetsbudget för 3D
+## D. Two-pass optimization (tool-agnostic)
 
-Detta är **skillens budget för att hålla marginal mot Snap:s 8 MB-tak**, inte gränser satta av Snap.
+### Pass 0 — Generating the .glb (if the user doesn't already have the file)
 
-| Komponent | Skillens målvärde |
+If the user doesn't have a .glb yet but wants to *create* a custom model from an image/idea — e.g. because Snapchat Asset Library didn't have anything matching, or because the brand requires something unique — start in `image-to-3d-generation.md`. That file covers image requirements, prompt → image, service selection (Meshy/Tripo/Hunyuan3D/Rodin), and a quality checklist before the .glb file is taken forward to Pass 1b.
+
+Skip Pass 0 if the user already has a .glb (from a DCC tool, asset library, or other source) — then start directly in Pass 1 below.
+
+### Pass 1 — Before import (in the 3D source, regardless of tool)
+
+**Goal:** produce as small and well-formed an asset as possible *before* it reaches Lens Studio.
+
+- **Format:** export/download as `.glb` when possible. Enable Draco compression if the source supports it.
+- **Mesh:** keep the polygon count as low as visual quality allows. For a small accessory (hat, glasses, smaller prop), a reasonable **target zone is 1k–3k triangles** — a guideline for accessories, not a universal rule. Larger or more detailed objects can take more, but make an active choice based on how large the object is in the frame.
+- **Textures:** target zone **1024×1024**, or **512×512** for smaller objects. JPG if alpha isn't needed, PNG only when transparency is actually required. Merge into a PBR atlas if the source allows it, instead of several separate textures.
+
+**Pipeline context:** Snap supports many 3D sources. DCC tools (Blender, Maya, Cinema 4D), the Snapchat Asset Library, or image-to-3D services (Meshy, Tripo, Luma Genie, Rodin, Hunyuan3D via fal.ai, etc.) are all legitimate starting points. Many image-to-3D services have limited export parameters — use what's available and rely on Pass 1b if needed.
+
+### Pass 1b — Optional post-process on the .glb file
+
+If Pass 1 wasn't enough on its own (common with image-to-3D output, which tends toward rich geometry and large textures), run the .glb file through a post-process tool before Lens Studio import:
+
+- **`optimizeglb.com/dashboard`** (https://optimizeglb.com/dashboard) — **recommended first choice for designers.** Drag-and-drop in the browser, runs mesh and texture compression on your .glb and gives you an optimized file back. Empirically verified in Valtech projects: preserves visual quality cleanly without visible artifacts on image-to-3D output.
+- **`gltfpack`** (CLI, for advanced/batch): `npm install -g gltfpack`, then `gltfpack -i in.glb -o out.glb -cc -tc`. The flags: `-cc` = mesh compression (meshopt), `-tc` = texture compression.
+- **`gltf-pipeline`** (CLI, Cesium): an alternative with similar capabilities if gltfpack is missing something specific.
+
+**This step is a recommendation, not a universal requirement** — but often practical when the 3D source didn't give full control over output size.
+
+**Tools to avoid for now:** `gltf.report` (https://gltf.report) has been observed to introduce visible artifacts (tearing/distortion in mesh surfaces) in optimize output even when the source .glb is clean and even with lossless settings. The artifacts appear in the web tool — before the file even reaches Lens Studio — and then carry over. Use `optimizeglb.com` instead until this is verified fixed.
+
+### Pass 2 — Inside Lens Studio
+
+1. Import the optimized .glb file (via Asset Browser or Scene Hierarchy, see C above).
+2. Select each texture in Resources → Inspector → set Texture Compression to `BC3` (with alpha) or `BC1` (without). **Never `RGBA8 Uncompressed`** — that's the default trap that gives 4–8× too-large textures.
+3. Open **Resource Inspector** / Lens Stats **early in the flow**, not at publish time. Sort by "Compressed Size" and confirm the individual 3D asset stays within the skill's accessory budget (see E below).
+
+**Why Resource Inspector early:** at publish time, it's too late to fix anything cheaply. Early in the flow you can iterate per asset — try a compression setting, read off the result, adjust. That turns optimization from "crisis action when a red number appears" into "continuous design discipline".
+
+---
+
+## E. The skill's internal working budget for 3D
+
+This is **the skill's budget for keeping margin against Snap's 8 MB ceiling**, not limits set by Snap.
+
+| Component | Skill's target value |
 |-----------|-------------------|
-| 3D-modell (accessoar) inkl. texturer | ~1 MB komprimerat |
+| 3D model (accessory) incl. textures | ~1 MB compressed |
 | Face Mesh / Head occluder | ~0.2 MB |
-| HDR / environment | ~1 MB (eller skippa, använd Ambient Light) |
-| Skript + UI | ~0.3 MB |
+| HDR / environment | ~1 MB (or skip, use Ambient Light) |
+| Scripts + UI | ~0.3 MB |
 | Scene/material/graphs | ~0.5 MB |
-| Headroom för fonts, ljud, etc. | resten |
+| Headroom for fonts, audio, etc. | the rest |
 
-**Total lens size — referera till `SKILL.md`'s Performance budget-tabell:**
-- **Target:** ≤ 4 MB (skillens default; för enkla lenser)
-- **Acceptabel marginal:** upp till 6 MB för 3D-tunga lenser där de extra megabytena är väl-investerade i visuell kvalitet
-- **Hård gräns:** 8 MB (Snap:s tak — alltid)
+**Total lens size — refer to `SKILL.md`'s Performance budget table:**
+- **Target:** ≤ 4 MB (the skill's default; for simple lenses)
+- **Acceptable margin:** up to 6 MB for 3D-heavy lenses where the extra megabytes are well-invested in visual quality
+- **Hard limit:** 8 MB (Snap's ceiling — always)
 
-När budgeten sprängs → tillbaka till Pass 1, inte Pass 2. Du kan inte komprimera ner kvalitet som aldrig genererades; du kan alltid skala ner något som blev för stort.
-
----
-
-## F. Vad skillen ska hjälpa användaren förstå (mentor-mål)
-
-Innan publish ska användaren självständigt kunna svara på fyra frågor. Den här doktrinen finns för att stödja det.
-
-### 1. Vilket format är bäst för mitt 3D-objekt?
-
-GLB/glTF som förstahandsval — helst Draco-komprimerat. FBX och OBJ är fallback-format som Snap stöder, men glTF är det format Lens Studios pipeline är byggd kring.
-
-**Varför det spelar roll:** rätt format tar bort en hel klass av storleksproblem från start. Att börja med fel format gör allt arbete nedströms svårare.
-
-### 2. Hur importerar jag filen i Lens Studio?
-
-Två vägar:
-- **Asset Browser-import** (`+ → Import Asset` eller drag-and-drop på panelen): filen blir en **resource** först — du måste dra prefaben till Scene Hierarchy för att den ska bli synlig i scenen.
-- **Scene Hierarchy-import** (drag-and-drop direkt på panelen): filen importeras som resource *och* instansieras i scenen i ett steg.
-
-**Varför skillnaden spelar roll:** Asset Browser-vägen ger dig flexibilitet att ha resources liggandes som inte räknas i scenens budget. Scene Hierarchy-vägen är snabbast när du vet vad du vill.
-
-### 3. Vad påverkar lens size?
-
-- **Texturer** — ofta största boven (upplösning, format, kompression)
-- **Polygon-antal** — meshens komplexitet
-- **Filformat** — GLB komprimerar bättre än FBX
-- **Lens Studios kompressionsinställningar per textur** — `RGBA8 Uncompressed` vs `BC1/BC3` kan ge 4–8× skillnad
-
-**Varför detta är värt att förstå:** när du vet att texturer dominerar lär du dig kolla dem först. Det sparar tid varje gång storleken sticker iväg.
-
-### 4. Vilka optimeringssteg ska tas innan publish?
-
-1. **Pass 1** — optimera mesh, texturer och format i källan, gärna GLB
-2. **Pass 1b** — valfri post-process (`gltf.report` rekommenderas för designers) om output är för stor
-3. **Pass 2** — i Lens Studio: sätt BC1/BC3 på alla texturer + öppna Resource Inspector **tidigt**, inte vid publish
-4. **Publish-check** — Publishing-dialogen ska visa grön Lens Size under 8 MB; siktet är ≤ 4 MB target, 6 MB max för 3D-tung lens
-
-**Varför ordningen är viktig:** Pass 1 är billigast och mest effektiv. Pass 2 kompletterar men kan inte fixa fundamentala problem i källan. Att hoppa över Pass 1 är den vanligaste fällan.
+When the budget breaks → back to Pass 1, not Pass 2. You can't compress down quality that was never generated; you can always scale down something that came out too big.
 
 ---
 
-## G. När doktrinen INTE gäller
+## F. What the skill should help the user understand (mentor goals)
 
-- **Snapchat Asset Library-objekt** importerade som färdiga prefabs — Snap har redan optimerat dem. Du behöver inte gå igenom doktrinen för dessa, bara verifiera i Resource Inspector att de inte oväntat sticker ut.
-- **Pre-bundlade Templates** från Lens Studio — samma sak.
-- **Snap-officiella SnapML-modeller** — räknas separat (SnapML-budget på 10 MB är skild från Lens Size-budgeten på 8 MB).
+Before publish, the user should be able to answer four questions on their own. This doctrine exists to support that.
 
-För allt annat eget 3D-content gäller GLB-first + två-pass-flödet.
+### 1. Which format is best for my 3D object?
+
+GLB/glTF as the first choice — preferably Draco-compressed. FBX and OBJ are fallback formats that Snap supports, but glTF is the format Lens Studio's pipeline is built around.
+
+**Why it matters:** the right format removes an entire class of size problems from the start. Starting with the wrong format makes everything downstream harder.
+
+### 2. How do I import the file in Lens Studio?
+
+Two paths:
+- **Asset Browser import** (`+ → Import Asset` or drag-and-drop on the panel): the file becomes a **resource** first — you have to drag the prefab to Scene Hierarchy for it to become visible in the scene.
+- **Scene Hierarchy import** (drag-and-drop directly on the panel): the file is imported as a resource *and* instantiated in the scene in one step.
+
+**Why the difference matters:** the Asset Browser path gives you the flexibility to keep resources around that don't count toward the scene budget. The Scene Hierarchy path is fastest when you know what you want.
+
+### 3. What affects lens size?
+
+- **Textures** — often the biggest culprit (resolution, format, compression)
+- **Polygon count** — the mesh's complexity
+- **File format** — GLB compresses better than FBX
+- **Lens Studio's compression settings per texture** — `RGBA8 Uncompressed` vs `BC1/BC3` can give a 4–8× difference
+
+**Why this is worth understanding:** when you know textures dominate, you learn to check them first. That saves time every time the size shoots up.
+
+### 4. Which optimization steps should be taken before publish?
+
+1. **Pass 1** — optimize mesh, textures, and format in the source, preferably GLB
+2. **Pass 1b** — optional post-process (`optimizeglb.com` recommended for designers) if the output is too big
+3. **Pass 2** — in Lens Studio: set BC1/BC3 on all textures + open Resource Inspector **early**, not at publish time
+4. **Publish check** — the Publishing dialog should show a green Lens Size under 8 MB; the aim is ≤ 4 MB target, 6 MB max for a 3D-heavy lens
+
+**Why the order matters:** Pass 1 is the cheapest and most effective. Pass 2 complements but can't fix fundamental problems in the source. Skipping Pass 1 is the most common trap.
+
+---
+
+## G. When the doctrine does NOT apply
+
+- **Snapchat Asset Library objects** imported as finished prefabs — Snap has already optimized them. You don't need to go through the doctrine for these, just verify in Resource Inspector that they aren't unexpectedly out of line.
+- **Pre-bundled Templates** from Lens Studio — same thing.
+- **Snap-official SnapML models** — count separately (the SnapML budget of 10 MB is separate from the Lens Size budget of 8 MB).
+
+For all other custom 3D content, the GLB-first + two-pass flow applies.

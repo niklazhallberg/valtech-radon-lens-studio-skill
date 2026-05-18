@@ -44,15 +44,15 @@ Two iterations max in CC. After that, the issue is either non-standard or needs 
 ### "Lens Studio won't open" / crashes on launch
 
 **Clarify**:
-- "Vilken LS-version laddade du ner? (Snap har 5.20+, äldre versioner kan vara problematiska.)"
-- "Crashar den direkt vid launch, eller efter du klickar något?"
+- "Which LS version did you download? (Snap has 5.20+; older versions can be problematic.)"
+- "Does it crash right at launch, or after you click something?"
 
 **Try fix**:
-- If wrong version: "Avinstallera den och hämta 5.20+ från https://ar.snap.com/download."
-- If crashes after launch: "Try `Shift+Option-click` på LS-ikonen för 'Reset Preferences' (re-init av configs). LS:s preferences kan vara korrupta."
-- macOS Gatekeeper-fel: "Höger-klicka LS-appen i Applications → Open → Open anyway."
+- If wrong version: "Uninstall it and get 5.20+ from https://ar.snap.com/download."
+- If crashes after launch: "Try `Shift+Option-click` on the LS icon for 'Reset Preferences' (re-init of configs). LS's preferences may be corrupt."
+- macOS Gatekeeper error: "Right-click the LS app in Applications → Open → Open anyway."
 
-**Escalate**: Real LS-bug → Snap's support eller LS community forum.
+**Escalate**: Real LS bug → Snap's support or LS community forum.
 
 ---
 
@@ -61,13 +61,13 @@ Two iterations max in CC. After that, the issue is either non-standard or needs 
 This is the **#1 most common issue**. Token rotation happens every LS restart.
 
 **Clarify**:
-- "Har du startat om Lens Studio nyligen?"
-- "Om ja → token rotateras varje LS-start. Det är fixet."
+- "Did you restart Lens Studio recently?"
+- "If yes → the token rotates on every LS start. That's the fix."
 
 **Try fix** (the standard reconnect sequence):
-> CC: "Jag fixar — det är token rotation. Två actions från dig:
-> 1. I LS: AI Assistant → AI Model Context Protocol (MCP) → Configure Server. Kopiera den nya URL och token.
-> 2. Klistra in båda här."
+> CC: "I'll fix it — it's token rotation. Two actions from you:
+> 1. In LS: AI Assistant → AI Model Context Protocol (MCP) → Configure Server. Copy the new URL and token.
+> 2. Paste both here."
 
 When Anna pastes, CC runs:
 ```bash
@@ -90,22 +90,22 @@ After 2 attempts: `docs/TROUBLESHOOTING.md` → "MCP advanced debugging" section
 ### "Can't find skill folder" / "Skill isn't loaded"
 
 **Clarify**:
-- "Vad returnerar `ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md`?"
-- "Är vi i samma terminal-session som installerade skillen?"
+- "What does `ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` return?"
+- "Are we in the same terminal session that installed the skill?"
 
 **Try fix**:
 - If file missing: skill not installed. Guide reinstall (copy `.skill` file, unzip to `~/.claude/skills/`).
-- If file exists but Claude doesn't see it: "Stäng och öppna `claude` igen — live change detection kan ha missat en path."
+- If file exists but Claude doesn't see it: "Close and reopen `claude` — live change detection may have missed a path."
 
 **Escalate**: persistent issue → check `~/.claude/settings.json` for any skill-overrides that might disable it.
 
 ---
 
-### "INSPIRATION/-folder missing after CC said it created it"
+### "INSPIRATION/ folder missing after CC said it created it"
 
 **Clarify**:
-- "Vad returnerar `ls ~/Projects/[client]-lens/`?"
-- "Är vi i rätt working directory? `pwd`"
+- "What does `ls ~/Projects/[client]-lens/` return?"
+- "Are we in the right working directory? `pwd`"
 
 **Try fix**:
 - If cwd is wrong: `cd` to the project folder, re-verify.
@@ -118,8 +118,8 @@ After 2 attempts: `docs/TROUBLESHOOTING.md` → "MCP advanced debugging" section
 The classic phantom-success bug. See `references/lens-studio-api-gotchas.md` → "createSceneObject produces bare SceneObject" and the silent-drop patterns.
 
 **Clarify**:
-- "Vilken mutation körde du? Visa GraphQL-call."
-- "Returnerade `setProperty` `success: true`?"
+- "Which mutation did you run? Show the GraphQL call."
+- "Did `setProperty` return `success: true`?"
 
 **Try fix** — read-back rule:
 - Run scene-graphql read-back on the mutated property
@@ -131,7 +131,7 @@ The classic phantom-success bug. See `references/lens-studio-api-gotchas.md` →
 mcp__lens-studio__QueryLensStudioKnowledgeBase("setProperty enum patterns")
 ```
 
-(KB requires Snap login active in LS — verify with `claude mcp list` and ensure LS:s My Lenses → Login is signed in.)
+(KB requires Snap login active in LS — verify with `claude mcp list` and ensure LS's My Lenses → Login is signed in.)
 
 **Escalate**: persistent silent-drop → `references/lens-studio-api-gotchas.md` deep-dive.
 
@@ -140,7 +140,7 @@ mcp__lens-studio__QueryLensStudioKnowledgeBase("setProperty enum patterns")
 ### "@input field shows AssignableType_1 in inspector"
 
 **Clarify**:
-- "Visa TS-deklarationen för fältet."
+- "Show the TS declaration for the field."
 
 **Try fix**:
 - TS type is `any` → change to concrete LS class (`JsonAsset`, `Texture`, `AudioTrackAsset`, etc.)
@@ -153,8 +153,8 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 ### "Tween fires but no motion"
 
 **Clarify**:
-- "Vilken `callbackType` använder TweenValue:n?"
-- "Är `TweenManager__PLACE_IN_SCENE` SceneObject fortfarande i scenen?"
+- "Which `callbackType` is the TweenValue using?"
+- "Is the `TweenManager__PLACE_IN_SCENE` SceneObject still in the scene?"
 
 **Try fix**:
 - If Tween Manager scene-object missing: re-install Tween Manager package (Scene Hierarchy → + → Scripts → Tween Manager).
@@ -166,7 +166,7 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 ### "FPS bad on mid-range Android"
 
 **Clarify**:
-- "Visa Performance Panel-värdena: FPS, RAM, lens size."
+- "Show the Performance Panel values: FPS, RAM, lens size."
 - "Texture compression set to ASTC?"
 
 **Try fix**:
@@ -184,7 +184,7 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 ### "LS crashes on Preview"
 
 **Clarify**:
-- "När triggas crashen — när du klickar Preview-knappen, eller efter en interaktion?"
+- "When does the crash trigger — when you click the Preview button, or after an interaction?"
 
 **Try fix**:
 - If on click: Preview panel crash (try Reset Preferences via Shift+Option-click LS icon).
@@ -195,7 +195,7 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 ### "Snap Ad Account not visible in Submit panel"
 
 **Clarify**:
-- "Är du loggad in på rätt Snap-konto i LS? Verifiera via Menu Bar → My Lenses."
+- "Are you logged into the right Snap account in LS? Verify via Menu Bar → My Lenses."
 
 **Try fix**:
 - If logged in but org/account not visible: client/media agency hasn't granted access. CC can't fix this — escalate to media agency.
@@ -207,7 +207,7 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 ### "Lens rejected by Snap review — what now?"
 
 **Clarify**:
-- "Vad var rejection reason-meddelandet? Klistra in."
+- "What was the rejection reason message? Paste it in."
 
 **Try fix**:
 - Common rejections: copy violates ad policy (especially regulated categories), icon too photo-like, performance issue on Android, content guideline (US-conservative standards regardless of region).
@@ -220,7 +220,7 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 ### "Icon spec violation at submission"
 
 **Clarify**:
-- "Visa icon-filen. Dimension? Format?"
+- "Show the icon file. Dimension? Format?"
 
 **Try fix**:
 - 320×320 PNG required. Icon must be a simplified graphic, NOT a product photo.
@@ -230,13 +230,13 @@ See `references/lens-studio-api-gotchas.md` → "@input fields must use concrete
 
 Send Anna to the user-facing troubleshooting doc when:
 
-- CC has tried 2 fixes and issue persists
-- Anna explicitly asks: "är det ingen manual för felsökning?"
+- CC has tried 2 fixes and the issue persists
+- Anna explicitly asks: "isn't there a manual for troubleshooting?"
 - Issue is edge-case beyond this decision tree (LS version-specific bug, advanced MCP debugging, specific Snap review appeal process)
-- Anna wants understanding ("but why does this happen?") rather than just fix
+- Anna wants understanding ("but why does this happen?") rather than just a fix
 
 Wording:
-> CC: "Det här är beyond vad jag snabbt kan diagnostisera. Det finns en djupare felsökningsguide i `docs/TROUBLESHOOTING.md` — sektion '[relevant section name]'. Om du vill, läs den och kom tillbaka om något fortfarande är oklart."
+> CC: "This is beyond what I can quickly diagnose. There's a deeper troubleshooting guide in `docs/TROUBLESHOOTING.md` — section '[relevant section name]'. If you want, read it and come back if anything is still unclear."
 
 ## When to escalate to user
 
@@ -244,8 +244,8 @@ Beyond CC's reach entirely. Examples:
 
 - **Snap ad-account permissions** — needs human contact with media agency
 - **LS bug (filed with Snap)** — needs reproducer + bug report to Snap support
-- **Hardware-specific perf issue** that only manifests on specific phone — needs device-specific debugging Anna does
+- **Hardware-specific perf issue** that only manifests on a specific phone — needs device-specific debugging Anna does
 - **Client copy/asset issue requiring revision** — client decision, not technical
 
 Wording:
-> CC: "Det här är inte en kod-fix — det behöver en människa-action. [Specific action]. När det är fixat, kom tillbaka och vi fortsätter där vi var."
+> CC: "This isn't a code fix — it needs a human action. [Specific action]. When it's fixed, come back and we'll keep going from where we left off."

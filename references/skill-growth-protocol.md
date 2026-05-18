@@ -1,220 +1,222 @@
 # Skill Growth Protocol v0.5
 
-Syfte: fånga empiriska lärdomar från verkliga
-projekt så skillen växer över tid — i flow,
-inte batchat. Gate-keeper är alltid människa.
+Purpose: capture empirical learnings from real
+projects so the skill grows over time — in flow,
+not batched. Gate-keeper is always human.
 
-## När du löser något via probe
+## When you solve something via probe
 
-Innan du går vidare:
-1. Grep references/*.md för 3-5 keywords
-   från lösningen.
-2. Om träffar finns: läs och bevisa varför
-   detta är annorlunda.
-   Om inte annorlunda → ingen discovery.
-3. Om ingen träff (eller bevisat annorlunda):
-   discovery → in-flow ask direkt.
+Before you move on:
+1. Grep references/*.md for 3–5 keywords
+   from the solution.
+2. If there are hits: read and prove why
+   this is different.
+   If not different → no discovery.
+3. If no hit (or proven different):
+   discovery → in-flow ask directly.
 
-## Generaliseringsregeln — skriv om innan du sparar
+## The Generalization rule — rewrite before you save
 
-Innan en discovery skrivs till references/:
-omvandla det projektspecifika fyndet till en
-universell regel.
+Before a discovery is written to references/:
+transform the project-specific finding into a
+universal rule.
 
-Tre steg:
+Three steps:
 
-### Steg 1: Identifiera kärnan
+### Step 1: Identify the core
 
-Vad är det GENERELLA mönstret bakom det
-specifika fyndet?
+What's the GENERAL pattern behind the specific
+finding?
 
-Exempel:
-- Specifikt: "adidas Samba-skon har mesh-pivot
-  8.3 LS-units off-center"
-- Generellt: "Try-On Pack Sneakers mesh-pivot
-  ligger typiskt 6-12 LS-units off-center —
-  räkna alltid AABB-center innan du antar att
-  pivot sitter i geometrins mitt"
+Example:
+- Specific: "the adidas Samba shoe has its mesh
+  pivot 8.3 LS units off-center"
+- General: "Try-On Pack Sneakers mesh pivot
+  typically sits 6–12 LS units off-center —
+  always compute AABB center before assuming
+  the pivot is at the geometry's center"
 
-### Steg 2: Ta bort allt projektsspecifikt
+### Step 2: Remove everything project-specific
 
-Checklist INNAN du skriver till disk:
+Checklist BEFORE you write to disk:
 
-❌ Ta bort: klientnamn (adidas, RFSU, Ray-Ban)
-❌ Ta bort: exakta projektmått som bara gäller
-   detta case (X=-106.6 för just denna sko)
-❌ Ta bort: interna projektnamn och filsökvägar
-❌ Ta bort: datum och deadlines
-✅ Behåll: det generella mönstret
-✅ Behåll: typiska ranges och tumregler
-✅ Behåll: varför det händer (root cause)
-✅ Behåll: hur man detekterar och löser det
+❌ Remove: client names (adidas, RFSU, Ray-Ban)
+❌ Remove: exact project measurements that only
+   apply to this case (X=-106.6 for this
+   specific shoe)
+❌ Remove: internal project names and file paths
+❌ Remove: dates and deadlines
+✅ Keep: the general pattern
+✅ Keep: typical ranges and rules of thumb
+✅ Keep: why it happens (root cause)
+✅ Keep: how to detect and solve it
 
-### Steg 3: Testa med "nästa kollega"-frågan
+### Step 3: Test with the "next colleague" question
 
-Läs igenom det du ska committa och fråga:
+Read through what you're about to commit and ask:
 
-"Om en kollega på Valtech nästa månad bygger
-ett ANNAT try-on-filter för ett ANNAT varumärke
-— kan de läsa detta och förstå hur de undviker
-samma problem?"
+"If a colleague at Valtech next month builds
+ANOTHER try-on filter for ANOTHER brand —
+can they read this and understand how to
+avoid the same problem?"
 
-Om ja → redo att committa.
-Om nej → skriv om tills svaret är ja.
+If yes → ready to commit.
+If no → rewrite until the answer is yes.
 
 ### Worked example
 
-**BEFORE** (projektspecifikt, ska EJ committas):
+**BEFORE** (project-specific, do NOT commit):
 
-> "För adidas Samba-lensen behövde vi sätta
-> shoe_mesh_l position till X=-80, Y=-40, Z=-20
-> med scale 4 för att skon skulle sitta rätt."
+> "For the adidas Samba lens we needed to set
+> shoe_mesh_l position to X=-80, Y=-40, Z=-20
+> with scale 4 for the shoe to sit correctly."
 
-**AFTER** (generaliserbart, ska committas):
+**AFTER** (generalizable, ready to commit):
 
-> "Try-On Pack Sneakers: mesh-pivot är off-center
-> relativt foot-anchor. Kompensera med wrapper-
-> anchor arkitektur (se § Wrapper-anchor) och
-> tuning av X/Y/Z via probe-first kalibrering.
-> Starta från AABB-center-offset som initial
-> estimate — förvänta dig 10-30% empirisk
-> justering utöver formeln. Y-axeln ska skippas
-> i kompensationen (sole sitter vid Y=0)."
+> "Try-On Pack Sneakers: mesh pivot is off-center
+> relative to the foot anchor. Compensate with a
+> wrapper-anchor architecture (see § Wrapper-anchor)
+> and tune X/Y/Z via probe-first calibration. Start
+> from the AABB center offset as initial estimate —
+> expect 10–30% empirical adjustment beyond the
+> formula. The Y axis should be skipped in the
+> compensation (the sole sits at Y=0)."
 
 ## In-flow ask — default
 
-När en discovery passerar grep-checken:
-säg DIREKT till användaren, mitt i flowet.
+When a discovery passes the grep check:
+say it DIRECTLY to the user, in the middle of the flow.
 
-Template (warm tone, jargong-fri, kollaborativ —
-tekniska detaljer kommer EFTER ja):
+Template (warm tone, jargon-free, collaborative —
+technical details come AFTER yes):
 
-> "Vi har lärt oss något nytt här.
+> "We've learned something new here.
 >
-> [1-2 meningar om vad, plain svenska — undvik
-> API-namn, filsökvägar, grep-output, "discovery"-ord]
+> [1–2 sentences about what, plain English — avoid
+> API names, file paths, grep output, "discovery" words]
 >
-> Det här är värdefullt att spara ner för framtida
-> situationer. Idag är inte denna kunskap med i
-> systemfilerna, vilket innebär att nästa kollega som
-> [konkret use-case — animera räknare, kalibrera fot-
-> tracking, etc.] troligtvis kommer fastna i exakt
-> samma fälla, om vi inte skriver in det nu som en
-> lärdom. Låt oss göra filerna ännu bättre med hjälp
-> av din upptäckt.
+> This is valuable to save for future situations.
+> Today this knowledge isn't in the system files,
+> which means the next colleague who [concrete use
+> case — animate a counter, calibrate foot tracking,
+> etc.] will most likely fall into exactly the same
+> trap, unless we write it in now as a learning.
+> Let's make the files even better with the help of
+> your discovery.
 >
-> Din upptäckt har riktigt värde — den gör mig som
-> AI-assistent smartare för varje gång, och hjälper
-> varje kollega som möter samma fälla i framtiden.
+> Your discovery has real value — it makes me as an
+> AI assistant smarter every time, and helps every
+> colleague who meets the same trap in the future.
 >
-> **Är det OK att jag uppdaterar systemfilerna med
-> din upptäckt? Det går snabbt och avbryter inte på
-> något vis vårt arbete ihop.**
+> **Is it OK if I update the system files with your
+> discovery? It's quick and doesn't interrupt our
+> work together in any way.**
 >
-> Ja / nej / spara för senare"
+> Yes / no / save for later"
 
-Voice-nyanser:
-- "Spara ner för framtida situationer" > "spara"
-  (känns mer som ett aktivt val, inte tråkig logg)
-- "troligtvis kommer fastna" > "kommer fastna"
-  (ödmjukt — vi vet inte 100%)
-- "som en lärdom" > inget (framing av vad det blir
-  när det landar i skillen)
-- "Låt oss göra filerna ännu bättre" (kollaborativ,
-  inte transaktion)
-- "Din upptäckt har riktigt värde — den gör mig som
-  AI-assistent smartare för varje gång" — value-
-  exchange-transparency: användaren ska förstå att
-  deras bidrag har värde långt bortom det egna
-  projektet. AI:n växer av varje delad lärdom; det
-  är inte bara en logg.
-- Reassurance på slutet ("avbryter inte vårt arbete")
-  — användaren oroar sig ofta att discovery-pausen
-  bryter momentum; säg ut att den inte gör det
+Voice nuances:
+- "Save for future situations" > "save"
+  (feels more like an active choice, not a boring log)
+- "will most likely fall into" > "will fall into"
+  (humble — we don't know 100%)
+- "as a learning" > nothing (frames what it becomes
+  when it lands in the skill)
+- "Let's make the files even better" (collaborative,
+  not transactional)
+- "Your discovery has real value — it makes me as an
+  AI assistant smarter every time" — value-exchange
+  transparency: the user should understand that their
+  contribution has value far beyond their own project.
+  The AI grows from every shared learning; it's not
+  just a log.
+- Reassurance at the end ("doesn't interrupt our work")
+  — the user often worries that the discovery pause
+  breaks momentum; say explicitly that it doesn't
 
-Internt INNAN denna ask:
-- Generaliseringsregeln-walk (3 steg) körs tyst
-- Grep-check körs tyst — bara om regeln INTE finns
-  någonstans går vi vidare till ask
-- Probe-resultat och tekniska bevis stannar i
-  agent-state, inte i user-meddelandet
+Internal BEFORE this ask:
+- The Generalization rule walk (3 steps) runs silently
+- The grep check runs silently — only if the rule is
+  NOT found anywhere do we move on to the ask
+- Probe results and technical evidence stay in
+  agent state, not in the user message
 
-EFTER att användaren sagt ja kommer NÄSTA meddelande
-med konkret diff, fil-path, sektion och commit-
-meddelande för second-stage-approval. Det är där
-tekniska detaljer släpps in i konversationen — efter
-opt-in, inte före.
+AFTER the user says yes, the NEXT message comes
+with a concrete diff, file path, section, and commit
+message for second-stage approval. That's where
+technical details enter the conversation — after
+opt-in, not before.
 
-Användarens svar styr:
-- **Ja** → öppna rätt references-fil, lägg
-  in entry, visa diff, vänta på godkännande,
-  commit. ~2 min cykel.
-- **Nej** → skroppa, gå vidare.
-- **Spara för senare** → skriv till
-  SKILL-DISCOVERIES.md som backup.
+The user's response steers:
+- **Yes** → open the right references file, add
+  the entry, show the diff, wait for approval,
+  commit. ~2 min cycle.
+- **No** → discard, move on.
+- **Save for later** → write to
+  SKILL-DISCOVERIES.md as a backup.
 
-Varje accepterad discovery får en egen
-liten commit. Granular history; lätt att
-rulla tillbaka något specifikt.
+Each accepted discovery gets its own
+small commit. Granular history; easy to
+roll back something specific.
 
-### Closing message efter commit (plain, ingen jargong)
+### Closing message after commit (plain, no jargon)
 
-När commit+push körts klart: stäng loopen i plain
-svenska. INGEN `origin`, INGA `granular commit`-,
-`rollback`- eller `git`-ord. Användaren bryr sig om
-att det är sparat och att vi kan ångra om det blir
-fel — inte om VCS-mekaniken.
+When commit+push has run: close the loop in plain
+English. NO `origin`, NO `granular commit`-,
+`rollback`- or `git`-words. The user cares about
+it being saved and that we can undo it if something
+goes wrong — not about the VCS plumbing.
 
 Template:
 
-> "Klart, det är sparat nu. Om vi senare märker att
-> något inte stämmer kan vi enkelt rulla tillbaka det.
+> "Done, it's saved now. If we later notice that
+> something doesn't fit, we can easily roll it back.
 >
-> Tillbaka till [konkret pågående arbete] — säg till
-> när du är redo att fortsätta."
+> Back to [concrete ongoing work] — say when you're
+> ready to continue."
 
-Voice-nyanser:
-- "Klart, det är sparat nu" > "Pushat till origin"
-  (resultat-fokus, inte plumbing)
-- "Om vi senare märker att något inte stämmer kan
-  vi enkelt rulla tillbaka det" > "Granular commit,
-  lätt att rulla tillbaka" (förklarar SÄKERHETSNÄTET
-  i mänskliga termer)
-- "Tillbaka till [konkret arbete]" — referenser till
-  vad de gjorde innan ger känsla av att momentum
-  inte bröts
+Voice nuances:
+- "Done, it's saved now" > "Pushed to origin"
+  (outcome-focused, not plumbing)
+- "If we later notice that something doesn't fit, we
+  can easily roll it back" > "Granular commit, easy
+  to roll back" (explains the SAFETY NET in human
+  terms)
+- "Back to [concrete work]" — referring to what they
+  were doing before gives the feeling that momentum
+  wasn't broken
 
-## Format för entry
+## Format for entry
 
-- Vad: [en mening, plain svenska — INTE en
-  API-path eller jargong-rad]
-- Värde för användare: [vad nästa kollega vinner
-  — tid sparad, fälla undviken, något känns bättre.
-  EN rad, konkret. Obligatoriskt fält.]
-- Hur hittades: [probe-kedjan kort, internt]
-- Generaliserbar? [ja/nej + varför]
-- Föreslagen text för references-fil: [neutralt
-  skriven, projektagnostisk, plain svenska där möjligt]
+- What: [one sentence, plain English — NOT an
+  API path or jargon line]
+- Value for user: [what the next colleague gains
+  — time saved, trap avoided, something feels
+  better. ONE line, concrete. Mandatory field.]
+- How it was found: [the probe chain in brief, internal]
+- Generalizable? [yes/no + why]
+- Suggested text for references file: [neutrally
+  written, project-agnostic, plain English where possible]
 
-## CHANGELOG.md — alltid del av discovery-commit
+## CHANGELOG.md — always part of a discovery commit
 
-När en discovery committas (ja-path ovan):
-samma commit MÅSTE inkludera en prepend till
-`CHANGELOG.md` på repo-root, under sektionen
+When a discovery is committed (yes path above):
+the same commit MUST include a prepend to
+`CHANGELOG.md` at repo root, under the section
 `## Improvements and newly acquired knowledge`.
 
-(Notera: tidigare versioner använde `## [Unreleased]`
-som sektionstitel — bytt till värde-bärande titel
-från v0.5 av detta protokoll, eftersom CHANGELOG
-ska läsas som värde-narrativ av icke-tekniska läsare
-också.)
+(Note: earlier versions used `## [Unreleased]`
+as the section title — switched to a value-bearing
+title from v0.5 of this protocol, because the
+CHANGELOG should read as a value narrative for
+non-technical readers too.)
 
-Skäl: utan CHANGELOG-entry har discoveryn ingen
-kumulativ synlighet — den finns bara i git log.
-CHANGELOG är skill:ens biografi för icke-tekniska
-läsare (designers, PMs, leadership).
+Reason: without a CHANGELOG entry, the discovery
+has no cumulative visibility — it only lives in
+git log. The CHANGELOG is the skill's biography
+for non-technical readers (designers, PMs,
+leadership).
 
-Entry-format (auto-extraherat av agent):
+Entry format (auto-extracted by the agent):
 
 ```markdown
 ### 💡 YYYY-MM-DD HH:MM — [project: <cwd-derived>]
@@ -227,12 +229,14 @@ Entry-format (auto-extraherat av agent):
 - Type: [discovery] / [docs] / [convention]
 ```
 
-**Language rule:** CHANGELOG entries on GitHub are
-**English-only** (designer/teamlead/leadership audience,
-some non-Swedish-speaking). The in-flow ask itself
-stays in the user's language (Swedish for Swedish-
-speaking colleagues) — but when the agent writes the
-artifact to disk, the OUTPUT must translate to plain
+**Language rule:** all artifacts written to disk
+(CHANGELOG entries, references/*.md edits) are in
+**plain English**. The in-flow ask itself can be
+rendered in the user's spoken language at runtime
+(the template above is the canonical English version;
+the agent translates to Swedish dynamically when
+the user is Swedish-speaking) — but when the agent
+writes the artifact to disk, the OUTPUT must be
 English. Section-title references inside descriptions
 may quote Swedish section names verbatim with an
 English gloss in parentheses.
@@ -248,91 +252,91 @@ Auto-extraction:
   `ScreenTransform parent anchor inheritance` →
   "Parent screen-anchor overrides child position")
 - `<description>` — 1-2 sentences derived from the
-  agent's internal "Vad:"-field, translated to
-  plain English
+  agent's internal "What:"-field, in plain English
 - `<value>` — direct from the agent's internal
-  "Värde för användare:" field, translated to
-  plain English
+  "Value for user:" field, in plain English
 - `<path>` — relative path of edited file
 - `<section>` — markdown section where the entry landed
 
-Single commit täcker BÅDE references-file-edit
-OCH CHANGELOG.md-prepend. Inga separata commits.
+A single commit covers BOTH the references file edit
+AND the CHANGELOG.md prepend. No separate commits.
 
-Per release (när nya version-tag skapas):
-- Move alla `[Unreleased]`-entries till ny
-  `[vX.Y.Z] — YYYY-MM-DD`-sektion
-- Commit som `chore(release): consolidate
+Per release (when a new version tag is created):
+- Move all `[Unreleased]` entries to a new
+  `[vX.Y.Z] — YYYY-MM-DD` section
+- Commit as `chore(release): consolidate
   vX.Y.Z changelog`
 - (Optional: `assets/release.sh vX.Y.Z`
-  automatiserar detta — defer till v0.8.0+)
+  automates this — defer to v0.8.0+)
 
-## SKILL-DISCOVERIES.md — backup-path
+## SKILL-DISCOVERIES.md — backup path
 
-Bara för "spara för senare" eller fall där
-användaren är mitt i något kreativt och inte
-vill bryta flowet. Vid nästa naturliga break
-(fas-slut, ⌘S handshake, slut av pair-test-
-cykel): säg "N kandidater i SKILL-DISCOVERIES.md.
-Kör /review när du är redo."
+Only for "save for later" or cases where the user
+is in the middle of something creative and doesn't
+want to break the flow. At the next natural break
+(end of phase, ⌘S handshake, end of pair-test
+cycle): say "N candidates in SKILL-DISCOVERIES.md.
+Run /review when you're ready."
 
-För read-only kollegor (utan push-access):
-discoveries stannar i SKILL-DISCOVERIES.md
-tills någon med push-access flyttar över dem.
-Vid flytt: CHANGELOG-prepend görs i samma
-commit-cykel.
+For read-only colleagues (without push access):
+discoveries stay in SKILL-DISCOVERIES.md
+until someone with push access moves them over.
+At the move: the CHANGELOG prepend is done in the
+same commit cycle.
 
-## Aldrig
+## Never
 
-- Klientnamn eller projektspecifika värden
-- Hypoteser som inte verifierats empiriskt
-- Saker som redan finns i references/
-- Auto-push till main
-- Discovery-ask för saker som inte
-  passerat grep-check (annars blir det brus)
-- Discovery-commit utan CHANGELOG-prepend
-  (alltid båda eller ingen)
+- Client names or project-specific values
+- Hypotheses not empirically verified
+- Things that already exist in references/
+- Auto-push to main
+- Discovery ask for things that haven't
+  passed the grep check (otherwise it becomes noise)
+- Discovery commit without CHANGELOG prepend
+  (always both or neither)
 
-## Repo-status
+## Repo status
 
-Temporärt: github.com/niklazhallberg/valtech-radon-lens-studio-skill
-Planerat: Valtech-organisationskonto (TBD)
+Temporary: github.com/niklazhallberg/valtech-radon-lens-studio-skill
+Planned: Valtech organization account (TBD)
 
-När migrering sker: uppdatera remote-URL i
-onboarding-diagnosen och i denna fil.
+When migration happens: update the remote URL in
+the onboarding diagnosis and in this file.
 
 ## Changelog
 
-- v0.4 → v0.5 (2026-05-14): warm-tone CHANGELOG-format.
-  In-flow-ask-template omskriven till plain svenska utan
-  jargong (no grep, no "discovery"-ord, no API-paths i
-  första meddelandet). Format-för-entry får nytt "Värde
-  för användare"-fält (obligatoriskt). CHANGELOG.md-spec:
-  section-titel ändrad från `[Unreleased]` till
-  `Improvements and newly acquired knowledge`; entry-rubrik
-  får 💡-emoji + `HH:MM`-timestamp; description ska vara
-  plain svenska; nytt `Value for user:`-fält per entry.
-  Triggad av Niklaz observation att tidigare protokoll-
-  template var för teknisk och bröt mot voice-and-pedagogy
-  principen om att translatera jargon.
-- v0.3 → v0.4 (2026-05-14): Generaliseringsregeln
-  som explicit omskrivningssteg. Tre steg
-  (identifiera kärnan → ta bort projektspecifikt
-  → "nästa kollega"-test). Tidigare bara "undvik
-  projektspecifikt" i Aldrig-listan; nu en
-  fullständig metodologisk regel som körs INNAN
-  in-flow ask. Triggad av Niklaz observation att
-  generaliseringsregeln var för svag.
-- v0.2 → v0.3 (2026-05-14): CHANGELOG.md som
-  obligatorisk del av varje discovery-commit;
-  entry-format auto-extraherat; per-release
-  konsolidering till [vX.Y.Z]-sektion.
-  Triggad av Niklaz idé om kumulativ historik
-  för all skill-tillväxt över tid.
-- v0.1 → v0.2 (2026-05-14): in-flow ask som
-  default istället för silent-capture-batched.
-  Discovery surfaced direkt när färsk i minnet,
-  ej vid sessionsslut. SKILL-DISCOVERIES.md
-  blir backup-path för "spara för senare",
-  ej primärflöde. Triggad av Niklaz observation
-  att agenten inte vet när sessions slutar.
+- v0.4 → v0.5 (2026-05-14): warm-tone CHANGELOG format.
+  In-flow ask template rewritten in plain English without
+  jargon (no grep, no "discovery" words, no API paths in
+  the first message). The entry format gets a new "Value
+  for user" field (mandatory). CHANGELOG.md spec: section
+  title changed from `[Unreleased]` to
+  `Improvements and newly acquired knowledge`; entry
+  heading gets the 💡-emoji + `HH:MM` timestamp;
+  description should be plain English; new `Value for
+  user:` field per entry. Triggered by Niklaz's
+  observation that the earlier protocol template was too
+  technical and broke the voice-and-pedagogy principle
+  about translating jargon.
+- v0.3 → v0.4 (2026-05-14): the Generalization rule
+  as an explicit rewriting step. Three steps
+  (identify the core → remove project-specific
+  → "next colleague" test). Previously only "avoid
+  project-specific" in the Never list; now a
+  full methodological rule that runs BEFORE the
+  in-flow ask. Triggered by Niklaz's observation that
+  the generalization rule was too weak.
+- v0.2 → v0.3 (2026-05-14): CHANGELOG.md as a
+  mandatory part of every discovery commit;
+  entry format auto-extracted; per-release
+  consolidation into [vX.Y.Z] section.
+  Triggered by Niklaz's idea of cumulative history
+  for all skill growth over time.
+- v0.1 → v0.2 (2026-05-14): in-flow ask as
+  default instead of silent-capture-batched.
+  Discovery surfaced directly when fresh in memory,
+  not at session end. SKILL-DISCOVERIES.md
+  becomes the backup path for "save for later",
+  not the primary flow. Triggered by Niklaz's
+  observation that the agent doesn't know when
+  sessions end.
