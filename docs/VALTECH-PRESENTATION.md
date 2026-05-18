@@ -129,94 +129,13 @@ Om Valtech kör 10–20 lens-projekt per år och varje projekt bidrar 2–5 disc
 
 ## 5. Säkerhet och sekretess
 
-### 5a. Vad lagras i skill-filen?
+Skillen är säker by design via tre mekanismer:
 
-**Finns i repot:**
+- **Generaliseringsregeln** filtrerar bort projektspecifika värden (klientnamn, koordinater, deadlines) innan något committas.
+- **Lokal exekvering** — skillen körs på designerns dator; Lens Studio-projekt med kunddata ligger i separat mapp som ALDRIG pushas till skill-repot.
+- **Privat repo + manuella commit-godkännanden** — ingen auto-push, varje förändring godkänns explicit av människa.
 
-| Typ | Innehåll | Risknivå |
-|---|---|---|
-| Snaps publika dokumentation | 365 markdown-sidor mirrored från `developers.snap.com` | Noll — redan publikt |
-| Empiriska protokoll | `body-anchored-calibration.md`, `lens-studio-api-gotchas.md` etc. — generaliserade mönster, **inga projektspecifika värden** | Noll — Generaliseringsregeln säkrar detta (se 5b) |
-| MCP tool schemas | Tekniska API-signaturer för Lens Studio MCP-server | Noll — teknisk info, ej känslig |
-| Voice-principer | Pedagogiska riktlinjer på svenska | Noll — metodologi, inte data |
-
-**Finns INTE i repot — bekräftat genom genomgång:**
-
-- ❌ Inga klientnamn i empiriska protokoll
-- ❌ Inga projektspecifika värden (X-koordinater, kampanjbudgetar, leveransdatum)
-- ❌ Inga personuppgifter
-- ❌ Ingen Valtech-intern affärsinformation
-- ❌ Inga API-nycklar, tokens, credentials
-
-### 5b. Generaliseringsregeln som aktiv säkerhetsmekanism
-
-`skill-growth-protocol.md` har en **trestegs-checklist som körs INNAN något committas**:
-
-**Steg 1 — Identifiera kärnan.** Vad är den generella regeln bakom det specifika fyndet?
-
-**Steg 2 — Explicit borttagnings-checklist:**
-```
-❌ Ta bort: klientnamn
-❌ Ta bort: exakta projektmått som bara gäller detta case
-❌ Ta bort: interna projektnamn och filsökvägar
-❌ Ta bort: datum och deadlines
-```
-
-**Steg 3 — "Nästa kollega"-test (gate):**
-> "Om en kollega på Valtech nästa månad bygger ett ANNAT try-on-filter för ett ANNAT varumärke — kan de läsa detta utan att veta vilket projekt det kom från?"
-
-**Två lager av godkännande:**
-1. AI:n som gate-keeper kör checklistan
-2. **Människa godkänner varje commit explicit** — inget auto-push, inget auto-commit
-
-Protokollet kan granskas i `references/skill-growth-protocol.md` rad 18–82.
-
-### 5c. Repo-säkerhet
-
-| Aspekt | Status idag |
-|---|---|
-| Repo-typ | **Privat GitHub-repo** |
-| Access idag | Begränsad — på personligt GitHub-konto hos underhållaren |
-| Plan | Migrera till Valtech-organisationskonto |
-| Framtid | `@valtech.com` SSO-autentisering |
-| Auto-push | **Avstängt** — varje push kräver explicit godkännande |
-
-Migration till Valtech-org är **steg 1 i nästa steg-listan** (sektion 7).
-
-### 5d. Vad händer med kunddata under ett projekt?
-
-Det här är viktigt att förstå rent strukturellt:
-
-1. **Skillen körs LOKALT** på designerns dator. Inget skickas till GitHub utan explicit godkännande.
-2. **Lens Studio-projektet** (med kundens 3D-modeller, briefer, kampanjmaterial) finns i en HELT SEPARAT mapp, t.ex. `~/Projects/<klient>-lens/`. **Denna mapp pushas ALDRIG till skill-repot.**
-3. **Discovery-protokollet** filtrerar bort allt projektspecifikt INNAN något ens föreslås för commit (Steg 2-checklistan).
-4. Det enda som flödar från projekt till skill är **det generaliserade mönstret** — inte data.
-
-Konkret exempel ur `skill-growth-protocol.md`:
-
-```
-BEFORE (skulle INTE committas):
-"För <klient>-lensen behövde vi sätta
-shoe_mesh_l position till X=-80, Y=-40, Z=-20..."
-
-AFTER (committas):
-"Try-On Pack Sneakers: mesh-pivot är off-center
-relativt foot-anchor. Kompensera med wrapper-
-anchor arkitektur..."
-```
-
-### 5e. Jämförelse med alternativet
-
-Risken om Valtech **inte** har ett system som detta:
-
-| Risk utan skill | Konsekvens |
-|---|---|
-| Designers googlar fritt | Okontrollerade källor, okontrollerade kodsnuttar in i kundprojekt |
-| Kunskap stannar hos individen | Om personen är otillgänglig → tyst dataförlust |
-| Slack-trådar som "wiki" | Sökbar bara av interna, inget audit-trail, inget format-skydd |
-| Inget audit-trail på lärdomar | Ingen synlighet i vad agenten lär sig från projekt till projekt |
-
-**Skillen är inte en ny säkerhetsrisk — den är en strukturerad lösning på en risk som redan existerar.**
+Se [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md) för fullständigt resonemang (vad lagras, Generaliseringsregelns trestegs-checklist, repo-status, kunddata under projekt, jämförelse med alternativet).
 
 ---
 
@@ -274,7 +193,7 @@ Pitch-värde mot kunder: "Vi har en intern AI-mentor som garanterar kvalitet och
 ### Snart (denna månad)
 
 4. **Pilotprojekt nr 2** — välj ett kommande Snap-lens-uppdrag och kör det med skillen från dag 1, med en designer som inte var med på första pilotprojektet. Verkligt empiriskt test av onboarding.
-5. **CONTRIBUTING.md** för kollegor — guide för hur man bidrar discoveries.
+5. ✅ **CONTRIBUTING.md** för kollegor — **Klart**. Se [`CONTRIBUTING.md`](../CONTRIBUTING.md) i repots root: canonical docs per topic, install-step workflow, `.skill`-build process och version-konvention.
 6. **`@valtech.com` SSO** för repo-access via GitHub Enterprise eller motsvarande.
 7. **Slack-kanal** (`#lens-studio-skill` eller liknande) för skill-updates, discoveries och frågor.
 

@@ -1091,6 +1091,9 @@ I'll pull up the onboarding questions once you answer.</pre>
       shade -= centerShadow * 0.22 * verticalFade;
       shade += highlightBand * 0.18;
 
+      const topBrightening = q.y < -0.4 ? Math.max(0, (-0.4 - q.y) / 0.5) * 0.32 : 0;
+      shade += topBrightening;
+
       shade = Math.max(0.02, Math.min(1, Math.pow(shade, 1.85)));
 
       const hash = Math.abs(Math.sin((row * 91.7 + col * 37.3) * 12.9898)) % 1;
@@ -1105,13 +1108,13 @@ I'll pull up the onboarding questions once you answer.</pre>
       const existing = grid[row][col];
       const existingPower = valueRamp.indexOf(existing);
       if (idx >= existingPower || q.edge) {
-        if (shade > 0.76 || q.side === 2) {
-          const radonSequence = "RADONRADONRADONRADONRADON";
+        if (shade > 0.68 || q.side === 2) {
+          const radonSequence = "V_RADON V_RADON V_RADON V_RADON ";
           const edgeFlow = Math.floor(col / 1.25) + Math.floor(row * 0.45);
           grid[row][col] = radonSequence[((edgeFlow % radonSequence.length) + radonSequence.length) % radonSequence.length];
         } else if (shade > 0.46) {
           grid[row][col] = word[((Math.floor(col / 4.6) + row) % word.length + word.length) % word.length].toLowerCase();
-        } else if (shade > 0.18) {
+        } else if (shade > 0.28) {
           grid[row][col] = dotChars[(row + col) % dotChars.length];
         } else {
           grid[row][col] = " ";
