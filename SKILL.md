@@ -5,7 +5,7 @@ when_to_use: TRIGGER when user mentions Lens Studio, Snapchat, filter (in Snap c
 compatibility: Lens Studio 5.20+ (recommended), Claude Code, optionally Lens Studio MCP server
 metadata:
   author: Niklaz Hallberg / Valtech RADON
-  version: 0.8.0
+  version: 0.10.0
   mcp-server: lens-studio
   category: ar-content-creation
   tags: [snapchat, lens-studio, ar, sponsored-lens, mcp, snap-ads]
@@ -235,6 +235,8 @@ Don't read all of these upfront — pull each when relevant.
 **Building scripts or mutating scenes**:
 - `references/lens-studio-api-gotchas.md` — empirically-validated LS 5.x API patterns (Image.rotationAngle, ScreenTransform anchors, Tween Manager, setProperty categories, FaceLiquify quirks, transient-view persistence, Try-On Pack Sneakers + Foot Tracking calibration, ~21 entries)
 - `references/body-anchored-calibration.md` — MANDATORY for any tracker-driven content (foot, face, hand, head, full-body, world-anchored). Universal probe-first protocol, mesh-pivot awareness, wrapper-anchor pattern, desktop-preview-limitations matrix, per-body-part defaults. Read FIRST before proposing any architecture for tracker-driven Phase 1 builds.
+- `references/3d-asset-import-doctrine.md` — GLB-first import priority, two-pass optimization (before import + inside Lens Studio), skill-internal per-asset budgets, mentor-checklista för format/import/size/optimering. Load when user mentions 3D-objekt, GLB/FBX/OBJ, "lens size too big", custom modeller, eller accessoarer (hatt, glasögon, prop).
+- `references/image-to-3d-generation.md` — Pass 0 för custom 3D-content: bildkrav, prompt→bild-tips, tjänsteval-heuristik (Meshy/Tripo/Hunyuan3D/Rodin), kvalitetschecklista, beslutspunkt generera om vs optimera vidare. Load when user wants to create a custom 3D-modell från en bild/idé och inte har en .glb-fil än, eller nämner image-to-3D, fal.ai, Meshy, Tripo, Rodin, Hunyuan3D, Luma Genie.
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
 
 **User documentation (human-facing — Anna reads these herself)**:
@@ -254,6 +256,8 @@ Default targets — adjust per brief, but don't loosen without explicit reason.
 | RAM | < 80 MB | 100 MB |
 | Tap-to-primary-feedback | ≤ 3 s | 5 s |
 | Texture compression | ASTC | — |
+
+For lenses with custom 3D-objekt: see `references/3d-asset-import-doctrine.md` for GLB-first format priority, two-pass optimization flow, and per-asset budgets (accessoar ~1 MB komprimerat). 3D-tunga lenser kan acceptabelt landa upp till ~6 MB; håll fortfarande < 8 MB hårt.
 
 ## Project documentation pattern
 
