@@ -6,8 +6,25 @@
 <title>Snapchat-filter på 10 minuter — Manual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
@@ -461,13 +478,11 @@
     display: block;
     text-decoration: none;
     color: inherit;
-    border-bottom: none;
     transition: background 0.2s, border-color 0.2s, transform 0.2s;
   }
   a.idea-link:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--accent);
-    border-bottom: 1px solid var(--accent);
     transform: translateY(-2px);
   }
   .idea-link-arrow {
@@ -514,6 +529,142 @@
       rgba(5, 7, 9, 0.95) 100%);
     pointer-events: none;
     z-index: 99;
+  }
+
+  /* ── Outro icon + speech bubble (matches MANUAL-SIMPLE) ─────── */
+  .outro {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 40px 12px;
+  }
+  .tw-icon {
+    display: inline-block;
+    width: clamp(42px, 4.6vw, 62px);
+    height: clamp(42px, 4.6vw, 62px);
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+  .icon-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .speech-bubble {
+    position: absolute;
+    left: 105%;
+    bottom: 100%;
+    background: var(--ink-85);
+    color: var(--bg);
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(13px, 1.4vw, 17px);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    border-radius: 0;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 140ms steps(2), transform 140ms steps(2);
+    pointer-events: none;
+  }
+  .speech-bubble.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: bubble-drift 4.8s steps(1) infinite 300ms;
+  }
+  @keyframes bubble-drift {
+    0%, 100% { transform: translate(0, 0); }
+    25%      { transform: translate(0, -1px); }
+    50%      { transform: translate(1px, -1px); }
+    75%      { transform: translate(1px, 0); }
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    top: 0;
+    left: 0;
+  }
+  .speech-bubble.visible::before {
+    animation: bubble-bite 7s steps(1) infinite 1s;
+  }
+  @keyframes bubble-bite {
+    0%, 17%   { opacity: 0; }
+    18%, 35%  { opacity: 1; width: 4px; height: 4px; top: 0; left: 0; right: auto; bottom: auto; }
+    36%, 47%  { opacity: 0; }
+    48%, 62%  { opacity: 1; width: 5px; height: 3px; top: 0; right: 0; left: auto; bottom: auto; }
+    63%, 74%  { opacity: 0; }
+    75%, 93%  { opacity: 1; width: 3px; height: 5px; bottom: 0; right: 0; top: auto; left: auto; }
+    94%, 100% { opacity: 0; }
+  }
+  .bubble-ghost {
+    visibility: hidden;
+    white-space: nowrap;
+  }
+  .bubble-type {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    white-space: nowrap;
+  }
+  .bubble-bite-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 5px;
+    height: 5px;
+    background: var(--ink-85);
+    box-shadow:
+      -5px 0 0 var(--ink-85),
+      5px 0 0 var(--ink-85),
+      0 5px 0 var(--ink-85);
+  }
+  .tw-icon .tw-eye {
+    opacity: 0;
+    transition: opacity 60ms linear;
+  }
+  .tw-icon.blink .tw-eye { opacity: 1; }
+  .tw-icon.wink .tw-eye-r { opacity: 1; }
+  @keyframes tw-jump {
+    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    28%  { transform: translateY(-8px); animation-timing-function: linear; }
+    45%  { transform: translateY(-9px); animation-timing-function: linear; }
+    62%  { transform: translateY(-8px); animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.jumping { animation: tw-jump 720ms ease-out 2; }
+  .tw-icon.ready { cursor: pointer; }
+  @keyframes tw-wave {
+    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    50%  { transform: translateY(-2px); animation-timing-function: cubic-bezier(0.55, 0, 0.7, 0.3); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.waving .tw-arm-r { animation: tw-wave 520ms 2; }
+  @media (prefers-reduced-motion: reduce) {
+    .tw-icon.jumping { animation: none; }
+    .tw-icon.waving .tw-arm-r { animation: none; }
+    .tw-icon .tw-eye { opacity: 0; }
+    .speech-bubble { transition: none; }
+    .speech-bubble.visible,
+    .speech-bubble.visible::before { animation: none; }
   }
 </style>
 </head>
@@ -580,35 +731,32 @@
 <!-- ║  STEP 1                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-1">
-  <span class="micro">Steg 01 av 04</span>
+  <span class="micro">Steg 01 av 08</span>
   <h2>Installera Claude Code</h2>
   <p class="lede">Claude Code är hjärnan som bygger ditt filter. Den körs lokalt på din egen dator — inget moln, inget eget extra konto utöver Anthropic-inloggningen.</p>
 
   <div class="step-grid">
     <div class="step-do">
       <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter). Klistra in detta och tryck Enter — installationen tar någon minut:</p>
+      <p><strong>1.</strong> Öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter).</p>
+      <p><strong>2.</strong> Klistra in detta och tryck Enter — installationen tar någon minut:</p>
       <div class="code-block compact">
         <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
         <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Kopiera</button>
-      </div>
-      <p><strong>2.</strong> När installationen är klar — verifiera med detta i samma terminal:</p>
-      <div class="code-block compact">
-        <pre><code>claude --version</code></pre>
-        <button class="copy-btn" data-copy="claude --version">Kopiera</button>
       </div>
     </div>
 
     <div class="step-see">
       <h3>Vad du ser när det funkat</h3>
-      <p>I terminalen, efter <code>claude --version</code>, borde du se ett versionsnummer:</p>
-      <pre class="output">claude code 1.x.x</pre>
-      <p>Exakt nummer spelar ingen roll — det viktiga är att du <em>får</em> ett svar (inte "command not found").</p>
+      <p>Terminalen visar nedladdning + install-steg, något i stil med:</p>
+      <pre class="output">Downloading Claude Code...
+Installing to /usr/local/bin/claude
+Installation complete.</pre>
+      <p>När prompten är tillbaka och du kan skriva igen — installen är klar.</p>
 
       <details class="hint-collapsible">
         <summary>Funkar inte?</summary>
         <ul>
-          <li><strong>"command not found: claude"</strong> — installationen körde, men terminalen hittar inte <code>claude</code> än. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
           <li><strong>Curl-kommandot kraschar</strong> — vanligast att internet bröts mitt i. Kör samma kommando igen.</li>
           <li><strong>Vet inte vad Terminal är</strong> — det är en svart eller mörkgrön ruta där du skriver kommandon istället för att klicka. Öppna Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) och skriv "Terminal".</li>
         </ul>
@@ -621,23 +769,221 @@
 <!-- ║  STEP 2                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-2">
-  <span class="micro">Steg 02 av 04</span>
+  <span class="micro">Steg 02 av 08</span>
+  <h2>Verifiera installationen</h2>
+  <p class="lede">Innan vi går vidare — bekräfta att <code>claude</code>-kommandot faktiskt nås från din terminal.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p>I samma terminal, kör:</p>
+      <div class="code-block compact">
+        <pre><code>claude --version</code></pre>
+        <button class="copy-btn" data-copy="claude --version">Kopiera</button>
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>Ett versionsnummer:</p>
+      <pre class="output">claude code 1.x.x</pre>
+      <p>Exakt nummer spelar ingen roll — det viktiga är att du <em>får</em> ett svar (inte "command not found").</p>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>"command not found: claude"</strong> — installationen körde, men terminalen hittar inte <code>claude</code> än. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 3                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-3">
+  <span class="micro">Steg 03 av 08</span>
+  <h2>Acceptera inbjudan</h2>
+  <p class="lede">Skill:en bor på GitHub som ett privat repo. Niklaz har skickat dig en invitation — du behöver acceptera den för att få access.</p>
+  <p>GitHub är en molntjänst för kod och filer — som Google Drive, fast för utvecklingsprojekt. Skill:en bor här. Varje gång någon av oss upptäcker något nytt skickar vi lärdomen tillbaka hit — desto mer vi använder skill:en, desto smartare blir den för nästa kollega.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p><strong>1.</strong> Öppna mejlet från Niklaz Hallberg.</p>
+      <p><strong>2.</strong> Klicka på den blå knappen <strong>View invitation</strong>.</p>
+      <p><strong>3.</strong> Om GitHub ber dig logga in — logga in. Saknar du konto, klicka <em>Create an account</em>, fyll i uppgifter och verifiera din mejl.</p>
+      <p><strong>4.</strong> När du är inloggad ser du en GitHub-sida med invitation. Klicka <strong>Accept invitation</strong>.</p>
+
+      <div class="hint">
+        Använd helst samma mejladress som invitationen skickades till. Annars kan GitHub säga 404 (Repository not found).
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>Efter klicket på Accept invitation visas GitHub-repots framsida med en bekräftelse:</p>
+      <pre class="output">You are now a collaborator on
+niklazhallberg/valtech-radon-lens-studio-skill</pre>
+      <p>Du kan nu se filerna i repot via webben. Bra signal — gå vidare till nästa steg.</p>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>404 "Repository not found"</strong> — du är troligen inloggad på fel GitHub-konto. Logga ut, klicka <em>View invitation</em>-länken i mejlet igen, logga in med rätt konto.</li>
+          <li><strong>Invitation har gått ut</strong> — invitations är giltiga i 7 dagar. Be Niklaz skicka en ny.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 4                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-4">
+  <span class="micro">Steg 04 av 08</span>
+  <h2>Installera GitHub CLI</h2>
+  <p class="lede">Vi behöver ett verktyg som heter <code>gh</code> som låter terminalen prata med GitHub — så att <code>git clone</code> i nästa steg fungerar utan att fråga om lösenord.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p><strong>1.</strong> Gå till nedladdningssidan i webbläsaren:</p>
+      <div class="code-block compact">
+        <pre><code>https://cli.github.com/</code></pre>
+        <button class="copy-btn" data-copy="https://cli.github.com/">Kopiera</button>
+      </div>
+      <p><strong>2.</strong> Klicka på den vita knappen <strong>Download for Mac</strong>.</p>
+      <p><strong>3.</strong> Öppna den nedladdade <code>.pkg</code>-filen och följ stegen i installern. Precis som vilken Mac-app som helst.</p>
+
+      <div class="hint">
+        Använder du redan Homebrew? Du kan istället köra <code>brew install gh</code> i terminalen.
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>Verifiera installen med:</p>
+      <div class="code-block compact">
+        <pre><code>gh --version</code></pre>
+        <button class="copy-btn" data-copy="gh --version">Kopiera</button>
+      </div>
+      <p>Du borde se något i stil med:</p>
+      <pre class="output">gh version 2.x.x</pre>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>"command not found: gh"</strong> — installen är klar men terminalen ser inte den än. Stäng terminalen och öppna en ny.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 5                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-5">
+  <span class="micro">Steg 05 av 08</span>
+  <h2>Logga in på GitHub via terminalen</h2>
+  <p class="lede">Två kommandon. Det första loggar in dig, det andra säger till git att använda inloggningen automatiskt vid alla framtida <code>git</code>-kommandon.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p><strong>1.</strong> Kör i terminalen:</p>
+      <div class="code-block compact">
+        <pre><code>gh auth login</code></pre>
+        <button class="copy-btn" data-copy="gh auth login">Kopiera</button>
+      </div>
+      <p>Följ promparna: välj <em>GitHub.com</em>, välj <em>HTTPS</em>, logga in via webbläsaren. Klicka <strong>Authorize</strong> i browsern när den frågar.</p>
+      <p><strong>2.</strong> När du är tillbaka i terminalen — kör:</p>
+      <div class="code-block compact">
+        <pre><code>gh auth setup-git</code></pre>
+        <button class="copy-btn" data-copy="gh auth setup-git">Kopiera</button>
+      </div>
+      <p>Det här gör att alla framtida <code>git</code>-kommandon använder din GitHub-login utan att fråga om lösenord.</p>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <p>Efter <code>gh auth login</code>:</p>
+      <pre class="output">✓ Authentication complete.
+✓ Logged in as @your-username</pre>
+      <p>Efter <code>gh auth setup-git</code>:</p>
+      <pre class="output">✓ Configured git protocol</pre>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>Browsern öppnas inte automatiskt</strong> — kopiera URL:en som visas i terminalen och klistra in i webbläsaren manuellt.</li>
+          <li><strong>"Authorization failed"</strong> — du loggade in på fel GitHub-konto. Kör <code>gh auth logout</code> och börja om.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 6                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-6">
+  <span class="micro">Steg 06 av 08</span>
+  <h2>Hämta Lens Skill</h2>
+  <p class="lede">Nu kan vi klona skill-repot till din dator. Med GitHub CLI uppsatt i förra steget händer det utan prompts.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>Vad du gör</h3>
+      <p>I terminalen, kör:</p>
+      <div class="code-block compact">
+        <pre><code>git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</code></pre>
+        <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Kopiera</button>
+      </div>
+      <p>Filerna laddas ner till en ny mapp i din nuvarande terminal-position.</p>
+    </div>
+
+    <div class="step-see">
+      <h3>Vad du ser när det funkat</h3>
+      <pre class="output">Cloning into 'valtech-radon-lens-studio-skill'...
+remote: Enumerating objects: ...
+Receiving objects: 100% ... done.</pre>
+      <p>När du kör <code>ls</code> ser du nu mappen <code>valtech-radon-lens-studio-skill/</code>.</p>
+
+      <details class="hint-collapsible">
+        <summary>Funkar inte?</summary>
+        <ul>
+          <li><strong>"Repository not found"</strong> eller 404 — gå tillbaka till Steg 03 och bekräfta att invitationen accepterades med samma GitHub-konto du loggade in med i Steg 05.</li>
+          <li><strong>Promptas för username/password</strong> — Steg 05's <code>gh auth setup-git</code> körde inte. Kör <code>gh auth setup-git</code> igen och prova clone på nytt.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 7                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-7">
+  <span class="micro">Steg 07 av 08</span>
   <h2>Starta Claude Code</h2>
   <p class="lede">Nu öppnar du själva Claude-sessionen — det är där ni två (du och Claude) snackar.</p>
 
   <div class="step-grid">
     <div class="step-do">
       <h3>Vad du gör</h3>
-      <p>I samma terminal som nyss, skriv:</p>
+      <p>I samma terminal, skriv:</p>
       <div class="code-block compact">
         <pre><code>claude</code></pre>
         <button class="copy-btn" data-copy="claude">Kopiera</button>
       </div>
-      <p>Tryck Enter.</p>
-      <p>Första gången du startar Claude Code kommer den be dig logga in via webbläsaren — den öppnar automatiskt en sida hos Anthropic. Logga in där, kom tillbaka till terminalen.</p>
+      <p>Tryck Enter. Första gången du startar Claude Code öppnas en webbläsare för Anthropic-login. Logga in där, kom tillbaka till terminalen.</p>
 
       <div class="hint">
-        <strong>Behöver du konto?</strong> Claude Code kräver ett Anthropic-konto. Om du inte har ett — be din närmaste chef eller IT om access via Valtechs konto. Annars kan du fastna på login utan att förstå varför.
+        <strong>Behöver du Anthropic-konto?</strong> Claude Code kräver det. Om du inte har ett — be din närmaste chef eller IT om access via Valtechs konto.
       </div>
     </div>
 
@@ -662,104 +1008,39 @@ Type your message to begin:
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 3 — THE MAGIC                     ║ -->
+<!-- ║  STEP 8 — THE MAGIC                     ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
-<div class="step-3-wrap">
-<div class="ghost-bg" aria-hidden="true"><pre id="ascii-bg"></pre></div>
-<section class="section step" id="step-3">
-  <span class="micro">Steg 03 av 04 · det här är magin</span>
-  <h2>Klistra in setup-prompten</h2>
-  <p class="lede">Detta är det enda du egentligen behöver minnas. Kopiera texten nedan, klistra in i Claude Code, tryck Enter. Claude tar över därifrån — hen diagnostiserar vad du har, vad som saknas, och guidar dig genom det.</p>
-
-  <div class="prompt-block">
-    <div class="prompt-header">
-      <span>SETUP-PROMPT — kopiera hela</span>
-    </div>
-    <pre id="setup-prompt-text">Jag är ny användare som vill bygga ett Snapchat-filter via dig och Lens Studio. Jag har just installerat dig (Claude Code) och inget annat är på plats än. Hjälp mig komma igång.
-
-Kör först en diagnostik på vad som finns / saknas på min maskin:
-
-1. Lens Studio installerat? Kolla om mappen `/Applications/Lens Studio.app` finns på Mac, eller om `lens-studio` finns i PATH på Windows/Linux.
-
-2. Skillen installerad? Kolla om `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` existerar.
-
-3. MCP-server registrerad mellan dig och Lens Studio? Kör `claude mcp list` och leta efter en rad med `lens-studio`.
-
-Rapportera vad du hittade — vad finns, vad saknas. Sen guida mig genom det som saknas, ett steg i taget. Vänta på mitt 'klar' efter varje steg innan du går vidare.
-
-Förklara varje steg i klarspråk. Jag är digital designer, inte tekniker. Använd mentor-tone — du är en kollega som hjälper mig, inte ett system som kör en setup-wizard. Berätta vad jag ser i Lens Studio och i terminalen när varje steg lyckas.
-
-När allt är på plats: fråga vad mitt lens-projekt ska handla om (klient + grov idé) och kör dina vanliga onboarding-frågor. Du är expert på filter-bygge nu — guida mig hela vägen från idé till submission.</pre>
-    <button class="copy-btn" data-copy-target="#setup-prompt-text">Kopiera hela</button>
-  </div>
+<section class="section step" id="step-8">
+  <span class="micro">Steg 08 av 08 · det här är magin</span>
+  <h2>Aktivera skill:en</h2>
+  <p class="lede">Sista steget. Säg till Claude vad du vill bygga — så aktiveras skill:en och hen tar över därifrån.</p>
 
   <div class="step-grid">
     <div class="step-do">
       <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Klicka "Kopiera hela" på block:et ovan.</p>
-      <p><strong>2.</strong> Gå tillbaka till Claude Code-terminalen (där cursor:n blinkade).</p>
-      <p><strong>3.</strong> Klistra in: <kbd>⌘</kbd>+<kbd>V</kbd> på Mac, <kbd>Ctrl</kbd>+<kbd>V</kbd> på Windows.</p>
-      <p><strong>4.</strong> Tryck Enter.</p>
+      <p>Klistra in i Claude Code (cursor:n från Steg 07) — tryck Enter:</p>
+      <div class="code-block compact">
+        <pre><code>Time to wake up! Let&rsquo;s create a Snapchat lens.</code></pre>
+        <button class="copy-btn" data-copy="Time to wake up! Let's create a Snapchat lens.">Kopiera</button>
+      </div>
+      <p>Det här är start-skottet. Från och med nu är det Claude som är din kollega — hen guidar dig genom Lens Studio-setup, projekt-onboarding och hela filter-bygget.</p>
 
       <div class="hint">
-        Det är OK att klistra in en lång text i terminalen. Claude Code kan ta emot flera rader samtidigt. Du behöver inte trycka Enter mellan raderna.
+        Är du osäker på något steg framöver? Säg det till Claude i klartext: <em>"Jag förstår inte vad du menar med [X]"</em>. Hen omformulerar och förklarar enklare.
       </div>
     </div>
 
     <div class="step-see">
       <h3>Vad du ser när det funkat</h3>
-      <p>Claude börjar svara — först med "Jag kör en diagnostik..." eller liknande. Sen listar hen vad som finns och vad som saknas på din maskin. Något i stil med:</p>
-      <pre class="output">Kollar din maskin nu...
+      <p>Claude svarar med att aktivera skill:en + onboarding-flow. Något i stil med:</p>
+      <pre class="output">Hej! Skill:en är aktiv. Innan vi börjar — har du
+Lens Studio installerat på datorn? (Det är där vi
+bygger filtret.)
 
-✓ Claude Code: igång (det är du som pratar med mig)
-✗ Lens Studio: hittade inte appen
-✗ Filter-skill: ej installerad
-✗ MCP-server: ej registrerad
-
-Vi behöver fixa tre saker. Vi tar dem en i taget...</pre>
-      <p>Sen pratar Claude dig genom första steget — installera Lens Studio. Du följer hens guidning. Det här är HEN nu, inte manualen.</p>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 4                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-4">
-  <span class="micro">Steg 04 av 04</span>
-  <h2>Följ Claudes guidning</h2>
-  <p class="lede">Härifrån är det inte längre du som följer en manual. Du följer Claude. Hen är en kollega som vet vad hen gör.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p>Claude kommer säga vad nästa steg är. Det kan vara att:</p>
-      <ul style="color: var(--ink-85); margin: 12px 0 0 20px; line-height: 1.8;">
-        <li>Ladda ner Lens Studio från ar.snap.com</li>
-        <li>Klicka på en specifik knapp i Lens Studio</li>
-        <li>Klistra in en konfiguration i terminalen</li>
-        <li>Spara en fil</li>
-      </ul>
-      <p style="margin-top: 16px;">När du gjort steget — skriv <strong>"klar"</strong> i terminalen, tryck Enter. Claude verifierar och går vidare.</p>
-
-      <div class="hint">
-        Är du osäker på något steg? Säg det till Claude i klartext: <em>"Jag förstår inte vad du menar med [X]"</em>. Hen omformulerar och förklarar enklare.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när allt är klart</h3>
-      <p>När alla tre saknade delar (Lens Studio, skill, MCP) är på plats, säger Claude:</p>
-      <pre class="output">Allt på plats — nu kan vi börja bygga.
-
-Berätta lite om filtret du vill göra:
+Berätta också lite om filtret du vill göra:
 - Vilken klient/projekt?
-- Grov idé — vad ska användaren uppleva?
-- Tidsplan om du har en
-
-Jag drar onboarding-frågorna när du svarat på det.</pre>
-      <p>Det är start-skottet. Härifrån är det filter-bygge — Claude vet hela vägen från idé till färdig lens.</p>
+- Grov idé — vad ska användaren uppleva?</pre>
+      <p>Härifrån är det inte längre manualen som styr. Du följer Claude. Hen är en kollega som vet vad hen gör.</p>
     </div>
   </div>
 </section>
@@ -855,6 +1136,16 @@ Jag drar onboarding-frågorna när du svarat på det.</pre>
       <p class="idea-name">CHANGELOG.md<span class="idea-link-arrow">↗</span></p>
       <p class="idea-desc">Se hur skillen har vuxit — varje upptäckt loggad med datum + projekt. En lång lista över all kunskap som flowat in från riktiga Valtech-projekt över tid. Skillens biografi.</p>
     </a>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  OUTRO ICON                             ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="outro">
+  <div class="icon-wrap">
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/></svg>
+    <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">Du är en riktig hacker!</span><span class="bubble-type"></span></div>
   </div>
 </section>
 
@@ -1127,8 +1418,74 @@ Jag drar onboarding-frågorna när du svarat på det.</pre>
   requestAnimationFrame(render);
   }
   spawn("ascii");
-  spawn("ascii-bg");
 })();
+</script>
+
+<script>
+  // Outro icon — intro hop + bubble on scroll-into-view, hover adds the arm wave
+  (function() {
+    var icon = document.querySelector('.tw-icon');
+    if (!icon) return;
+
+    var isPlaying = false;
+
+    function playIntro() {
+      if (isPlaying) return;
+      isPlaying = true;
+      icon.classList.add('jumping');
+      setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+      setTimeout(function() {
+        var bubble = document.querySelector('.speech-bubble');
+        var typeEl = bubble && bubble.querySelector('.bubble-type');
+        if (!bubble || !typeEl) return;
+        bubble.classList.add('visible');
+        var fullText = 'Du är en riktig hacker!';
+        var i = 0;
+        function step() {
+          i++;
+          typeEl.textContent = fullText.substring(0, i);
+          if (i < fullText.length) {
+            setTimeout(step, 70);
+          } else {
+            setTimeout(function() { icon.classList.add('wink'); }, 800);
+            setTimeout(function() { icon.classList.remove('wink'); }, 1050);
+          }
+        }
+        setTimeout(step, 600);
+      }, 1500);
+      setTimeout(function() { isPlaying = false; }, 1900);
+    }
+
+    function playHover() {
+      if (isPlaying) return;
+      isPlaying = true;
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
+      icon.classList.add('jumping');
+      setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+      setTimeout(function() { icon.classList.add('waving'); }, 1700);
+      setTimeout(function() { icon.classList.remove('waving'); }, 2740);
+      setTimeout(function() { icon.classList.add('blink'); }, 2900);
+      setTimeout(function() { icon.classList.remove('blink'); }, 3080);
+      setTimeout(function() { isPlaying = false; }, 3200);
+    }
+
+    icon.addEventListener('mouseenter', playHover);
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            setTimeout(playIntro, 800);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(icon);
+    } else {
+      setTimeout(playIntro, 800);
+    }
+  })();
 </script>
 
 </body>

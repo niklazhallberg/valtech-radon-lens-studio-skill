@@ -6,8 +6,25 @@
 <title>Lens Studio AI Skill — Manual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
@@ -461,13 +478,11 @@
     display: block;
     text-decoration: none;
     color: inherit;
-    border-bottom: none;
     transition: background 0.2s, border-color 0.2s, transform 0.2s;
   }
   a.idea-link:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--accent);
-    border-bottom: 1px solid var(--accent);
     transform: translateY(-2px);
   }
   .idea-link-arrow {
@@ -514,6 +529,142 @@
       rgba(5, 7, 9, 0.95) 100%);
     pointer-events: none;
     z-index: 99;
+  }
+
+  /* ── Outro icon + speech bubble (matches MANUAL-SIMPLE) ─────── */
+  .outro {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 40px 12px;
+  }
+  .tw-icon {
+    display: inline-block;
+    width: clamp(42px, 4.6vw, 62px);
+    height: clamp(42px, 4.6vw, 62px);
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+  .icon-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .speech-bubble {
+    position: absolute;
+    left: 105%;
+    bottom: 100%;
+    background: var(--ink-85);
+    color: var(--bg);
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(13px, 1.4vw, 17px);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    border-radius: 0;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 140ms steps(2), transform 140ms steps(2);
+    pointer-events: none;
+  }
+  .speech-bubble.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: bubble-drift 4.8s steps(1) infinite 300ms;
+  }
+  @keyframes bubble-drift {
+    0%, 100% { transform: translate(0, 0); }
+    25%      { transform: translate(0, -1px); }
+    50%      { transform: translate(1px, -1px); }
+    75%      { transform: translate(1px, 0); }
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    top: 0;
+    left: 0;
+  }
+  .speech-bubble.visible::before {
+    animation: bubble-bite 7s steps(1) infinite 1s;
+  }
+  @keyframes bubble-bite {
+    0%, 17%   { opacity: 0; }
+    18%, 35%  { opacity: 1; width: 4px; height: 4px; top: 0; left: 0; right: auto; bottom: auto; }
+    36%, 47%  { opacity: 0; }
+    48%, 62%  { opacity: 1; width: 5px; height: 3px; top: 0; right: 0; left: auto; bottom: auto; }
+    63%, 74%  { opacity: 0; }
+    75%, 93%  { opacity: 1; width: 3px; height: 5px; bottom: 0; right: 0; top: auto; left: auto; }
+    94%, 100% { opacity: 0; }
+  }
+  .bubble-ghost {
+    visibility: hidden;
+    white-space: nowrap;
+  }
+  .bubble-type {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    white-space: nowrap;
+  }
+  .bubble-bite-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 5px;
+    height: 5px;
+    background: var(--ink-85);
+    box-shadow:
+      -5px 0 0 var(--ink-85),
+      5px 0 0 var(--ink-85),
+      0 5px 0 var(--ink-85);
+  }
+  .tw-icon .tw-eye {
+    opacity: 0;
+    transition: opacity 60ms linear;
+  }
+  .tw-icon.blink .tw-eye { opacity: 1; }
+  .tw-icon.wink .tw-eye-r { opacity: 1; }
+  @keyframes tw-jump {
+    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    28%  { transform: translateY(-8px); animation-timing-function: linear; }
+    45%  { transform: translateY(-9px); animation-timing-function: linear; }
+    62%  { transform: translateY(-8px); animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.jumping { animation: tw-jump 720ms ease-out 2; }
+  .tw-icon.ready { cursor: pointer; }
+  @keyframes tw-wave {
+    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    50%  { transform: translateY(-2px); animation-timing-function: cubic-bezier(0.55, 0, 0.7, 0.3); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.waving .tw-arm-r { animation: tw-wave 520ms 2; }
+  @media (prefers-reduced-motion: reduce) {
+    .tw-icon.jumping { animation: none; }
+    .tw-icon.waving .tw-arm-r { animation: none; }
+    .tw-icon .tw-eye { opacity: 0; }
+    .speech-bubble { transition: none; }
+    .speech-bubble.visible,
+    .speech-bubble.visible::before { animation: none; }
   }
 </style>
 </head>
@@ -580,35 +731,32 @@
 <!-- ║  STEP 1                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-1">
-  <span class="micro">Step 01 of 04</span>
+  <span class="micro">Step 01 of 08</span>
   <h2>Install Claude Code</h2>
   <p class="lede">Claude Code is the brain that builds your filter. It runs locally on your own machine — no cloud, no separate account beyond your Anthropic login.</p>
 
   <div class="step-grid">
     <div class="step-do">
       <h3>What you do</h3>
-      <p><strong>1.</strong> Open the Terminal app (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter). Paste this and press Enter — the install takes a minute or so:</p>
+      <p><strong>1.</strong> Open the Terminal app (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter).</p>
+      <p><strong>2.</strong> Paste this and press Enter — the install takes a minute or so:</p>
       <div class="code-block compact">
         <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
         <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Copy</button>
-      </div>
-      <p><strong>2.</strong> When the install is done — verify with this in the same terminal:</p>
-      <div class="code-block compact">
-        <pre><code>claude --version</code></pre>
-        <button class="copy-btn" data-copy="claude --version">Copy</button>
       </div>
     </div>
 
     <div class="step-see">
       <h3>What you see when it worked</h3>
-      <p>In the terminal, after <code>claude --version</code>, you should see a version number:</p>
-      <pre class="output">claude code 1.x.x</pre>
-      <p>The exact number doesn't matter — what matters is that you <em>get</em> a response (not "command not found").</p>
+      <p>The terminal shows download + install steps, something like:</p>
+      <pre class="output">Downloading Claude Code...
+Installing to /usr/local/bin/claude
+Installation complete.</pre>
+      <p>When the prompt is back and you can type again — the install is done.</p>
 
       <details class="hint-collapsible">
         <summary>Not working?</summary>
         <ul>
-          <li><strong>"command not found: claude"</strong> — the install ran, but the terminal doesn't know where <code>claude</code> lives yet. Close the terminal, open a new one. Usually fixes it.</li>
           <li><strong>The curl command crashes</strong> — most common cause is the internet broke mid-install. Run the same command again.</li>
           <li><strong>Don't know what Terminal is</strong> — it's a black or dark-green window where you type commands instead of clicking. Open Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) and type "Terminal".</li>
         </ul>
@@ -621,7 +769,206 @@
 <!-- ║  STEP 2                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-2">
-  <span class="micro">Step 02 of 04</span>
+  <span class="micro">Step 02 of 08</span>
+  <h2>Verify the installation</h2>
+  <p class="lede">Before we move on — confirm that the <code>claude</code> command is actually reachable from your terminal.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>What you do</h3>
+      <p>In the same terminal, run:</p>
+      <div class="code-block compact">
+        <pre><code>claude --version</code></pre>
+        <button class="copy-btn" data-copy="claude --version">Copy</button>
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>What you see when it worked</h3>
+      <p>A version number:</p>
+      <pre class="output">claude code 1.x.x</pre>
+      <p>The exact number doesn't matter — what matters is that you <em>get</em> a response (not "command not found").</p>
+
+      <details class="hint-collapsible">
+        <summary>Not working?</summary>
+        <ul>
+          <li><strong>"command not found: claude"</strong> — the install ran, but the terminal doesn't know where <code>claude</code> lives yet. Close the terminal, open a new one. Usually fixes it.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 3                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-3">
+  <span class="micro">Step 03 of 08</span>
+  <h2>Accept the invitation</h2>
+  <p class="lede">The skill lives on GitHub as a private repo. Niklaz has sent you an invitation — you need to accept it to gain access.</p>
+  <p>GitHub is a cloud service for code and files — like Google Drive, but for development projects. The skill lives here. Every time someone discovers something new, we send that learning back — the more we use the skill, the smarter it gets for the next colleague.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>What you do</h3>
+      <p><strong>1.</strong> Open the email from Niklaz Hallberg.</p>
+      <p><strong>2.</strong> Click the blue <strong>View invitation</strong> button.</p>
+      <p><strong>3.</strong> If GitHub asks you to sign in — sign in. If you don't have an account yet, click <em>Create an account</em>, sign up, and verify your email.</p>
+      <p><strong>4.</strong> Once signed in, you'll see a GitHub page with the invitation. Click <strong>Accept invitation</strong>.</p>
+
+      <div class="hint">
+        Use the same email address the invitation was sent to. Otherwise GitHub may show a 404 (Repository not found).
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>What you see when it worked</h3>
+      <p>After clicking Accept invitation, the GitHub repo's front page shows a confirmation:</p>
+      <pre class="output">You are now a collaborator on
+niklazhallberg/valtech-radon-lens-studio-skill</pre>
+      <p>You can now see the repo files via the web. Good signal — move on to the next step.</p>
+
+      <details class="hint-collapsible">
+        <summary>Not working?</summary>
+        <ul>
+          <li><strong>404 "Repository not found"</strong> — you're probably signed into the wrong GitHub account. Sign out, click <em>View invitation</em> in the email again, sign in with the right account.</li>
+          <li><strong>Invitation expired</strong> — invitations are valid for 7 days. Ask Niklaz to send a new one.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 4                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-4">
+  <span class="micro">Step 04 of 08</span>
+  <h2>Install GitHub CLI</h2>
+  <p class="lede">We need a tool called <code>gh</code> that lets the terminal talk to GitHub — so that <code>git clone</code> in the next step works without asking for a password.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>What you do</h3>
+      <p><strong>1.</strong> Go to the download page in your browser:</p>
+      <div class="code-block compact">
+        <pre><code>https://cli.github.com/</code></pre>
+        <button class="copy-btn" data-copy="https://cli.github.com/">Copy</button>
+      </div>
+      <p><strong>2.</strong> Click the white <strong>Download for Mac</strong> button.</p>
+      <p><strong>3.</strong> Open the downloaded <code>.pkg</code> file and follow the installer steps. Just like any other Mac app.</p>
+
+      <div class="hint">
+        Already using Homebrew? You can instead run <code>brew install gh</code> in the terminal.
+      </div>
+    </div>
+
+    <div class="step-see">
+      <h3>What you see when it worked</h3>
+      <p>Verify the install with:</p>
+      <div class="code-block compact">
+        <pre><code>gh --version</code></pre>
+        <button class="copy-btn" data-copy="gh --version">Copy</button>
+      </div>
+      <p>You should see something like:</p>
+      <pre class="output">gh version 2.x.x</pre>
+
+      <details class="hint-collapsible">
+        <summary>Not working?</summary>
+        <ul>
+          <li><strong>"command not found: gh"</strong> — the install is done but the terminal doesn't see it yet. Close the terminal and open a new one.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 5                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-5">
+  <span class="micro">Step 05 of 08</span>
+  <h2>Sign in to GitHub from the terminal</h2>
+  <p class="lede">Two commands. The first signs you in, the second tells git to use the sign-in automatically for all future <code>git</code> commands.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>What you do</h3>
+      <p><strong>1.</strong> In the terminal, run:</p>
+      <div class="code-block compact">
+        <pre><code>gh auth login</code></pre>
+        <button class="copy-btn" data-copy="gh auth login">Copy</button>
+      </div>
+      <p>Follow the prompts: choose <em>GitHub.com</em>, choose <em>HTTPS</em>, log in via the browser. Click <strong>Authorize</strong> in the browser when asked.</p>
+      <p><strong>2.</strong> Once back in the terminal — run:</p>
+      <div class="code-block compact">
+        <pre><code>gh auth setup-git</code></pre>
+        <button class="copy-btn" data-copy="gh auth setup-git">Copy</button>
+      </div>
+      <p>This makes all future <code>git</code> commands use your GitHub login without asking for a password.</p>
+    </div>
+
+    <div class="step-see">
+      <h3>What you see when it worked</h3>
+      <p>After <code>gh auth login</code>:</p>
+      <pre class="output">✓ Authentication complete.
+✓ Logged in as @your-username</pre>
+      <p>After <code>gh auth setup-git</code>:</p>
+      <pre class="output">✓ Configured git protocol</pre>
+
+      <details class="hint-collapsible">
+        <summary>Not working?</summary>
+        <ul>
+          <li><strong>Browser doesn't open automatically</strong> — copy the URL shown in the terminal and paste it into your browser manually.</li>
+          <li><strong>"Authorization failed"</strong> — you signed in with the wrong GitHub account. Run <code>gh auth logout</code> and start over.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 6                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-6">
+  <span class="micro">Step 06 of 08</span>
+  <h2>Download the Lens Skill</h2>
+  <p class="lede">Now we can clone the skill repo to your machine. With GitHub CLI set up in the previous step, it happens without prompts.</p>
+
+  <div class="step-grid">
+    <div class="step-do">
+      <h3>What you do</h3>
+      <p>In the terminal, run:</p>
+      <div class="code-block compact">
+        <pre><code>git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</code></pre>
+        <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Copy</button>
+      </div>
+      <p>The files download to a new folder in your current terminal location.</p>
+    </div>
+
+    <div class="step-see">
+      <h3>What you see when it worked</h3>
+      <pre class="output">Cloning into 'valtech-radon-lens-studio-skill'...
+remote: Enumerating objects: ...
+Receiving objects: 100% ... done.</pre>
+      <p>When you run <code>ls</code> you'll now see the folder <code>valtech-radon-lens-studio-skill/</code>.</p>
+
+      <details class="hint-collapsible">
+        <summary>Not working?</summary>
+        <ul>
+          <li><strong>"Repository not found"</strong> or 404 — go back to Step 03 and confirm the invitation was accepted with the same GitHub account you signed in with in Step 05.</li>
+          <li><strong>Prompted for username/password</strong> — Step 05's <code>gh auth setup-git</code> didn't run. Run <code>gh auth setup-git</code> again and try the clone once more.</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  STEP 7                                 ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="step-7">
+  <span class="micro">Step 07 of 08</span>
   <h2>Start Claude Code</h2>
   <p class="lede">Now you open the Claude session itself — that's where the two of you (you and Claude) actually talk.</p>
 
@@ -633,11 +980,10 @@
         <pre><code>claude</code></pre>
         <button class="copy-btn" data-copy="claude">Copy</button>
       </div>
-      <p>Press Enter.</p>
-      <p>The first time you start Claude Code it'll ask you to log in via the browser — it automatically opens a page at Anthropic. Log in there, come back to the terminal.</p>
+      <p>Press Enter. The first time you start Claude Code, a browser opens for Anthropic login. Log in there, come back to the terminal.</p>
 
       <div class="hint">
-        <strong>Need an account?</strong> Claude Code requires an Anthropic account. If you don't have one — ask your lead or IT for access via Valtech's account. Otherwise you can get stuck at login without understanding why.
+        <strong>Need an Anthropic account?</strong> Claude Code requires one. If you don't have one — ask your lead or IT for access via Valtech's account.
       </div>
     </div>
 
@@ -662,104 +1008,39 @@ Type your message to begin:
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 3 — THE MAGIC                     ║ -->
+<!-- ║  STEP 8 — THE MAGIC                     ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
-<div class="step-3-wrap">
-<div class="ghost-bg" aria-hidden="true"><pre id="ascii-bg"></pre></div>
-<section class="section step" id="step-3">
-  <span class="micro">Step 03 of 04 · this is the magic</span>
-  <h2>Paste the setup prompt</h2>
-  <p class="lede">This is the only thing you really need to remember. Copy the text below, paste it into Claude Code, press Enter. Claude takes over from there — diagnoses what you have, what's missing, and walks you through it.</p>
-
-  <div class="prompt-block">
-    <div class="prompt-header">
-      <span>SETUP PROMPT — copy the whole thing</span>
-    </div>
-    <pre id="setup-prompt-text">I'm a new user who wants to build a Snapchat filter via you and Lens Studio. I just installed you (Claude Code) and nothing else is in place yet. Help me get started.
-
-First, run a diagnostic on what exists / is missing on my machine:
-
-1. Lens Studio installed? Check if the folder `/Applications/Lens Studio.app` exists on Mac, or if `lens-studio` is in PATH on Windows/Linux.
-
-2. Is the lens-studio-snapchat-filter skill installed? Check if `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` exists.
-
-3. MCP server registered between you and Lens Studio? Run `claude mcp list` and look for a row with `lens-studio`.
-
-Report what you found — what's there, what's missing. Then guide me through what's missing, one step at a time. Wait for my 'done' after each step before moving on.
-
-Explain each step in plain language. I'm a digital designer, not a developer. Use mentor tone — you're a colleague helping me, not a system running a setup wizard. Tell me what I'll see in Lens Studio and in the terminal when each step succeeds.
-
-When everything is in place: ask what my lens project is about (client + rough idea) and run your usual onboarding questions. You're the filter-build expert now — guide me all the way from idea to submission.</pre>
-    <button class="copy-btn" data-copy-target="#setup-prompt-text">Copy all</button>
-  </div>
+<section class="section step" id="step-8">
+  <span class="micro">Step 08 of 08 · this is the magic</span>
+  <h2>Activate the skill</h2>
+  <p class="lede">Last step. Tell Claude what you want to build — and the skill activates and takes over from there.</p>
 
   <div class="step-grid">
     <div class="step-do">
       <h3>What you do</h3>
-      <p><strong>1.</strong> Click "Copy all" on the block above.</p>
-      <p><strong>2.</strong> Go back to the Claude Code terminal (where the cursor was blinking).</p>
-      <p><strong>3.</strong> Paste: <kbd>⌘</kbd>+<kbd>V</kbd> on Mac, <kbd>Ctrl</kbd>+<kbd>V</kbd> on Windows.</p>
-      <p><strong>4.</strong> Press Enter.</p>
+      <p>Paste this into Claude Code (the cursor from Step 07) — press Enter:</p>
+      <div class="code-block compact">
+        <pre><code>Time to wake up! Let&rsquo;s create a Snapchat lens.</code></pre>
+        <button class="copy-btn" data-copy="Time to wake up! Let's create a Snapchat lens.">Copy</button>
+      </div>
+      <p>This is the starting gun. From here on Claude is your colleague — they guide you through Lens Studio setup, project onboarding, and the entire filter build.</p>
 
       <div class="hint">
-        It's fine to paste a long block of text into the terminal. Claude Code can handle multiple lines at once. You don't need to press Enter between lines.
+        Unsure about a step later? Tell Claude in plain language: <em>"I don't understand what you mean by [X]"</em>. They'll rephrase and explain it more simply.
       </div>
     </div>
 
     <div class="step-see">
       <h3>What you see when it worked</h3>
-      <p>Claude starts replying — first with "Running a diagnostic..." or similar. Then lists what's there and what's missing on your machine. Something like:</p>
-      <pre class="output">Checking your machine now...
+      <p>Claude replies by activating the skill + the onboarding flow. Something like:</p>
+      <pre class="output">Hey! The skill is active. Before we begin — do you
+have Lens Studio installed on your machine? (That's
+where we build the filter.)
 
-✓ Claude Code: running (that's you talking to me)
-✗ Lens Studio: app not found
-✗ Filter skill: not installed
-✗ MCP server: not registered
-
-We need to fix three things. We'll take them one at a time...</pre>
-      <p>Then Claude walks you through the first step — installing Lens Studio. You follow their guidance. From here it's THEM, not the manual.</p>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 4                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-4">
-  <span class="micro">Step 04 of 04</span>
-  <h2>Follow Claude's guidance</h2>
-  <p class="lede">From here you're no longer following a manual. You're following Claude. They're a colleague who knows what they're doing.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p>Claude will tell you what the next step is. It might be:</p>
-      <ul style="color: var(--ink-85); margin: 12px 0 0 20px; line-height: 1.8;">
-        <li>Download Lens Studio from ar.snap.com</li>
-        <li>Click a specific button in Lens Studio</li>
-        <li>Paste a configuration into the terminal</li>
-        <li>Save a file</li>
-      </ul>
-      <p style="margin-top: 16px;">When you've done the step — type <strong>"done"</strong> in the terminal, press Enter. Claude verifies and moves on.</p>
-
-      <div class="hint">
-        Unsure about a step? Tell Claude in plain language: <em>"I don't understand what you mean by [X]"</em>. They'll rephrase and explain it more simply.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when everything's ready</h3>
-      <p>When all three missing pieces (Lens Studio, skill, MCP) are in place, Claude says:</p>
-      <pre class="output">Everything in place — now we can start building.
-
-Tell me a bit about the filter you want to make:
+Also tell me a bit about the filter you want to make:
 - Which client/project?
-- Rough idea — what should the user experience?
-- Timeline if you have one
-
-I'll pull up the onboarding questions once you answer.</pre>
-      <p>That's the starting gun. From here on it's filter-building — Claude knows the whole path from idea to a finished lens.</p>
+- Rough idea — what should the user experience?</pre>
+      <p>From here it's no longer the manual driving. You're following Claude. They're a colleague who knows what they're doing.</p>
     </div>
   </div>
 </section>
@@ -855,6 +1136,16 @@ I'll pull up the onboarding questions once you answer.</pre>
       <p class="idea-name">CHANGELOG.md<span class="idea-link-arrow">↗</span></p>
       <p class="idea-desc">See how the skill has grown — every discovery logged with date + project. A long list of all the knowledge that's flowed in from real Valtech projects over time. The skill's biography.</p>
     </a>
+  </div>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  OUTRO ICON                             ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="outro">
+  <div class="icon-wrap">
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/></svg>
+    <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
   </div>
 </section>
 
@@ -1127,8 +1418,74 @@ I'll pull up the onboarding questions once you answer.</pre>
   requestAnimationFrame(render);
   }
   spawn("ascii");
-  spawn("ascii-bg");
 })();
+</script>
+
+<script>
+  // Outro icon — intro hop + bubble on scroll-into-view, hover adds the arm wave
+  (function() {
+    var icon = document.querySelector('.tw-icon');
+    if (!icon) return;
+
+    var isPlaying = false;
+
+    function playIntro() {
+      if (isPlaying) return;
+      isPlaying = true;
+      icon.classList.add('jumping');
+      setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+      setTimeout(function() {
+        var bubble = document.querySelector('.speech-bubble');
+        var typeEl = bubble && bubble.querySelector('.bubble-type');
+        if (!bubble || !typeEl) return;
+        bubble.classList.add('visible');
+        var fullText = 'You did it!';
+        var i = 0;
+        function step() {
+          i++;
+          typeEl.textContent = fullText.substring(0, i);
+          if (i < fullText.length) {
+            setTimeout(step, 70);
+          } else {
+            setTimeout(function() { icon.classList.add('wink'); }, 800);
+            setTimeout(function() { icon.classList.remove('wink'); }, 1050);
+          }
+        }
+        setTimeout(step, 600);
+      }, 1500);
+      setTimeout(function() { isPlaying = false; }, 1900);
+    }
+
+    function playHover() {
+      if (isPlaying) return;
+      isPlaying = true;
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
+      icon.classList.add('jumping');
+      setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+      setTimeout(function() { icon.classList.add('waving'); }, 1700);
+      setTimeout(function() { icon.classList.remove('waving'); }, 2740);
+      setTimeout(function() { icon.classList.add('blink'); }, 2900);
+      setTimeout(function() { icon.classList.remove('blink'); }, 3080);
+      setTimeout(function() { isPlaying = false; }, 3200);
+    }
+
+    icon.addEventListener('mouseenter', playHover);
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            setTimeout(playIntro, 800);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(icon);
+    } else {
+      setTimeout(playIntro, 800);
+    }
+  })();
 </script>
 
 </body>

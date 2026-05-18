@@ -7,8 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script src="https://cdn.jsdelivr.net/gh/darkroomengineering/lenis@1.1.20/dist/lenis.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
@@ -298,7 +315,9 @@
     text-transform: uppercase;
     color: var(--ink-35);
     margin-top: 14px;
+    margin-bottom: 18px;
   }
+  .story .hint:last-child { margin-bottom: 0; }
 
   /* ── Compact value (URL / command) ─────────── */
   .value-block {
@@ -327,11 +346,15 @@
     position: static;
     flex-shrink: 0;
   }
-  .value-block.wide { max-width: min(820px, 96vw); }
+  .value-block.wide {
+    max-width: min(820px, 96vw);
+    gap: 18px;
+  }
   .value-block.wide .value {
     white-space: nowrap;
     overflow-x: auto;
     word-break: normal;
+    padding-right: 8px;
   }
 
   .paste-block {
@@ -479,7 +502,7 @@
   <span class="story-num">Then</span>
   <h2>Accept the invitation</h2>
   <p class="copy">Open the email from Niklaz Hallberg. Click <strong>View invitation</strong>.</p>
-  <p class="copy">If GitHub asks you to sign in &mdash; sign in. If you don&rsquo;t have an account yet, click &ldquo;Create an account&rdquo;, sign up, and verify your email.</p>
+  <p class="copy">If you don&rsquo;t have a GitHub account yet, click &ldquo;Create an account&rdquo;, sign up, and verify your email.</p>
   <p class="hint">Click <em>Accept invitation</em> on the GitHub page once you&rsquo;re signed in.</p>
 </section>
 
@@ -492,7 +515,7 @@
     <a class="value url" href="https://cli.github.com/" target="_blank" rel="noopener">https://cli.github.com/</a>
     <button class="copy-btn" data-copy="https://cli.github.com/">Copy</button>
   </div>
-  <p class="hint">Run the <code>.pkg</code> installer like any other Mac app.</p>
+  <p class="hint">Click <strong>Download for Mac</strong> on the page, then run the installer.</p>
 </section>
 
 <!-- 05 — Sign in to GitHub -->
@@ -510,7 +533,6 @@
     <span class="value">gh auth setup-git</span>
     <button class="copy-btn" data-copy="gh auth setup-git">Copy</button>
   </div>
-  <p class="hint">This makes future <code>git</code> commands use your GitHub login automatically &mdash; no more prompts.</p>
 </section>
 
 <!-- 06 — Clone repo -->
@@ -522,7 +544,6 @@
     <span class="value">git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</span>
     <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Copy</button>
   </div>
-  <p class="hint">If you see <code>Repository not found</code> or a 404 &mdash; go back to Step 03 and make sure the invitation was accepted with the same GitHub account you signed in with in Step 05.</p>
 </section>
 
 <!-- 07 — Start -->
@@ -550,7 +571,7 @@
 <!-- Outro -->
 <section class="outro">
   <div class="icon-wrap">
-    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg>
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/></svg>
     <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
   </div>
 </section>

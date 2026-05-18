@@ -19,6 +19,27 @@ but adapted for skill evolution rather than a software API.
 
 _New learnings registered from past or ongoing Valtech RADON projects._
 
+### 💡 2026-05-18 19:57 — [project: skill-meta]
+- **Manualerna funkar nu utan internet — Handjet är självhostad lokalt**:
+  pixel-fonten Handjet låg tidigare bara på Google Fonts CDN. Om en kollega
+  satt på en konferens med dåligt wifi eller startade manualen offline efter
+  download, föll typografin tillbaka till Space Grotesk och hela den
+  "retro-terminal-pixel"-känsla som binder ihop hero, koderblock och
+  outro-bubblan försvann.
+  - **Fonten är nu lokal**: `docs/assets/fonts/handjet/handjet-latin.woff2`
+    + `handjet-latin-ext.woff2` (totalt ~15 KB — variable font, hela
+    weight-spannet 100-900 i en enda fil per unicode-range).
+  - **Tre HTML-filer uppdaterade** (MANUAL-SIMPLE, MANUAL, MANUAL-EN) med
+    `@font-face`-deklarationer som pekar på lokala filerna, plus Handjet
+    borttagen ur Google Fonts CDN-URLen.
+  - **Space Grotesk + JetBrains Mono ligger kvar på CDN** — de är
+    fallback-säkra och pixel-fonten är den enda som verkligen "kraschar
+    estetiken" om den saknas.
+
+**Value for user:** manualen håller sin visuella identitet även när
+nätverket är opålitligt; en designer som öppnar `MANUAL-SIMPLE.html` på
+ett café eller en kunds gästnät ser samma sak som lokalt.
+
 ### 💡 2026-05-18 15:05 — [project: skill-meta]
 - **Pass 0 — Image-to-3D Generation: the skill can now mentor the whole
   chain idea → image → 3D → compression → import → publish**: previously,
