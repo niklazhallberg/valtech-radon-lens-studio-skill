@@ -51,7 +51,7 @@
     background: rgba(5, 7, 9, 0.6);
   }
   .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-35); }
-  .nav-badge { font-size: 10px; font-weight: 500; color: var(--ink-45); letter-spacing: 1px; text-transform: uppercase; }
+  .nav-badge { font-size: 11px; font-weight: 600; color: var(--ink-45); letter-spacing: 1.5px; text-transform: uppercase; }
 
   /* ── Hero (animation only) ─────────────────── */
   .hero {
@@ -139,58 +139,10 @@
     text-align: center;
     padding: 140px 40px 12px;
   }
-  .outro h3 {
-    font-family: 'Handjet', 'Space Grotesk', sans-serif;
-    font-size: clamp(11px, 1.1vw, 16px);
-    font-weight: 400;
-    color: var(--ink-85);
-    line-height: 1.2;
-    letter-spacing: -0.005em;
-    white-space: nowrap;
-    max-width: none;
-  }
-  .tw-cursor {
-    display: inline-block;
-    width: 0.32em;
-    height: 0.7em;
-    background: var(--ink-85);
-    margin-left: 0;
-    vertical-align: -0.08em;
-    opacity: 0;
-  }
-  .tw-cursor.idle { animation: tw-blink 1s steps(1) infinite; }
-  .tw-cursor.typing { animation: none; opacity: 1; }
-  .tw-cursor.done { animation: tw-blink 1.4s steps(1) infinite; }
-  @keyframes tw-blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-  .tw-line {
-    display: inline-block;
-    position: relative;
-    text-align: left;
-    vertical-align: top;
-  }
-  .tw-ghost {
-    visibility: hidden;
-    white-space: nowrap;
-  }
-  .tw-ghost-pad {
-    display: inline-block;
-    width: 2.5em;
-  }
-  .tw-content {
-    position: absolute;
-    left: 0;
-    top: 0;
-    white-space: nowrap;
-  }
   .tw-icon {
     display: inline-block;
-    width: 1.4em;
-    height: 1.4em;
-    vertical-align: -0.32em;
-    margin: 0 12px 0 0;
+    width: clamp(32px, 3.5vw, 48px);
+    height: clamp(32px, 3.5vw, 48px);
     transform-origin: 50% 100%;
     will-change: transform;
   }
@@ -215,16 +167,9 @@
   }
   .tw-icon.waving .tw-arm-r { animation: tw-wave 520ms 2; }
   @media (prefers-reduced-motion: reduce) {
-    .tw-cursor { animation: none; opacity: 0; }
     .tw-icon.jumping { animation: none; }
     .tw-icon.waving .tw-arm-r { animation: none; }
     .tw-icon .tw-eye { opacity: 0; }
-  }
-  @media (max-width: 900px) {
-    .outro h3 { white-space: normal; font-size: clamp(16px, 2.8vw, 22px); }
-    .tw-line { display: block; }
-    .tw-ghost { display: none; }
-    .tw-content { position: static; white-space: normal; }
   }
   .story-num {
     font-size: 11px;
@@ -387,7 +332,7 @@
 <body>
 
 <nav class="nav">
-  <span class="nav-brand">V_RADON | Lens Studio Skill</span>
+  <span class="nav-brand">Lens Studio Skill</span>
   <span class="nav-badge">INVITATION</span>
 </nav>
 
@@ -467,12 +412,7 @@
 
 <!-- Outro -->
 <section class="outro">
-  <h3>
-    <span class="tw-line">
-      <span class="tw-ghost" aria-hidden="true"><span class="tw-ghost-pad"></span>Just follow along &mdash; and create something fun!</span>
-      <span class="tw-content"><svg class="tw-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg><span class="tw-text" data-text="Just follow along &mdash; and create something fun!"></span><span class="tw-cursor" aria-hidden="true"></span></span>
-    </span>
-  </h3>
+  <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg>
 </section>
 
 <footer class="footer">
@@ -537,110 +477,23 @@
     sections.forEach(function(s) { io.observe(s); });
   })();
 
-  // Typewriter effect on outro H3
+  // Outro icon — hover replays the hop + arm wave + eye blink sequence
   (function() {
-    var outro = document.querySelector('.outro');
-    var target = document.querySelector('.tw-text');
-    var cursor = document.querySelector('.tw-cursor');
-    if (!outro || !target || !cursor) return;
+    var icon = document.querySelector('.tw-icon');
+    if (!icon) return;
 
-    var fullText = target.dataset.text || '';
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
-      target.innerHTML = fullText;
-      cursor.style.display = 'none';
-      return;
-    }
-
-    var started = false;
-    function start() {
-      if (started) return;
-      started = true;
-
-      // Sequence: icon jumps × 2 → eye-blinks × 2 (intro only) → cursor keeps blinking → typing
-      var icon = document.querySelector('.tw-icon');
-      var playJump = function(withBlink) {
-        if (!icon || icon.classList.contains('jumping')) return;
-        icon.classList.add('jumping');
-        setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
-        if (withBlink) {
-          var eyeBlink = function(delay) {
-            setTimeout(function() { icon.classList.add('blink'); }, delay);
-            setTimeout(function() { icon.classList.remove('blink'); }, delay + 180);
-          };
-          eyeBlink(1600);
-          eyeBlink(2300);
-        }
-      };
-      playJump(true);
-      // Cursor starts blinking only after the 2 jumps complete
-      setTimeout(function() { cursor.classList.add('idle'); }, 1500);
-
-      // After typing completes the icon becomes hoverable — re-trigger jump + wave on hover (no eye-blink)
-      var hoverPlaying = false;
-      if (icon) {
-        icon.addEventListener('mouseenter', function() {
-          if (!icon.classList.contains('ready') || hoverPlaying) return;
-          hoverPlaying = true;
-          playJump();
-          setTimeout(function() { icon.classList.add('waving'); }, 1700);
-          setTimeout(function() { icon.classList.remove('waving'); }, 2740);
-          // Eye-blink after the wave
-          setTimeout(function() { icon.classList.add('blink'); }, 2900);
-          setTimeout(function() { icon.classList.remove('blink'); }, 3080);
-          setTimeout(function() { hoverPlaying = false; }, 3200);
-        });
-      }
-
-      // Typing starts after the jump+blink choreography, leaving room for cursor blinks
-      setTimeout(function() {
-        cursor.classList.remove('idle');
-        cursor.classList.add('typing');
-        var i = 0;
-        var step = function() {
-          i++;
-          target.innerHTML = fullText.substring(0, i);
-          if (i < fullText.length) {
-            // Non-linear "human typing" pacing:
-            //   slow warm-up over first ~40% (deliberate),
-            //   gradual hesitation through middle,
-            //   slows again through last ~45% with random "thinking" hesitations
-            //   so the closing phrase ('and create something fun! :)') lands varied & unhurried.
-            //   Extra pauses after punctuation/em-dash.
-            var progress = i / fullText.length;
-            var startRamp = Math.max(0, 1 - progress * 2.5) * 1.3;
-            var endRamp = Math.max(0, (progress - 0.55) * 2.2) * 1.1;
-            var curve = 1 + 0.65 * Math.sin(progress * Math.PI) + startRamp + endRamp;
-            var prevChar = fullText.charAt(i - 1);
-            var pause = 0;
-            if (prevChar === '.' || prevChar === '!' || prevChar === '?') pause = 240;
-            else if (prevChar === ',' || prevChar === ';' || prevChar === ':') pause = 160;
-            else if (prevChar === '—' || prevChar === '-' || prevChar === '–') pause = 360;
-            // Occasional micro-hesitation in the latter half — adds varied rhythm
-            if (progress > 0.55 && Math.random() < 0.14) pause += 80 + Math.random() * 130;
-            var jitter = 20 + Math.random() * 26;
-            setTimeout(step, jitter * curve + pause);
-          } else {
-            // Done typing — cursor stays at end and resumes blinking, slower
-            cursor.classList.remove('typing');
-            cursor.classList.add('done');
-            if (icon) icon.classList.add('ready');
-          }
-        };
-        step();
-      }, 3000);
-    }
-
-    if (!('IntersectionObserver' in window)) { start(); return; }
-    var io2 = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          start();
-          io2.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.4 });
-    io2.observe(outro);
+    var hoverPlaying = false;
+    icon.addEventListener('mouseenter', function() {
+      if (hoverPlaying) return;
+      hoverPlaying = true;
+      icon.classList.add('jumping');
+      setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+      setTimeout(function() { icon.classList.add('waving'); }, 1700);
+      setTimeout(function() { icon.classList.remove('waving'); }, 2740);
+      setTimeout(function() { icon.classList.add('blink'); }, 2900);
+      setTimeout(function() { icon.classList.remove('blink'); }, 3080);
+      setTimeout(function() { hoverPlaying = false; }, 3200);
+    });
   })();
 </script>
 
