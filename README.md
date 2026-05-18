@@ -65,7 +65,7 @@ claude --version
 ```bash
 mkdir -p ~/.claude/skills
 cd ~/.claude/skills
-git clone https://github.com/niklazhallberg/lens-studio-snapchat-filter-skill.git lens-studio-snapchat-filter
+git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git lens-studio-snapchat-filter
 ```
 
 You must be invited as a collaborator on the private repository to clone it. See the **Access** section below.

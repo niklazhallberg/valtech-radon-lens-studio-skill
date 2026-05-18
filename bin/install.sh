@@ -130,10 +130,10 @@ Vi gör det manuellt eftersom GitHub-inloggning är personlig.
 2. Du får en inbjudan via mail — acceptera den
 3. Öppna terminalen och kör:
 
-   git clone git@github.com:niklazhallberg/lens-studio-snapchat-filter-skill.git ${SKILL_DIR}
+   git clone git@github.com:niklazhallberg/valtech-radon-lens-studio-skill.git ${SKILL_DIR}
 
    (Om SSH inte funkar, använd https-versionen:
-    git clone https://github.com/niklazhallberg/lens-studio-snapchat-filter-skill.git ${SKILL_DIR})
+    git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git ${SKILL_DIR})
 
 4. Kör install.sh igen — den fortsätter där den slutade"
 fi

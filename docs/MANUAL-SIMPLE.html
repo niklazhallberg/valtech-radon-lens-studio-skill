@@ -137,11 +137,11 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 96px 40px 56px;
+    padding: 140px 40px 12px;
   }
   .outro h3 {
     font-family: 'Handjet', 'Space Grotesk', sans-serif;
-    font-size: clamp(18px, 1.9vw, 28px);
+    font-size: clamp(13px, 1.3vw, 19px);
     font-weight: 500;
     color: var(--ink-85);
     line-height: 1.2;
@@ -152,23 +152,79 @@
   .tw-cursor {
     display: inline-block;
     width: 0.32em;
-    height: 0.9em;
+    height: 0.7em;
     background: var(--ink-85);
-    margin-left: 2px;
-    vertical-align: -0.06em;
-    animation: tw-blink 1s steps(1) infinite;
+    margin-left: 0;
+    vertical-align: -0.08em;
+    opacity: 0;
   }
+  .tw-cursor.idle { animation: tw-blink 1s steps(1) infinite; }
   .tw-cursor.typing { animation: none; opacity: 1; }
   .tw-cursor.done { animation: tw-blink 1.4s steps(1) infinite; }
   @keyframes tw-blink {
     0%, 49% { opacity: 1; }
     50%, 100% { opacity: 0; }
   }
+  .tw-line {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tw-ghost {
+    visibility: hidden;
+    white-space: nowrap;
+  }
+  .tw-ghost-pad {
+    display: inline-block;
+    width: 2.5em;
+  }
+  .tw-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+  }
+  .tw-icon {
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    vertical-align: -0.32em;
+    margin: 0 12px 0 0;
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+  .tw-icon .tw-eye {
+    opacity: 0;
+    transition: opacity 60ms linear;
+  }
+  .tw-icon.blink .tw-eye { opacity: 1; }
+  @keyframes tw-jump {
+    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    28%  { transform: translateY(-8px); animation-timing-function: linear; }
+    45%  { transform: translateY(-9px); animation-timing-function: linear; }
+    62%  { transform: translateY(-8px); animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.jumping { animation: tw-jump 720ms ease-out 2; }
+  .tw-icon.ready { cursor: pointer; }
+  @keyframes tw-wave {
+    0%   { transform: translateY(0);    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+    50%  { transform: translateY(-2px); animation-timing-function: cubic-bezier(0.55, 0, 0.7, 0.3); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.waving .tw-arm-r { animation: tw-wave 520ms 2; }
   @media (prefers-reduced-motion: reduce) {
     .tw-cursor { animation: none; opacity: 0; }
+    .tw-icon.jumping { animation: none; }
+    .tw-icon.waving .tw-arm-r { animation: none; }
+    .tw-icon .tw-eye { opacity: 0; }
   }
   @media (max-width: 900px) {
     .outro h3 { white-space: normal; font-size: clamp(16px, 2.8vw, 22px); }
+    .tw-line { display: block; }
+    .tw-ghost { display: none; }
+    .tw-content { position: static; white-space: normal; }
   }
   .story-num {
     font-size: 11px;
@@ -232,6 +288,12 @@
     position: static;
     flex-shrink: 0;
   }
+  .value-block.wide { max-width: min(820px, 96vw); }
+  .value-block.wide .value {
+    white-space: nowrap;
+    overflow-x: auto;
+    word-break: normal;
+  }
 
   .paste-block {
     background: var(--code-bg);
@@ -293,8 +355,8 @@
   }
 
   /* ── Footer ────────────────────────────────── */
-  .footer { padding: 56px 40px; text-align: center; }
-  .footer p { font-size: 10px; color: rgba(255,255,255,0.08); letter-spacing: 0.4px; }
+  .footer { padding: 20px 40px 16px; text-align: center; }
+  .footer p { font-size: 10px; color: rgba(255,255,255,0.22); letter-spacing: 0.4px; }
 
   @media (max-width: 640px) {
     .nav { padding: 16px 20px; }
@@ -326,7 +388,7 @@
 
 <nav class="nav">
   <span class="nav-brand">V_RADON | Lens Studio Skill</span>
-  <span class="nav-badge">Quick Start</span>
+  <span class="nav-badge">INVITATION</span>
 </nav>
 
 <!-- HERO — animation only -->
@@ -358,7 +420,30 @@
   </div>
 </section>
 
-<!-- 03 — Start -->
+<!-- 03 — Accept GitHub invitation -->
+<section class="story">
+  <span class="story-num">Then</span>
+  <h2>Accept the invitation</h2>
+  <p class="copy">Open the email from Niklaz Hallberg and click <em>View invitation</em>.</p>
+  <p class="copy">No GitHub account? Create one for free:</p>
+  <div class="value-block">
+    <a class="value url" href="https://github.com/signup" target="_blank" rel="noopener">https://github.com/signup</a>
+    <button class="copy-btn" data-copy="https://github.com/signup">Copy</button>
+  </div>
+</section>
+
+<!-- 04 — Clone repo -->
+<section class="story">
+  <span class="story-num">And then</span>
+  <h2>Download the Lens Skill</h2>
+  <p class="copy">In your terminal, run:</p>
+  <div class="value-block wide">
+    <span class="value">git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</span>
+    <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Copy</button>
+  </div>
+</section>
+
+<!-- 05 — Start -->
 <section class="story">
   <span class="story-num">And now</span>
   <h2>Let&rsquo;s get started</h2>
@@ -370,7 +455,7 @@
   <p class="hint">and press Enter</p>
 </section>
 
-<!-- 04 — Paste -->
+<!-- 06 — Paste -->
 <section class="story">
   <span class="story-num">Activate skill by</span>
   <h2>Paste something like</h2>
@@ -382,7 +467,12 @@
 
 <!-- Outro -->
 <section class="outro">
-  <h3><span class="tw-text" data-text="Just follow along &mdash; and create something fun! :)"></span><span class="tw-cursor" aria-hidden="true"></span></h3>
+  <h3>
+    <span class="tw-line">
+      <span class="tw-ghost" aria-hidden="true"><span class="tw-ghost-pad"></span>Just follow along &mdash; and create something fun!</span>
+      <span class="tw-content"><svg class="tw-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#D97757" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#D97757"/><rect class="tw-eye" x="16.51" y="8.102" width="1.49" height="2.847" fill="#D97757"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#D97757"/></svg><span class="tw-text" data-text="Just follow along &mdash; and create something fun!"></span><span class="tw-cursor" aria-hidden="true"></span></span>
+    </span>
+  </h3>
 </section>
 
 <footer class="footer">
@@ -466,8 +556,45 @@
     function start() {
       if (started) return;
       started = true;
-      // One full blink cycle (1s) before typing starts
+
+      // Sequence: icon jumps × 2 → eye-blinks × 2 (intro only) → cursor keeps blinking → typing
+      var icon = document.querySelector('.tw-icon');
+      var playJump = function(withBlink) {
+        if (!icon || icon.classList.contains('jumping')) return;
+        icon.classList.add('jumping');
+        setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+        if (withBlink) {
+          var eyeBlink = function(delay) {
+            setTimeout(function() { icon.classList.add('blink'); }, delay);
+            setTimeout(function() { icon.classList.remove('blink'); }, delay + 180);
+          };
+          eyeBlink(1600);
+          eyeBlink(2300);
+        }
+      };
+      playJump(true);
+      // Cursor starts blinking only after the 2 jumps complete
+      setTimeout(function() { cursor.classList.add('idle'); }, 1500);
+
+      // After typing completes the icon becomes hoverable — re-trigger jump + wave on hover (no eye-blink)
+      var hoverPlaying = false;
+      if (icon) {
+        icon.addEventListener('mouseenter', function() {
+          if (!icon.classList.contains('ready') || hoverPlaying) return;
+          hoverPlaying = true;
+          playJump();
+          setTimeout(function() { icon.classList.add('waving'); }, 1700);
+          setTimeout(function() { icon.classList.remove('waving'); }, 2740);
+          // Eye-blink after the wave
+          setTimeout(function() { icon.classList.add('blink'); }, 2900);
+          setTimeout(function() { icon.classList.remove('blink'); }, 3080);
+          setTimeout(function() { hoverPlaying = false; }, 3200);
+        });
+      }
+
+      // Typing starts after the jump+blink choreography, leaving room for cursor blinks
       setTimeout(function() {
+        cursor.classList.remove('idle');
         cursor.classList.add('typing');
         var i = 0;
         var step = function() {
@@ -497,10 +624,11 @@
             // Done typing — cursor stays at end and resumes blinking, slower
             cursor.classList.remove('typing');
             cursor.classList.add('done');
+            if (icon) icon.classList.add('ready');
           }
         };
         step();
-      }, 1000);
+      }, 3000);
     }
 
     if (!('IntersectionObserver' in window)) { start(); return; }

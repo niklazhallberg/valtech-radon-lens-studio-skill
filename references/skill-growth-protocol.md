@@ -295,7 +295,7 @@ commit-cykel.
 
 ## Repo-status
 
-Temporärt: github.com/niklazhallberg/lens-studio-snapchat-filter-skill
+Temporärt: github.com/niklazhallberg/valtech-radon-lens-studio-skill
 Planerat: Valtech-organisationskonto (TBD)
 
 När migrering sker: uppdatera remote-URL i

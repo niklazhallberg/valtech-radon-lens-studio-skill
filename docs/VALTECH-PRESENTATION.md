@@ -1,5 +1,7 @@
 # `lens-studio-snapchat-filter` — översikt v1.0
 
+> 📌 Detta är en snapshot från v0.7.1 (2026-05-14). Skillen är nu på **v0.10.0**. Se [CHANGELOG.md](../CHANGELOG.md) för aktuellt läge.
+
 Skillens version vid skrivande stund: **v0.7.1**
 Underhålls inom Valtech RADON.
 
