@@ -146,6 +146,86 @@
     transform-origin: 50% 100%;
     will-change: transform;
   }
+  .icon-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .speech-bubble {
+    position: absolute;
+    left: 105%;
+    bottom: 100%;
+    background: var(--ink-85);
+    color: var(--bg);
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(11px, 1.2vw, 15px);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    border-radius: 0;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 140ms steps(2), transform 140ms steps(2);
+    pointer-events: none;
+  }
+  .speech-bubble.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: bubble-drift 4.8s steps(1) infinite 300ms;
+  }
+  @keyframes bubble-drift {
+    0%, 100% { transform: translate(0, 0); }
+    25%      { transform: translate(0, -1px); }
+    50%      { transform: translate(1px, -1px); }
+    75%      { transform: translate(1px, 0); }
+  }
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    top: 0;
+    left: 0;
+  }
+  .speech-bubble.visible::before {
+    animation: bubble-bite 7s steps(1) infinite 1s;
+  }
+  @keyframes bubble-bite {
+    0%, 17%   { opacity: 0; }
+    18%, 35%  { opacity: 1; width: 3px; height: 3px; top: 0; left: 0; right: auto; bottom: auto; }
+    36%, 47%  { opacity: 0; }
+    48%, 62%  { opacity: 1; width: 4px; height: 2px; top: 0; right: 0; left: auto; bottom: auto; }
+    63%, 74%  { opacity: 0; }
+    75%, 93%  { opacity: 1; width: 2px; height: 4px; bottom: 0; right: 0; top: auto; left: auto; }
+    94%, 100% { opacity: 0; }
+  }
+  .bubble-ghost {
+    visibility: hidden;
+    white-space: nowrap;
+  }
+  .bubble-type {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    white-space: nowrap;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 4px;
+    height: 4px;
+    background: var(--ink-85);
+    box-shadow:
+      -4px 0 0 var(--ink-85),
+      4px 0 0 var(--ink-85),
+      0 4px 0 var(--ink-85);
+  }
   .tw-icon .tw-eye {
     opacity: 0;
     transition: opacity 60ms linear;
@@ -170,6 +250,9 @@
     .tw-icon.jumping { animation: none; }
     .tw-icon.waving .tw-arm-r { animation: none; }
     .tw-icon .tw-eye { opacity: 0; }
+    .speech-bubble { transition: none; }
+    .speech-bubble.visible,
+    .speech-bubble.visible::before { animation: none; }
   }
   .story-num {
     font-size: 11px;
@@ -282,6 +365,19 @@
   .copy-btn:hover { background: rgba(255,255,255,0.10); color: var(--ink); }
   .copy-btn.copied { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 
+  /* ── Inline keyboard keys ──────────────────── */
+  kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-85);
+    line-height: 1.2;
+  }
+
   /* ── Fade-in ───────────────────────────────── */
   .story.fade-in {
     opacity: 0;
@@ -347,7 +443,8 @@
 <section class="story">
   <span class="story-num">Download and</span>
   <h2>Install Claude Code</h2>
-  <p class="copy">In your terminal, run:</p>
+  <p class="copy"><kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter</p>
+  <p class="copy">Paste this and press Enter:</p>
   <div class="value-block wide">
     <span class="value">curl -fsSL https://claude.ai/install.sh | bash</span>
     <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Copy</button>
@@ -363,6 +460,7 @@
     <span class="value">claude --version</span>
     <button class="copy-btn" data-copy="claude --version">Copy</button>
   </div>
+  <p class="hint">Expected output: <code>claude code 1.x.x</code></p>
 </section>
 
 <!-- 03 — Accept GitHub invitation -->
@@ -412,7 +510,10 @@
 
 <!-- Outro -->
 <section class="outro">
-  <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg>
+  <div class="icon-wrap">
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#888" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#888"/><rect class="tw-eye" x="16.51" y="8.102" width="1.49" height="2.847" fill="#888"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#888"/></svg>
+    <div class="speech-bubble" aria-hidden="true"><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
+  </div>
 </section>
 
 <footer class="footer">
@@ -477,23 +578,70 @@
     sections.forEach(function(s) { io.observe(s); });
   })();
 
-  // Outro icon — hover replays the hop + arm wave + eye blink sequence
+  // Outro icon — intro hop+blink on scroll-into-view, hover adds the arm wave
   (function() {
     var icon = document.querySelector('.tw-icon');
     if (!icon) return;
 
-    var hoverPlaying = false;
-    icon.addEventListener('mouseenter', function() {
-      if (hoverPlaying) return;
-      hoverPlaying = true;
+    var isPlaying = false;
+
+    function playIntro() {
+      if (isPlaying) return;
+      isPlaying = true;
+      icon.classList.add('jumping');
+      setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
+      setTimeout(function() {
+        var bubble = document.querySelector('.speech-bubble');
+        var typeEl = bubble && bubble.querySelector('.bubble-type');
+        if (!bubble || !typeEl) return;
+        bubble.classList.add('visible');
+        // Typewrite "You did it!" — start once bubble has popped in
+        var fullText = 'You did it!';
+        var i = 0;
+        function step() {
+          i++;
+          typeEl.textContent = fullText.substring(0, i);
+          if (i < fullText.length) setTimeout(step, 70);
+        }
+        setTimeout(step, 200);
+      }, 1500);
+      setTimeout(function() { icon.classList.add('blink'); }, 1600);
+      setTimeout(function() { icon.classList.remove('blink'); }, 1780);
+      setTimeout(function() { isPlaying = false; }, 1900);
+    }
+
+    function playHover() {
+      if (isPlaying) return;
+      isPlaying = true;
+      // Hide the bubble when the user touches the figure
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
       icon.classList.add('jumping');
       setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
       setTimeout(function() { icon.classList.add('waving'); }, 1700);
       setTimeout(function() { icon.classList.remove('waving'); }, 2740);
       setTimeout(function() { icon.classList.add('blink'); }, 2900);
       setTimeout(function() { icon.classList.remove('blink'); }, 3080);
-      setTimeout(function() { hoverPlaying = false; }, 3200);
-    });
+      setTimeout(function() { isPlaying = false; }, 3200);
+    }
+
+    icon.addEventListener('mouseenter', playHover);
+
+    // Auto-play intro once when icon scrolls into view — 1.5s delay so it doesn't
+    // fire the instant the icon edges into view; lets the user settle on the page first.
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            setTimeout(playIntro, 800);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(icon);
+    } else {
+      setTimeout(playIntro, 800);
+    }
   })();
 </script>
 
