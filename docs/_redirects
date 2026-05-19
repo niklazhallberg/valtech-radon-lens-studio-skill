@@ -1,7 +1,7 @@
 # Netlify path rewrites (status 200 = URL stannar synlig i adressfältet)
-# Skapad av onboarding-distribution. URL:erna är de tre paths som delas i Slack.
+# URL:erna är de tre paths som delas i Slack.
 # Källfilerna är intakta i docs/ för Niklaz fortsatta editing.
 
-/en/         /MANUAL-EN.html       200
-/sv/         /MANUAL.html          200
-/advanced/   /MANUAL-SIMPLE.html   200
+/nosmalltalk           /MANUAL-SIMPLE.html   200
+/fullguide-en          /MANUAL-EN.html       200
+/fullstandigguide-sv   /MANUAL.html          200

@@ -24,9 +24,9 @@ Det betyder: vem som har URL:en kan läsa filerna här. URL:en är inte offentli
 | URL-path | Källfil | Tonläge |
 |----------|---------|---------|
 | `/` | `index.html` | Router — välj manual |
-| `/en/` | `MANUAL-EN.html` | Engelska, full guide för förstagångare |
-| `/sv/` | `MANUAL.html` | Svenska, full guide för förstagångare |
-| `/advanced/` | `MANUAL-SIMPLE.html` | Engelska, kortform för tekniska användare |
+| `/fullguide-en` | `MANUAL-EN.html` | Engelska, full guide för förstagångare |
+| `/fullstandigguide-sv` | `MANUAL.html` | Svenska, full guide för förstagångare |
+| `/nosmalltalk` | `MANUAL-SIMPLE.html` | Engelska, kortform för tekniska användare |
 
 Path-rewrites styrs av `_redirects`-filen.
 

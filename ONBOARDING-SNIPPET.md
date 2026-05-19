@@ -17,7 +17,7 @@ shader-kompilering med en AI-assistent som kan din kontext.
 
 Manualen ligger här (öppna i Chrome eller Safari):
 
-  → https://valtech-radon-lens-skill-invite.netlify.app/sv/
+  → https://valtech-radon-lens-skill-invite.netlify.app/fullstandigguide-sv
 
 Den walkar dig genom installation (Claude Code + skill) på ~15 min.
 Ping mig när du är förbi "Acceptera inbjudan"-steget så bjuder jag
@@ -37,7 +37,7 @@ with an AI assistant that knows your project context.
 
 The manual lives here (open in Chrome or Safari):
 
-  → https://valtech-radon-lens-skill-invite.netlify.app/en/
+  → https://valtech-radon-lens-skill-invite.netlify.app/fullguide-en
 
 It walks you through install (Claude Code + skill) in ~15 min.
 Ping me when you hit the "Accept the invitation" step and I'll
@@ -51,7 +51,7 @@ add you to the skill repo.
 ```
 Yo — Claude Code-skill för Lens Studio. Manual:
 
-  → https://valtech-radon-lens-skill-invite.netlify.app/advanced/
+  → https://valtech-radon-lens-skill-invite.netlify.app/nosmalltalk
 
 Säg till när du behöver invitation till repo:t.
 
