@@ -719,15 +719,24 @@
   </div>
 </section>
 
-<!-- 06 — Clone repo -->
+<!-- 06 — Clone repo + activate auto-sync -->
 <section class="story">
   <span class="story-num">And then</span>
-  <h2>Download the Lens Skill</h2>
-  <p class="copy">In your terminal, run:</p>
+  <h2>Download the skill + auto-sync</h2>
+  <p class="copy">Run, in order:</p>
   <div class="value-block wide">
-    <span class="value">git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</span>
-    <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Copy</button>
+    <span class="value">mkdir -p ~/.claude/skills</span>
+    <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Copy</button>
   </div>
+  <div class="value-block wide">
+    <span class="value">git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter</span>
+    <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter">Copy</button>
+  </div>
+  <div class="value-block wide">
+    <span class="value">~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</span>
+    <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy</button>
+  </div>
+  <p class="hint">The install script wires up auto-sync — the skill updates itself on every <code>claude</code> start from now on.</p>
 </section>
 
 <!-- 07 — Start -->

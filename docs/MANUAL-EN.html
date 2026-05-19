@@ -1055,32 +1055,46 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-6">
   <span class="micro">Step 06 of 08</span>
-  <h2>Download the Lens Skill</h2>
-  <p class="lede">Now we can download the skill to your machine. Thanks to the sign-in from the previous step, it happens without any extra prompts.</p>
+  <h2>Download the Lens Skill (and activate auto-sync)</h2>
+  <p class="lede">Now we'll download the skill to the right place on your machine and activate auto-sync — so it updates itself automatically when a colleague shares new knowledge. You never have to run <code>git pull</code> manually.</p>
 
   <div class="step-grid">
     <div class="step-do">
       <h3>What you do</h3>
-      <p>In the terminal, run:</p>
+      <p><strong>1.</strong> Prepare the folder where Claude Code looks for skills:</p>
       <div class="code-block compact">
-        <pre><code>git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill</code></pre>
-        <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill">Copy</button>
+        <pre><code>mkdir -p ~/.claude/skills</code></pre>
+        <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Copy</button>
       </div>
-      <p>The files download to a new folder in your current terminal location.</p>
+      <p><strong>2.</strong> Clone the skill into that folder:</p>
+      <div class="code-block compact">
+        <pre><code>git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter</code></pre>
+        <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter">Copy</button>
+      </div>
+      <p><strong>3.</strong> Run the install script — it activates auto-sync:</p>
+      <div class="code-block compact">
+        <pre><code>~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
+        <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy</button>
+      </div>
     </div>
 
     <div class="step-see">
       <h3>What you see when it worked</h3>
-      <pre class="output">Cloning into 'valtech-radon-lens-studio-skill'...
-remote: Enumerating objects: ...
-Receiving objects: 100% ... done.</pre>
-      <p>When you run <code>ls</code> you'll now see the folder <code>valtech-radon-lens-studio-skill/</code>.</p>
+      <p>The clone command shows download progress. Then the install script runs a checklist and ends with:</p>
+      <pre class="output">🎉 Allt är på plats!
+
+✅ Claude Code installerat
+✅ Lens Studio verifierat
+✅ Lens Studio-skillen installerad
+✅ Auto-sync aktiverat</pre>
+      <p>Auto-sync is now running — every time you start Claude Code from now on, it pulls the latest knowledge from GitHub automatically.</p>
 
       <details class="hint-collapsible">
         <summary>Not working?</summary>
         <ul>
-          <li><strong>"Repository not found"</strong> or 404 — go back to Step 03 and confirm the invitation was accepted with the same GitHub account you signed in with in Step 05.</li>
+          <li><strong>"Repository not found"</strong> or 404 on clone — go back to Step 03 and confirm the invitation was accepted with the same GitHub account you signed in with in Step 05.</li>
           <li><strong>Prompted for username/password</strong> — Step 05's <code>gh auth setup-git</code> didn't run. Run <code>gh auth setup-git</code> again and try the clone once more.</li>
+          <li><strong>install.sh complains about missing Node.js or git</strong> — follow the script's instructions. It's idempotent — safe to re-run after fixing the missing dependency.</li>
         </ul>
       </details>
     </div>
