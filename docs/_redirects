@@ -1,7 +1,8 @@
-# Netlify path rewrites (status 200 = URL stannar synlig i adressfältet)
+# Cloudflare path rewrites (status 200 = URL stannar synlig i adressfältet)
 # URL:erna är de tre paths som delas i Slack.
 # Källfilerna är intakta i docs/ för Niklaz fortsatta editing.
+# Target utan .html — Workers Static Assets serverar HTML-filen utan extension.
 
-/nosmalltalk           /MANUAL-SIMPLE.html   200
-/fullguide-en          /MANUAL-EN.html       200
-/fullstandigguide-sv   /MANUAL.html          200
+/nosmalltalk           /MANUAL-SIMPLE   200
+/fullguide-en          /MANUAL-EN       200
+/fullstandigguide-sv   /MANUAL          200
