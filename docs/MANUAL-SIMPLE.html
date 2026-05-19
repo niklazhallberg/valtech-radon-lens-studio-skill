@@ -493,7 +493,7 @@
     font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
     font-size: 16px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--ink);
     line-height: 1.3;
   }
   .path-body { display: flex; flex-direction: column; gap: 4px; }
@@ -655,7 +655,7 @@
     </div>
   </div>
 
-  <p class="hint">At Step 07 login: pick "Claude account with subscription" for B, or "Anthropic Console (API key)" for C.</p>
+  <p class="hint">At Step 07 login: pick "Claude account with subscription" for B,<br>or "Anthropic Console (API key)" for C.</p>
 </section>
 
 <!-- 01 — Install -->
@@ -740,6 +740,7 @@
     <button class="copy-btn" data-copy="claude">Copy</button>
   </div>
   <p class="hint">Press Enter. At the login prompt, pick the option that matches your account from step 00.</p>
+  <p class="hint">Switch model anytime with <code>/model</code> · Haiku = cheap · Sonnet = default · Opus = strongest.</p>
 </section>
 
 <!-- 08 — Paste -->
