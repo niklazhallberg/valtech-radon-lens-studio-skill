@@ -151,10 +151,12 @@
   .outro {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     text-align: center;
-    padding: 140px 40px 12px;
+    padding: 140px 40px 60px;
+    position: relative;
+    overflow: hidden;
   }
   .tw-icon {
     display: inline-block;
@@ -166,6 +168,30 @@
   .icon-wrap {
     position: relative;
     display: inline-block;
+    z-index: 1;
+    transform: translateY(24px);
+  }
+  #ascii-outro {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    pointer-events: none;
+    margin: 0;
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    font-size: clamp(7px, 1.15vw, 11px);
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: pre;
+    color: #333333;
+    text-shadow: none;
+    filter: none;
+    opacity: 0.8;
+    z-index: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ascii-outro { display: none; }
   }
   .speech-bubble {
     position: absolute;
@@ -182,7 +208,7 @@
     border-radius: 0;
     opacity: 0;
     transform: translateY(4px);
-    transition: opacity 140ms steps(2), transform 140ms steps(2);
+    transition: opacity 100ms steps(2), transform 100ms steps(2);
     pointer-events: none;
   }
   .speech-bubble.visible {
@@ -273,13 +299,73 @@
     50%      { transform: translateY(-2px); }
   }
   .tw-icon.waving .tw-arm-r { animation: tw-wave 640ms ease-in-out 2; }
+
+  /* Walk cycle — pair-alternating foot lift (1+3 ↔ 2+4), pixel-stepped */
+  @keyframes tw-step-a {
+    0%, 49.99% { transform: translateY(-1px); }
+    50%, 100%  { transform: translateY(0); }
+  }
+  @keyframes tw-step-b {
+    0%, 49.99% { transform: translateY(0); }
+    50%, 100%  { transform: translateY(-1px); }
+  }
+  .tw-icon.walking .tw-foot-1,
+  .tw-icon.walking .tw-foot-3 { animation: tw-step-a 320ms steps(1) infinite; }
+  .tw-icon.walking .tw-foot-2,
+  .tw-icon.walking .tw-foot-4 { animation: tw-step-b 320ms steps(1) infinite; }
+
+  /* Space-key hop — short single bounce */
+  @keyframes tw-hop {
+    /* Gravity-feel jump: sharp launch (ease-out), hang at peak, accelerating fall (ease-in) */
+    0%   { transform: translateY(0);     animation-timing-function: cubic-bezier(0.18, 0.9, 0.32, 1); }
+    45%  { transform: translateY(-18px); animation-timing-function: cubic-bezier(0.5, 0, 0.85, 0.5); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.hopping { animation: tw-hop 580ms; }
+
+  /* Keyboard hints — float above the figure */
+  .key-hints {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 220ms steps(2);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .key-hints.visible { opacity: 0.85; }
+  .kbd-hint {
+    display: inline-block;
+    min-width: 28px;
+    padding: 4px 8px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-85);
+    line-height: 1.2;
+    text-align: center;
+  }
+  .kbd-hint-space { min-width: 56px; }
+
   @media (prefers-reduced-motion: reduce) {
     .tw-icon.jumping { animation: none; }
     .tw-icon.waving .tw-arm-r { animation: none; }
+    .tw-icon.walking .tw-foot-1,
+    .tw-icon.walking .tw-foot-2,
+    .tw-icon.walking .tw-foot-3,
+    .tw-icon.walking .tw-foot-4 { animation: none; }
+    .tw-icon.hopping { animation: none; }
     .tw-icon .tw-eye { opacity: 0; }
     .speech-bubble { transition: none; }
     .speech-bubble.visible,
     .speech-bubble.visible::before { animation: none; }
+    .key-hints { transition: none; }
   }
   .story-num {
     font-size: 11px;
@@ -455,7 +541,10 @@
       rgba(5, 7, 9, 0.95) 100%);
     pointer-events: none;
     z-index: 99;
+    opacity: 1;
+    transition: opacity 380ms ease-out;
   }
+  body.fade-hidden::after { opacity: 0; }
 </style>
 </head>
 <body>
@@ -568,15 +657,13 @@
 
 <!-- Outro -->
 <section class="outro">
+  <pre id="ascii-outro" aria-hidden="true"></pre>
   <div class="icon-wrap">
-    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/></svg>
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/><rect class="tw-foot tw-foot-1" x="4.487" y="17.079" width="1.513" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-2" x="7.488" y="17.079" width="1.512" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-3" x="15" y="17.079" width="1.513" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-4" x="18" y="17.079" width="1.513" height="2.921" fill="#E65E30"/></svg>
+    <div class="key-hints" aria-hidden="true"><span class="kbd-hint">←</span><span class="kbd-hint kbd-hint-space">space</span><span class="kbd-hint">→</span></div>
     <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
   </div>
 </section>
-
-<footer class="footer">
-  <p>valtech-radon-lens-studio-skill · 2026 · Niklaz Hallberg, Valtech RADON</p>
-</footer>
 
 <script>
   // Copy-button handler — supports both data-copy (inline) and data-copy-target (selector)
@@ -636,12 +723,163 @@
     sections.forEach(function(s) { io.observe(s); });
   })();
 
+  // Bottom-fade — auto-hides the "more below" gradient as the outro approaches,
+  // so it doesn't cover the ASCII ground at page bottom.
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    var outro = document.querySelector('.outro');
+    if (!outro) return;
+    var fadeIo = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        document.body.classList.toggle('fade-hidden', entry.isIntersecting);
+      });
+    }, { rootMargin: '0px 0px 300px 0px' });
+    fadeIo.observe(outro);
+  })();
+
   // Outro icon — intro hop+blink on scroll-into-view, hover adds the arm wave
   (function() {
     var icon = document.querySelector('.tw-icon');
     if (!icon) return;
+    var iconWrap = document.querySelector('.icon-wrap');
+    var outroEl = document.querySelector('.outro');
 
     var isPlaying = false;
+    var hintsShown = false;
+    var hintsDismissed = false;
+    var idleBlinkTimer = null;
+    var firstArrowSeen = false;
+    var bubble2Done = false;
+    var bubble3Done = false;
+    var stuckBubbleVisible = false;
+    var stuckBubbleReadyToDismiss = false;
+
+    function hideBubble() {
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
+    }
+
+    function dismissPrompts() {
+      if (hintsDismissed) return;
+      hintsDismissed = true;
+      hideBubble();
+      var kh = document.querySelector('.key-hints');
+      if (kh) kh.classList.remove('visible');
+    }
+
+    function showHints() {
+      if (hintsShown || hintsDismissed) return;
+      // Defer while the figure is mid-animation (hover/intro) — try again soon
+      if (isPlaying) {
+        setTimeout(showHints, 400);
+        return;
+      }
+      hintsShown = true;
+      var kh = document.querySelector('.key-hints');
+      if (kh) kh.classList.add('visible');
+    }
+
+    function isFigureIdle() {
+      if (isPlaying) return false;
+      var cls = icon.classList;
+      return !cls.contains('jumping') &&
+             !cls.contains('waving')  &&
+             !cls.contains('hopping') &&
+             !cls.contains('walking') &&
+             !cls.contains('blink')   &&
+             !cls.contains('wink');
+    }
+
+    function scheduleIdleBlink() {
+      if (idleBlinkTimer) return;
+      // Random 5–8s between blinks
+      var delay = 5000 + Math.random() * 3000;
+      idleBlinkTimer = setTimeout(function() {
+        idleBlinkTimer = null;
+        if (isFigureIdle()) {
+          icon.classList.add('blink');
+          setTimeout(function() {
+            icon.classList.remove('blink');
+            scheduleIdleBlink();
+          }, 160);
+        } else {
+          scheduleIdleBlink();
+        }
+      }, delay);
+    }
+
+    function startIdleBlink() {
+      if (idleBlinkTimer) return;
+      scheduleIdleBlink();
+    }
+
+    // Replay the bubble with a new message — typed in faster than the intro,
+    // held for the remaining display window, then quietly hidden.
+    function showInGameBubble(text, displayMs) {
+      var bubble = document.querySelector('.speech-bubble');
+      if (!bubble) return;
+      var typeEl = bubble.querySelector('.bubble-type');
+      var ghostEl = bubble.querySelector('.bubble-ghost');
+      if (!typeEl || !ghostEl) return;
+      ghostEl.textContent = text;
+      typeEl.textContent = '';
+      bubble.classList.add('visible');
+      var i = 0;
+      function step() {
+        i++;
+        typeEl.textContent = text.substring(0, i);
+        if (i < text.length) setTimeout(step, 42);
+      }
+      setTimeout(step, 60);
+      setTimeout(function() { bubble.classList.remove('visible'); }, displayMs);
+    }
+
+    // "Stuck?" bubble — stays at least 7s, then waits for next arrow press
+    function showStuckBubble() {
+      var bubble = document.querySelector('.speech-bubble');
+      if (!bubble) return;
+      var typeEl = bubble.querySelector('.bubble-type');
+      var ghostEl = bubble.querySelector('.bubble-ghost');
+      if (!typeEl || !ghostEl) return;
+      var text = "Stuck? Ask a colleague!";
+      ghostEl.textContent = text;
+      typeEl.textContent = '';
+      bubble.classList.add('visible');
+      stuckBubbleVisible = true;
+      stuckBubbleReadyToDismiss = false;
+      var i = 0;
+      function step() {
+        i++;
+        typeEl.textContent = text.substring(0, i);
+        if (i < text.length) setTimeout(step, 42);
+      }
+      setTimeout(step, 60);
+      setTimeout(function() { stuckBubbleReadyToDismiss = true; }, 7000);
+    }
+
+    function maybeDismissStuckBubble() {
+      if (!stuckBubbleVisible || !stuckBubbleReadyToDismiss) return;
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
+      stuckBubbleVisible = false;
+    }
+
+    function onFirstArrow() {
+      if (firstArrowSeen) return;
+      firstArrowSeen = true;
+      // "Woop! Let's build a lens!" at +3.2s, visible ~5s (text included)
+      setTimeout(function() {
+        if (bubble2Done) return;
+        bubble2Done = true;
+        showInGameBubble("Partners in crime! Let's go!", 5000);
+        // "Stuck? Ask a colleague!" 15s after bubble 2 ends — sticky
+        setTimeout(function() {
+          if (bubble3Done) return;
+          bubble3Done = true;
+          showStuckBubble();
+        }, 5000 + 15000);
+      }, 3200);
+    }
 
     function playIntro() {
       if (isPlaying) return;
@@ -660,14 +898,25 @@
           i++;
           typeEl.textContent = fullText.substring(0, i);
           if (i < fullText.length) {
-            setTimeout(step, 70);
+            setTimeout(step, 55);
           } else {
             // Typing complete — pause 800ms, then a single wink held a little longer (;))
             setTimeout(function() { icon.classList.add('wink'); }, 800);
             setTimeout(function() { icon.classList.remove('wink'); }, 1050);
+            // Let the text linger ~2s, then dim the bubble naturally
+            setTimeout(function() {
+              if (hintsDismissed) return;
+              var bubble = document.querySelector('.speech-bubble');
+              if (bubble) bubble.classList.remove('visible');
+            }, 2000);
+            // Hints appear shortly after bubble fades out — showHints() will
+            // self-defer if the user happens to be hovering the figure right then
+            setTimeout(showHints, 2300);
+            // Once the intro is fully done, the figure starts idle-blinking
+            setTimeout(function() { startIdleBlink(); }, 1500);
           }
         }
-        setTimeout(step, 600);
+        setTimeout(step, 400);
       }, 1500);
       setTimeout(function() { isPlaying = false; }, 1900);
     }
@@ -675,9 +924,14 @@
     function playHover() {
       if (isPlaying) return;
       isPlaying = true;
-      // Hide the bubble when the user touches the figure
-      var bubble = document.querySelector('.speech-bubble');
-      if (bubble) bubble.classList.remove('visible');
+      // If hints have already appeared, hover counts as the user discovering
+      // the figure — dismiss them. Otherwise just hide the bubble; the hints
+      // will still appear once the hover animation finishes.
+      if (hintsShown) {
+        dismissPrompts();
+      } else {
+        hideBubble();
+      }
       icon.classList.add('jumping');
       setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
       setTimeout(function() { icon.classList.add('waving'); }, 1700);
@@ -704,6 +958,86 @@
     } else {
       setTimeout(playIntro, 800);
     }
+
+    // ── Interactive mode: arrow keys walk, space hops ──────────────
+    var outroInView = false;
+    if ('IntersectionObserver' in window && outroEl) {
+      new IntersectionObserver(function(entries) {
+        outroInView = entries[0].isIntersecting;
+      }, { threshold: 0.4 }).observe(outroEl);
+    }
+
+    var walkX = 0;
+    var keyState = { left: false, right: false };
+    var rafActive = false;
+    var lastFrameTime = 0;
+    var WALK_SPEED = 110; // CSS px/sec
+    var BASE_Y = 24;      // matches .icon-wrap CSS translateY(24px)
+
+    function applyTransform() {
+      if (!iconWrap) return;
+      iconWrap.style.transform = 'translate(' + walkX + 'px, ' + BASE_Y + 'px)';
+    }
+
+    function tick(time) {
+      if (!rafActive) return;
+      var dt = lastFrameTime ? (time - lastFrameTime) / 1000 : 0;
+      lastFrameTime = time;
+      var moving = false;
+      if (keyState.left)  { walkX -= WALK_SPEED * dt; moving = true; }
+      if (keyState.right) { walkX += WALK_SPEED * dt; moving = true; }
+      // Clamp to outro inner width (approx icon half-width + padding)
+      if (outroEl) {
+        var maxX = (outroEl.clientWidth / 2) - 60;
+        if (walkX > maxX)  walkX = maxX;
+        if (walkX < -maxX) walkX = -maxX;
+      }
+      applyTransform();
+      if (moving) {
+        icon.classList.add('walking');
+        requestAnimationFrame(tick);
+      } else {
+        icon.classList.remove('walking');
+        rafActive = false;
+        lastFrameTime = 0;
+      }
+    }
+
+    function startWalkLoop() {
+      if (rafActive) return;
+      rafActive = true;
+      lastFrameTime = 0;
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (!outroInView) return;
+      var k = e.key;
+      if (k !== ' ' && k !== 'ArrowLeft' && k !== 'ArrowRight') return;
+      e.preventDefault();
+      dismissPrompts();
+      if (k === ' ') {
+        if (!icon.classList.contains('hopping')) {
+          icon.classList.add('hopping');
+          setTimeout(function() { icon.classList.remove('hopping'); }, 600);
+        }
+      } else if (k === 'ArrowLeft') {
+        keyState.left = true;
+        startWalkLoop();
+        onFirstArrow();
+        maybeDismissStuckBubble();
+      } else if (k === 'ArrowRight') {
+        keyState.right = true;
+        startWalkLoop();
+        onFirstArrow();
+        maybeDismissStuckBubble();
+      }
+    });
+
+    window.addEventListener('keyup', function(e) {
+      if (e.key === 'ArrowLeft')  keyState.left = false;
+      if (e.key === 'ArrowRight') keyState.right = false;
+    });
   })();
 </script>
 
@@ -910,6 +1244,67 @@
   requestAnimationFrame(render);
   }
   spawn("ascii");
+
+  // ── Outro ground — same ASCII shading vocabulary as hero, but a
+  // horizontal wind-blown band (no 3D shape). Density rises toward the
+  // bottom row so the figure appears to stand on a textured "floor".
+  function spawnField(elId) {
+    var el = document.getElementById(elId);
+    if (!el) return;
+    var ramp = "  ..,,::cloxkO0XNWM@";
+    var rows = 7;
+    var cols = 200;
+
+    function recalcCols() {
+      var fs = parseFloat(getComputedStyle(el).fontSize) || 7;
+      // Monospace glyph width ≈ 0.6 × font-size for JetBrains Mono
+      cols = Math.max(40, Math.ceil(el.clientWidth / (fs * 0.6)));
+    }
+    recalcCols();
+
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(recalcCols, 120);
+    });
+
+    function render(time) {
+      var t = time * 0.00022;
+      var lines = [];
+      for (var r = 0; r < rows; r++) {
+        var line = "";
+        for (var c = 0; c < cols; c++) {
+          // Landscape — slow undulating hills shift the "ground surface" up
+          // and down per column. Drifts very slowly so it reads as terrain,
+          // not motion. Amplitude ±1.1 rows.
+          var hill1 = Math.sin(c * 0.018 + t * 0.08) * 0.7;
+          var hill2 = Math.sin(c * 0.052 - t * 0.04 + 1.1) * 0.4;
+          var landscape = hill1 + hill2;
+          // Per-cell density gradient — adjusted by landscape offset
+          var effectiveR = r + landscape;
+          var rowFade = effectiveR / (rows - 1);
+          if (rowFade < 0) rowFade = 0; else if (rowFade > 1) rowFade = 1;
+          // Slow broad drift
+          var w1 = Math.sin(c * 0.07 + t * 1.0 + r * 0.22) * 0.5 + 0.5;
+          var w2 = Math.sin(c * 0.028 - t * 0.55 + r * 0.12) * 0.5 + 0.5;
+          // Higher-frequency granular variation so neighbouring cells differ
+          var w3 = Math.sin(c * 0.47 + r * 0.83 + t * 0.35) * 0.5 + 0.5;
+          var w4 = Math.sin(c * 1.13 + r * 1.67 - t * 0.2) * 0.5 + 0.5;
+          var wind = w1 * 0.4 + w2 * 0.25 + w3 * 0.2 + w4 * 0.15;
+          // Vertical density gradient + wind/granular modulation
+          var v = rowFade * 0.78 + wind * 0.3 - 0.1;
+          if (v < 0) v = 0; else if (v > 1) v = 1;
+          line += ramp.charAt(Math.floor(v * (ramp.length - 1)));
+        }
+        lines.push(line);
+      }
+      el.textContent = lines.join("\n");
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  }
+
+  spawnField("ascii-outro");
 })();
 </script>
 
