@@ -401,6 +401,11 @@
   .hint-collapsible ul { margin: 12px 0 4px 0; padding-left: 20px; }
   .hint-collapsible li { font-size: 13px; color: var(--ink-85); margin-bottom: 8px; line-height: 1.5; }
   .hint-collapsible code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  .path-details[open] summary {
+    border-bottom: 1px solid var(--code-border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
 
   /* ── Setup prompt (Step 3 magic) ───────────── */
   .prompt-block {
@@ -794,13 +799,13 @@
   <h2>Get a Claude account</h2>
   <p class="lede">Claude Code needs a paid login or your own API credits — a free claude.ai chat account is not enough. There are three paths; open the one that fits you.</p>
 
-  <details class="hint-collapsible" open>
+  <details class="hint-collapsible path-details" open>
     <summary>A. Enterprise subscription (recommended — on the way)</summary>
     <p>On the way — more information coming later.</p>
     <p>Until then — pick path B or C below.</p>
   </details>
 
-  <details class="hint-collapsible">
+  <details class="hint-collapsible path-details">
     <summary>B. Your own Claude Pro subscription ($17–20/mo)</summary>
     <p>Good if you want a predictable monthly cost or already have a Pro subscription.</p>
     <p><strong>1.</strong> Go to <code>claude.com/pricing</code> in your browser.</p>
@@ -809,7 +814,7 @@
     <p><strong>4.</strong> Done. Later in Step 07 when you run <code>claude</code> in the terminal — pick <strong>"Claude account with subscription"</strong> at the login prompt.</p>
   </details>
 
-  <details class="hint-collapsible">
+  <details class="hint-collapsible path-details">
     <summary>C. Your own API credits ($5–20, pay-as-you-go)</summary>
     <p>Best if you just want to try things out. No monthly commitment — you top up credits and burn them per use.</p>
     <p><strong>1.</strong> Go to <code>platform.claude.com/login</code>.</p>
