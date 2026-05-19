@@ -212,15 +212,7 @@ Med skillen: kunskapen är **kod**. Den finns i git, den följer med kollegor, d
 
 ### Skalbarhet
 
-Idag är Snap-projekt beroende av en eller två seniorer.
-
-Med skillen + 2–3 utbildade designers: **3–5 parallella lens-projekt** möjliga.
-
-### Competitive advantage
-
-Inget motsvarande har observerats från andra svenska byråer. Det här är inte en hemlighet att gömma — det är en **kapacitet att paketera**.
-
-Pitch-värde mot kunder: "Vi har en intern AI-mentor som garanterar kvalitet och konsistens på alla våra Snap-leveranser, oavsett vilken designer som bygger."
+Idag är Snapchat Lens-projekt beroende av en person. Med skillen + 2–3 utbildade designers: **3–5 parallella lens-projekt** möjliga.
 
 ### Ärlighetsdisclaimer
 

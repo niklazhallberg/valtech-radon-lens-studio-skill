@@ -212,15 +212,7 @@ With the skill: the knowledge is **code**. It's in git, it travels with colleagu
 
 ### Scalability
 
-Today, Snap projects depend on one or two seniors.
-
-With the skill + 2–3 trained designers: **3–5 parallel lens projects** become possible.
-
-### Competitive advantage
-
-Nothing comparable has been observed from other Swedish agencies. This isn't a secret to hide — it's a **capability to package**.
-
-Client pitch value: "We have an internal AI mentor that guarantees quality and consistency on every Snap delivery, regardless of which designer is building."
+Today, Snapchat Lens projects depend on a single person. With the skill + 2–3 trained designers: **3–5 parallel lens projects** become possible.
 
 ### Honest disclaimer
 
