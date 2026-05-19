@@ -468,6 +468,60 @@
   }
   .paste-block .copy-btn { position: static; flex-shrink: 0; }
 
+  /* ── Path cards (Step 00) ──────────────────── */
+  .path-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 32px auto 24px;
+    max-width: 480px;
+    width: 100%;
+    text-align: left;
+  }
+  .path-card {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 16px 18px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 8px;
+  }
+  .path-card.coming { opacity: 0.55; }
+  .path-letter {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.3;
+  }
+  .path-body { display: flex; flex-direction: column; gap: 4px; }
+  .path-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    letter-spacing: 0;
+    margin: 0;
+  }
+  .path-meta {
+    font-size: 12px;
+    color: var(--ink-45);
+    line-height: 1.4;
+    letter-spacing: 0;
+    margin: 0;
+  }
+  .path-link {
+    font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: 2px;
+    word-break: break-all;
+  }
+  .path-link:hover { text-decoration: underline; }
+
   .copy-btn {
     position: absolute;
     top: 10px; right: 10px;
@@ -572,10 +626,35 @@
   <span class="story-num">First</span>
   <h2>Get a Claude account</h2>
   <p class="copy">Claude Code needs a paid account or your own API credits — a free claude.ai chat account isn't enough.</p>
-  <p class="copy"><strong>A.</strong> Enterprise subscription — on the way, more information coming later. Until then, pick B or C:</p>
-  <p class="copy"><strong>B.</strong> Claude Pro ($17–20/mo) — sign up at <a class="value url" href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a>.</p>
-  <p class="copy"><strong>C.</strong> API credits ($5–20, pay-as-you-go) — sign up at <a class="value url" href="https://platform.claude.com/login" target="_blank" rel="noopener">platform.claude.com/login</a>, create an API key, top up Billing.</p>
-  <p class="hint">Step 07 (login) asks how to sign in: pick <em>"Claude account with subscription"</em> for B, or <em>"Anthropic Console (API key)"</em> for C and paste your <code>sk-ant-...</code> key.</p>
+
+  <div class="path-cards">
+    <div class="path-card coming">
+      <span class="path-letter">A</span>
+      <div class="path-body">
+        <p class="path-title">Enterprise subscription</p>
+        <p class="path-meta">On the way — more info coming later</p>
+      </div>
+    </div>
+    <div class="path-card">
+      <span class="path-letter">B</span>
+      <div class="path-body">
+        <p class="path-title">Claude Pro · $17–20/mo</p>
+        <p class="path-meta">Predictable monthly cost. Sign up at:</p>
+        <a class="path-link" href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a>
+      </div>
+    </div>
+    <div class="path-card">
+      <span class="path-letter">C</span>
+      <div class="path-body">
+        <p class="path-title">API credits · $5–20, pay-as-you-go</p>
+        <p class="path-meta">Top up credits, burn per use. Sign up at:</p>
+        <a class="path-link" href="https://platform.claude.com/login" target="_blank" rel="noopener">platform.claude.com/login</a>
+        <p class="path-meta">Then: API Keys → Create Key → save it · Billing → top up.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="hint">At Step 07 login: pick "Claude account with subscription" for B, or "Anthropic Console (API key)" for C.</p>
 </section>
 
 <!-- 01 — Install -->
