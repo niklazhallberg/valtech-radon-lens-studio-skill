@@ -303,6 +303,17 @@ Planned: Valtech organization account (TBD)
 When migration happens: update the remote URL in
 the onboarding diagnosis and in this file.
 
+**Branch protection on `main` (2026-05-19):** rule exists but is
+"Not enforced" — GitHub doesn't enforce branch protection on free
+private personal repos. Force-push and branch deletion are
+technically possible until the repo moves to a Team/Enterprise org.
+Accepted risk: Valtech-RADON early-access group is small and trusted,
+agent doesn't force-push as part of normal flow.
+
+At migration: the rule auto-activates. The current direct-push flow
+(commit → push to main after user "yes") may then need a branch+PR
+adjustment — re-evaluate at migration time.
+
 ## Changelog
 
 - v0.4 → v0.5 (2026-05-14): warm-tone CHANGELOG format.
