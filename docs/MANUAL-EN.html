@@ -67,8 +67,10 @@
     padding: 20px 40px;
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     background: rgba(5, 7, 9, 0.6);
-    border-bottom: 1px solid var(--rule);
   }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .nav-back { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; font-size: 14px; color: var(--ink-45); text-decoration: none; border-bottom: none; line-height: 1; transition: color 0.15s ease; }
+  .nav-back:hover { color: var(--ink-85); border-bottom: none; }
   .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-35); }
   .nav-badge { font-size: 10px; font-weight: 500; color: var(--ink-45); }
 
@@ -482,7 +484,7 @@
   }
   a.idea-link:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: var(--accent);
+    border-color: #E65E30;
     transform: translateY(-2px);
   }
   .idea-link-arrow {
@@ -497,9 +499,83 @@
     transform: translate(2px, -2px);
   }
 
-  /* ── Footer ────────────────────────────────── */
-  .footer { padding: 48px 40px; border-top: 1px solid var(--rule); text-align: center; }
-  .footer p { font-size: 12px; color: var(--ink-25, rgba(255,255,255,0.25)); letter-spacing: 1px; }
+  /* ── Outro (cloned from MANUAL-SIMPLE) ───────── */
+  #ascii-outro {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    pointer-events: none;
+    margin: 0;
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    font-size: clamp(7px, 1.15vw, 11px);
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: pre;
+    color: #333333;
+    text-shadow: none;
+    filter: none;
+    opacity: 0.8;
+    z-index: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ascii-outro { display: none; }
+  }
+  @keyframes tw-step-a {
+    0%, 49.99% { transform: translateY(-1px); }
+    50%, 100%  { transform: translateY(0); }
+  }
+  @keyframes tw-step-b {
+    0%, 49.99% { transform: translateY(0); }
+    50%, 100%  { transform: translateY(-1px); }
+  }
+  .tw-icon.walking .tw-foot-1,
+  .tw-icon.walking .tw-foot-3 { animation: tw-step-a 320ms steps(1) infinite; }
+  .tw-icon.walking .tw-foot-2,
+  .tw-icon.walking .tw-foot-4 { animation: tw-step-b 320ms steps(1) infinite; }
+  @keyframes tw-hop {
+    0%   { transform: translateY(0);     animation-timing-function: cubic-bezier(0.18, 0.9, 0.32, 1); }
+    45%  { transform: translateY(-18px); animation-timing-function: cubic-bezier(0.5, 0, 0.85, 0.5); }
+    100% { transform: translateY(0); }
+  }
+  .tw-icon.hopping { animation: tw-hop 580ms; }
+  .key-hints {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 220ms steps(2);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .key-hints.visible { opacity: 0.85; }
+  .kbd-hint {
+    display: inline-block;
+    min-width: 28px;
+    padding: 4px 8px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-85);
+    line-height: 1.2;
+    text-align: center;
+  }
+  .kbd-hint-space { min-width: 56px; }
+  @media (prefers-reduced-motion: reduce) {
+    .tw-icon.walking .tw-foot-1,
+    .tw-icon.walking .tw-foot-2,
+    .tw-icon.walking .tw-foot-3,
+    .tw-icon.walking .tw-foot-4 { animation: none; }
+    .tw-icon.hopping { animation: none; }
+    .key-hints { transition: none; }
+  }
 
   /* ── Inline pieces ─────────────────────────── */
   kbd {
@@ -535,10 +611,12 @@
   .outro {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     text-align: center;
-    padding: 140px 40px 12px;
+    padding: 140px 40px 60px;
+    position: relative;
+    overflow: hidden;
   }
   .tw-icon {
     display: inline-block;
@@ -550,6 +628,8 @@
   .icon-wrap {
     position: relative;
     display: inline-block;
+    z-index: 1;
+    transform: translateY(24px);
   }
   .speech-bubble {
     position: absolute;
@@ -673,7 +753,10 @@
 <!-- ║  NAV                                    ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <nav class="nav">
-  <span class="nav-brand">V_RADON | Lens Studio</span>
+  <div class="nav-left">
+    <a href="index.html" class="nav-back" aria-label="Back to choose your path">&larr;</a>
+    <span class="nav-brand">Lens Studio Skill</span>
+  </div>
   <div class="lang-toggle" role="group" aria-label="Language selector">
     <a href="MANUAL.html" class="lang-toggle__option">SV</a>
     <a href="MANUAL-EN.html" class="lang-toggle__option is-active" aria-current="page">EN</a>
@@ -1031,18 +1114,18 @@ Also tell me a bit about the filter you want to make:
 
   <div class="stuck-grid">
     <div class="stuck-option">
-      <h3>1. Ask Claude Code directly</h3>
+      <h3>1. Ask a colleague</h3>
+      <p>Others at Valtech have done this. Post in your Slack channel (#snapchat-filter or equivalent) and point at the step that's misbehaving. Someone has probably seen the same thing.</p>
+    </div>
+
+    <div class="stuck-option">
+      <h3>2. Ask Claude Code directly</h3>
       <p>Got Claude Code running? Just type <em>"I'm stuck on &lt;step&gt;: &lt;what you see&gt;"</em>. Claude switches to troubleshooting automatically — asks back until it understands, and suggests a fix.</p>
     </div>
 
     <div class="stuck-option">
-      <h3>2. Ask another AI</h3>
+      <h3>3. Ask another AI</h3>
       <p>No Claude Code yet to ask? Copy the command or the error message, paste it into <a href="https://claude.ai">claude.ai</a>, <a href="https://chatgpt.com">ChatGPT</a>, or <a href="https://gemini.google.com">Gemini</a>. Add <em>"I'm trying to install Claude Code to build Snapchat filters"</em> so they understand the context.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>3. Ask a colleague</h3>
-      <p>Others at Valtech have done this. Post in your Slack channel (#snapchat-filter or equivalent) and point at the step that's misbehaving. Someone has probably seen the same thing.</p>
     </div>
 
     <div class="stuck-option">
@@ -1051,36 +1134,6 @@ Also tell me a bit about the filter you want to make:
       <p style="font-size: 13px; color: var(--ink-60); margin-top: 12px;">Many beginners don't know how to <em>describe</em> an error in text. A screenshot is easier.</p>
     </div>
   </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  WHAT'S NEXT                            ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section">
-  <span class="micro">Once setup is done</span>
-  <h2>What you can build</h2>
-  <p class="lede">Lens Studio + Claude Code lets you build pretty much anything. Here are a few common first projects to get a feel for what's possible.</p>
-
-  <div class="ideas-grid">
-    <div class="idea">
-      <p class="idea-name">Logo that follows the face</p>
-      <p class="idea-desc">Brand logo or text that flies in when the user opens the filter, anchored to the forehead or above the shoulder. Simple face tracking + 2D image.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">Hat, glasses, or jewelry</p>
-      <p class="idea-desc">3D model "worn" by the user. Works for caps, snapbacks, rings, necklaces, earrings. Snap has ready-made Try-On Packs to start from.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">Sneakers on the feet</p>
-      <p class="idea-desc">Classic try-on filter: shoes that follow the user's feet. We've got empirical experience with this in the skill — Claude knows the way.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">Tap-to-reveal effect</p>
-      <p class="idea-desc">User taps the screen, something fades in or animates — great for campaign reveals or "scratch the surface" mechanics.</p>
-    </div>
-  </div>
-
-  <p style="margin-top: 32px; color: var(--ink-60);">When you have an idea — tell Claude and they'll pull up the onboarding questions. ~8 questions in 3 blocks (vision, constraints, assets), ~10 min total. Then the build begins.</p>
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
@@ -1119,18 +1172,13 @@ Also tell me a bit about the filter you want to make:
 <!-- ║  OUTRO ICON                             ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="outro">
+  <pre id="ascii-outro" aria-hidden="true"></pre>
   <div class="icon-wrap">
-    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/></svg>
+    <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/><rect class="tw-foot tw-foot-1" x="4.487" y="17.079" width="1.513" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-2" x="7.488" y="17.079" width="1.512" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-3" x="15" y="17.079" width="1.513" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-4" x="18" y="17.079" width="1.513" height="2.921" fill="#E65E30"/></svg>
+    <div class="key-hints" aria-hidden="true"><span class="kbd-hint">&larr;</span><span class="kbd-hint kbd-hint-space">space</span><span class="kbd-hint">&rarr;</span></div>
     <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
   </div>
 </section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  FOOTER                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<footer class="footer">
-  <p>Lens-Studio-Snapchat-Filter-Skill · 2026 · Niklaz Hallberg, Valtech RADON</p>
-</footer>
 
 <script>
   // Copy-button handler — supports both data-copy (inline) and data-copy-target (selector)
@@ -1398,12 +1446,142 @@ Also tell me a bit about the filter you want to make:
 </script>
 
 <script>
-  // Outro icon — intro hop + bubble on scroll-into-view, hover adds the arm wave
+  // Outro icon — intro hop+blink on scroll-into-view, hover adds the arm wave
   (function() {
     var icon = document.querySelector('.tw-icon');
     if (!icon) return;
+    var iconWrap = document.querySelector('.icon-wrap');
+    var outroEl = document.querySelector('.outro');
 
     var isPlaying = false;
+    var hintsShown = false;
+    var hintsDismissed = false;
+    var idleBlinkTimer = null;
+    var firstArrowSeen = false;
+    var bubble2Done = false;
+    var bubble3Done = false;
+    var stuckBubbleVisible = false;
+    var stuckBubbleReadyToDismiss = false;
+
+    function hideBubble() {
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
+    }
+
+    function dismissPrompts() {
+      if (hintsDismissed) return;
+      hintsDismissed = true;
+      hideBubble();
+      var kh = document.querySelector('.key-hints');
+      if (kh) kh.classList.remove('visible');
+    }
+
+    function showHints() {
+      if (hintsShown || hintsDismissed) return;
+      if (isPlaying) {
+        setTimeout(showHints, 400);
+        return;
+      }
+      hintsShown = true;
+      var kh = document.querySelector('.key-hints');
+      if (kh) kh.classList.add('visible');
+    }
+
+    function isFigureIdle() {
+      if (isPlaying) return false;
+      var cls = icon.classList;
+      return !cls.contains('jumping') &&
+             !cls.contains('waving')  &&
+             !cls.contains('hopping') &&
+             !cls.contains('walking') &&
+             !cls.contains('blink')   &&
+             !cls.contains('wink');
+    }
+
+    function scheduleIdleBlink() {
+      if (idleBlinkTimer) return;
+      var delay = 5000 + Math.random() * 3000;
+      idleBlinkTimer = setTimeout(function() {
+        idleBlinkTimer = null;
+        if (isFigureIdle()) {
+          icon.classList.add('blink');
+          setTimeout(function() {
+            icon.classList.remove('blink');
+            scheduleIdleBlink();
+          }, 160);
+        } else {
+          scheduleIdleBlink();
+        }
+      }, delay);
+    }
+
+    function startIdleBlink() {
+      if (idleBlinkTimer) return;
+      scheduleIdleBlink();
+    }
+
+    function showInGameBubble(text, displayMs) {
+      var bubble = document.querySelector('.speech-bubble');
+      if (!bubble) return;
+      var typeEl = bubble.querySelector('.bubble-type');
+      var ghostEl = bubble.querySelector('.bubble-ghost');
+      if (!typeEl || !ghostEl) return;
+      ghostEl.textContent = text;
+      typeEl.textContent = '';
+      bubble.classList.add('visible');
+      var i = 0;
+      function step() {
+        i++;
+        typeEl.textContent = text.substring(0, i);
+        if (i < text.length) setTimeout(step, 42);
+      }
+      setTimeout(step, 60);
+      setTimeout(function() { bubble.classList.remove('visible'); }, displayMs);
+    }
+
+    function showStuckBubble() {
+      var bubble = document.querySelector('.speech-bubble');
+      if (!bubble) return;
+      var typeEl = bubble.querySelector('.bubble-type');
+      var ghostEl = bubble.querySelector('.bubble-ghost');
+      if (!typeEl || !ghostEl) return;
+      var text = "Stuck? Ask a colleague!";
+      ghostEl.textContent = text;
+      typeEl.textContent = '';
+      bubble.classList.add('visible');
+      stuckBubbleVisible = true;
+      stuckBubbleReadyToDismiss = false;
+      var i = 0;
+      function step() {
+        i++;
+        typeEl.textContent = text.substring(0, i);
+        if (i < text.length) setTimeout(step, 42);
+      }
+      setTimeout(step, 60);
+      setTimeout(function() { stuckBubbleReadyToDismiss = true; }, 7000);
+    }
+
+    function maybeDismissStuckBubble() {
+      if (!stuckBubbleVisible || !stuckBubbleReadyToDismiss) return;
+      var bubble = document.querySelector('.speech-bubble');
+      if (bubble) bubble.classList.remove('visible');
+      stuckBubbleVisible = false;
+    }
+
+    function onFirstArrow() {
+      if (firstArrowSeen) return;
+      firstArrowSeen = true;
+      setTimeout(function() {
+        if (bubble2Done) return;
+        bubble2Done = true;
+        showInGameBubble("Partners in crime!", 5000);
+        setTimeout(function() {
+          if (bubble3Done) return;
+          bubble3Done = true;
+          showStuckBubble();
+        }, 5000 + 15000);
+      }, 3200);
+    }
 
     function playIntro() {
       if (isPlaying) return;
@@ -1421,13 +1599,20 @@ Also tell me a bit about the filter you want to make:
           i++;
           typeEl.textContent = fullText.substring(0, i);
           if (i < fullText.length) {
-            setTimeout(step, 70);
+            setTimeout(step, 55);
           } else {
             setTimeout(function() { icon.classList.add('wink'); }, 800);
             setTimeout(function() { icon.classList.remove('wink'); }, 1050);
+            setTimeout(function() {
+              if (hintsDismissed) return;
+              var bubble = document.querySelector('.speech-bubble');
+              if (bubble) bubble.classList.remove('visible');
+            }, 2000);
+            setTimeout(showHints, 2300);
+            setTimeout(function() { startIdleBlink(); }, 1500);
           }
         }
-        setTimeout(step, 600);
+        setTimeout(step, 400);
       }, 1500);
       setTimeout(function() { isPlaying = false; }, 1900);
     }
@@ -1435,8 +1620,11 @@ Also tell me a bit about the filter you want to make:
     function playHover() {
       if (isPlaying) return;
       isPlaying = true;
-      var bubble = document.querySelector('.speech-bubble');
-      if (bubble) bubble.classList.remove('visible');
+      if (hintsShown) {
+        dismissPrompts();
+      } else {
+        hideBubble();
+      }
       icon.classList.add('jumping');
       setTimeout(function() { icon.classList.remove('jumping'); }, 1500);
       setTimeout(function() { icon.classList.add('waving'); }, 1700);
@@ -1461,6 +1649,130 @@ Also tell me a bit about the filter you want to make:
     } else {
       setTimeout(playIntro, 800);
     }
+
+    var outroInView = false;
+    if ('IntersectionObserver' in window && outroEl) {
+      new IntersectionObserver(function(entries) {
+        outroInView = entries[0].isIntersecting;
+      }, { threshold: 0.4 }).observe(outroEl);
+    }
+
+    var walkX = 0;
+    var keyState = { left: false, right: false };
+    var rafActive = false;
+    var lastFrameTime = 0;
+    var WALK_SPEED = 110;
+    var BASE_Y = 24;
+
+    function applyTransform() {
+      if (!iconWrap) return;
+      iconWrap.style.transform = 'translate(' + walkX + 'px, ' + BASE_Y + 'px)';
+    }
+
+    function tick(time) {
+      if (!rafActive) return;
+      var dt = lastFrameTime ? (time - lastFrameTime) / 1000 : 0;
+      lastFrameTime = time;
+      var moving = false;
+      if (keyState.left)  { walkX -= WALK_SPEED * dt; moving = true; }
+      if (keyState.right) { walkX += WALK_SPEED * dt; moving = true; }
+      if (outroEl) {
+        var maxX = (outroEl.clientWidth / 2) - 60;
+        if (walkX > maxX)  walkX = maxX;
+        if (walkX < -maxX) walkX = -maxX;
+      }
+      applyTransform();
+      if (moving) {
+        icon.classList.add('walking');
+        requestAnimationFrame(tick);
+      } else {
+        icon.classList.remove('walking');
+        rafActive = false;
+        lastFrameTime = 0;
+      }
+    }
+
+    function startWalkLoop() {
+      if (rafActive) return;
+      rafActive = true;
+      lastFrameTime = 0;
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (!outroInView) return;
+      var k = e.key;
+      if (k !== ' ' && k !== 'ArrowLeft' && k !== 'ArrowRight') return;
+      e.preventDefault();
+      dismissPrompts();
+      if (k === ' ') {
+        if (!icon.classList.contains('hopping')) {
+          icon.classList.add('hopping');
+          setTimeout(function() { icon.classList.remove('hopping'); }, 600);
+        }
+      } else if (k === 'ArrowLeft') {
+        keyState.left = true;
+        startWalkLoop();
+        onFirstArrow();
+        maybeDismissStuckBubble();
+      } else if (k === 'ArrowRight') {
+        keyState.right = true;
+        startWalkLoop();
+        onFirstArrow();
+        maybeDismissStuckBubble();
+      }
+    });
+
+    window.addEventListener('keyup', function(e) {
+      if (e.key === 'ArrowLeft')  keyState.left = false;
+      if (e.key === 'ArrowRight') keyState.right = false;
+    });
+
+    // ASCII outro ground
+    (function spawnField() {
+      var el = document.getElementById('ascii-outro');
+      if (!el) return;
+      var ramp = "  ..,,::cloxkO0XNWM@";
+      var rows = 7;
+      var cols = 200;
+      function recalcCols() {
+        var fs = parseFloat(getComputedStyle(el).fontSize) || 7;
+        cols = Math.max(40, Math.ceil(el.clientWidth / (fs * 0.6)));
+      }
+      recalcCols();
+      var resizeTimer;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(recalcCols, 120);
+      });
+      function render(time) {
+        var t = time * 0.00022;
+        var lines = [];
+        for (var r = 0; r < rows; r++) {
+          var line = "";
+          for (var c = 0; c < cols; c++) {
+            var hill1 = Math.sin(c * 0.018 + t * 0.08) * 0.7;
+            var hill2 = Math.sin(c * 0.052 - t * 0.04 + 1.1) * 0.4;
+            var landscape = hill1 + hill2;
+            var effectiveR = r + landscape;
+            var rowFade = effectiveR / (rows - 1);
+            if (rowFade < 0) rowFade = 0; else if (rowFade > 1) rowFade = 1;
+            var w1 = Math.sin(c * 0.07 + t * 1.0 + r * 0.22) * 0.5 + 0.5;
+            var w2 = Math.sin(c * 0.028 - t * 0.55 + r * 0.12) * 0.5 + 0.5;
+            var w3 = Math.sin(c * 0.47 + r * 0.83 + t * 0.35) * 0.5 + 0.5;
+            var w4 = Math.sin(c * 1.13 + r * 1.67 - t * 0.2) * 0.5 + 0.5;
+            var wind = w1 * 0.4 + w2 * 0.25 + w3 * 0.2 + w4 * 0.15;
+            var v = rowFade * 0.78 + wind * 0.3 - 0.1;
+            if (v < 0) v = 0; else if (v > 1) v = 1;
+            line += ramp.charAt(Math.floor(v * (ramp.length - 1)));
+          }
+          lines.push(line);
+        }
+        el.textContent = lines.join("\n");
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+    })();
   })();
 </script>
 

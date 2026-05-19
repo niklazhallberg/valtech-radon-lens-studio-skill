@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lens Studio Skill — Choose your path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Handjet';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('assets/fonts/handjet/handjet-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #050709;
+    --ink: #ffffff;
+    --accent: rgba(255, 255, 255, 0.70);
+    --rule: rgba(255, 255, 255, 0.08);
+    --ink-85: rgba(255, 255, 255, 0.85);
+    --ink-60: rgba(255, 255, 255, 0.60);
+    --ink-45: rgba(255, 255, 255, 0.45);
+    --ink-35: rgba(255, 255, 255, 0.35);
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 7, 9, 0.6);
+  }
+  .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-35); }
+  .nav-badge { font-size: 11px; font-weight: 600; color: var(--ink-45); letter-spacing: 1.5px; text-transform: uppercase; }
+
+  main {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 100px 40px 60px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1080px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(38px, 5.5vw, 76px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .lede {
+    font-size: clamp(16px, 1.4vw, 19px);
+    color: var(--ink-60);
+    max-width: 540px;
+    margin-bottom: 64px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    display: block;
+    padding: 36px 32px 32px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    position: relative;
+  }
+  .card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: #E65E30;
+    transform: translateY(-2px);
+  }
+
+  .card-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .card-lang {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .card-desc {
+    font-size: 14.5px;
+    color: var(--ink-60);
+    line-height: 1.55;
+  }
+  .card-arrow {
+    position: absolute;
+    top: 32px;
+    right: 28px;
+    font-size: 18px;
+    color: var(--ink-35);
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover .card-arrow {
+    color: #E65E30;
+    transform: translate(2px, -2px);
+  }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.14);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 640px) {
+    main { padding: 80px 20px 40px; }
+    .lede { margin-bottom: 40px; }
+    .cards { gap: 14px; }
+    .card { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="container">
+    <p class="eyebrow">Welcome &middot; Time to</p>
+    <h1>Choose your path.</h1>
+    <p class="lede">Two versions of the onboarding to the Lens Studio Skill &mdash; your Claude Code helper for building Snap Lenses. Pick the one that fits how you read. Language can be switched inside the full guide.</p>
+
+    <div class="cards">
+      <a class="card" href="MANUAL-SIMPLE.html">
+        <span class="card-arrow">&rarr;</span>
+        <p class="card-lang">English</p>
+        <p class="card-title">Quick version</p>
+        <p class="card-desc">Less reading, fewer examples. Choose this if you're technically comfortable and happy to pick things up from short instructions.</p>
+      </a>
+
+      <a class="card" href="MANUAL-EN.html">
+        <span class="card-arrow">&rarr;</span>
+        <p class="card-lang">English &middot; Svenska</p>
+        <p class="card-title">Full guide</p>
+        <p class="card-desc">More explanation, more examples. Choose this if you'd rather take it slower and get the full picture. Toggle SV/EN in the top right.</p>
+      </a>
+    </div>
+
+    <footer>
+      Built by Niklaz Hallberg &middot; V_RADON
+    </footer>
+  </div>
+</main>
+
+</body>
+</html>

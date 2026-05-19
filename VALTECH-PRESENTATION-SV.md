@@ -1,6 +1,6 @@
 # `lens-studio-snapchat-filter` — översikt v1.0
 
-> 📌 Detta är en snapshot från v0.7.1 (2026-05-14). Skillen är nu på **v0.10.0**. Se [CHANGELOG.md](../CHANGELOG.md) för aktuellt läge.
+> 📌 Detta är en snapshot från v0.7.1 (2026-05-14). Skillen är nu på **v0.10.0**. Se [CHANGELOG.md](CHANGELOG.md) för aktuellt läge.
 
 Skillens version vid skrivande stund: **v0.7.1**
 Underhålls inom Valtech RADON.
@@ -135,7 +135,7 @@ Skillen är säker by design via tre mekanismer:
 - **Lokal exekvering** — skillen körs på designerns dator; Lens Studio-projekt med kunddata ligger i separat mapp som ALDRIG pushas till skill-repot.
 - **Privat repo + manuella commit-godkännanden** — ingen auto-push, varje förändring godkänns explicit av människa.
 
-Se [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md) för fullständigt resonemang (vad lagras, Generaliseringsregelns trestegs-checklist, repo-status, kunddata under projekt, jämförelse med alternativet).
+Se [SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md) för fullständigt resonemang (vad lagras, Generaliseringsregelns trestegs-checklist, repo-status, kunddata under projekt, jämförelse med alternativet).
 
 ---
 
@@ -193,7 +193,7 @@ Pitch-värde mot kunder: "Vi har en intern AI-mentor som garanterar kvalitet och
 ### Snart (denna månad)
 
 4. **Pilotprojekt nr 2** — välj ett kommande Snap-lens-uppdrag och kör det med skillen från dag 1, med en designer som inte var med på första pilotprojektet. Verkligt empiriskt test av onboarding.
-5. ✅ **CONTRIBUTING.md** för kollegor — **Klart**. Se [`CONTRIBUTING.md`](../CONTRIBUTING.md) i repots root: canonical docs per topic, install-step workflow, `.skill`-build process och version-konvention.
+5. ✅ **CONTRIBUTING.md** för kollegor — **Klart**. Se [`CONTRIBUTING.md`](CONTRIBUTING.md) i repots root: canonical docs per topic, install-step workflow, `.skill`-build process och version-konvention.
 6. **`@valtech.com` SSO** för repo-access via GitHub Enterprise eller motsvarande.
 7. **Slack-kanal** (`#lens-studio-skill` eller liknande) för skill-updates, discoveries och frågor.
 

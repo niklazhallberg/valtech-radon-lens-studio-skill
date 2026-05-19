@@ -67,6 +67,9 @@
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     background: rgba(5, 7, 9, 0.6);
   }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .nav-back { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; font-size: 14px; color: var(--ink-45); text-decoration: none; border-bottom: none; line-height: 1; transition: color 0.15s ease; }
+  .nav-back:hover { color: var(--ink-85); border-bottom: none; }
   .nav-brand { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-35); }
   .nav-badge { font-size: 11px; font-weight: 600; color: var(--ink-45); letter-spacing: 1.5px; text-transform: uppercase; }
 
@@ -550,8 +553,11 @@
 <body>
 
 <nav class="nav">
-  <span class="nav-brand">Lens Studio Skill</span>
-  <span class="nav-badge">INVITATION</span>
+  <div class="nav-left">
+    <a href="index.html" class="nav-back" aria-label="Back to choose your path">&larr;</a>
+    <span class="nav-brand">Lens Studio Skill</span>
+  </div>
+  <span class="nav-badge">ONBOARDING</span>
 </nav>
 
 <!-- HERO — animation only -->
@@ -871,7 +877,7 @@
       setTimeout(function() {
         if (bubble2Done) return;
         bubble2Done = true;
-        showInGameBubble("Partners in crime! Let's go!", 5000);
+        showInGameBubble("Partners in crime!", 5000);
         // "Stuck? Ask a colleague!" 15s after bubble 2 ends — sticky
         setTimeout(function() {
           if (bubble3Done) return;
@@ -1178,7 +1184,12 @@
     return { x: x2 * perspective, y: y2 * perspective, z: z2, edge: p.edge, dist: p.dist, side: p.side, originalX: p.x };
   }
 
+  let _revealStart = null;
+  const REVEAL_MS = 4000;
+
   function render(time) {
+    if (_revealStart === null) _revealStart = time;
+    const revealProgress = Math.min(1, (time - _revealStart) / REVEAL_MS);
     const t = time * 0.00024;
     const grid = Array.from({ length: ROWS }, () => Array(COLS).fill(" "));
     const sortedPoints = [...points].sort((a, b) => a.z - b.z);
@@ -1188,6 +1199,10 @@
       const col = Math.round(((q.x + 1.28) / 2.56) * (COLS - 1));
       const row = Math.round(((q.y + 1.02) / 2.04) * (ROWS - 1));
       if (row < 0 || row >= ROWS || col < 0 || col >= COLS) continue;
+      // Reveal-in: each cell appears in random order over 4s. After that,
+      // normal rendering (V_RADON, edges, shells) resumes for all cells.
+      const cellRevealHash = Math.abs(Math.sin((row * 19.7 + col * 43.3) * 47.123)) % 1;
+      if (cellRevealHash > revealProgress) continue;
 
       const front = Math.max(0, Math.min(1, (q.z + DEPTH_SIZE) / (DEPTH_SIZE * 2)));
       const rightLight = Math.max(0, Math.min(1, (q.x + 0.45) / 1.55));

@@ -1,6 +1,6 @@
 # `lens-studio-snapchat-filter` — overview v1.0
 
-> 📌 This is a snapshot from v0.7.1 (2026-05-14). The skill is now at **v0.10.0**. See [CHANGELOG.md](../CHANGELOG.md) for the current state.
+> 📌 This is a snapshot from v0.7.1 (2026-05-14). The skill is now at **v0.10.0**. See [CHANGELOG.md](CHANGELOG.md) for the current state.
 
 Skill version at time of writing: **v0.7.1**
 Maintained within Valtech RADON.
@@ -102,7 +102,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 1. The AI notices a solution isn't in `references/`. Greps to prove it.
 2. It says **in the middle of the flow** to the designer: "We have a discovery: X. That rule isn't in the skill. Should we write it in?"
 3. The designer says yes / no / save for later.
-4. On yes: the **Generalization rule** runs (see [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md)) — the project-specific solution gets rewritten into a universal rule.
+4. On yes: the **Generalization rule** runs (see [SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md)) — the project-specific solution gets rewritten into a universal rule.
 5. Diff shown. Designer approves. Commit + CHANGELOG entry. **~2 minutes**.
 
 ### How the knowledge reaches the next colleague
@@ -135,7 +135,7 @@ The skill is secure by design via three mechanisms:
 - **Local execution** — the skill runs on the designer's machine; Lens Studio projects with client data live in a separate folder that's NEVER pushed to the skill repo.
 - **Private repo + manual commit approvals** — no auto-push, every change is approved explicitly by a human.
 
-See [SECURITY-AND-PRIVACY.md](SECURITY-AND-PRIVACY.md) for the full reasoning (what's stored, the Generalization rule's three-step checklist, repo status, client data during projects, comparison with the alternative).
+See [SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md) for the full reasoning (what's stored, the Generalization rule's three-step checklist, repo status, client data during projects, comparison with the alternative).
 
 ---
 
@@ -193,7 +193,7 @@ Client pitch value: "We have an internal AI mentor that guarantees quality and c
 ### Soon (this month)
 
 4. **Pilot project no. 2** — pick an upcoming Snap lens assignment and run it with the skill from day 1, with a designer who wasn't part of the first pilot. A real empirical test of onboarding.
-5. ✅ **CONTRIBUTING.md** for colleagues — **Done**. See [`CONTRIBUTING.md`](../CONTRIBUTING.md) in the repo root: canonical docs per topic, install-step workflow, `.skill`-build process, and version convention.
+5. ✅ **CONTRIBUTING.md** for colleagues — **Done**. See [`CONTRIBUTING.md`](CONTRIBUTING.md) in the repo root: canonical docs per topic, install-step workflow, `.skill`-build process, and version convention.
 6. **`@valtech.com` SSO** for repo access via GitHub Enterprise or equivalent.
 7. **Slack channel** (`#lens-studio-skill` or similar) for skill updates, discoveries, and questions.
 
