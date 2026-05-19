@@ -1,8 +1,7 @@
-# `lens-studio-snapchat-filter` — översikt v1.0
+# `valtech-radon-lens-studio-skill` — översikt
 
-> 📌 Detta är en snapshot från v0.7.1 (2026-05-14). Skillen är nu på **v0.10.0**. Se [CHANGELOG.md](CHANGELOG.md) för aktuellt läge.
+> 📌 Senast reviderad 2026-05-19. Skillen utvecklas löpande — se [CHANGELOG.md](CHANGELOG.md) för aktuellt läge och senaste accepterade discoveries.
 
-Skillens version vid skrivande stund: **v0.7.1**
 Underhålls inom Valtech RADON.
 
 Detta dokument är en självständig översikt över skillen — vad den är, hur den används, hur den växer, hur den hanterar säkerhet och vilket affärsvärde den representerar. Tänkt att läsas av en designer, teamlead, teknikchef eller beslutsfattare — alla får relevant information.
@@ -11,7 +10,7 @@ Detta dokument är en självständig översikt över skillen — vad den är, hu
 
 ## 1. Vad är detta — Executive Summary
 
-`lens-studio-snapchat-filter` är en AI-assisterad arbetsmetod som låter en designer på Valtech Radon — utan tidigare Snapchat-erfarenhet — bygga ett produktionsklart Sponsored Lens-filter åt en kund på dagar istället för veckor.
+`valtech-radon-lens-studio-skill` är en AI-assisterad arbetsmetod som låter en designer på Valtech RADON — utan tidigare Snapchat-erfarenhet — bygga ett produktionsklart Sponsored Lens-filter åt en kund på dagar istället för veckor.
 
 Tekniskt: en "skill" som plug:ar in i Claude Code (Anthropics utvecklarverktyg) och förvandlar AI:n från en generell assistent till en **specialiserad mentor** för Snapchat Lens Studio. Skillen kan vår process, vår kvalitetsnivå, och fångar löpande in kunskap från riktiga projekt.
 
@@ -49,7 +48,7 @@ Skillen är byggd i **7 lager**. Varje lager existerar för att lösa ett specif
 **Värde:** En kollega kan starta ensam. Ingen enskild person blir flaskhals.
 
 ### f) Self-growth protocol
-**Vad:** `skill-growth-protocol.md` v0.4 — protokoll för hur **nya lärdomar fångas i flowet** under riktiga projekt och flödar in i skillen.
+**Vad:** `skill-growth-protocol.md` v0.5 — protokoll för hur **nya lärdomar fångas i flowet** under riktiga projekt och flödar in i skillen.
 **Vad det kostar att INTE ha det:** Skillen stagnerar efter dag 1. Kunskap från projekt 2, 3, 4 hamnar i folks huvuden eller Slack-trådar och försvinner.
 **Värde:** Compound interest. Se sektion 4.
 
@@ -64,7 +63,7 @@ Skillen är byggd i **7 lager**. Varje lager existerar för att lösa ett specif
 
 ### Dag 1 — designer Anna, har aldrig byggt ett Snap-filter
 
-1. **00:00** — Anna öppnar `MANUAL.html` i webbläsaren. 4 steg på svenska. Klistrar in en setup-prompt i terminalen.
+1. **00:00** — Anna öppnar den hostade onboarding-manualen (en av tre: SV full, EN full, eller EN quick — `valtech-radon-lens-skill-invite.netlify.app/`). 8 steg med copy-paste-färdiga kommandon och "vad du ser när det funkat"-verifiering vid varje steg. Sätter upp Claude Code, accepterar repo-invitation, klonar skillen.
 2. **00:05** — Claude Code aktiverar skillen automatiskt när Anna nämner "Snapchat-filter åt [kund]". Bekräftar platform.
 3. **00:10** — Concierge mode kör miljödetektering. Säger "✅ LS installerat, ❌ MCP ej registrerat — vill du att jag fixar det?". Ett steg i taget.
 4. **00:30** — Setup klar. Onboarding intake börjar: 8 frågor om vision, känsla, tempo, målgrupp. Anna får löpande "vad du får tillbaka för svaret"-feedback.
@@ -129,13 +128,63 @@ Om Valtech kör 10–20 lens-projekt per år och varje projekt bidrar 2–5 disc
 
 ## 5. Säkerhet och sekretess
 
-Skillen är säker by design via tre mekanismer:
+**Skillen är designad så att kunddata och Valtech-internt arbete aldrig lämnar designerns dator.** Tre oberoende lager säkerställer detta.
 
-- **Generaliseringsregeln** filtrerar bort projektspecifika värden (klientnamn, koordinater, deadlines) innan något committas.
-- **Lokal exekvering** — skillen körs på designerns dator; Lens Studio-projekt med kunddata ligger i separat mapp som ALDRIG pushas till skill-repot.
-- **Privat repo + manuella commit-godkännanden** — ingen auto-push, varje förändring godkänns explicit av människa.
+### a) Fysisk separation mellan skill och kundarbete
 
-Se [SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md) för fullständigt resonemang (vad lagras, Generaliseringsregelns trestegs-checklist, repo-status, kunddata under projekt, jämförelse med alternativet).
+Skill-repot ligger i en mapp (typiskt klonad till `~/Projects/` eller där designern föredrar). Kundens Lens Studio-projekt — med 3D-modeller, briefer, kampanj-assets, brand-specifika tuning-värden — bor i en **helt separat mapp**, t.ex. `~/Projects/<kund>-lens/`. De två kommer aldrig i kontakt. Skill-repots `.gitignore` och mapp-gränser gör accidentell crossover omöjlig.
+
+### b) Generaliseringsregeln (teknisk filter)
+
+`skill-growth-protocol.md` v0.5 specificerar en obligatorisk trestegs-checklist som körs **innan något ens föreslås för commit** till skill-repot:
+
+1. **Identifiera den generella regeln** bakom det specifika fyndet.
+2. **Explicit borttagningslista** — det här stryks bort:
+   - ❌ Klientnamn (adidas, RFSU, Ray-Ban, etc.)
+   - ❌ Projektspecifika värden (X-koordinater, kampanjbudgetar, exakta tuning-konstanter för just den här skon)
+   - ❌ Interna projektnamn, filsökvägar
+   - ❌ Datum, deadlines
+   - ❌ Personuppgifter
+   - ❌ API-nycklar, tokens, credentials
+3. **"Next colleague"-testet** — kan en designer om sex månader, utan kontext om detta projekt, förstå entryt? Om nej → committas inte.
+
+Bara den **generaliserade regeln** flödar till skill-repot. Råa data gör det aldrig.
+
+### c) Mänsklig godkännandeport
+
+Agenten **auto-committar aldrig och auto-pushar aldrig**. Varje commit + push till skill-repot godkänns av designern i flow:
+
+> "Är det OK att jag uppdaterar systemfilerna med din upptäckt?"
+
+Ja / nej / spara för senare. Inget ja = inget lämnar den lokala datorn.
+
+### Vad det innebär i praktiken
+
+| Vad | Var det ligger | Pushas till GitHub? |
+|---|---|---|
+| Kundbriefer, 3D-modeller, kampanj-content | `~/Projects/<kund>-lens/` | **Aldrig** |
+| Projektspecifika tuning-värden, X/Y/Z-koordinater, exakta konstanter | Designerns arbetssession, Lens Studio Inspector | **Aldrig** |
+| Credentials (Anthropic API-nycklar, GitHub-tokens) | OS-keychain / shell-env | **Aldrig** |
+| **Generaliserade** mönster ("Try-On Pack Sneakers pivots är typiskt 6–12 LS-enheter off-center; detektera via AABB innan du antar centrum") | `references/*.md` i skill-repot | Ja — bara efter att Generaliseringsregeln har strippat specifika värden OCH människan godkänt |
+
+### Repo-status
+
+Skill-repot är **privat**, för närvarande på Niklaz Hallbergs personliga GitHub-konto (`niklazhallberg/valtech-radon-lens-studio-skill`). Access endast via invitation. En branch protection-rule på `main` blockerar force-push och branch-deletion. Den ligger dormant idag — GitHub aktiverar inte branch protection på gratis privata personliga repon — men auto-aktiveras när repot migreras till ett Valtech organisationskonto (planerat, se sektion 7).
+
+### Jämförelse med alternativet
+
+Risken om Valtech **inte** har ett system som detta:
+
+| Risk utan skillen | Konsekvens |
+|---|---|
+| Designers googlar fritt | Okontrollerade källor, okontrollerade kodsnuttar in i kundprojekt |
+| Kunskap stannar hos individen | Om personen är otillgänglig → tyst kunskapsförlust |
+| Slack-trådar som "wiki" | Sökbart bara för insiders, ingen audit-trail, inget format-skydd |
+| Ingen audit-trail på lärdomar | Ingen synlighet i vad agenten lär sig från projekt till projekt |
+
+**Skillen är inte en ny säkerhetsrisk — den är en strukturerad lösning på en risk som redan finns.**
+
+För det fullständiga resonemanget, se [`docs/SECURITY-AND-PRIVACY.md`](docs/SECURITY-AND-PRIVACY.md).
 
 ---
 
@@ -184,24 +233,31 @@ Pitch-värde mot kunder: "Vi har en intern AI-mentor som garanterar kvalitet och
 
 ## 7. Rekommenderade nästa steg
 
+### Redan levererat (sedan v0.7.1)
+
+- ✅ **`CONTRIBUTING.md`** — canonical docs per topic, install-step workflow, version-konvention. Se [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- ✅ **Hostade onboarding-manualer** — tre Netlify-distribuerade manualer (SV full, EN full, EN quick) på `valtech-radon-lens-skill-invite.netlify.app/`. Designade så att en icke-teknisk kollega kan installera Claude Code + skillen på 10–15 min.
+- ✅ **`ONBOARDING-SNIPPET.md`** — Slack/email-invite-mallar (tre varianter) för att dela manualen med nya kollegor.
+- ✅ **Auto-sync-hook** — `scripts/session-sync.sh` körs vid varje `claude`-start, pullar senaste skill-updates och annonserar nya entries inline. Ingen daglig `git pull` att komma ihåg.
+- ✅ **Branch protection-rule på `main`** — skapad. Force-push + branch-deletion blockerade. Dormant idag (gratis privat personlig repo), auto-aktiveras efter migrering.
+
 ### Nu (denna vecka)
 
-1. **Säkerhetsgranskning** — låt relevant funktion läsa `skill-growth-protocol.md` + detta dokument. Konfirma att Generaliseringsregeln + manuella commit-godkännanden möter Valtechs policy.
-2. **Migrera repo till Valtech-organisationskonto** på GitHub. Två klick. Eliminerar "personligt konto"-frågetecknet.
+1. **Säkerhetsgranskning** — låt relevant funktion läsa `skill-growth-protocol.md` + sektion 5 i detta dokument. Konfirma att Generaliseringsregeln + manuella commit-godkännanden möter Valtechs policy.
+2. **Migrera repo till Valtech-organisationskonto** på GitHub. Eliminerar "personligt konto"-frågetecknet och auto-aktiverar branch protection-rule:n.
 3. **Sätt upp 30-min demo** för 2–3 utvalda designers + 1 stakeholder. Live walk-through av onboarding-flödet.
 
 ### Snart (denna månad)
 
 4. **Pilotprojekt nr 2** — välj ett kommande Snap-lens-uppdrag och kör det med skillen från dag 1, med en designer som inte var med på första pilotprojektet. Verkligt empiriskt test av onboarding.
-5. ✅ **CONTRIBUTING.md** för kollegor — **Klart**. Se [`CONTRIBUTING.md`](CONTRIBUTING.md) i repots root: canonical docs per topic, install-step workflow, `.skill`-build process och version-konvention.
-6. **`@valtech.com` SSO** för repo-access via GitHub Enterprise eller motsvarande.
-7. **Slack-kanal** (`#lens-studio-skill` eller liknande) för skill-updates, discoveries och frågor.
+5. **`@valtech.com` SSO** för repo-access via GitHub Enterprise eller motsvarande (kräver steg 2).
+6. **Slack-kanal** (`#lens-studio-skill` eller liknande) för skill-updates, discoveries och frågor.
 
 ### Framöver (detta kvartal)
 
-8. **Mät ROI på riktigt** efter 3–4 körda projekt. Jämför verklig tid mot estimaten i sektion 6.
-9. **Utforska generalisering** — kan samma skill-arkitektur lyfta över till TikTok Effect House? Meta Spark? Frågan är öppen, men growth-protokollet skulle vara identiskt.
-10. **Story-paketering mot kunder** — om mätningen i steg 8 håller, paketera som sales-narrative för Sponsored Lens-erbjudanden.
+7. **Mät ROI på riktigt** efter 3–4 körda projekt. Jämför verklig tid mot estimaten i sektion 6.
+8. **Utforska generalisering** — kan samma skill-arkitektur lyfta över till TikTok Effect House? Meta Spark? Frågan är öppen, men growth-protokollet skulle vara identiskt.
+9. **Story-paketering mot kunder** — om mätningen i steg 7 håller, paketera som sales-narrative för Sponsored Lens-erbjudanden.
 
 ---
 

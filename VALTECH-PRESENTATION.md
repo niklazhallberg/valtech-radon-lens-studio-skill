@@ -1,8 +1,7 @@
-# `lens-studio-snapchat-filter` — overview v1.0
+# `valtech-radon-lens-studio-skill` — overview
 
-> 📌 This is a snapshot from v0.7.1 (2026-05-14). The skill is now at **v0.10.0**. See [CHANGELOG.md](CHANGELOG.md) for the current state.
+> 📌 Last reviewed 2026-05-19. The skill evolves continuously — see [CHANGELOG.md](CHANGELOG.md) for the current state and latest accepted discoveries.
 
-Skill version at time of writing: **v0.7.1**
 Maintained within Valtech RADON.
 
 This document is a standalone overview of the skill — what it is, how it's used, how it grows, how it handles security, and what business value it represents. Written to be readable by a designer, team lead, tech lead, or decision-maker — all get relevant information.
@@ -11,7 +10,7 @@ This document is a standalone overview of the skill — what it is, how it's use
 
 ## 1. What is this — Executive Summary
 
-`lens-studio-snapchat-filter` is an AI-assisted working method that lets a designer at Valtech Radon — without prior Snapchat experience — build a production-ready Sponsored Lens filter for a client in days instead of weeks.
+`valtech-radon-lens-studio-skill` is an AI-assisted working method that lets a designer at Valtech RADON — without prior Snapchat experience — build a production-ready Sponsored Lens filter for a client in days instead of weeks.
 
 Technically: a "skill" that plugs into Claude Code (Anthropic's developer tool) and turns the AI from a general assistant into a **specialized mentor** for Snapchat Lens Studio. The skill knows our process, our quality bar, and continuously captures knowledge from real projects.
 
@@ -49,7 +48,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 **Value:** A colleague can start alone. No single person becomes a bottleneck.
 
 ### f) Self-growth protocol
-**What:** `skill-growth-protocol.md` v0.4 — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill.
+**What:** `skill-growth-protocol.md` v0.5 — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill.
 **What it costs NOT to have it:** The skill stagnates after day 1. Knowledge from projects 2, 3, 4 ends up in people's heads or Slack threads and disappears.
 **Value:** Compound interest. See section 4.
 
@@ -64,7 +63,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 
 ### Day 1 — designer Anna, has never built a Snap filter
 
-1. **00:00** — Anna opens `MANUAL.html` in her browser. 4 steps in Swedish. Pastes a setup prompt into the terminal.
+1. **00:00** — Anna opens the hosted onboarding manual (one of three: SV full, EN full, or EN quick — `valtech-radon-lens-skill-invite.netlify.app/`). 8 steps with copy-paste-ready commands and "what you see when it worked" verification at every step. Sets up Claude Code, accepts the repo invitation, clones the skill.
 2. **00:05** — Claude Code activates the skill automatically when Anna mentions "Snapchat filter for [client]". Confirms platform.
 3. **00:10** — Concierge mode runs environment detection. Says "✅ LS installed, ❌ MCP not registered — want me to fix it?". One step at a time.
 4. **00:30** — Setup done. Onboarding intake starts: 8 questions on vision, feel, tempo, audience. Anna gets ongoing "what you get back for the answer" feedback.
@@ -129,13 +128,63 @@ If Valtech runs 10–20 lens projects per year and each project contributes 2–
 
 ## 5. Security and privacy
 
-The skill is secure by design via three mechanisms:
+**The skill is designed so that client data and Valtech-internal work never leave the designer's machine.** Three independent layers enforce this.
 
-- **The Generalization rule** filters out project-specific values (client names, coordinates, deadlines) before anything gets committed.
-- **Local execution** — the skill runs on the designer's machine; Lens Studio projects with client data live in a separate folder that's NEVER pushed to the skill repo.
-- **Private repo + manual commit approvals** — no auto-push, every change is approved explicitly by a human.
+### a) Physical separation between skill and client work
 
-See [SECURITY-AND-PRIVACY.md](docs/SECURITY-AND-PRIVACY.md) for the full reasoning (what's stored, the Generalization rule's three-step checklist, repo status, client data during projects, comparison with the alternative).
+The skill repo lives in one folder (typically cloned to `~/Projects/` or wherever the designer prefers). The client's Lens Studio project — with 3D models, briefs, campaign assets, brand-specific tuning values — lives in a **completely separate folder**, e.g. `~/Projects/<client>-lens/`. The two never touch. The skill repo's `.gitignore` and folder boundaries make accidental crossover impossible.
+
+### b) The Generalization rule (technical filter)
+
+`skill-growth-protocol.md` v0.5 specifies a mandatory three-step checklist that runs **before anything is even proposed for commit** to the skill repo:
+
+1. **Identify the general rule** behind the specific finding.
+2. **Explicit removal checklist** — these get stripped:
+   - ❌ Client names (adidas, RFSU, Ray-Ban, etc.)
+   - ❌ Project-specific values (X coordinates, campaign budgets, exact tuning constants for this one shoe)
+   - ❌ Internal project names, file paths
+   - ❌ Dates, deadlines
+   - ❌ Personal data
+   - ❌ API keys, tokens, credentials
+3. **"Next colleague" test** — would the entry make sense to a designer six months from now who has no context about this project? If no → not committed.
+
+Only the **generalized rule** flows to the skill repo. The raw data never does.
+
+### c) Human approval gate
+
+The agent **never auto-commits and never auto-pushes**. Every commit + push to the skill repo is approved by the designer in-flow:
+
+> "Is it OK if I update the system files with your discovery?"
+
+Yes / no / save for later. No yes = nothing leaves the local machine.
+
+### What this means in practice
+
+| What | Where it lives | Goes to GitHub? |
+|---|---|---|
+| Client briefs, 3D models, campaign content | `~/Projects/<client>-lens/` | **Never** |
+| Project-specific tuning values, X/Y/Z coordinates, exact constants | Designer's working session, Lens Studio Inspector | **Never** |
+| Credentials (Anthropic API keys, GitHub tokens) | OS keychain / shell env | **Never** |
+| **Generalized** patterns ("Try-On Pack Sneakers pivots are typically 6–12 LS units off-center; detect via AABB before assuming center") | `references/*.md` in skill repo | Yes — only after the Generalization rule has stripped specifics and the human has approved |
+
+### Repo status
+
+The skill repo is **private**, currently on Niklaz Hallberg's personal GitHub account (`niklazhallberg/valtech-radon-lens-studio-skill`). Access by invitation only. A branch protection rule on `main` blocks force-push and branch deletion. It sits dormant today — GitHub doesn't enforce branch protection on free private personal repos — but auto-activates when the repo migrates to a Valtech organization account (planned, see section 7).
+
+### Comparison with the alternative
+
+The risk if Valtech **doesn't** have a system like this:
+
+| Risk without the skill | Consequence |
+|---|---|
+| Designers google freely | Uncontrolled sources, uncontrolled code snippets into client projects |
+| Knowledge stays with the individual | If the person is unavailable → silent knowledge loss |
+| Slack threads as "wiki" | Searchable only by insiders, no audit trail, no format protection |
+| No audit trail on learnings | No visibility into what the agent learns from project to project |
+
+**The skill isn't a new security risk — it's a structured solution to a risk that already exists.**
+
+For the full reasoning, see [`docs/SECURITY-AND-PRIVACY.md`](docs/SECURITY-AND-PRIVACY.md).
 
 ---
 
@@ -184,24 +233,31 @@ Client pitch value: "We have an internal AI mentor that guarantees quality and c
 
 ## 7. Recommended next steps
 
+### What's already shipped (since v0.7.1)
+
+- ✅ **`CONTRIBUTING.md`** — canonical docs per topic, install-step workflow, version convention. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- ✅ **Hosted onboarding manuals** — three Netlify-distributed manuals (SV full, EN full, EN quick) at `valtech-radon-lens-skill-invite.netlify.app/`. Designed for a non-technical colleague to install Claude Code + the skill in 10–15 min.
+- ✅ **`ONBOARDING-SNIPPET.md`** — Slack/email invite templates (three variants) for sharing the manual with new colleagues.
+- ✅ **Auto-sync hook** — `scripts/session-sync.sh` runs on every `claude` start, pulling latest skill updates and announcing new entries inline. No daily `git pull` to remember.
+- ✅ **Branch protection rule on `main`** — created. Force-push + branch deletion blocked. Dormant today (free private personal repo), auto-activates post-migration.
+
 ### Now (this week)
 
-1. **Security review** — have the relevant function read `skill-growth-protocol.md` + this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy.
-2. **Migrate repo to Valtech organization account** on GitHub. Two clicks. Eliminates the "personal account" question mark.
+1. **Security review** — have the relevant function read `skill-growth-protocol.md` + section 5 of this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy.
+2. **Migrate repo to a Valtech organization account** on GitHub. Eliminates the "personal account" question mark and auto-activates the branch protection rule.
 3. **Set up a 30-min demo** for 2–3 selected designers + 1 stakeholder. Live walk-through of the onboarding flow.
 
 ### Soon (this month)
 
 4. **Pilot project no. 2** — pick an upcoming Snap lens assignment and run it with the skill from day 1, with a designer who wasn't part of the first pilot. A real empirical test of onboarding.
-5. ✅ **CONTRIBUTING.md** for colleagues — **Done**. See [`CONTRIBUTING.md`](CONTRIBUTING.md) in the repo root: canonical docs per topic, install-step workflow, `.skill`-build process, and version convention.
-6. **`@valtech.com` SSO** for repo access via GitHub Enterprise or equivalent.
-7. **Slack channel** (`#lens-studio-skill` or similar) for skill updates, discoveries, and questions.
+5. **`@valtech.com` SSO** for repo access via GitHub Enterprise or equivalent (depends on step 2).
+6. **Slack channel** (`#lens-studio-skill` or similar) for skill updates, discoveries, and questions.
 
 ### Going forward (this quarter)
 
-8. **Measure ROI for real** after 3–4 completed projects. Compare actual time against the estimates in section 6.
-9. **Explore generalization** — can the same skill architecture lift over to TikTok Effect House? Meta Spark? The question is open, but the growth protocol would be identical.
-10. **Story packaging toward clients** — if the measurement in step 8 holds, package as a sales narrative for Sponsored Lens offerings.
+7. **Measure ROI for real** after 3–4 completed projects. Compare actual time against the estimates in section 6.
+8. **Explore generalization** — can the same skill architecture lift over to TikTok Effect House? Meta Spark? The question is open, but the growth protocol would be identical.
+9. **Story packaging toward clients** — if the measurement in step 7 holds, package as a sales narrative for Sponsored Lens offerings.
 
 ---
 
