@@ -1,6 +1,6 @@
-# lens-studio-snapchat-filter
+# valtech-radon-lens-studio-skill
 
-> A growing knowledge base for building Snapchat AR Lenses and Sponsored Lenses with Claude Code + Lens Studio.
+> A Lens Studio skill for Claude Code that grows more intelligent every time we use it. Only available to Valtech RADON employees.
 
 A Claude Code "skill" — a plug-in that turns the general-purpose AI assistant into a specialized mentor for Snapchat Lens Studio. Built and maintained by **Valtech RADON**, it captures empirically-validated patterns, gotchas, and workflows from real production lens builds.
 
@@ -32,63 +32,65 @@ This division is enforced by the skill's operational rules and voice mandate. Yo
 
 ---
 
-## Getting started — 5 steps
+## Getting started
 
-The commands below are written for macOS. Adjust paths and package managers for Windows / Linux as needed.
+For the friendliest path — and the one we recommend for new colleagues — use the hosted onboarding manuals:
 
-### 1. Install Lens Studio
+| Audience | URL |
+|---|---|
+| Quick / technically comfortable (EN) | https://valtech-radon-lens-skill-invite.netlify.app/nosmalltalk |
+| Full guide (EN) | https://valtech-radon-lens-skill-invite.netlify.app/fullguide-en |
+| Full guide (SV) | https://valtech-radon-lens-skill-invite.netlify.app/fullstandigguide-sv |
+| Router (pick your path) | https://valtech-radon-lens-skill-invite.netlify.app/ |
 
-Download Lens Studio 5.20 or later from Snap:
+The manuals walk through everything below in 10–15 minutes with copy-paste-ready commands and "what you see when it worked" verification steps.
 
-**https://ar.snap.com/download**
+### Prerequisites
 
-Open the app once after install to confirm it launches.
+- macOS, Linux, or Windows WSL terminal
+- A **paid Claude account** — a free claude.ai chat account doesn't work with Claude Code. Options:
+  - **Enterprise subscription** — on the way for Valtech RADON
+  - **Your own Claude Pro** ($17–20/mo) — sign up at https://claude.com/pricing
+  - **Your own API credits** ($5–20, pay-as-you-go) — sign up at https://platform.claude.com/login
 
-### 2. Install Claude Code
+### Five-step quick path (for engineers comfortable in a terminal)
 
-In your terminal:
+The commands are written for macOS — adjust for Windows / Linux as needed.
+
+**1. Install Lens Studio 5.20+** from https://ar.snap.com/download. Open it once to confirm it launches.
+
+**2. Install Claude Code:**
 
 ```bash
-npm install -g @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 ```
 
-If you don't have Node.js / npm yet, install it first from **https://nodejs.org** (LTS version is fine).
+Verify with `claude --version`.
 
-Confirm Claude Code is installed:
-
-```bash
-claude --version
-```
-
-### 3. Clone this skill into the Claude Code skills directory
+**3. Clone this skill:**
 
 ```bash
-mkdir -p ~/.claude/skills
-cd ~/.claude/skills
-git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git lens-studio-snapchat-filter
+git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git
+cd valtech-radon-lens-studio-skill
 ```
 
 You must be invited as a collaborator on the private repository to clone it. See the **Access** section below.
 
 (The clone URL will change once the repository migrates to a Valtech GitHub organization.)
 
-### 4. Create a project folder and start Claude Code
+**4. Open the cloned repo in your terminal and start Claude Code:**
 
 ```bash
-mkdir -p ~/Projects/my-first-lens
-cd ~/Projects/my-first-lens
 claude
 ```
 
-### 5. Tell the agent what you want to build
+At the login prompt, pick the option that matches your account (Pro/Max subscription, or Anthropic Console API key).
 
-In the Claude Code chat, type something like:
+**5. Tell the agent what you want to build:**
 
 > "I want to build a Snapchat Lens for [your concept here]."
 
 The skill activates automatically. The agent walks you through environment detection, concierge setup, the 8-question onboarding intake, and the full 9-phase build pipeline.
-
-For a designer-friendly walkthrough with screenshots, open `docs/MANUAL.html` in your browser.
 
 ---
 
@@ -110,7 +112,7 @@ See CHANGELOG.md in the skill folder for full history.
 
 If nothing has changed, the hook is silent — no noise.
 
-**Setup:** the hook is wired up by `bin/install.sh` (coming soon) or manually by adding a `SessionStart` hook to `~/.claude/settings.json` that points to `scripts/session-sync.sh` in this repo. Once configured, you can forget it exists.
+**Setup:** run `bin/install.sh` from the cloned repo to wire it up, or manually add a `SessionStart` hook to `~/.claude/settings.json` that points to `scripts/session-sync.sh` in this repo. Once configured, you can forget it exists.
 
 **Behaviour guarantees:**
 
@@ -138,8 +140,12 @@ This is what makes the "compound interest on skill investment" idea real. Your c
 | `references/skill-growth-protocol.md` | How new learnings flow back into the skill — the cultural protocol |
 | `references/onboarding-protocol.md` | 8 questions, 3 groups, ~7 minutes — captures vision, constraints, asset validation before Phase 0 spec drafting |
 | `references/concierge-setup-flow.md` | 8-step setup conversation for designers who've never built a lens before |
-| `docs/MANUAL.html` | Designer-facing manual |
-| `docs/VALTECH-PRESENTATION.md` | Standalone overview for a broader Valtech audience (designer, team lead, tech lead, decision-maker) |
+| `docs/MANUAL.html` · `MANUAL-EN.html` · `MANUAL-SIMPLE.html` | Designer-facing manuals (SV full, EN full, EN quick). Hosted live on Netlify — see Getting started above |
+| `docs/index.html` · `docs/_redirects` | Router page and Netlify path rewrites for the hosted manuals |
+| `bin/install.sh` | Idempotent setup script — wires the SessionStart auto-sync hook and verifies prerequisites |
+| `scripts/session-sync.sh` | The hook itself — pulls latest skill updates and announces new entries inline |
+| `ONBOARDING-SNIPPET.md` | Internal Slack/email invite templates (three variants: SV, EN, terse) for sharing the manual with new colleagues |
+| `VALTECH-PRESENTATION.md` · `VALTECH-PRESENTATION-SV.md` | Standalone overviews for a broader Valtech audience (designer, team lead, tech lead, decision-maker). Kept at repo root so they don't ship publicly with the Netlify-hosted manuals |
 | `CHANGELOG.md` | The skill's biography — every release, every accepted discovery, with timestamps, project context, and value-for-user statements |
 
 See `SKILL.md` for the full reference catalog with load-on-demand cross-refs.
