@@ -106,7 +106,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 
 ### How the knowledge reaches the next colleague
 
-The next designer who runs `git pull` automatically gets all the new rules. The AI reads them as context in the next session. **No training, no Slack thread, no parallel wiki to maintain.**
+Every time someone starts the skill in the terminal (the `claude` command), an auto-sync hook pulls the latest rules from GitHub **before** the session begins. The designer never has to run `git pull` themselves — it's handled for them. If new entries have landed since last session, a short summary appears inline in chat; otherwise it's silent. **Users never need to sync manually. No training, no Slack thread, no parallel wiki to maintain.**
 
 ### What it requires of the designer
 

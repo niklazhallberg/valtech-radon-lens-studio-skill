@@ -106,7 +106,7 @@ Skillen är byggd i **7 lager**. Varje lager existerar för att lösa ett specif
 
 ### Hur kunskapen når nästa kollega
 
-Nästa designer som gör `git pull` får automatiskt alla nya regler. AI:n läser dem som kontext nästa session. **Ingen utbildning, ingen Slack-tråd, ingen wiki att underhålla parallellt.**
+Varje gång någon startar skillen i terminalen (`claude`-kommandot) körs en auto-sync-hook som hämtar senaste regler från GitHub **innan** sessionen börjar. Designern behöver aldrig själv köra `git pull` — det sköts åt dem. Om nya entries har landat sedan sist visas en kort sammanfattning inline i chatten; annars helt tyst. **Användaren behöver aldrig göra något manuellt. Ingen sync, ingen utbildning, ingen Slack-tråd, ingen wiki att underhålla parallellt.**
 
 ### Vad det kräver av designern
 
