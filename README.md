@@ -8,9 +8,18 @@ A Claude Code "skill" — a plug-in that turns the general-purpose AI assistant 
 
 ## Background
 
-Lens Studio is powerful but unforgiving. APIs shift between minor versions. ML trackers behave differently on desktop versus real device. Submission has strict, sometimes undocumented, requirements. Every designer building their first lens hits the same traps — the same Slack searches, the same hour-long debugging cycles, the same surprises in Phase 4.
+Building a Snapchat Lens is harder than it looks. APIs shift between minor Lens Studio versions. ML trackers behave one way in desktop preview and another on a real device. Submission has strict, sometimes undocumented requirements. Every first-time designer hits the same traps.
 
-This skill exists to collapse that learning curve. **One colleague pays the time cost of discovery once. Every colleague after inherits the answer.**
+Without a shared system, all of that knowledge lives in one person's head. They become the bottleneck — when they're on vacation, sick, or assigned to another project, the team starts from scratch.
+
+**A shared knowledge bank is more durable than one expert.** That's why I (Niklaz) built `valtech-radon-lens-studio-skill`. It started concretely: while I built an RFSU Sponsored Lens with Claude Code as my pair, every gotcha, every API quirk, every tracker calibration trick was captured and generalized. On top of that foundation: all 365 pages of Snap's official Lens Studio documentation, curated and organized so the agent can cite the right source instead of hallucinating.
+
+**Two design choices set the tone:**
+
+- **Well-read, but not jargon-heavy.** The agent is programmed to translate technical terms on first use, guide designers through what works and what doesn't, and admit uncertainty with "I think" rather than faking authority. No gas-lighting, no overconfident AI.
+- **Self-growing.** When a colleague and the agent solve something genuinely new during a real project, the agent asks permission to save it as a generalized rule — and pushes it back to GitHub. The next colleague who opens Claude Code inherits it automatically. No daily `git pull`, no Slack thread to chase.
+
+**The bet is simple:** one colleague pays the time cost of discovery once. Every colleague after inherits the answer. The skill gets smarter the more we use it — compound interest on every project.
 
 ---
 
