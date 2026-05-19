@@ -787,12 +787,50 @@
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
+<!-- ║  PREREQUISITES                          ║ -->
+<!-- ╚═════════════════════════════════════════╝ -->
+<section class="section step" id="prerequisites">
+  <span class="micro">Innan du börjar</span>
+  <h2>Skaffa ett Claude-konto</h2>
+  <p class="lede">Claude Code kräver inloggning med ett betalt konto eller egna API-credits — ett gratis claude.ai-konto räcker inte. Tre vägar finns; öppna den som passar dig.</p>
+
+  <details class="hint-collapsible" open>
+    <summary>A. Enterprise subscription (rekommenderad — på väg)</summary>
+    <p>På väg, mer information kommer senare.</p>
+    <p>Tills dess — välj väg B eller C nedan.</p>
+  </details>
+
+  <details class="hint-collapsible">
+    <summary>B. Egen Claude Pro-prenumeration ($17–20/mån)</summary>
+    <p>Bra om du vill ha förutsägbar månadskostnad eller redan har en Pro-prenumeration.</p>
+    <p><strong>1.</strong> Gå till <code>claude.com/pricing</code> i webbläsaren.</p>
+    <p><strong>2.</strong> Välj <strong>Claude Pro</strong> och teckna abonnemanget.</p>
+    <p><strong>3.</strong> Registrera med din @valtech.com-adress (eller Google/Microsoft SSO).</p>
+    <p><strong>4.</strong> Klart. Senare i Steg 07 när du kör <code>claude</code> i terminalen — välj <strong>"Claude account with subscription"</strong> vid login-prompten.</p>
+  </details>
+
+  <details class="hint-collapsible">
+    <summary>C. Egen API-credit ($5–20, pay-as-you-go)</summary>
+    <p>Bäst om du bara vill prova "lite grann". Ingen månadskostnad — du laddar på krediter och förbrukar dem per användning.</p>
+    <p><strong>1.</strong> Gå till <code>platform.claude.com/login</code>.</p>
+    <p><strong>2.</strong> Registrera med din @valtech.com-adress (eller "Continue with Google/Microsoft").</p>
+    <p><strong>3.</strong> Välj <strong>"Individual"</strong> i onboarding-flödet.</p>
+    <p><strong>4.</strong> Gå till <strong>API Keys</strong> → <strong>Create Key</strong>. Spara nyckeln (<code>sk-ant-...</code>) säkert — den visas bara en gång.</p>
+    <p><strong>5.</strong> Gå till <strong>Billing</strong> → ladda på minst $10 med kort.</p>
+    <p><strong>6.</strong> Senare i Steg 07 när du kör <code>claude</code> i terminalen — välj <strong>"Anthropic Console (API key)"</strong> och paste:a in nyckeln.</p>
+    <div class="hint">
+      <strong>Kostnad i praktiken:</strong> Sonnet 4.6 — ca $0.50–$3 per 30-minuters Claude Code-session. Haiku 4.5 — ca $0.10–$0.50. Saldot uppdateras realtid på Console.
+    </div>
+  </details>
+</section>
+
+<!-- ╔═════════════════════════════════════════╗ -->
 <!-- ║  STEP 1                                 ║ -->
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-1">
   <span class="micro">Steg 01 av 08</span>
   <h2>Installera Claude Code</h2>
-  <p class="lede">Claude Code är hjärnan som bygger ditt filter. Den körs lokalt på din egen dator — inget moln, inget eget extra konto utöver Anthropic-inloggningen.</p>
+  <p class="lede">Claude Code är hjärnan som bygger ditt filter — byggd av Anthropic, företaget bakom AI-modellen Claude. Den körs lokalt på din egen dator, och det enda kontot du behöver är din Anthropic-inloggning.</p>
 
   <div class="step-grid">
     <div class="step-do">
@@ -865,7 +903,7 @@ Installation complete.</pre>
   <span class="micro">Steg 03 av 08</span>
   <h2>Acceptera inbjudan</h2>
   <p class="lede">Skill:en bor på GitHub som ett privat repo. Niklaz har skickat dig en invitation — du behöver acceptera den för att få access.</p>
-  <p>GitHub är en molntjänst för kod och filer — som Google Drive, fast för utvecklingsprojekt. Skill:en bor här. Varje gång någon av oss upptäcker något nytt skickar vi lärdomen tillbaka hit — desto mer vi använder skill:en, desto smartare blir den för nästa kollega.</p>
+  <p>GitHub är ett delat arkiv för kod och filer — tänk Google Drive fast för utvecklingsprojekt. Skill:en ligger lagrad där, så att alla på teamet kan hämta hem den, använda den och förbättra den över tid.</p>
 
   <div class="step-grid">
     <div class="step-do">
@@ -904,7 +942,7 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
 <section class="section step" id="step-4">
   <span class="micro">Steg 04 av 08</span>
   <h2>Installera GitHub CLI</h2>
-  <p class="lede">Vi behöver ett verktyg som heter <code>gh</code> som låter terminalen prata med GitHub — så att <code>git clone</code> i nästa steg fungerar utan att fråga om lösenord.</p>
+  <p class="lede">Vi behöver ett verktyg som heter <code>gh</code>. Det gör att din dator kan hämta filer från GitHub utan att be om lösenord varje gång.</p>
 
   <div class="step-grid">
     <div class="step-do">
@@ -948,7 +986,7 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
 <section class="section step" id="step-5">
   <span class="micro">Steg 05 av 08</span>
   <h2>Logga in på GitHub via terminalen</h2>
-  <p class="lede">Två kommandon. Det första loggar in dig, det andra säger till git att använda inloggningen automatiskt vid alla framtida <code>git</code>-kommandon.</p>
+  <p class="lede">Två kommandon. Det första loggar in dig på GitHub. Det andra ser till att inloggningen kommer ihåg dig — så du slipper logga in igen framöver.</p>
 
   <div class="step-grid">
     <div class="step-do">
@@ -992,7 +1030,7 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
 <section class="section step" id="step-6">
   <span class="micro">Steg 06 av 08</span>
   <h2>Hämta Lens Skill</h2>
-  <p class="lede">Nu kan vi klona skill-repot till din dator. Med GitHub CLI uppsatt i förra steget händer det utan prompts.</p>
+  <p class="lede">Nu kan vi ladda ner skill:en till din dator. Tack vare inloggningen från förra steget går det utan extra frågor.</p>
 
   <div class="step-grid">
     <div class="step-do">
@@ -1029,7 +1067,7 @@ Receiving objects: 100% ... done.</pre>
 <section class="section step" id="step-7">
   <span class="micro">Steg 07 av 08</span>
   <h2>Starta Claude Code</h2>
-  <p class="lede">Nu öppnar du själva Claude-sessionen — det är där ni två (du och Claude) snackar.</p>
+  <p class="lede">Nu öppnar du själva Claude-sessionen — det är där ni två (du och Claude) pratar.</p>
 
   <div class="step-grid">
     <div class="step-do">
@@ -1042,7 +1080,11 @@ Receiving objects: 100% ... done.</pre>
       <p>Tryck Enter. Första gången du startar Claude Code öppnas en webbläsare för Anthropic-login. Logga in där, kom tillbaka till terminalen.</p>
 
       <div class="hint">
-        <strong>Behöver du Anthropic-konto?</strong> Claude Code kräver det. Om du inte har ett — be din närmaste chef eller IT om access via Valtechs konto.
+        <strong>Login-prompten frågar hur du vill logga in.</strong> Välj baserat på vägen du valde i "Innan du börjar":
+        <ul>
+          <li><strong>Väg B (Pro/Max):</strong> "Claude account with subscription" — logga in via webbläsaren.</li>
+          <li><strong>Väg C (API-credit):</strong> "Anthropic Console (API key)" — paste:a in din <code>sk-ant-...</code>-nyckel.</li>
+        </ul>
       </div>
     </div>
 
@@ -1110,7 +1152,7 @@ Berätta också lite om filtret du vill göra:
 <section class="section stuck">
   <span class="micro">Allt går inte enligt plan</span>
   <h2>Fastnar du?</h2>
-  <p class="lede">Det här är nytt och ovanligt. Du kommer fastna på något. Det är okej, och det finns flera vägar framåt.</p>
+  <p class="lede">Det här är nytt — du kommer förmodligen fastna någonstans. Det är helt okej. Här är tre vägar framåt.</p>
 
   <div class="stuck-grid">
     <div class="stuck-option">
@@ -1142,7 +1184,7 @@ Berätta också lite om filtret du vill göra:
 <section class="section">
   <span class="micro">För nyfikna</span>
   <h2>Vill du veta mer?</h2>
-  <p class="lede">Manualen ovan är kortaste vägen. Här är några länkar om du vill djupdyka.</p>
+  <p class="lede">Manualen ovan är det du behöver för att komma igång. Här är några länkar om du vill grotta ner dig djupare.</p>
 
   <div class="ideas-grid">
     <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/docs/INSTALL-REFERENCE.md" target="_blank" rel="noopener">
