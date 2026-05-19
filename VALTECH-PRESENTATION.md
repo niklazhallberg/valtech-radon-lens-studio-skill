@@ -63,7 +63,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 
 ### Day 1 — designer Anna, has never built a Snap filter
 
-1. **00:00** — Anna opens the hosted onboarding manual (one of three: SV full, EN full, or EN quick — `valtech-radon-lens-skill-invite.netlify.app/`). 8 steps with copy-paste-ready commands and "what you see when it worked" verification at every step. Sets up Claude Code, accepts the repo invitation, clones the skill.
+1. **00:00** — Anna opens the hosted onboarding manual (one of three: SV full, EN full, or EN quick — `valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/`). 8 steps with copy-paste-ready commands and "what you see when it worked" verification at every step. Sets up Claude Code, accepts the repo invitation, clones the skill.
 2. **00:05** — Claude Code activates the skill automatically when Anna mentions "Snapchat filter for [client]". Confirms platform.
 3. **00:10** — Concierge mode runs environment detection. Says "✅ LS installed, ❌ MCP not registered — want me to fix it?". One step at a time.
 4. **00:30** — Setup done. Onboarding intake starts: 8 questions on vision, feel, tempo, audience. Anna gets ongoing "what you get back for the answer" feedback.
@@ -228,7 +228,7 @@ Today, Snapchat Lens projects depend on a single person. With the skill + 2–3 
 ### What's already shipped (since v0.7.1)
 
 - ✅ **`CONTRIBUTING.md`** — canonical docs per topic, install-step workflow, version convention. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
-- ✅ **Hosted onboarding manuals** — three Netlify-distributed manuals (SV full, EN full, EN quick) at `valtech-radon-lens-skill-invite.netlify.app/`. Designed for a non-technical colleague to install Claude Code + the skill in 10–15 min.
+- ✅ **Hosted onboarding manuals** — three Cloudflare-hosted manuals (SV full, EN full, EN quick) at `valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/`. Designed for a non-technical colleague to install Claude Code + the skill in 10–15 min.
 - ✅ **`ONBOARDING-SNIPPET.md`** — Slack/email invite templates (three variants) for sharing the manual with new colleagues.
 - ✅ **Auto-sync hook** — `scripts/session-sync.sh` runs on every `claude` start, pulling latest skill updates and announcing new entries inline. No daily `git pull` to remember.
 - ✅ **Branch protection rule on `main`** — created. Force-push + branch deletion blocked. Dormant today (free private personal repo), auto-activates post-migration.

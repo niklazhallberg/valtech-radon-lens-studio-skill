@@ -1,15 +1,15 @@
 # docs/ — publik mapp
 
-**⚠️ Allt i denna mapp serveras live på Netlify-URL:en.**
+**⚠️ Allt i denna mapp serveras live på Cloudflare-URL:en.**
 
-Det betyder: vem som har URL:en kan läsa filerna här. URL:en är inte offentligt listad (delas riktat via Slack/mejl), men det finns ingen autentisering på Netlifys gratisplan. Behandla `docs/` som "halv-publik".
+Det betyder: vem som har URL:en kan läsa filerna här. URL:en är inte offentligt listad (delas riktat via Slack/mejl), men det finns ingen autentisering på Cloudflare Workers gratis-tier. Behandla `docs/` som "halv-publik".
 
 ## Vad som hör hemma här
 
 - HTML-manualer som kollegor ska kunna läsa innan de installerar skill:en (Steg 0 i onboarding).
 - Statiska assets som manualerna refererar till (`assets/fonts/`, ev. bilder).
 - Markdown som är OK att vara nåbar med en URL.
-- `_redirects` — Netlify path-rewrites.
+- `_redirects` — path-rewrites (Cloudflare-syntax, identisk med Netlify).
 - `index.html` — router-sidan som listar de tre manual-varianterna.
 
 ## Vad som INTE hör hemma här
@@ -19,7 +19,7 @@ Det betyder: vem som har URL:en kan läsa filerna här. URL:en är inte offentli
 - `references/snap-docs/` — 365 sidor mirror av Snaps docs, för stor och delvis känslig. Stannar utanför.
 - Säljmaterial, klient-specifikt content, kommersiellt känslig data.
 
-## Path-struktur (Netlify rewrites)
+## Path-struktur (rewrites)
 
 | URL-path | Källfil | Tonläge |
 |----------|---------|---------|

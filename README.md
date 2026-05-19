@@ -47,10 +47,10 @@ For the friendliest path — and the one we recommend for new colleagues — use
 
 | Audience | URL |
 |---|---|
-| Quick / technically comfortable (EN) | https://valtech-radon-lens-skill-invite.netlify.app/nosmalltalk |
-| Full guide (EN) | https://valtech-radon-lens-skill-invite.netlify.app/fullguide-en |
-| Full guide (SV) | https://valtech-radon-lens-skill-invite.netlify.app/fullstandigguide-sv |
-| Router (pick your path) | https://valtech-radon-lens-skill-invite.netlify.app/ |
+| Quick / technically comfortable (EN) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/nosmalltalk |
+| Full guide (EN) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/fullguide-en |
+| Full guide (SV) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/fullstandigguide-sv |
+| Router (pick your path) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/ |
 
 The manuals walk through everything below in 10–15 minutes with copy-paste-ready commands and "what you see when it worked" verification steps.
 
@@ -149,12 +149,12 @@ This is what makes the "compound interest on skill investment" idea real. Your c
 | `references/skill-growth-protocol.md` | How new learnings flow back into the skill — the cultural protocol |
 | `references/onboarding-protocol.md` | 8 questions, 3 groups, ~7 minutes — captures vision, constraints, asset validation before Phase 0 spec drafting |
 | `references/concierge-setup-flow.md` | 8-step setup conversation for designers who've never built a lens before |
-| `docs/MANUAL.html` · `MANUAL-EN.html` · `MANUAL-SIMPLE.html` | Designer-facing manuals (SV full, EN full, EN quick). Hosted live on Netlify — see Getting started above |
-| `docs/index.html` · `docs/_redirects` | Router page and Netlify path rewrites for the hosted manuals |
+| `docs/MANUAL.html` · `MANUAL-EN.html` · `MANUAL-SIMPLE.html` | Designer-facing manuals (SV full, EN full, EN quick). Hosted live on Cloudflare — see Getting started above |
+| `docs/index.html` · `docs/_redirects` | Router page and path rewrites for the hosted manuals |
 | `bin/install.sh` | Idempotent setup script — wires the SessionStart auto-sync hook and verifies prerequisites |
 | `scripts/session-sync.sh` | The hook itself — pulls latest skill updates and announces new entries inline |
 | `ONBOARDING-SNIPPET.md` | Internal Slack/email invite templates (three variants: SV, EN, terse) for sharing the manual with new colleagues |
-| `VALTECH-PRESENTATION.md` · `VALTECH-PRESENTATION-SV.md` | Standalone overviews for a broader Valtech audience (designer, team lead, tech lead, decision-maker). Kept at repo root so they don't ship publicly with the Netlify-hosted manuals |
+| `VALTECH-PRESENTATION.md` · `VALTECH-PRESENTATION-SV.md` | Standalone overviews for a broader Valtech audience (designer, team lead, tech lead, decision-maker). Kept at repo root so they don't ship publicly with the Cloudflare-hosted manuals |
 | `CHANGELOG.md` | The skill's biography — every release, every accepted discovery, with timestamps, project context, and value-for-user statements |
 
 See `SKILL.md` for the full reference catalog with load-on-demand cross-refs.

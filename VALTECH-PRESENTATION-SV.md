@@ -63,7 +63,7 @@ Skillen är byggd i **7 lager**. Varje lager existerar för att lösa ett specif
 
 ### Dag 1 — designer Anna, har aldrig byggt ett Snap-filter
 
-1. **00:00** — Anna öppnar den hostade onboarding-manualen (en av tre: SV full, EN full, eller EN quick — `valtech-radon-lens-skill-invite.netlify.app/`). 8 steg med copy-paste-färdiga kommandon och "vad du ser när det funkat"-verifiering vid varje steg. Sätter upp Claude Code, accepterar repo-invitation, klonar skillen.
+1. **00:00** — Anna öppnar den hostade onboarding-manualen (en av tre: SV full, EN full, eller EN quick — `valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/`). 8 steg med copy-paste-färdiga kommandon och "vad du ser när det funkat"-verifiering vid varje steg. Sätter upp Claude Code, accepterar repo-invitation, klonar skillen.
 2. **00:05** — Claude Code aktiverar skillen automatiskt när Anna nämner "Snapchat-filter åt [kund]". Bekräftar platform.
 3. **00:10** — Concierge mode kör miljödetektering. Säger "✅ LS installerat, ❌ MCP ej registrerat — vill du att jag fixar det?". Ett steg i taget.
 4. **00:30** — Setup klar. Onboarding intake börjar: 8 frågor om vision, känsla, tempo, målgrupp. Anna får löpande "vad du får tillbaka för svaret"-feedback.
@@ -228,7 +228,7 @@ Idag är Snapchat Lens-projekt beroende av en person. Med skillen + 2–3 utbild
 ### Redan levererat (sedan v0.7.1)
 
 - ✅ **`CONTRIBUTING.md`** — canonical docs per topic, install-step workflow, version-konvention. Se [`CONTRIBUTING.md`](CONTRIBUTING.md).
-- ✅ **Hostade onboarding-manualer** — tre Netlify-distribuerade manualer (SV full, EN full, EN quick) på `valtech-radon-lens-skill-invite.netlify.app/`. Designade så att en icke-teknisk kollega kan installera Claude Code + skillen på 10–15 min.
+- ✅ **Hostade onboarding-manualer** — tre Cloudflare-hostade manualer (SV full, EN full, EN quick) på `valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/`. Designade så att en icke-teknisk kollega kan installera Claude Code + skillen på 10–15 min.
 - ✅ **`ONBOARDING-SNIPPET.md`** — Slack/email-invite-mallar (tre varianter) för att dela manualen med nya kollegor.
 - ✅ **Auto-sync-hook** — `scripts/session-sync.sh` körs vid varje `claude`-start, pullar senaste skill-updates och annonserar nya entries inline. Ingen daglig `git pull` att komma ihåg.
 - ✅ **Branch protection-rule på `main`** — skapad. Force-push + branch-deletion blockerade. Dormant idag (gratis privat personlig repo), auto-aktiveras efter migrering.
