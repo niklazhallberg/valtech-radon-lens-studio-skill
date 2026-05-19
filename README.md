@@ -221,7 +221,7 @@ Migration to a Valtech GitHub organization with SSO and granular role management
 
 ## At a glance
 
-- **Owner**: Valtech RADON
+- **Owner**: Niklaz Hallberg
 - **Status**: Private, invitation-only, growing actively
 - **Latest release**: see `CHANGELOG.md`
 - **Use it for**: Snapchat AR Lenses, Sponsored Lenses, brand campaigns, internal experimentation with Lens Studio AI workflows
