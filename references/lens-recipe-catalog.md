@@ -4,11 +4,38 @@ Fast-lookup catalog of common lens patterns for Lens Studio 5.20+. Designed for 
 
 ## How the agent should use this file
 
-1. **At brief intake (Phase 0)**: scan the catalog for a matching intent. If 1-2 recipes match, confirm with the colleague in plain language ("sounds like you want a face-distortion lens — Snap has a built-in Face Distort template I can start from, OK?").
+1. **At brief intake (Phase 0)**: scan the catalog for matching intent. **Match loosely, not literally** — see "Critical" below.
 2. **At spec drafting**: use the matched recipe's **Build approach** as the starting outline for `TECH-SPEC.md`. The recipe lists exact primitives, install paths, and pitfalls.
 3. **At Phase 1 scaffolding**: the recipe tells you what Asset Library item to install first.
 4. **At Phase 4 (DoD)**: cross-check the recipe's **Common pitfalls** as part of pre-submission review.
-5. **If no recipe matches**: that's a signal the brief is genuinely novel — surface this to the user and consider whether the brief is in capability Tier 1 (composable from primitives) or Tier 2/3 (requires external assets or research).
+
+## Critical: this catalog is a parts-bin, not a strict pattern-match
+
+The recipe names ("I want a sunglasses try-on", "I want a personality quiz") are **examples of common briefs** — not strings the agent must match literally. Colleagues will phrase intents in their own words: *"I want something that hovers next to the eyes"*, *"a logo that lights up when you smile"*, *"a butterfly that lands on the nose"*. None of those have an exact recipe entry — and that's expected.
+
+When a colleague's brief doesn't have an exact named match here:
+
+1. **Decompose the brief into primitives.** A "halo above the head" is not a named recipe, but it composes from `Head Binding` (F-4 method) + `GPU Particles` (B-4) + optionally `Face Expressions` (A-5) for trigger logic.
+2. **Borrow from multiple recipes simultaneously.** A "logo that appears when the user smiles" combines A-5 (expression trigger) + F-1 (brand-logo Screen Image placement) — two recipes, one novel result.
+3. **Reach beyond this file.** Audio briefs cross to `audio-in-lenses.md`. Sponsored Lens briefs cross to `sponsored-lens-submission.md`. Gotchas you'll hit during the build live in `lens-studio-api-gotchas.md`. Custom 3D models bring in `3d-asset-import-doctrine.md`.
+4. **Never refuse based on "no exact match".** Say instead: *"I don't have a single-shot recipe for exactly this, but here's how I'd compose it: [A-X for component 1] + [B-Y for component 2] + [gotcha note for the tricky part]. Want me to proceed with this plan, or refine first?"*
+
+The recipes are tested **patterns**. The agent's job is to recognise that patterns compose — and to propose composition confidently, flagging it as a novel composition that hasn't yet been valtech-validated.
+
+### Concrete decomposition examples
+
+| Brief | Composition |
+|---|---|
+| **"A butterfly that lands on the nose"** | Face Mesh (built-in primitive) + 3D model as child + Animation Player loop + Head Binding positioning pattern from F-4 |
+| **"Logo that appears when you smile"** | A-5 (Face Expressions trigger on Smile) + F-1 (brand-logo Screen Image, disabled at start, toggled by Behavior on expression event) |
+| **"Eyes that glow when you blink"** | A-5 (Face Expressions Blink) + A-6 (Eye Color secondary glow colour) + GPU Particles burst (B-4) on blink event |
+| **"Audio-reactive 3D object that scales with the music"** | `audio-in-lenses.md` Audio Analyzer or Beat Sync (driver) + B-2 (Animated Object base) + custom scaling script bound to analyzer output |
+| **"A floating brand object next to the head"** | F-4 (Head Binding pattern) + any 3D model + optional A-1 Face Retouch underneath for premium feel |
+| **"Something that hovers near the eyes"** | A-6 (Eye Color positioning + Eye Editor for spatial reference) + Head Binding from F-4 + 3D model OR Screen Image with face-anchor |
+| **"Branded countdown that pulses on the beat"** | F-3 (Branded Countdown base) + D-5 / `audio-in-lenses.md` Beat Sync (drives Tween on countdown text scale) |
+| **"Personality quiz with a music-reactive intro"** | D-2 (Quiz Template) + D-5 Beat Sync (intro state) + state-transition wiring between intro and quiz |
+
+If the brief decomposes into **more than 3-4 recipe fragments**, that's a signal it may be capability Tier 2/3 (requires external assets or research). Surface that to the colleague: "This is a novel combination — I can prototype, but expect Phase 1 to take longer than for a single-recipe lens."
 
 ## Source quality
 

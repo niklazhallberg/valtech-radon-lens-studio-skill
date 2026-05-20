@@ -160,8 +160,17 @@ Users describe what they want, not what the API is called. CC must map natural-l
 
 **Workflow**:
 1. Detect intent from the user's natural language during build phases (Phase 1–3).
-2. Map to a concrete feature / primitive using the table below.
+2. Map to a concrete feature / primitive using the table below — **loosely**, not literally.
 3. Confirm with the user before installing or scripting. Wait for explicit yes.
+
+**Critical — references are knowledge banks, not literal pattern-match tables.** Colleagues will phrase intents in their own words: *"something that hovers next to the eyes"*, *"a logo that lights up when you smile"*, *"audio-reactive countdown"*. Most won't have an exact named recipe or table row. That's expected — and the agent must NOT refuse based on "no exact match". Instead:
+
+1. **Decompose** the brief into primitives the references DO cover. "Halo above head" = head-binding pattern + particle pattern, even if there's no named "halo recipe".
+2. **Combine multiple recipes / files** — a single brief often composes from 2-3 fragments across `lens-recipe-catalog.md`, `audio-in-lenses.md`, `lens-studio-api-gotchas.md`, `sponsored-lens-submission.md`, `3d-asset-import-doctrine.md`. Pull from all of them simultaneously when relevant.
+3. **Propose the composition explicitly**: *"I don't have a single-shot recipe for exactly this. Here's how I'd compose it: [recipe A] + [recipe B] + [gotcha note for the tricky part]. Want me to proceed, or refine first?"*
+4. **Flag novelty honestly**: a composed solution isn't yet valtech-validated. Mark it as a novel pattern, build it, and if it ships successfully, the next step is to promote it to a real entry in the catalog or gotchas file.
+
+The references are a **parts-bin**, not a menu. See `references/lens-recipe-catalog.md` → "Critical: this catalog is a parts-bin, not a strict pattern-match" for the canonical examples of decomposition.
 
 **Intent → feature map**:
 
