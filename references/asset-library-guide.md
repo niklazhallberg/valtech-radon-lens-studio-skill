@@ -92,11 +92,99 @@ The Asset Library has two install scopes that confuse colleagues:
 ### To fully remove from machine
 - Uninstall from Package Manager preferences (LS preferences → Package Manager)
 
+## Publishing assets to the public Asset Library
+
+**Source**: https://developers.snap.com/lens-studio/assets-pipeline/asset-library/asset-library-publishing-guide (compiled 2026-05-20).
+
+### Critical strategic point: there is no private / org-scoped publishing
+
+The Asset Library publishing flow is **public only**. There is no Valtech-only or org-scoped version of the Asset Library — anything published is visible to every lens developer on Snapchat. **Implication for the agent**: if a colleague asks *"can we publish our internal Valtech helpers as an Asset Library package?"*, the answer is yes, but it goes public. For Valtech-only sharing, the right path is a **private `.lspkg` distribution via this skill's git repo** (or a separate internal Valtech repo), not the Asset Library.
+
+### Who can publish
+
+Snap doesn't document explicit eligibility criteria. The only stated requirement: *"Log in to My Lenses with the Snapchat account you want to publish under."* Implies open access for any developer with a Snapchat account, but eligibility is not formally documented.
+
+### Publishing flow
+
+1. Open new project in LS → verify the asset imports correctly before submitting
+2. Log in to My Lenses with the Snapchat account that should be credited
+3. Sidebar → Asset Library Assets → **Create Asset**
+4. Upload asset file: `.lspkg`, `.lsc`, or `.zip`
+5. Upload thumbnail: **512×512 PNG**, transparent background
+6. Fill submission fields: description, category, version, external link
+7. Submit
+
+**Notably absent from Snap's docs**: review timeline, approval SLA, rejection criteria, dispute / takedown process. Snap directs questions to `lensstudio-support@snapchat.com`.
+
+### Publishable asset types
+
+- Textures and texture packs
+- Materials (**Graph materials only** — not standalone shaders)
+- VFX assets (particle systems)
+- 3D models / assets
+- Scripts and Custom Components
+- Installable packages (`.lsc` files)
+- Plugins (zipped plugin folders)
+- Prefabs
+
+**NOT in the publishable list** (per current docs):
+- ML models (SnapML)
+- Audio assets as standalone items
+- Fonts as standalone items
+- UI components as standalone items
+
+If a colleague wants to distribute one of these, they have to bundle it inside a containing prefab / Custom Component.
+
+### Quality bars (concrete numeric limits)
+
+These are Snap's **published requirements** — meeting them is required for acceptance:
+
+| Asset type | Limit / requirement |
+|---|---|
+| **3D models** | ≤ 100,000 triangles (≤ 60,000 with joints/skinning); descriptive mesh/bone naming; correct pivot; applied transforms; correct normals; UV maps + textures; normal maps preferred for detail; **no Legacy Import** for animations — use Animation Player; export at 30 FPS at full frame range |
+| **VFX / particles** | ≤ 50,000 particles; subgraphs + code nodes for organisation; follow optimization guidelines |
+| **Materials** | Graph materials only; meaningful Title + Script Name values; clean readable graphs using subgraphs; comment nodes for clarity |
+| **Textures** | Minimize file size; organize in folders for packs |
+| **Scripts / Components** | Compile with zero errors; include comments or JSDoc; versioned + attributed; **third-party licenses disclosed if applicable** |
+| **Thumbnails** | 512×512 PNG transparent background; engaging and faithful to asset; space around subject to avoid UI crowding |
+
+### General requirements (apply across types)
+
+- **Reusable**: package work so others can import it without untangling a whole project
+- **Versatile building blocks** supporting multiple lens types — not project-specific
+- **Complete English documentation** (no other languages for instructions)
+- **Clear naming and parameter descriptions**
+- **Compiled code with zero errors**
+
+### Version targeting
+
+- Set **Min Version** to the LS version used to create the asset
+- Snap recommends *"prefer the latest Lens Studio when you can"*
+- **Max Version** can be left empty if uncertain
+
+### Third-party license discipline
+
+> *"If you use third-party scripts or script modules, ensure the license allows this. If unsure, tell us when submitting."*
+
+Publisher bears responsibility for third-party license compliance. No revenue-share, attribution-display, or ownership-transfer model is described — the asset becomes available in the Asset Library under Snap's standard terms, with the publisher's Snapchat account shown as the source.
+
+### What's not addressed (you'll need to ask Snap directly)
+
+- Review / approval timeline
+- Rejection criteria + appeal process
+- Updates / versioning post-publication
+- Geographic restrictions
+- Usage analytics for the publisher
+- Monetization
+- Takedown procedures
+- Content restrictions (no explicit NSFW / IP rules listed — assume Snap Community Guidelines apply)
+
+For all of the above: `lensstudio-support@snapchat.com`.
+
 ## Useful sub-pages from the Asset Library tree
 
 For deeper dives the agent (or colleague) may want to surface:
 
-- **Asset Library Publishing Guide** — how Valtech could eventually publish its own internal-use assets to share across projects (relevant if we want to build a Valtech-RADON asset bank long-term)
 - **SnapML overview** — for custom ML model integration (deferred to separate research round)
 - **Custom Components documentation** — internal mechanics of packed components
 - **Asset Packages introduction** — packing / unpacking discipline in more depth
