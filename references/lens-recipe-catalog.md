@@ -322,6 +322,8 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 
 **Intent**: Ambient particles floating around user or scene — snow, rain, embers, confetti, bokeh.
 
+> **System choice**: LS 5.x has **two distinct particle systems** — pick based on whether a preset matches the brief. If yes, use GPU Particles Effects Pack (this recipe). If the brief needs custom behaviour (brand colors, mesh-driven spawn, segmentation-aware, novel composition), use VFX Graph instead — see `vfx-graph-guide.md`. (Legacy Particle System is deprecated; never propose.)
+
 **LS primitive(s)**: `GPU Particles Effects Pack` Asset Library asset (rain, snow, blizzard, bouquet, sparkles presets) + `Portrait Particles` template (face-forward variant) + optional `Behavior` for face-found gating.
 
 **Build approach**:
