@@ -47,7 +47,7 @@ Use this file as authoritative reference when generating production scripts. Whe
 - Transient-view persistence pattern
 
 ### Sponsored Lens compliance
-- Touch-blocking via `LensTurnOnEvent` (`global.touchSystem.touchBlocking = true`) to prevent Snap double-tap camera-flip
+- Touch-blocking via `OnStartEvent` (`global.touchSystem.touchBlocking = true`) to prevent Snap double-tap camera-flip
 
 ### MCP / mutation strategy
 - Batched alias-mutation pattern (one permission prompt per logical unit)
@@ -59,6 +59,15 @@ Use this file as authoritative reference when generating production scripts. Whe
 - Easy Lens panel features vs MCP-scriptable primitives (Button v1.0.1 worked example, `animtionType` typo'd-key gotcha)
 
 ### Coordinate system reminders
+
+### Part 2 — Research-derived gotchas (Snap official docs, LS 5.x)
+- Event ordering & frame timing (`OnAwake` / `OnStart` race, deferred-`OnAwake` on disabled objects, post-instantiate `OnStart` timing, `Studio.log` silent no-op)
+- ScreenTransform additions (Render Order = 0 default, Canvas 1-pixel-bug, z ≥ 1 clipping disappearance, zero-bounds-without-ortho-parent)
+- Material / shader binding (Parameter copy-paste resets Script Name, `.mainPass` required, `.lso` re-import duplicates shaders)
+- TypeScript decorator behaviour (`new` on `@component` is silent fail, `@input` defaults Inspector quirk, `getComponent` base-class returns null, `require()` literal-only)
+- Tween + VFX (TweenManager must be first in hierarchy, GPU particle External Time per-material)
+- Prefab (root Transform not saved, Asset-Browser-created prefabs empty + crash risk, `.lso` deprecated + render layers dropped)
+- Asset loading + migration (`requireAsset` hard-fails, `.lso` export drops prefab refs, `.lsproj` unopenable in LS 5, pre-4.53 GPU particles need shader+mesh swap, `Physics.WorldSettingsAsset` missing default)
 
 ---
 
@@ -715,16 +724,18 @@ mutation { setProperty(id: "<button-id>" propertyPath: "animtionType" valueType:
 
 For Sponsored Lenses, Snap's default in-camera touch handling includes **double-tap-to-flip-camera** and other system shortcuts that pre-empt your handlers. If your lens depends on tap input (most do), the second tap of any rapid double-tap can fire the camera-flip before your handler runs — breaking interaction unpredictably and producing inconsistent QA reports.
 
-**Working pattern**: bind a `LensTurnOnEvent` callback that sets `global.touchSystem.touchBlocking = true`:
+**Working pattern**: bind an `OnStartEvent` callback that sets `global.touchSystem.touchBlocking = true`:
 
 ```typescript
-const onLensTurnOn = script.createEvent("LensTurnOnEvent");
-onLensTurnOn.bind(() => {
+const onLensStart = script.createEvent("OnStartEvent");
+onLensStart.bind(() => {
   global.touchSystem.touchBlocking = true;
 });
 ```
 
 This blocks Snap's default touch shortcuts (double-tap camera flip, certain swipe gestures) while preserving your `InteractionComponent` and `TapEvent` handlers. Apply once at lens turn-on — no per-tap re-application.
+
+> **Migration note**: the legacy `"LensTurnOnEvent"` string and `TurnOnEvent` class are **deprecated** as of LS 5.8+ and will eventually block publishing. Old snippets, forum posts, and AI-generated code will use the legacy form — translate to `"OnStartEvent"` at paste time. See `deprecated-api-migration.md`.
 
 **Applies to**: ALL Sponsored Lenses. Community Lenses don't strictly require it but benefit from the same predictability — recommend by default unless the brief specifically wants Snap's defaults.
 
@@ -732,7 +743,7 @@ This blocks Snap's default touch shortcuts (double-tap camera flip, certain swip
 
 **Verification**: tap-tap rapidly on the lens on a real device. Without touch-blocking, the camera flips on the second tap (or shortly after). With touch-blocking, both taps reach your handler as intended. Desktop preview does NOT reproduce the camera-flip behavior — must test on device.
 
-**Use case**: Phase 1 scaffolding — add the LensTurnOnEvent handler as part of the static scene setup before any interaction logic. One-line install with no Phase-2 dependency; the earlier it lands, the fewer "intermittent tap bug" red herrings appear in later phases.
+**Use case**: Phase 1 scaffolding — add the `OnStartEvent` touch-blocking handler as part of the static scene setup before any interaction logic. One-line install with no Phase-2 dependency; the earlier it lands, the fewer "intermittent tap bug" red herrings appear in later phases.
 
 ---
 
@@ -825,6 +836,387 @@ User pair-tests in *typical user-position* (~30-45° down for foot-tracking), NO
 ### Why empirically validated
 
 First validated on a Snapchat Sponsored Lens foot try-on build, 2026-05-13. First device test showed shoes at ~⅓ foot size, floating ~20 cm above actual feet, gray against wooden floor. Diagnosis sequence: hierarchy walk → AnimationPlayer disable → scale probe (tracker overwrote → wrapper installation) → bbox-read → position-compensation tuning → mirror to right → material decision. Y=-40 ankle-vs-sole compensation discovered empirically. Bbox-formula under-compensated X by ~15-20% (real pivot slightly inside the mesh from aabbCenter). Per-foot wrapper positions caused *asymmetric* visual displacement under partial compensation (left shoe drifted toward body center, right shoe drifted outward from body) — required full pivot-compensation magnitude (`scale × bbox-center`) to land both shoes on respective feet simultaneously.
+
+---
+
+## Part 2 — Research-derived gotchas (Snap official docs, LS 5.x)
+
+> Part 1 above comes from empirical project work — each entry was hit during a real lens build and validated by the symptom → fix cycle. The entries below come from a targeted research pass against Snap's official documentation and corroborating community threads (compiled 2026-05-20). They have **higher source-trust** (official Snap docs) but **lower project-trust** (not yet hit in our own builds). Verify on first encounter and promote to Part 1 once project-validated. STALE markers are kept where the only source predates LS 5.x.
+
+### Event ordering & frame timing
+
+#### `OnAwake` order is deterministic; `OnStart` sibling order is NOT
+
+**Pattern**: When multiple components are constructed together (scene load, `ObjectPrefab.instantiate()`), `OnAwakeEvent` fires in strict hierarchy order, but `OnStartEvent` order between sibling components is explicitly undefined.
+
+**Mitigation**: Use `OnAwake` for self-initialisation; use `OnStart` only to read state that *other* components set during *their* `OnAwake`. Never assume sibling-A's `OnStart` runs before sibling-B's just because A appears higher in the hierarchy.
+
+**Source**: https://developers.snap.com/lens-studio/api/lens-scripting/classes/Built-In.OnAwakeEvent + SceneEvents_List — official, accessed 2026-05.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Cross-component coordination that depends on `OnStart` ordering silently races after any unrelated hierarchy refactor — symptom looks like a heisenbug, not a code bug.
+
+---
+
+#### `OnAwake` does NOT fire on disabled components until first enable
+
+**Pattern**: If a SceneObject or component is disabled at scene-load time (including via a disabled parent), its `OnAwakeEvent` is deferred until the first `setEnabled(true)` — not at startup with other components.
+
+**Mitigation**: Code that calls `setEnabled(true)` on a previously-disabled object and immediately reads its scripted API will see uninitialised state. Either guard with null-checks at the call site, or trigger initialisation explicitly via a public method rather than relying on `OnAwake`.
+
+**Source**: https://developers.snap.com/lens-studio/api/lens-scripting/classes/Built-In.OnAwakeEvent — official.
+
+**Confidence**: official docs (multi-source).
+
+**Why generalizable**: "Disable for perf, enable later" is a common pattern; the deferral creates a recurring class of confused-state bug.
+
+---
+
+#### `OnStart` on a newly-instantiated component runs AFTER the calling scope exits
+
+**Pattern**: After `createComponent()` or `ObjectPrefab.instantiate()` returns, the new component's `OnStartEvent` has not yet fired — it fires later in the same frame after the entire calling code block exits.
+
+**Mitigation**: Don't read script outputs of a freshly-instantiated component from the calling scope. Move consumer code into the *consumer's* `OnStart`. The old "wait one frame" community workaround is unnecessary if the consumer subscribes properly.
+
+**Source**: https://developers.snap.com/lens-studio/api/lens-scripting/classes/Built-In.OnStartEvent — official, 2024-2026.
+
+**Confidence**: official docs.
+
+**Why generalizable**: This is the cause of most "I called instantiate then read .api, got undefined" reports — across years of community threads.
+
+---
+
+#### `Studio.log` is NOT implemented in LS 5.x — silently fails, no output
+
+**Pattern**: `Studio.log()` (a logging helper from older LS 4.x docs) has not been implemented in LS 5.x. Migrated code using it produces no output and no error — debugging appears completely silent.
+
+**Mitigation**: Replace every `Studio.log` call with `print()` during 4.x → 5.x migration. The absence of output is the only signal that the call is broken.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official migration guide.
+
+**Confidence**: official docs.
+
+**Why generalizable**: 4.x helper-scripts pasted into 5.x projects look fine, run without errors, and produce no debug output. Easy to miss for hours.
+
+---
+
+### ScreenTransform / anchor / pivot positioning
+
+#### Default Render Order is `0` in LS 5.x (auto-increment is gone)
+
+**Pattern**: In LS 4.x, new objects received an auto-incrementing Render Order. In LS 5.x, every new object defaults to `0`, so a new object added on top of an LSO-imported object (whose order was baked at import) may render *behind* it with no warning.
+
+**Mitigation**: Set Render Order explicitly on every visual object in projects that mix imported 4.x assets with new 5.x objects.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official.
+
+**Confidence**: official docs (multi-source).
+
+**Why generalizable**: Any project that imports `.lso` from 4.x and then adds new 5.x objects silently produces wrong layering.
+
+---
+
+#### Orthographic Camera Canvas defaults make Image Carousel (and other UI) render as a single pixel
+
+**Pattern**: Adding an Image Carousel (or other Asset Library UI components) under an Orthographic Camera with the default Canvas component renders the carousel as a single pixel because the Canvas `Unit Type` defaults to a non-World value.
+
+**Mitigation**: Either set the Canvas `Unit Type` to `World`, or delete/disable the Canvas component. Looks like a missing texture; is actually a unit-type config issue.
+
+**Source**: https://developers.snap.com/lens-studio/features/ui/ui-image-carousel — official, accessed 2025.
+
+**Confidence**: official docs (multi-source).
+
+**Why generalizable**: Every studio that drops a stock UI component onto a standard ortho camera setup hits this. Symptom diagnosis is non-obvious.
+
+---
+
+#### `ScreenTransform.position.z ≥ 1.0` silently disappears behind the ortho clipping plane
+
+**Pattern**: The orthographic camera's near clipping plane defaults to `-1` in LS 5.x. Any `ScreenTransform` with z position ≥ 1.0 (set programmatically, or carried over via LSO import) is behind the camera and not rendered — no error.
+
+**Mitigation**: Keep `screenTransform.position.z` between `-1` and `1` (exclusive at boundaries). The community-validated safe default for "in front of everything" is `z = -1` (subject to wrapping back into bounds — verify).
+
+**Source**: Migration guide + "Lens Studio 5.0 Screen Transform Problems and Solutions" YouTube, Jan 2025.
+
+**Confidence**: official docs (multi-source).
+
+**Why generalizable**: Dynamic UI placement via `screenTransform.position.z = X` can push objects out of frustum with no diagnostic — looks like the object stopped existing.
+
+---
+
+#### `ScreenTransform` outside an Orthographic Camera produces zero-size bounds (invisible)
+
+**Pattern**: A `ScreenTransform`-based object parented as a child of a 3D (perspective) camera, or at the scene root, has zero-size bounds — the object is invisible with no logger output.
+
+**Mitigation**: Always parent `ScreenTransform` containers under an Orthographic Camera. If you instantiate one from code, set the parent explicitly to an ortho camera SceneObject — never rely on default parenting.
+
+**Source**: https://developers.snap.com/lens-studio/lens-studio-workflow/scene-set-up/2d/screen-transform-properties — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Prefab-based UI systems that instantiate `ScreenTransform` containers from scripts silently fail when parented to the scene root — common in code-driven UI layouts.
+
+---
+
+### Material / shader binding between script and visual graphs
+
+#### Copy-pasting a Shader Graph Parameter node silently RESETS its Script Name
+
+**Pattern**: When you duplicate a Parameter node in the Shader Graph editor (copy-paste), the `Script Name` field is silently reset to a new generated token. Any script that addresses the old name (e.g. `material.mainPass.myColor`) writes to a non-existent property with no error.
+
+**Mitigation**: After every Parameter copy-paste, immediately re-set the `Script Name` to the intended value. Verify by reading the parameter back from script after a write.
+
+**Source**: https://developers.snap.com/lens-studio/features/graphics/materials/material-editor/parameters-guide — official, 2024.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Shader parameter `Script Name` is the only bridge between TypeScript and the visual material graph. This rename is the single most common cause of "my script writes to the material but nothing changes" bugs.
+
+---
+
+#### Material script access MUST go through `.mainPass` — direct property access silently fails
+
+**Pattern**: Shader parameters exposed to scripts are accessed via `material.mainPass.<scriptName>`. Setting them on the material object directly (`material.<scriptName> = value`) writes to a JS object wrapper that never propagates to the GPU. No error, no warning.
+
+**Mitigation**: Always go through `.mainPass`. TypeScript can't catch this — `mainPass` is typed as `any`.
+
+```typescript
+// WRONG — silent no-op
+material.hue = 0.5;
+
+// CORRECT
+material.mainPass.hue = 0.5;
+```
+
+**Source**: https://developers.snap.com/lens-studio/features/graphics/materials/material-editor/parameters-guide — official.
+
+**Confidence**: multi-source.
+
+**Why generalizable**: Material is unchanged, no error, no compile warning. Pure-by-inspection bug.
+
+---
+
+#### Re-importing an `.lso` may DUPLICATE the shader inside a material
+
+**Pattern**: Re-importing an `.lso` (or right-click → reimport on an existing 3D model) doesn't update the component's shader reference in place. It creates a second identical shader asset; the material may now point at the old or new copy unpredictably.
+
+**Mitigation**: After every re-import, manually delete the duplicate shader in the Asset Browser and re-link the material via the Inspector. Or migrate the workflow off `.lso` to `.lspkg`.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: CI/CD pipelines that re-import `.lso` automatically accumulate shader duplicates over time — project bloat + material-mismatch risk.
+
+---
+
+### TypeScript decorator behaviour
+
+#### `@component` classes must NEVER be instantiated with `new` — only via `createComponent`
+
+**Pattern**: Any class extending `BaseScriptComponent` or decorated with `@component` will fail silently if instantiated with `new`. Lens Studio manages component lifecycle internally; correct construction is `sceneObject.createComponent('ScriptComponent')`.
+
+**Mitigation**: Treat `new MyController()` as a hard ban for `@component` classes. The class will accept it syntactically but `OnAwake` / `OnStart` / scene events never fire.
+
+**Source**: https://developers.snap.com/lens-studio/features/scripting/script-components — official, 2024.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Developers from Unity, React, or plain TS write `new MyController()` instinctively. LS 5 accepts the syntax but the component is dead.
+
+---
+
+#### `@input` defaults for Components and SceneObjects ONLY work in the Script *Component* Inspector, not Script *Asset* Inspector
+
+**Pattern**: `@input` fields typed as Components or SceneObjects can only be wired up per-instance in the **Script Component Inspector**. Attempts to set defaults in the **Script Asset Inspector** are silently ignored for these types. Asset-type inputs (Texture, Material, Mesh) DO support asset-level defaults — so the inconsistency is non-obvious.
+
+**Mitigation**: Wire Component/SceneObject inputs at the prefab or scene-instance level, not as Script Asset defaults. Prefab templates with unset Component/SceneObject inputs silently produce `null` at runtime.
+
+**Source**: https://developers.snap.com/lens-studio/features/scripting/script-components — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: The inconsistency between asset-type and non-asset-type input defaults is a common confusion point during template authoring.
+
+---
+
+#### `getComponent()` with a BASE class returns `null` — registry is keyed on concrete class name
+
+**Pattern**: `sceneObject.getComponent(MyBaseClass)` where `MyBaseClass` is a parent class (not the concrete class registered with `@component`) returns `null` in LS 5.x TypeScript. The component registry keys on the concrete class name string, not the inheritance chain.
+
+**Mitigation**: To find components by base class, iterate `getComponents("Component")` and filter with `instanceof`:
+
+```typescript
+const matches = sceneObject.getComponents("Component")
+  .filter(c => c instanceof MyBaseClass);
+```
+
+**Source**: https://localjoost.github.io/Getting-components-by-their-base-class-name-in-Lens-Studio/ — community blog, Dec 2025.
+
+**Confidence**: multi-source.
+
+**Why generalizable**: Component architectures using polymorphism (e.g. `Interactable` base + multiple concrete types) silently retrieve nothing without this workaround.
+
+---
+
+#### `require()` MUST receive a string literal — dynamic paths fail at scene load
+
+**Pattern**: LS's CommonJS-style `require()` and `requireAsset()` only accept static string literals at call time. Wrapping the path in a variable or building it via concatenation/template literal (`require('./assets/' + name)`) produces a module-not-found error at scene load — no compile-time warning.
+
+**Mitigation**: All asset paths must be statically known at authoring time. For "dynamic-by-data" patterns, eagerly `require()` all candidates at module top-level and pick at runtime.
+
+**Source**: https://developers.snap.com/lens-studio/features/scripting/script-modules — official, 2024.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Lazy-loading patterns from web JS (load texture by array index, lazy-load scene modules) are entirely unsupported. Easy trap for developers ported from web/Unity.
+
+---
+
+### Tween + VFX
+
+#### Tween Manager MUST be the very first item in the Scene Hierarchy
+
+**Pattern**: The `TweenManager` object must be the first item in the Scene Hierarchy panel. If other scripts initialise before TweenManager, any tween triggered on lens start throws `"Tween [name] is not found. Ensure that [name] is on 'Lens Turn On' and that Tween Manager is at the top of the Objects Panel"` and silently skips playback.
+
+**Mitigation**: After any hierarchy refactor (especially grouping objects under root folders), verify TweenManager is still at the top of the Objects panel. This isn't enforced by the editor.
+
+**Source**: https://fritz.ai/tween-manager-in-lens-studio/ (Jan 2024) + AR Bootcamp + community forum.
+
+**Confidence**: multi-source.
+
+**Why generalizable**: Refactoring the hierarchy for organisational reasons silently reactivates the bug. Easy to introduce, hard to spot in code review.
+
+---
+
+#### GPU particle `External Time` must be checked per-material — `ExternalTimeController.js` doesn't toggle it
+
+**Pattern**: `ExternalTimeController.js` only controls a GPU particle material's time if the `External Time` checkbox on that specific material is enabled in the Inspector. The script does NOT toggle this flag itself and provides no warning if it's missing — the particle plays from its own internal timer as if the script weren't attached.
+
+**Mitigation**: For every particle effect intended to be script-controlled, manually check `External Time` on each material in the Inspector. There's no TypeScript-accessible API equivalent — invisible to code review.
+
+**Source**: https://developers.snap.com/lens-studio/features/graphics/particles/gpu-particles/overview — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Inspector-only configuration that affects runtime behaviour bypasses both code review and TypeScript type-checking.
+
+---
+
+### Prefab behaviour
+
+#### Prefab root Transform is NOT saved — only children's transforms persist
+
+**Pattern**: In LS 5.x, the Transform (position, rotation, scale) of the **root** prefab object is intentionally not persisted in the Prefab Resource. Only children's transforms are saved. The Apply button doesn't activate for root Transform changes; root-scale edits take effect in the editor but are lost on save/reopen.
+
+**Mitigation**: For any resizable prefab (e.g. a UI element that should scale per-instance), nest everything one level deep and apply Transform changes to a child wrapper, not the prefab root.
+
+**Source**: https://www.reddit.com/r/Spectacles/comments/1r6faj7/lens_studio_more_updating_prefab_woes_scale/ — Feb 2026, **Snap team confirmed as intentional** + https://developers.snap.com/lens-studio/lens-studio-workflow/prefabs.
+
+**Confidence**: official docs (multi-source, Snap-confirmed).
+
+**Why generalizable**: Prefab-based component systems that expect the root to carry its own scale will silently lose the scale on every save — easy to miss until a colleague reports "my prefab keeps resetting".
+
+---
+
+#### Prefabs created via Asset Browser (instead of Scene Hierarchy) are EMPTY and can crash LS on exit
+
+**Pattern**: Creating a prefab directly in the Asset Browser panel, adding sub-objects/components there, then dragging to the Scene Hierarchy results in an empty prefab in the scene — Asset-Browser-only edits aren't tracked by LS's save system. Quitting LS while this state persists can crash.
+
+**Mitigation**: Always build in the Scene Hierarchy first, then drag the assembled object to the Asset Browser to create the prefab. Any editor-scripting automation that creates prefabs via Asset Browser API must validate output before use.
+
+**Source**: https://www.reddit.com/r/Spectacles/comments/1qseml9/creating_a_prefab_via_the_asset_browser_doesnt_work/ — Jan 2026, Snap staff confirmed.
+
+**Confidence**: single-source (but Snap-confirmed).
+
+**Why generalizable**: A natural workflow ("create asset where assets live") silently produces broken state + crash risk.
+
+---
+
+#### `.lso` is deprecated — `.lspkg` is the LS 5.x native format; `.lso` imports drop custom Render Layers
+
+**Pattern**: `.lso` is deprecated in LS 5.x; `.lspkg` (Native Package) is its replacement. When importing an `.lso` containing non-default Render Layers (anything other than `Default` and `Orthographic`), the custom layer names aren't imported and the objects silently revert to the Default layer.
+
+**Mitigation**: For new asset distribution use `.lspkg`. For legacy `.lso` imports, audit the Render Layer assignments after import and re-create custom layers manually.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Studios sharing assets between LS 4 and LS 5 projects via `.lso` (still common during migration) silently break layer isolation.
+
+---
+
+### Asset loading & migration traps
+
+#### `requireAsset()` resolves SYNCHRONOUSLY at scene load — missing assets HARD-error, no graceful null
+
+**Pattern**: `requireAsset('./MyTexture')` resolves at script evaluation time during `OnAwake`. If the asset file is missing or the path is wrong, LS throws a hard error that prevents the entire script from running — no try/catch recovery, no fallback null return.
+
+**Mitigation**: Treat asset paths as build-time constants. After any rename/move in the Asset Browser, immediately update all `requireAsset()` callers — TypeScript won't warn at compile time.
+
+**Source**: https://developers.snap.com/lens-studio/api/lens-scripting/functions/Built-In.requireAsset — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Asset paths are common refactoring targets. The hard-fail-on-load behaviour means one rename can take down the entire script.
+
+---
+
+#### LSO export does NOT include prefab references unless a script has `@input Asset.ObjectPrefab` pointing to it
+
+**Pattern**: Exporting an `.lso` containing a prefab will NOT include the prefab asset itself in the export unless at least one script in the hierarchy has a declared `@input Asset.ObjectPrefab` reference. Otherwise only the instantiated objects are exported — re-importing the `.lso` in another project yields the scene without prefab linkage.
+
+**Mitigation**: Before exporting `.lso` for asset sharing, ensure at least one script has an `@input Asset.ObjectPrefab` reference to every prefab you want included. Or migrate to `.lspkg`, which bundles everything correctly.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Studio asset-sharing workflows that rely on `.lso` for prefab distribution silently drop the prefab definition. Receiver gets a broken scene with no diagnostic.
+
+---
+
+#### `.lsproj` (LS 4) projects CANNOT be opened in LS 5 — no in-place upgrade
+
+**Pattern**: LS 5 uses `.esproj`. LS 4 `.lsproj` files can't be opened in LS 5 directly. The only migration path is export from LS 4 (as `.lso` / `.lsmat`) and import into a fresh LS 5 project.
+
+**Mitigation**: Maintain parallel LS 4 and LS 5 installs during migration projects (they can run simultaneously — open LS 4 first). Don't promise "we'll port the old project to 5.x" in under a day; it's a manual asset-by-asset migration.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Sets a hard scope-expectation for any "port the old lens to current LS" brief — it's never a one-click upgrade.
+
+---
+
+#### GPU Particles from before LS 4.53 need BOTH shader AND mesh replaced after migration
+
+**Pattern**: Migrating pre-4.53 GPU particle effects to LS 5 requires (1) swapping the material shader to the new `gpu_particles` shader AND (2) updating the `Render Mesh Visual` mesh to the new `GPUParticlesMesh`. Doing only the shader swap leaves a visually broken effect with no editor error — the old mesh is accepted without validation.
+
+**Mitigation**: When porting a legacy GPU particle, change both assets and verify on device. Version-stamp particle assets in your project documentation so future maintainers know what generation they belong to.
+
+**Source**: https://developers.snap.com/lens-studio/overview/migrating-to-lens-studio/migrating-to-lens-studio-5 — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: Long-lived particle effects (built across multiple LS generations) pass editor validation but render incorrectly on device — exactly the class of bug that escapes desktop QA.
+
+---
+
+#### `Physics.WorldSettingsAsset` is NOT added by default in LS 5.x — physics-using lenses may fail publish
+
+**Pattern**: In LS 4.x, a `Physics World Settings` asset was automatically present in every project. LS 5.x doesn't add it by default. Physics-using components use engine defaults silently in the editor but may surface `"Factory found an inaccessible type: Physics.WorldSettingsAsset"` when publishing to older Snapchat clients.
+
+**Mitigation**: For any physics-using lens, explicitly add `Asset Browser → + → Physics World Settings` as a required project setup step. Add to the Phase 1 checklist if physics is in the brief.
+
+**Source**: https://developers.snap.com/lens-studio/features/physics/physics-component — official.
+
+**Confidence**: official docs (multi-source).
+
+**Why generalizable**: Physics works in preview, fails on publish, silently — exactly the "shipped a broken lens" failure mode that should never happen.
 
 ---
 
