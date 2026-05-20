@@ -264,6 +264,7 @@ Don't read all of these upfront — pull each when relevant.
 - `references/asset-library-guide.md` — Navigation conventions, install patterns, meta-rules for Snap's Asset Library (the source of almost every recipe install): the 16 categories (Essentials, 3D, 2D, Materials, Tools, Effects, SnapML, Music, Audio, Reference, APIs, Custom Components, Script Modules, UI, Plugins), prefab placement suffix convention (`__PLACE_IN_SCENE`, `__PUT_IN_ORTHO_CAM`, `[REPLACE_ME]` etc.), packed-vs-unpacked package discipline + `_Modified` fork convention, "Project Installed" vs "LS Installed" scope distinction. Load when a colleague hits "I installed it but it doesn't work" or asks which category to search for a specific need.
 - `references/bitmoji-integration.md` — Bitmoji 2D / 3D / Head / Face Animator / animation pipeline (Maya / Blender / Mixamo) for organic / community lenses. **Critical**: Bitmoji is NOT allowed in Sponsored Lenses per Snap rule — file leads with that rule and offers re-scoping options. For organic lenses: BitmojiModule + RemoteMediaModule async patterns, scale=100 gotcha, 10 emotion states for Face Animator, render-layer match requirement for Bitmoji Head, performance cost compounding with multiple Bitmoji 3D. Load when ANY brief mentions Bitmoji, personalised avatar, user's character, or friends' avatars.
 - `references/remote-apis-integration.md` — Remote Service Module pattern for fetching live external data (AccuWeather, ChatGPT, Snap Places, Stock Market — all Snap-proxied, no own API key needed). **Critical tradeoff**: using ANY Remote API DISABLES microphone, Voice ML, DeviceTracking mesh/raycast, UserContextSystem birthdate/location in the same lens. Performance budget (≤3 concurrent, ≤800 KB response, no dynamic image fetch). ChatGPT API has Discover-disabled-by-default caveat. Load when brief mentions weather, AI text, places/POI, stock data, live data, or "react to real-world events".
+- `references/performance-optimization-guide.md` — Deep optimization mechanics cheat-sheet from Snap's published optimization docs: per-asset numeric budgets (3D models 100K tris / 60K rigged / <100 joints; texture max sizes per type including face-mask-specific like eye 64² / lips 250px / blush 450px / icon 320²; animation <10s; Liquify ≤10 per render order), Lens Performance Toolkit 5 metrics, material/texture/RTT/scripting anti-patterns ("Performance" compression saves 6× RAM, max 1 SnapML component per lens, avoid Blend Shape / vertex animation, prefer Unlit over PBR), multi-person Face Effects render-order gotcha, mesh vertex compression (Draco 10×), project naming conventions, Phase 4 DoD checklist. Load at Phase 3-4 when optimising or hitting publish-gate fails.
 
 **User documentation (human-facing — Anna reads these herself)**:
 - `docs/MANUAL-SV.md` — User manual (Swedish): what the skill does, how it works, where the boundaries are
@@ -284,11 +285,15 @@ Two layers: **Snap-published gates** (must clear for submission) and **Valtech p
 | Tap-to-primary-feedback | ≤ 3 s | 5 s | — (UX guideline, not Snap-published) |
 | Texture compression | ASTC | — | — |
 
-**LAT is the most easily-missed gate** — measured by Lens Performance Toolkit inside LS (Size + Activation Time + FPT + Memory dashboard). Phase 4 DoD must include a LAT measurement for every Sponsored Lens.
+**LAT is the most easily-missed gate** — measured by Lens Performance Toolkit inside LS (5 metrics: LAT + FPS + FPT + RAM + SIZE — click the **Gear icon** on a paired device). Phase 4 DoD must include a LAT measurement for every Sponsored Lens.
+
+**Snap-doc inconsistency on RAM**: Performance Guide says 150 MB; Texture Guide says 120 MB. Treat 120 MB as conservative target, 150 MB as hard ceiling. Valtech budget is tighter still (80 / 100).
 
 For lenses with custom 3D objects: see `references/3d-asset-import-doctrine.md` for GLB-first format priority, two-pass optimization flow, and per-asset budgets (accessory ~1 MB compressed). 3D-heavy lenses can acceptably land up to ~6 MB; still keep < 8 MB hard.
 
 For full submission compliance (mandatory rules, IP/music/cloud restrictions, rejection patterns): see `references/sponsored-lens-submission.md`.
+
+For deep optimization mechanics (per-asset numeric budgets, material/texture/RTT/scripting anti-patterns, multi-person face render-order rules, mesh vertex compression, project-structure conventions, Phase 4 DoD checklist): see `references/performance-optimization-guide.md`.
 
 ## Project documentation pattern
 
