@@ -166,11 +166,26 @@ Users describe what they want, not what the API is called. CC must map natural-l
 **Critical — references are knowledge banks, not literal pattern-match tables.** Colleagues will phrase intents in their own words: *"something that hovers next to the eyes"*, *"a logo that lights up when you smile"*, *"audio-reactive countdown"*. Most won't have an exact named recipe or table row. That's expected — and the agent must NOT refuse based on "no exact match". Instead:
 
 1. **Decompose** the brief into primitives the references DO cover. "Halo above head" = head-binding pattern + particle pattern, even if there's no named "halo recipe".
-2. **Combine multiple recipes / files** — a single brief often composes from 2-3 fragments across `lens-recipe-catalog.md`, `audio-in-lenses.md`, `lens-studio-api-gotchas.md`, `sponsored-lens-submission.md`, `3d-asset-import-doctrine.md`. Pull from all of them simultaneously when relevant.
-3. **Propose the composition explicitly**: *"I don't have a single-shot recipe for exactly this. Here's how I'd compose it: [recipe A] + [recipe B] + [gotcha note for the tricky part]. Want me to proceed, or refine first?"*
-4. **Flag novelty honestly**: a composed solution isn't yet valtech-validated. Mark it as a novel pattern, build it, and if it ships successfully, the next step is to promote it to a real entry in the catalog or gotchas file.
+2. **Combine across ALL reference files** — a single brief often composes from 2-3 fragments across multiple files. The full list of reference files is maintained below in the **References** section. **Every file in `references/` is part of the parts-bin** — pull from any combination when relevant. New files may have been added since this paragraph was last edited; the canonical inventory lives in `references/` itself.
+3. **For novel briefs, actively scan `references/` before answering.** Don't limit yourself to files explicitly named in the References section below — use `ls references/` or grep across the folder when the brief doesn't obviously map to a known file. The directory is the source of truth, not this paragraph.
+4. **Propose the composition explicitly**: *"I don't have a single-shot recipe for exactly this. Here's how I'd compose it: [recipe A] + [building block B from file X] + [gotcha note from file Y]. Want me to proceed, or refine first?"*
+5. **Flag novelty honestly**: a composed solution isn't yet valtech-validated. Mark it as a novel pattern, build it, and if it ships successfully, the next step is to promote it to a real entry in the catalog or gotchas file.
 
 The references are a **parts-bin**, not a menu. See `references/lens-recipe-catalog.md` → "Critical: this catalog is a parts-bin, not a strict pattern-match" for the canonical examples of decomposition.
+
+### Worked example of cross-file composition
+
+A colleague says: *"I want a Sponsored Lens for a sports brand where the user's face becomes the team mascot, with branded particles, beat-synced to the team's anthem."*
+
+This single brief composes fragments from **6+ reference files**:
+- `lens-recipe-catalog.md` F-1 (branded face filter) + F-2 (branded particle ambience) + D-5 (music-reactive)
+- `face-effects-deep-dive.md` Face Swap (mascot transformation) + IP risk flag
+- `bitmoji-integration.md` — confirm the brand can't use Bitmoji-as-mascot in Sponsored
+- `audio-in-lenses.md` — Licensed Music for the anthem + Beat Sync setup
+- `sponsored-lens-submission.md` — brand-mark requirement + IP licensing check + Lens Cloud restriction + LAT performance gate
+- `performance-optimization-guide.md` — Face Swap real-time-mode perf cost + texture sizes + Phase 4 DoD checklist
+
+No single file has the full answer. The agent's job is to assemble.
 
 **Intent → feature map**:
 
