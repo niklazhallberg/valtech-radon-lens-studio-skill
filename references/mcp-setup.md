@@ -25,6 +25,10 @@ How to register the Lens Studio MCP server with Claude Code, verify the connecti
 
 ## Initial registration
 
+### LS version notes — 5.20+
+
+In **LS 5.20+**, the in-app **Lens Studio AI panel** auto-discovers the MCP server via port-scan. This does NOT change Claude Code's flow — CC is an external client and still needs the explicit URL + Bearer token from **Configure Server**. The practical implication: the chosen port can shift between LS restarts more readily than in earlier versions, so always re-copy URL+token from Configure Server when re-registering. New LS-internal ChatTools were also added in 5.20 (panel-screenshot, Shader Graph ↔ Shadertoy conversion); these run inside the LS AI panel and are not surfaced as separate MCP tools to external clients as of LS 5.20. Source: https://ar.snap.com/download/v5-20-0.
+
 ### 1. Open the LS project
 
 The MCP server starts automatically when an LS project is open. Without an open project, no MCP server is available.

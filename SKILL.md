@@ -175,6 +175,9 @@ Users describe what they want, not what the API is called. CC must map natural-l
 | "play sound / audio / ding" | `AudioComponent` (native) | For preset SFX (jump/coin), Easy Lens SFX library is a 5.21+ option (install path unverified) |
 | "3D character / avatar" | GenAI Body Generator (5.21+) — Tier 2 | Generated asset still needs FBX/glTF integration — Tier 2 (external asset) per `capability-tiers.md` |
 | "spin / rotate / animate text" | Text3D Animator block (5.21+); fallback `TweenTransform` on `Text3D` | Block install path unverified — fallback is production-safe |
+| "character animation / state machine / blend between idle and action" | `AnimationPlayer` + Animation State Graph Editor (LS 5.20+) | New visual state-machine editor; we have no empirical depth — point user at https://ar.snap.com/download/v5-20-0 and proceed cautiously |
+| "multi-style text / mixed fonts in one label / highlighted word" | Rich Text on `Text`/`Text3D` (LS 5.20+) | New tag-based markup; uses Font Family + Font Collection assets — see https://ar.snap.com/download/v5-20-0 |
+| "color grading / LUT / cinematic look" | Color Correction plugin (LS 5.20+) | Realtime preview inside LS; we have no empirical depth — see https://ar.snap.com/download/v5-20-0 |
 
 **Confirmation pattern:**
 
@@ -234,6 +237,7 @@ Don't read all of these upfront — pull each when relevant.
 - `references/3d-asset-import-doctrine.md` — GLB-first import priority, two-pass optimization (before import + inside Lens Studio), skill-internal per-asset budgets, mentor checklist for format/import/size/optimization. Load when the user mentions 3D objects, GLB/FBX/OBJ, "lens size too big", custom models, or accessories (hat, glasses, prop).
 - `references/image-to-3d-generation.md` — Pass 0 for custom 3D content: image requirements, prompt→image tips, service-selection heuristic (Meshy/Tripo/Hunyuan3D/Rodin), quality checklist, decision point regenerate vs optimize further. Load when the user wants to create a custom 3D model from an image/idea and doesn't have a .glb file yet, or mentions image-to-3D, fal.ai, Meshy, Tripo, Rodin, Hunyuan3D, Luma Genie.
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
+- `references/deprecated-api-migration.md` — Translation table from legacy LS 4.x / pre-5.8 APIs (`getFirstComponent`, `AnimationMixer`, `script.api`, `BlendShapes` component, `VideoTextureProvider.getStatus()` etc.) to current 5.x replacements. Apply when a colleague pastes code from forum threads, AI tools trained on old docs, OLC-Repo-style community grab-bags, the abandoned `Snapchat/lens-studio-templates` repo, or any pre-5.8 sample project.
 
 **User documentation (human-facing — Anna reads these herself)**:
 - `docs/MANUAL-SV.md` — User manual (Swedish): what the skill does, how it works, where the boundaries are
