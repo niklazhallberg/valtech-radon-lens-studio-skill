@@ -204,6 +204,9 @@ Snapchat-specific terminology and constraints worth knowing explicitly:
 - **Ad-policy categories with stricter review**: Sexual Wellness (condoms, lubricants, sex tech), Alcohol, Gambling, Pharmaceutical. Snap reviews on US standards regardless of campaign region — Nordic projects in these categories must clear US-conservative content guidelines.
 - **Snap ad-review SLA**: 1-3 business days for general categories; 1-2 weeks for regulated categories or rejected resubmissions. Plan accordingly.
 - **Performance standard**: Snap reviews lenses on mid-range Android, not high-end iPhone. Desktop preview is misleading and over-optimistic.
+- **Lens Activation Time (LAT) hard gate**: Sponsored Lenses **must** activate in under 650 ms on Snap's benchmark device — measured by the Lens Performance Toolkit. This is the most commonly missed publish gate. See `references/sponsored-lens-submission.md`.
+- **Lens Cloud features (Multi-User Services, Remote Storage) are NOT allowed in Sponsored Lenses**. Push back on any brief that depends on persistent state, multi-player, or shared experiences for a paid campaign — re-scope at Phase 0, not at Phase 5 rejection.
+- **Brand mark required**: Every Sponsored Lens must surface the client's brand name or logo somewhere in the experience, or Ads Manager will reject. Plan the brand-mark placement during Phase 0 UX spec.
 - **Related lens types** (NOT this skill's scope): Community Lens (organic, different submission flow — build phases of this skill apply, submission does not), AR Object / Spectacles experiences (different toolset), Snapchat Filters that aren't Lens Studio (legacy 2D photo filters).
 
 ## References (load on demand by phase / situation)
@@ -238,6 +241,7 @@ Don't read all of these upfront — pull each when relevant.
 - `references/image-to-3d-generation.md` — Pass 0 for custom 3D content: image requirements, prompt→image tips, service-selection heuristic (Meshy/Tripo/Hunyuan3D/Rodin), quality checklist, decision point regenerate vs optimize further. Load when the user wants to create a custom 3D model from an image/idea and doesn't have a .glb file yet, or mentions image-to-3D, fal.ai, Meshy, Tripo, Rodin, Hunyuan3D, Luma Genie.
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
 - `references/deprecated-api-migration.md` — Translation table from legacy LS 4.x / pre-5.8 APIs (`getFirstComponent`, `AnimationMixer`, `script.api`, `BlendShapes` component, `VideoTextureProvider.getStatus()` etc.) to current 5.x replacements. Apply when a colleague pastes code from forum threads, AI tools trained on old docs, OLC-Repo-style community grab-bags, the abandoned `Snapchat/lens-studio-templates` repo, or any pre-5.8 sample project.
+- `references/sponsored-lens-submission.md` — Mandatory rules, performance gates (LAT <650 ms, lens size, RAM, FPS), and recurring rejection patterns for Sponsored Lenses in Snap Ads Manager. Load before Phase 0 spec drafting for any Sponsored Lens brief, and again at Phase 4 DoD before submission. Covers brand-mark requirement, third-party IP, music licensing, digital goods, Lens Cloud restrictions, safe zones, NSFW boundaries, watermark/competing-platform rules.
 
 **User documentation (human-facing — Anna reads these herself)**:
 - `docs/MANUAL-SV.md` — User manual (Swedish): what the skill does, how it works, where the boundaries are
@@ -247,17 +251,22 @@ Don't read all of these upfront — pull each when relevant.
 
 ## Performance budget
 
-Default targets — adjust per brief, but don't loosen without explicit reason.
+Two layers: **Snap-published gates** (must clear for submission) and **Valtech production standards** (our tighter quality bar).
 
-| Metric | Target | Hard limit |
-|---|---|---|
-| Lens size | ≤ 4 MB | 8 MB |
-| FPS (mid-range Android) | ≥ 30 | 25 |
-| RAM | < 80 MB | 100 MB |
-| Tap-to-primary-feedback | ≤ 3 s | 5 s |
-| Texture compression | ASTC | — |
+| Metric | Valtech target | Valtech hard | Snap-published gate |
+|---|---|---|---|
+| Lens size | ≤ 4 MB | 8 MB | 8 MB hard cap; <4 MB explicitly recommended for Sponsored Lenses |
+| Lens Activation Time (LAT) | < 500 ms | 650 ms | **< 650 ms on benchmark device — REQUIRED for ad lenses** |
+| FPS (mid-range Android) | ≥ 30 | 25 | 30 target / >15 minimum (Snap-published) |
+| RAM | < 80 MB | 100 MB | 150 MB ceiling (Snap-published) |
+| Tap-to-primary-feedback | ≤ 3 s | 5 s | — (UX guideline, not Snap-published) |
+| Texture compression | ASTC | — | — |
+
+**LAT is the most easily-missed gate** — measured by Lens Performance Toolkit inside LS (Size + Activation Time + FPT + Memory dashboard). Phase 4 DoD must include a LAT measurement for every Sponsored Lens.
 
 For lenses with custom 3D objects: see `references/3d-asset-import-doctrine.md` for GLB-first format priority, two-pass optimization flow, and per-asset budgets (accessory ~1 MB compressed). 3D-heavy lenses can acceptably land up to ~6 MB; still keep < 8 MB hard.
+
+For full submission compliance (mandatory rules, IP/music/cloud restrictions, rejection patterns): see `references/sponsored-lens-submission.md`.
 
 ## Project documentation pattern
 
