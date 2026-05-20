@@ -50,6 +50,8 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 - **Specific API gotchas** referenced inline → `references/lens-studio-api-gotchas.md`
 - **Body-anchored tracker calibration** for E-3 (foot try-on) and other tracker recipes → `references/body-anchored-calibration.md`
 - **3D model import** for any recipe using custom 3D assets → `references/3d-asset-import-doctrine.md`
+- **Asset Library navigation** (categories, prefab `__SUFFIX` install hints, packed-vs-unpacked discipline) → `references/asset-library-guide.md` — every recipe install path goes through Asset Library
+- **Audio recipes** (D-4 Soundboard, D-5 Beat Sync) and audio-anywhere → `references/audio-in-lenses.md`
 
 ## Contents
 
