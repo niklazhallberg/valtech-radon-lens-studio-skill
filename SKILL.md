@@ -187,6 +187,8 @@ Wait for explicit confirmation before any install / mutation. If the user confir
 
 **Why this gate exists**: 5.21 features ship under marketing names ("Easy Lens X"), MCP-actionable primitives ship under different names (`Button` v1.0.1, `GaussianBlurPreset`), and mismatched terminology between brief and implementation is a common source of wasted iteration. The mapping table + confirmation step closes the gap before any install/mutation cost is incurred.
 
+**Deeper recipe lookup**: This table is the fast-pass intent detector for UI primitives + post-effects. For scene-level lens recipes ("I want a personality quiz lens", "I want a sunglasses try-on", "I want a music-reactive lens"), load `references/lens-recipe-catalog.md` — 30 named recipes across Face Filters / World / Body / Interactive / Commerce / Sponsored Brand categories, each with concrete primitives, build approach, performance notes, and common pitfalls.
+
 ## Scope discipline
 
 Lens projects fail more often from feature creep than from technical issues. Hold the line:
@@ -242,6 +244,7 @@ Don't read all of these upfront — pull each when relevant.
 - `references/mcp-setup.md` — MCP registration, reconnect playbook, MetaInfo view-write-back, MCP tool patterns
 - `references/deprecated-api-migration.md` — Translation table from legacy LS 4.x / pre-5.8 APIs (`getFirstComponent`, `AnimationMixer`, `script.api`, `BlendShapes` component, `VideoTextureProvider.getStatus()` etc.) to current 5.x replacements. Apply when a colleague pastes code from forum threads, AI tools trained on old docs, OLC-Repo-style community grab-bags, the abandoned `Snapchat/lens-studio-templates` repo, or any pre-5.8 sample project.
 - `references/sponsored-lens-submission.md` — Mandatory rules, performance gates (LAT <650 ms, lens size, RAM, FPS), and recurring rejection patterns for Sponsored Lenses in Snap Ads Manager. Load before Phase 0 spec drafting for any Sponsored Lens brief, and again at Phase 4 DoD before submission. Covers brand-mark requirement, third-party IP, music licensing, digital goods, Lens Cloud restrictions, safe zones, NSFW boundaries, watermark/competing-platform rules.
+- `references/lens-recipe-catalog.md` — 30 named "I want X → here's how" recipes across Face Filters (7) / World (5) / Body+Hand (3) / Interactive (6) / Commerce (5) / Sponsored Brand (4). Each recipe lists exact LS 5.x primitives, install paths, build approach, performance notes, common pitfalls, and source URLs. Load at brief intake (Phase 0) to match colleague's natural-language intent to a concrete starting recipe before any spec drafting.
 
 **User documentation (human-facing — Anna reads these herself)**:
 - `docs/MANUAL-SV.md` — User manual (Swedish): what the skill does, how it works, where the boundaries are
