@@ -436,6 +436,36 @@
   }
   .path-details.coming { opacity: 0.55; }
 
+  /* ── Dialogue example (collapsible, H2-styled summary) ── */
+  .dialogue-example { margin-top: 56px; }
+  .dialogue-example summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    font-family: 'Handjet', 'Space Grotesk', sans-serif;
+    font-size: clamp(38px, 5.5vw, 68px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    transition: color 0.15s ease;
+  }
+  .dialogue-example summary::-webkit-details-marker { display: none; }
+  .dialogue-example summary::after {
+    content: '▼';
+    font-size: 18px;
+    color: var(--ink-45);
+    transition: transform 0.2s ease, color 0.2s ease;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .dialogue-example[open] summary::after { transform: rotate(180deg); color: var(--accent); }
+  .dialogue-example summary:hover { color: var(--ink-85); }
+  .dialogue-example[open] summary { margin-bottom: 36px; }
+
   /* ── Setup prompt (Step 3 magic) ───────────── */
   .prompt-block {
     background: var(--code-bg);
@@ -1161,12 +1191,14 @@ Type your message to begin:
     </div>
   </div>
 
-  <h3 style="margin-top: 40px;">What talking to Claude actually looks like</h3>
-  <p>Once you're inside, the conversation is plain language — you describe what you want, Claude reasons through it, makes changes in Lens Studio via the MCP server, and tells you what they did. Here's a real snippet from the RFSU lens project, where the rotation timing on the pack animations was being fine-tuned.</p>
-  <p style="color: var(--ink-60); font-style: italic;">The green-highlighted lines are the user asking. Everything else is Claude's reasoning, MCP-tool calls, and the explanation back.</p>
-  <div class="screenshot">
-    <img src="img/claude-dialogue-example.png" alt="Example Claude Code dialogue from the RFSU lens project — the user asks in plain Swedish about animation timing, Claude reads the scene structure via MCP, proposes adjustments, and applies them, side-by-side with the lens preview.">
-  </div>
+  <details class="dialogue-example">
+    <summary>What talking to Claude actually looks like</summary>
+    <p>Once you're inside, the conversation is plain language — you describe what you want, Claude reasons through it, makes changes in Lens Studio via the MCP server, and tells you what they did. Here's a real snippet from the RFSU lens project, where the rotation timing on the pack animations was being fine-tuned.</p>
+    <p style="color: var(--ink-60); font-style: italic;">The green-highlighted lines are the user asking. Everything else is Claude's reasoning, MCP-tool calls, and the explanation back.</p>
+    <div class="screenshot">
+      <img src="img/claude-dialogue-example.png" alt="Example Claude Code dialogue from the RFSU lens project — the user asks in plain Swedish about animation timing, Claude reads the scene structure via MCP, proposes adjustments, and applies them, side-by-side with the lens preview.">
+    </div>
+  </details>
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
