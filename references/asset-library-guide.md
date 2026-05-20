@@ -14,6 +14,14 @@ Almost every recipe in `lens-recipe-catalog.md` starts with `Asset Library → s
 
 This file documents those + the full category map so the agent can navigate the Asset Library precisely instead of generically saying "search Asset Library".
 
+## What this file covers vs what it does NOT cover
+
+**Asset Library = Snap-provided, agent-fetchable** generic components: pre-built meshes, materials, particle effects, audio templates, custom components, ML models, scripts, plugins. The agent can search and install these freely on the colleague's behalf.
+
+**NOT in scope here**: client-specific assets (brand logo, branded 3D models, licensed music, brand fonts, custom artwork). Those are the **colleague's responsibility** to attach to the project's `assets/` folder — the agent doesn't fetch or generate them. See `SKILL.md` → "Asset sourcing — what the agent fetches vs what the colleague provides" for the canonical boundary.
+
+Brief-intake question for the agent: *"Har ni egna logotyper, 3D-modeller eller licensierad musik som ska in i lensen? I så fall, lägg dem i projektmappen. Allt annat — partikeleffekter, ansiktsmesh, standardmaterial — fixar jag från Snaps bibliotek."*
+
 ## The 16 Asset Library categories
 
 When a colleague asks *"is there an Asset Library item for X?"*, the agent can suggest the right **category bucket** to search:

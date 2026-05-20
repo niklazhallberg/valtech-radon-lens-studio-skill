@@ -43,6 +43,16 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 
 `[STALE]` markers in source URLs indicate the doc URL is from Lens Studio 4.55.1, but the template/feature itself remains current in LS 5.x Asset Library — these are kept because the older URL is often where Snap's most detailed reference still lives.
 
+## Asset sourcing boundary (important — read at brief intake)
+
+Recipes here say things like *"import your shoe 3D model"* or *"assign brand logo as Screen Image"* — those user-provided assets are the **colleague's responsibility** to attach to the project's `assets/` folder. The agent doesn't fetch or generate client-specific assets (brand logos, brand 3D models, licensed music outside Snap's library, brand fonts, custom artwork).
+
+What the agent CAN source: Snap's Asset Library (recipes' install steps), Snap Music Library, built-in face/world/body building blocks, GPU Particles presets, standard materials.
+
+Surface this in plain mentor language at intake (not as a "what I can / cannot do" list): *"Har ni en logotyp, 3D-modeller eller egen licensierad musik som ska in i lensen? Lägg dem i projektmappen. Allt annat fixar jag från Snaps bibliotek."*
+
+See `SKILL.md` → "Asset sourcing — what the agent fetches vs what the colleague provides" for the canonical boundary.
+
 ## Cross-references to other skill files
 
 - **Sponsored Lens compliance** for any F-category recipe → `references/sponsored-lens-submission.md`
