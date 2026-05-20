@@ -217,6 +217,24 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 
 ---
 
+### A-8 — "I want users to pick a face from their camera roll and apply it to a 3D object"
+
+**Intent**: User selects a photo from phone library; LS auto-detects faces in the image, crops them, and applies the selected face as a texture to a custom 3D mesh.
+
+**LS primitive(s)**: `Face Image Picker` template + `FaceImagePickerController [EDIT_ME]` + `face_image_picker` material + `FaceMesh [POSITION_ME]` prefab + Face Image Picker Texture component.
+
+**Build approach**: Open Face Image Picker template → import 3D object → assign `face_image_picker` material → wire to `FaceImagePickerController`. User flow: tap picker UI → camera roll opens → user selects image → faces auto-detected + cropped → selected face mapped to UV.
+
+**Common pitfalls**: Requires camera roll permission (handle denial); no-face-in-image needs fallback; multi-face images need selection UI; UV mapping must match the picker's expected layout.
+
+**Sponsored Lens caveat**: User's chosen photo may contain third-party faces — this is user-driven IP, distinct from Face Swap (E recipe series). For Sponsored, brief carefully — user-controlled selection generally fine, but campaign messaging shouldn't encourage IP-violating choices.
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/world/face-image-picker [STALE URL; template current]
+
+**Confidence**: official-docs
+
+---
+
 ### A-7 — "I want a face paint / face mask filter"
 
 **Intent**: Apply a custom-painted texture that appears painted directly on user's skin, following facial contours.
@@ -364,6 +382,41 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 - Look Around starts from user's current phone orientation at lens launch — if launched while tilted, content appears offset.
 
 **Source(s)**: https://developers.snap.com/lens-studio/4.55.1/references/templates/world/look-around [STALE — 4.55.1 URL; template unchanged in LS 5.x]
+
+**Confidence**: official-docs
+
+---
+
+### B-6 — "I want a hole-in-the-ground / window-down effect (peer into another world)"
+
+**Intent**: Designer wants a 3D hole that appears in the floor or ground in front of the user, letting them peer down into a custom world below — variant on the Portal concept but specifically ground-based, no doorway to walk through.
+
+**LS primitive(s)**: `Window` template (LS 4.55 template, still functional in LS 5.x) + `WorldObjectController` script + `Occluder` mesh with `window_occluder_mat` material + Surface tracking (world-locked hole).
+
+**Build approach**:
+- Open `Window` template (Asset Library / LS Home Page — search "Window").
+- Add `Device Tracking` (Surface mode) to Camera Object so the hole locks to detected ground.
+- Replace the `[REPLACE_ME]` placeholder object under `WorldObjectController` with your custom 3D world content (e.g. underwater scene, miniature city, brand environment).
+- The `Occluder` mesh with `window_occluder_mat` material hides the parts of your world that are "above ground" — gives the illusion that the world exists below the floor.
+- Adjust `TouchCollision` to match the hole's perimeter for tap-to-reposition.
+- Toggle `Use Ground Grid` on WorldObjectController for a circular visual indicator under the hole.
+
+**Performance notes**: Window uses standard world AR (Surface tracking) — comparable cost to B-1 Portal and B-2 Animated Object. The occluder mesh adds one draw call. World-inside-hole polygon budget applies — keep <50K total for mid-range devices.
+
+**Common pitfalls**:
+- Occluder mesh shape must precisely match the hole's perimeter — gaps allow "underground" content to peek above ground, breaking the illusion
+- Tracking requires flat well-lit floor — works best on light-coloured floors, struggles on dark patterned surfaces
+- World content placed too high will clip through the occluder — anchor world content well below ground plane (-Y direction)
+
+**Difference from Portal (B-1)**:
+- **Portal** = vertical doorway you walk THROUGH to a different space
+- **Window** = horizontal hole in the FLOOR you look DOWN into
+
+Brief language clues: "step into" / "doorway" / "walk through" → Portal (B-1). "Peer into" / "look down" / "hole in the ground" → Window (B-6).
+
+**Sponsored Lens fit**: Identical to B-1 Portal — works for brand-environment reveals (brand-world below the user's floor), product launches (3D product emerging from the hole), and immersive campaign storytelling. Same brand-mark + LAT + safe-zone requirements apply.
+
+**Source(s)**: https://developers.snap.com/lens-studio/4.55.1/references/templates/world/window [STALE URL; template current in LS 5.x]
 
 **Confidence**: official-docs
 
