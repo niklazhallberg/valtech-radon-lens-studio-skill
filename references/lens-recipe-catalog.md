@@ -421,6 +421,33 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 
 ---
 
+### C-3-alt — "I want a lens that detects and reacts to a pet (cat / dog)"
+
+**Intent**: Designer wants a lens that detects when a cat or dog is in frame and attaches effects to specific points on the animal (eyes, nose, head).
+
+**LS primitive(s)**: `Object Tracking` via Scene Hierarchy `+ → Tracking → Cat` / `Dog` / `Cats and Dogs` + `AttachToObjectTracking.js` helper script for 3D attachment.
+
+**Build approach**:
+- `+ → Tracking → Cat` (or `Dog` / `Cats and Dogs` for combined) — creates parent tracking object + child 2D image slot.
+- Each pet category has specific attachment points: Cat = `Center`, `Left Eye`, `Right Eye`, `Nose`. Select the point in Inspector.
+- For 2D effects (sunglasses on dog, sticker on cat nose): drag images as children, position via Screen Transform under attachment point.
+- For 3D effects (party hat on dog): use the `AttachToObjectTracking.js` script with Perspective Camera reference + Object Tracking target + Base Depth Factor + Apply Rotation toggle.
+- Test in Preview with cat/dog video presets — built-in webcam test won't trigger pet detection.
+
+**Performance notes**: Pet tracking uses an ML model separate from face / hand / body. Don't combine multiple tracking systems (face + pet + hand) in one lens without perf testing — each ML model compounds the cost.
+
+**Common pitfalls**:
+- Cat/Dog tracking is **2D screen-space bounding box only** — no 3D pose data, no orientation data exposed
+- Multi-pet (two cats in frame) not documented as supported — design for one pet at a time
+- Lighting / distance sensitivity not documented; assume ML accuracy degrades in poor lighting (test on device)
+- `Object Tracking` is **NOT custom-trainable** — for brand product detection (e.g. "detect our cereal box"), use **SnapML** with a Bring-Your-Own-Model approach (separate research bucket)
+
+**Source(s)**: https://developers.snap.com/lens-studio/features/ar-tracking/world/object-tracking
+
+**Confidence**: official-docs
+
+---
+
 ### C-3 — "I want a hand tracking lens where things follow or react to hand gestures"
 
 **Intent**: Images, particles, or 3D effects attached to hand joints or triggered on specific gestures (peace sign, open palm, pinch).
