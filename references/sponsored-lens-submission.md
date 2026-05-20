@@ -52,6 +52,26 @@ Mandatory requirements, performance gates, and recurring rejection patterns for 
 
 ---
 
+### Bitmoji avatars are NOT permitted in Sponsored Lenses
+
+**Rule**: Snap's official Bitmoji 3D documentation states: *"Bitmoji avatars cannot be used for commercial purposes, including Ads."*
+
+**Common violation**: Brand brief assumes "let's make it personal by using the user's own Bitmoji" — looks like a Snap-native idea, but Bitmoji is reserved for organic / community lenses only. Brand teams often confuse Snap's own marketing (which showcases Bitmoji) with what's available for paid campaigns.
+
+**Source**: https://developers.snap.com/lens-studio/features/bitmoji-avatar/bitmoji-3d (Bitmoji 3D page, accessed 2026-05-20)
+
+**Re-scoping options the agent can offer**:
+- Brand-owned stylised character with "Bitmoji vibe" but original IP
+- Face Mesh / Face Effects to drive a branded character via user's expressions
+- GenAI Suite / Face Generator for a personalised but non-Bitmoji avatar
+- Reserve the Bitmoji concept for organic distribution outside the paid campaign
+
+**Apply when**: ANY Sponsored Lens brief that mentions Bitmoji, personalised avatar, user's avatar, friend's avatar, or "show me as a character". Push back at Phase 0 — not at Phase 5 rejection.
+
+See `bitmoji-integration.md` for full Bitmoji API details (for organic-lens use).
+
+---
+
 ### Lens Cloud features are NOT permitted in Sponsored Lenses
 
 **Rule**: Lens Cloud features (Multi-User Services, Remote Storage, etc.) cannot be used in Sponsored Lenses. Lenses depending on them will be rejected or required to remove the cloud-dependent functionality before campaign.

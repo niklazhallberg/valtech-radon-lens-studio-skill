@@ -583,7 +583,7 @@ Compiled 2026-05-20 from Snap's official Lens Studio documentation + LS in-app t
 - Asset Library → `LeaderboardCore` → Install → add component to scene object.
 - In TS: `@input Component.ScriptComponent Leaderboard`, then call `script.Leaderboard.initializeWithOptions({ name, userType, scoreOrdering, ttlSeconds, userLimit, useTimer, leaderboardStartDate })`.
 - Submit score: `script.Leaderboard.submitScore(score)` on game-end event.
-- UI display without custom code: install `LeaderboardInfo`, link text components + Bitmoji image slots in Inspector — auto-populates rankings.
+- UI display without custom code: install `LeaderboardInfo`, link text components + Bitmoji image slots in Inspector — auto-populates rankings. (Bitmoji slots are ORGANIC-ONLY — see `bitmoji-integration.md` for the Sponsored Lens restriction.)
 - Subscribe to updates: `script.Leaderboard.onLeaderboardRecordsUpdated.add((wrapper) => { /* update UI */ })`.
 
 **Performance notes**: Leaderboard data fetched async from Snap cloud — network latency (0.5–2 s) on first load. Design UI for loading state.
