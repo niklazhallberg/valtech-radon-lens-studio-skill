@@ -82,6 +82,13 @@ See `bitmoji-integration.md` for full Bitmoji API details (for organic-lens use)
 
 **Apply when**: any brief that wants persistent state, multi-player, or shared experiences in a Sponsored Lens. Push back on this constraint at Phase 0 — don't let it become a Phase 5 rejection.
 
+**Templates that depend on Lens Cloud (hence organic-only)**:
+- `Realtime Store` template — multi-user real-time sync (live voting, collaborative lenses where one user's action updates state for all participants). Powerful for organic community lenses; can NOT be used in Sponsored campaigns.
+- `Scan` template — object / place / vehicle identification via Lens Cloud backend. Useful for "scan to unlock"; Sponsored Lens equivalent must be re-scoped to SnapML (custom on-device model).
+- `Leaderboard` / `LeaderboardCore` / `LeaderboardInfo` (see `lens-recipe-catalog.md` D-6) — cross-user score storage.
+
+For Sponsored campaigns that want any of these mechanics: re-scope at Phase 0 to a local-only or SnapML-on-device alternative.
+
 ---
 
 ### Digital goods rules (if monetised)

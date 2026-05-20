@@ -447,6 +447,33 @@ Brief language clues: "step into" / "doorway" / "walk through" → Portal (B-1).
 
 **Confidence**: official-docs (multi-source)
 
+> **Variant — full-body vs portrait**: C-1 uses `Portrait Background` (face + upper chest area). For **full-body segmentation** (arms, legs, full silhouette), select the `Body` segmentation type instead. Use Body when brief calls for whole-figure cutout or full-body silhouette effects (dance lens, full-body costume swap). Additional gotchas for full-body segmentation: set Segmentation Texture's wrap mode to `ClampToEdge` (prevents undesired texture repeating at edges); render layer of effect MUST match the camera's render layer; outline effects need TWO segmentation instances (one feathered, one refined). Same ML cost class as Portrait — heavy; don't combine with Hair Color in the same lens. Source: https://developers.snap.com/lens-studio/4.55.1/references/templates/world/body-segmentation [STALE URL; segmentation pipeline current in LS 5.x].
+
+---
+
+### B-7 — "I want a 2D character / cutout placed in the world (paper-cut style)"
+
+**Intent**: Designer wants a 2D image (transparent PNG of a character, mascot, or object) placed in 3D world space as if it were a cardboard cutout, with optional ground shadow derived from the silhouette.
+
+**LS primitive(s)**: `Cutout` template + `CutoutController [EDIT_ME]` + `Look At Camera` (Y-axis-only) + optional ground shadow via silhouette + Surface tracking.
+
+**Build approach**: Open Cutout template → import 2D image (transparent PNG) → assign to `CutoutController` Image field → set `Ground Offset` for shadow position → `Look At Camera` keeps the cutout facing the user as they walk around it (rotates only on Y-axis, so the cutout doesn't tilt sideways).
+
+**Performance notes**: Extremely lightweight — single textured plane + optional shadow plane. Suitable for many cutouts in one scene (paper-cut diorama, character collection).
+
+**Common pitfalls**:
+- PNG edges with poor alpha (premultiplied / fringe) show ugly halos — use `Straight Alpha` export from Photoshop/Illustrator
+- `Look At Camera` rotation is Y-axis only — the cutout doesn't tilt up/down when the user looks down from above. Acceptable for ground-anchored cutouts; weird for ceiling-anchored
+- Shadow `Ground Offset` tuning is per-cutout — copy values between similar-sized cutouts to keep visual consistency
+
+**Difference from B-3 Picture Frame**: B-3 generates a 3D frame around any image (rectangular). B-7 Cutout uses the image's own silhouette (any shape) as the visible object.
+
+**Sponsored Lens fit**: Strong for character-based brand activations (mascot in your living room, branded paper-cut diorama). Same brand-mark + IP rules apply per `sponsored-lens-submission.md`.
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/world/cutout [STALE URL; template current]
+
+**Confidence**: official-docs
+
 ---
 
 ### C-2 — "I want a body-anchored shoulder accessory / wings / badge"
@@ -525,6 +552,8 @@ Brief language clues: "step into" / "doorway" / "walk through" → Portal (B-1).
 **Source(s)**: https://developers.snap.com/lens-studio/features/ar-tracking/hand/hand-tracking-templates/3d-hand-tracking
 
 **Confidence**: official-docs
+
+> **Pre-built hand gesture detection** — the `Hand Gestures` template (Asset Library) ships with **5 named gestures** detected out-of-the-box: `open`, `close`, `horns`, `index_finger`, `victory`. Uses `Object Tracking` attached to `Orthographic Camera > Hand Tracking Region`. Trigger pattern: gesture event → instantiate visual prefab + play SFX via Behavior wiring. For brand briefs that want gesture-driven activation ("show victory sign to trigger brand reveal"), this is faster than HandTrackingController gesture-inference from joint positions. Source: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/hand-gestures [STALE URL; template current].
 
 ---
 
@@ -677,6 +706,150 @@ Brief language clues: "step into" / "doorway" / "walk through" → Portal (B-1).
 **Sponsored Lens caveat**: Cloud features like Leaderboard fall under the "Lens Cloud features NOT allowed in Sponsored Lenses" rule — see `sponsored-lens-submission.md`. Leaderboard is OK for organic lenses; for Sponsored campaigns, re-scope to local-only score tracking.
 
 **Source(s)**: https://developers.snap.com/lens-studio/features/games/leaderboard-core + leaderboard-info
+
+**Confidence**: official-docs
+
+---
+
+### D-7 — "I want a 2D UI layout (button grid, text panels) anchored anywhere in 3D"
+
+**Intent**: Designer wants a 2D interface (text + image panels, buttons, layout grids) that can be placed at the top of the scene OR anchored in 3D world space, instead of always rendering through the Orthographic Camera.
+
+**LS primitive(s)**: `Simple Canvas` template + `Canvas` component (on parent SceneObject) + `ScreenTransform` (required on every child) + `UIPanel` script (touch detection via `containsScreenPoint`) + `LayoutGrid` (auto-arrangement) + optional `TweenScreenTransform` (animation) + optional `Device Tracking` (world-anchored UI).
+
+**Build approach**: Open Simple Canvas template → child UI elements have ScreenTransform → wire touch via UIPanel's `containsScreenPoint(point)`. For world-anchored UI: place Canvas at top of Objects panel + add Device Tracking to Camera so Canvas tracks in the world. Auto-arrange buttons via LayoutGrid (e.g. phone-keypad layout).
+
+**Common pitfalls**:
+- Children MUST have unbroken ScreenTransform chain — breaking the chain (a non-ScreenTransform parent in between) breaks Screen Transform behaviour entirely
+- "Things rendered more than once in Preview" = more than one camera rendering the same content; usually means Canvas is in both Ortho and Perspective render layers
+- Touch detection requires `containsScreenPoint` — Behavior alone doesn't fire on Canvas elements
+
+**Difference from Ortho-camera UI**: Standard 2D UI via Ortho Camera is screen-locked. Canvas is **portable** — can be placed at top-level (screen-locked behaviour) OR as child of a world-tracked object (UI panel appears anchored to a surface). Good for interactive product cards, branded info panels at world locations.
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/canvas-template [STALE URL; template current]
+
+**Confidence**: official-docs
+
+---
+
+### D-8 — "I want a lens that recognises American Sign Language fingerspelling (A–Z + numbers)"
+
+**Intent**: Designer wants a lens that detects ASL alphabet/number fingerspelling in real time — for educational, accessibility-focused, or deaf-community-centered brand activations.
+
+**LS primitive(s)**: `ASL Fingerspelling` template + `Fingerspell Detector` component (ML model from SignAll partner, runs on 2D hand tracking) + `Fingerspell Hint` (3D hand-animation visualiser + text display) + `Mode` parameter (alphabet vs numbers).
+
+**Build approach**: Open ASL Fingerspelling template → configure `Fingerspell Detector` with `threshold` (detection confidence), `minOccurrence` (frame persistence), `repeatAfter` (cooldown). Subscribe to events:
+
+```typescript
+script.fingerspellDetector.onNewChar.add((c) => { print(c); });
+script.fingerspellDetector.onHandFound.add(() => { print('Hand Found'); });
+script.fingerspellDetector.onHandLost.add(() => { print('Hand Lost'); });
+```
+
+Wire `onNewChar` to display the letter, animate a response, or build a fingerspell-the-word game.
+
+**Common pitfalls**:
+- Hand orientation sensitivity — detection varies with hand angle to camera; coach users to face palm forward
+- Lighting: low-light degrades ML accuracy
+- Ambiguous letters (M / N, R / U, F / W) need higher `threshold` to disambiguate; tune per-letter if a specific brand-word relies on it
+- Frame-based detection requires sustained finger positioning — fast switches between letters may miss
+
+**Sponsored Lens fit**: Strong for **inclusive / accessibility / educational brand campaigns**. Examples: deaf-community-focused product launch, "spell our brand name" interactive challenge, language-learning brand partnership. ML model is the SignAll partner model — flag IP/licensing chain at Phase 0 for any commercial use.
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/asl-fingerspelling [STALE URL; template current]
+
+**Confidence**: official-docs
+
+---
+
+### Physics templates (D-9 through D-11)
+
+LS ships a cluster of physics-driven interactive templates. All use the same underlying physics system (Physics Body, Physics Constraint, Physics Collider, Physics Matter, Physics World). See `lens-studio-api-gotchas.md` Part 2 → "`Physics.WorldSettingsAsset` is NOT added by default" — must be added manually for any physics-using lens.
+
+> **Physics Lab** (`/templates/interactive/physics-lab-template`) is a **tutorial sandbox** for LS Content Editor tools (Select/Move/Scale/Rotate/Clone/Delete/Parent) plus 7 puzzles. **Not a brand-brief recipe** — useful only as a learning resource for new colleagues. Skip when recipe-matching a colleague's brief.
+
+> **Physics Gravity Gun** (`/templates/interactive/physics-gravity-gun`) demonstrates Raycasting + Physics + UI Buttons for pickup/propel of objects. Docs are thin; treat as a starting point for "physics-based custom tool" briefs but expect substantial custom work. Author: MousePack.
+
+### D-9 — "I want interactive plants / flowers that sway and react"
+
+**Intent**: Nature-themed lens with foliage that deforms physically — branded plant/florist activations, wellness lens, garden-themed product launches.
+
+**LS primitive(s)**: `Physics Responsive Plants` template + chain-linked `Physics Body Component` (dynamic) + `Physics Constraint Component` (Fixed / Hinge / Point) + `Physics Collider Component` (cylindrical for stems) + 3 generator scripts: `TensionStemGenerator.js` (vertical stems with slight bend), `SuspensionFrondGenerator.js` (multi-frond spreads), `BonesTargetColliders.js` (links 3D rig to Collider Rig via bone mapping) + `ResponsivePlantSettings.js` (unified density / damping / matter overrides) + `Physics.WorldSettingsAsset` (mandatory — add via Asset Browser).
+
+**Build approach**: Install template → pick a plant preset (4 ship) → tune via `ResponsivePlantSettings` (density, damping, angular damping). Plants respond to simulated gravity + constraint forces — **no built-in touch trigger**; for tap-driven interaction, add a Physics Body Component to a "wind" or "finger" object that collides with the plant rigs.
+
+**Common pitfalls**:
+- Multiple plants compound physics cost — for ambient decoration use low-detail variants
+- "Physics objects are not parents of one another" — plant chains link via Constraints, NOT hierarchy. Don't try to nest physics bodies in Scene Hierarchy
+- Mesh vertex count must be enough for smooth deformation; under-detailed mesh produces visible jitter
+- Bones must align with collision segment positions or deformation looks wrong
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/physics-responsive-plants [STALE URL; system current]
+
+**Confidence**: official-docs
+
+---
+
+### D-10 — "I want a destructible object that breaks when tapped / hit"
+
+**Intent**: Object (branded packaging, piñata, glass bottle) that fragments into pieces on collision — for "smash to reveal" brand activations, gamified destruction, product launch.
+
+**LS primitive(s)**: `Let's Break It` template + `ConvexMeshHelper` script (applies physics to broken-model parent) + `onCollisionBreak` script (boolean `is Breaking` toggle + `Filter the collision` for scene-name matching) + Physics Body (Box) for floor + Convex Mesh Physics Body for breakable object + `Physics.WorldSettingsAsset` (mandatory).
+
+**Build approach**: Author both an **intact** and a **pre-broken** 3D model (broken model is a parent containing the fragment-meshes as children, each with its own Render Mesh Visual). Import both → place `ConvexMeshHelper` on broken-model parent → add Physics floor (`+ → Physics → Box body`) → wire `onCollisionBreak` with collision filter (list the projectile object's scene names). On collision: intact model hides, broken model spawns at the same position with physics-driven fragments.
+
+**Common pitfalls**:
+- Overlapping intact + broken models — toggle visibility, never both visible
+- All children of broken model MUST have Render Mesh Visual or fragments don't render
+- Filter list needs **explicit** scene-name entries — wildcard / category matching not supported
+- World Mesh-based collisions require Interactive Preview mode in LS (desktop preview doesn't reproduce)
+- Mass property control: set to 0 for static (the floor), positive for breakable objects
+
+**Sponsored Lens fit**: Strong for "smash to reveal" mechanics — branded piñata, breakable package reveal, brand-bottle-smash-into-confetti. Verify any product-likeness against IP rules per `sponsored-lens-submission.md`.
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/physics-lets-break-it [STALE URL; system current]
+
+**Confidence**: official-docs
+
+---
+
+### D-11 — "I want a collect-the-falling-items mini-game (coins, items, brand objects)"
+
+**Intent**: Mini-game where items drop from the top of the screen, user catches/collects them for score, optional "bomb" objects end the game on collection — for gamified brand activations.
+
+**LS primitive(s)**: `Collect Coins` template (Maha Aldosary) + `Game Controller` (intro / play / game-over state machine via `Game State Config`) + `Spawner` script (configurable frequency, random item selection) + `Bomb` and `Coin` prefabs (physics bodies with collision triggers) + Behavior with `Physics Collider Event` triggers filtered by object name (score on coin-collision, end-game on bomb-collision) + `Physics.WorldSettingsAsset` (mandatory).
+
+**Build approach**: Open template → replace `Coin` prefab visuals with branded collectibles → keep `Bomb` prefab as "avoid" mechanic (or swap for brand-inappropriate visual) → tune `Spawner` frequency → wire score-event Behavior to update Screen Image counter + audio feedback → game-over state shows final score + retry CTA. Player input is not explicitly documented in the template — typically device-tilt or tap-to-move; check template's controller for the actual mechanic.
+
+**Common pitfalls**:
+- Game state transitions: ensure "play → over → intro" reset cleanly; common bug is leftover spawned objects on retry
+- Score-event Behavior uses `Physics Collider Event` filtered by object name — must match prefab names exactly
+- Audio (collect-ding) loads with the lens — count toward 8 MB / 4 MB Sponsored budget; use short MP3 clips
+
+**Sponsored Lens fit**: Classic gamified brand activation — branded collectibles raining down for the user to catch. Add leaderboard via D-6 for competitive layer (but D-6 uses Lens Cloud → organic only per `sponsored-lens-submission.md`).
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/physics-collect-coins [STALE URL; system current]
+
+**Confidence**: official-docs
+
+---
+
+### D-12 — "I want users to scan a real-world product / place / vehicle to unlock content"
+
+**Intent**: Camera-driven scan that identifies a real-world object, place, or vehicle and triggers a branded response — "point camera at our product to unlock the brand experience".
+
+**LS primitive(s)**: `Scan` template + Lens Cloud backend (object/place/vehicle identification ML) + permission handling + conditional visual response + optional data extraction (car prices, place metadata).
+
+**Build approach**: Open Scan template → configure target scan type (object / place / vehicle / SnapCode) → wire identification-result event to a Behavior chain that enables the brand response. Use Lens Cloud's object-recognition backend — no custom ML training required for the supported categories.
+
+**Common pitfalls**:
+- Camera + scan permission flow — handle denial gracefully
+- ML identification varies with lighting + angle + distance — coach users to "hold steady, point at the [object]"
+- Only Lens-Cloud-supported categories are detectable out-of-the-box — for custom brand product detection, use SnapML (Bring Your Own Model)
+
+**CRITICAL Sponsored Lens caveat**: Scan template uses **Lens Cloud backend** → **NOT allowed in Sponsored Lenses** per Snap rule. See `sponsored-lens-submission.md` → "Lens Cloud features are NOT permitted in Sponsored Lenses". For Sponsored briefs that need scan-to-unlock: re-scope to **SnapML** (custom-trained model, runs on-device, no Lens Cloud) — separate research bucket.
+
+**Source**: https://developers.snap.com/lens-studio/4.55.1/references/templates/interactive/scan [STALE URL; template current]
 
 **Confidence**: official-docs
 
