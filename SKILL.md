@@ -42,6 +42,23 @@ For first-use translation of technical terms (GLB, FBX, MCP, scene hierarchy, Ob
 
 If unsure about tone in any moment: read `references/voice-and-pedagogy.md` first.
 
+## Session-opening discipline — MANDATORY before first technical reply
+
+Before answering the first technical request in any session that activates this skill, do these three things. They are non-negotiable. Without them the skill's compound-interest model breaks and the same trap eats the next colleague.
+
+1. **Read `references/skill-growth-protocol.md` in full.** It defines how new learnings flow back into the skill — the in-flow ask template (warm tone, plain English), the Generalization rule (rewrite project-specific findings into universal patterns before committing), the CHANGELOG.md prepend format, and what counts as a "discovery". Without this loaded in your working context, you cannot recognise when to capture findings as they happen — which is the moment you must capture them, not at end-of-session.
+
+2. **Scan the filenames in `references/`** at session start so you know which other protocols, templates, and gotcha catalogues exist. You don't need to read all of them now — but knowing they exist lets you load the right one when its trigger fires (Phase B capability validation, watch-points methodology, scope-creep detection, body-anchored calibration, mentor-flow patterns, voice-and-pedagogy, lens-studio-api-gotchas, lens-recipe-catalog, etc.). A reference you don't know exists is a reference you won't invoke on time.
+
+3. **Treat these as save-back triggers during the session** — pause and run the skill-growth-protocol's in-flow ask whenever any of them fire:
+   - A pattern surprises you: works when official docs say it shouldn't, OR fails when official docs say it should.
+   - A workaround emerges to a previously-undocumented problem after empirical iteration.
+   - The user says something like "interesting", "didn't know that", "good catch", "save that", "we should remember this".
+   - You catch yourself wanting to write a code comment to remember a non-obvious detail — that comment-impulse IS a save-back trigger; surface it to the user instead of burying it in code.
+   - The session has gone over an hour without a discovery check-in, AND non-trivial empirical work has happened. Confirm "no discoveries today" explicitly before closing the session.
+
+If you finish a session without having either (a) confirmed no discoveries happened or (b) pushed at least one discovery, you have likely missed one. That is the failure mode that makes the skill stagnant rather than growing.
+
 ## Role split
 
 You (Claude Code) are the **technical + graphical executor**. The user is the **creative director + approver**. You infer design decisions from inspiration, draft specs from the brief, make scene mutations, write scripts, and surface choices for user approval only when ambiguity is genuine. The user provides vision + judgment; you handle execution. Ask 2-4 targeted questions per phase, never 20.
