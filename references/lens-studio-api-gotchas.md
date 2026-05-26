@@ -1220,6 +1220,40 @@ const matches = sceneObject.getComponents("Component")
 
 ---
 
+#### Masking Component does not visibly clip Text grandchildren in LS 5.21 (confirmed regression)
+
+**Pattern**: Snap's official documentation for Masking Component states that Screen Text placed under a Masking parent should be clipped to the parent's bounds. Empirical testing in Lens Studio 5.21 contradicts this: a `MaskingComponent` on any SceneObject — whether with or without a child Image as stencil shape, whether the Text is a direct child or a grandchild — fails to visibly clip the Text. The text either renders without any clipping (when Masking is disabled) or fails to render entirely (when Masking is enabled with the default material setup).
+
+**Anti-pattern**: Following the documented setup `ScreenTransform → MaskingComponent → [child ScreenTransform → Text]`, then expecting the Text to be pixel-clipped at the parent's anchor bounds. Adding an Image to define the mask shape (with any standard material — `ImageMaterialPreset` clone, etc.) does not fix it; the Image either obscures the Text visually or has no effect on rendering at all.
+
+**Mitigation**: Use a script-based "fully fits" alpha gate as an `UpdateEvent` during animation: per-frame, compute each Text slot's effective bbox (slot anchors plus an asymmetric margin for text overflow), test whether it fits inside the intended viewport's anchor range, and set `textFill.color.w` to 1 (inside) or 0 (outside). An asymmetric margin (`topMargin > bottomMargin`) keeps two-line-wrap text from leaking past the top edge while still letting slots enter smoothly from below. Trade-off: slots pop in/out at viewport edges rather than being pixel-clipped mid-glyph.
+
+**Snap's own acknowledgment**: The official Masking Component docs page states: *"Currently, there is a known bug with masking interactions. This will be addressed in an upcoming Lens Studio release."* Snap also documents that Masking "depends on stencil buffer usage" and "may conflict with any other features that depend on the stencil buffer" — but does not list which features. Empirically the failure is not specific to any one conflicting component: it reproduces in a freshly-created SceneObject under `Full Frame Region` with no other components nearby.
+
+**Source**: https://developers.snap.com/lens-studio/lens-studio-workflow/scene-set-up/2d/masking-component — official docs; "known bug" acknowledgment quoted verbatim from the live page as of 2026-05-26.
+
+**Confidence**: empirical, verified across multiple isolated probes (vanilla Text + Masking under Full Frame Region, Text + Masking + Image with default material, Text grandchild under an intermediate parent transform).
+
+**Alternative path not yet validated**: For genuine pixel-perfect masking the recommended fallback is a custom shader via Material Editor or Shader Graph using an Opacity Texture on the Text's own material — bypasses the Masking Component / stencil pipeline entirely. Multi-hour investment; defer if the script-based alpha gate is acceptable for the project.
+
+**Why generalizable**: Many lens designs need clipped-text effects — scrolling tickers, slot-machine reels, scrollable lists, rolling counters. The documented Masking + Screen Text pattern is the obvious first try, and currently fails in LS 5.21. Future colleagues lose hours unless this gotcha is captured.
+
+---
+
+#### Asset Library custom components built for older LS versions may fail with `Cannot find module ./XYZ_NNN` errors
+
+**Pattern**: Older Asset Library custom-component `.lsc` files (e.g. UI Scroll View v4.49, Roulette UI v4.53) embed versioned references to helper modules — for example `./EventModule_101`, `./DestructionHelper_100`. In LS 5.21 these versioned references don't resolve even after installing the corresponding standalone module packages (`Event_Module.lspkg`, `Destruction_Helper_Module.lspkg`) — the standalone module's internal name does not match the version-suffixed reference embedded in the older `.lsc`. The Preview pauses with `InternalError: Cannot find module: ./EventModule_101` and the lens cannot run.
+
+**Mitigation**: Before committing to an Asset Library custom component as a project foundation, install it in isolation against a vanilla Screen Text in a side scene. If the Preview pauses with module-resolution errors, the asset is incompatible with the current LS version — fall back to building the equivalent feature from primitives or to a newer asset.
+
+**Source**: empirical (Lens Studio 5.21.0.26050122), reproduced with multiple Asset Library `.lsc` components.
+
+**Confidence**: empirical, definitively reproduced.
+
+**Why generalizable**: Asset Library is the obvious first stop for any "I want X custom UI behaviour" brief. When the asset's `.lsc` version is older than the current LS major/minor, this failure surfaces silently — designers and engineers waste time wiring inputs before discovering the asset doesn't run.
+
+---
+
 ## Adding new findings
 
 When a new API gotcha is discovered during a lens project, add an entry here with:

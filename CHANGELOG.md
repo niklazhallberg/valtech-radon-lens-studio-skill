@@ -19,6 +19,18 @@ but adapted for skill evolution rather than a software API.
 
 _New learnings registered from past or ongoing Valtech RADON projects._
 
+### 💡 2026-05-26 23:45 — [project: rfsu-bang-fortune-lens]
+- **The documented "clip text to a window" trick currently doesn't work in Lens Studio**: Snap's own guide describes how to put text inside a clipping shape so it appears only within the window — but in practice, on Lens Studio 5.21, the text either ignores the clip and renders everywhere or disappears entirely. Snap's docs page itself admits there is "a known bug with masking interactions" without specifying what's broken. Until Snap fixes it, the reliable fallback is a small per-frame script that toggles each text's visibility based on whether its full extent fits inside the intended window.
+- Value for user: next colleague who tries to build a slot-machine reel, a scrolling ticker, or any animated-text-inside-a-window stops here instead of spending most of a day rebuilding clipping from scratch — and gets the working script-based fallback pattern.
+- File: `references/lens-studio-api-gotchas.md` § "Masking Component does not visibly clip Text grandchildren in LS 5.21"
+- Type: [discovery]
+
+### 💡 2026-05-26 23:45 — [project: rfsu-bang-fortune-lens]
+- **Older custom components from the Asset Library can quietly fail with "module not found" errors**: many UI components in Snap's Asset Library were built for older Lens Studio versions (4.49, 4.53) and embed version-tagged references to helper modules. On Lens Studio 5.21 those tagged references don't resolve even after installing the matching standalone module packages — the names don't line up. The Preview pauses with a "Cannot find module" error and the lens won't run.
+- Value for user: next colleague who tries to base a project on an Asset Library component does a quick isolation test first — drop the component into a side scene with a plain text element and see if the Preview pauses. If it does, the asset is incompatible with the current Lens Studio version and time is saved before wiring up anything bigger.
+- File: `references/lens-studio-api-gotchas.md` § "Asset Library custom components built for older LS versions may fail with Cannot find module errors"
+- Type: [discovery]
+
 ### 💡 2026-05-26 15:50 — [project: rfsu-bang-fortune-lens]
 - **Built-in scroll-view component handles masked scrolling content**: when a brief asks for scrolling text, a slot-machine reel, a rolling counter, or any other content that needs to scroll inside a bounded window, Lens Studio's Asset Library has a ready-made `UI Scroll View` component that wraps masking, drag input, and optional scroll bars in one drop-in piece. Using it skips a multi-hour rebuild of the same machinery from primitive parts (Masking + Image + drag scripting + clip math).
 - Value for user: next colleague who needs a scrolling list, slot machine, ticker, or rolling counter saves a half-day of rebuilding masking + scroll plumbing from primitives — install one component instead.
