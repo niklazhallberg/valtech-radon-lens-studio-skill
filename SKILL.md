@@ -59,6 +59,44 @@ Before answering the first technical request in any session that activates this 
 
 If you finish a session without having either (a) confirmed no discoveries happened or (b) pushed at least one discovery, you have likely missed one. That is the failure mode that makes the skill stagnant rather than growing.
 
+### Mandatory checkpoints — re-anchor to the growth protocol at these moments
+
+Session-opening discipline is layer 1. It is insufficient on its own: attention drifts after ~30-45 min of focused build work, and by hour 3 the protocol is no longer in active context. To counter that, treat the moments below as **mandatory re-anchors** — at each one, pause your current train of thought and explicitly ask yourself "has anything surprised me, failed counter to docs, or required empirical iteration since the last checkpoint? if yes, run the skill-growth-protocol in-flow ask now."
+
+Natural anchors (no clock-watching required — they fire on actual events):
+
+- **Before every commit.** A commit closes a chapter — perfect last chance to surface a discovery from that chapter before it's archived.
+- **Before every ⌘S handshake.** Same logic: state about to be persisted is state worth scanning for discoveries.
+- **Before every phase transition** (Phase 0→1, 1→1.5, 2→2.5, etc.). Each phase ends with an implicit "what did we learn?" — make it explicit.
+- **After 3+ empirical probes on the same problem.** If you have run probe / re-test / probe again three or more times in a row, you have done research — the result (positive OR negative) is almost certainly a save-back candidate.
+- **After a user "magic moment" reaction.** When the user says "interesting", "didn't know that", "good catch", "save that", "we should remember this", "oj" / "intressant" — that's an explicit save-back trigger. Do not let the moment pass without surfacing the protocol.
+- **Before context compression** (when conversation length grows or a `[ctx-compress]` signal appears). Compression discards everything you don't actively pull forward — discoveries that aren't formalised before compress are likely lost.
+- **At session-close.** Before the user says "klart för idag" / "tack" / equivalent, do one final pass: "Has anything we learned today been captured? If not, propose it now."
+
+Treat these checkpoints with the same firmness as the ⌘S handshake or the two-step commit/push gate — they are not optional. The user's question that triggered this section was: "How do we make sure the agent doesn't forget after a few hours?" — these checkpoints ARE the answer.
+
+### Prior-knowledge consultation — before iterating, ALWAYS check what the skill already knows
+
+The skill has years of accumulated empirical knowledge across `references/lens-studio-api-gotchas.md` (~21+ documented gotchas), `references/lens-recipe-catalog.md` (~50 recipes), `references/body-anchored-calibration.md`, `references/face-effects-deep-dive.md`, and many more. Iterating from first principles when the answer is already documented is **the second worst failure mode** (after missed discoveries) — it wastes the user's time, fails to surface knowledge they could learn from, and treats the skill as a write-only log.
+
+**Before iterating empirically on any non-trivial problem, run this sequence:**
+
+1. **Grep `references/*.md`** with 3-5 keywords from the problem ("masking text", "stencil", "tween rotation", "anchor center", "@input"). Use `grep -i -l` to find files, then read the matched sections.
+2. **If there's an exact-match entry**: use it. Cite it to the user ("the skill has documented this — here's the pattern we should use") so they see the value flowing back.
+3. **If there's a related-but-not-exact entry**: read it anyway — it often contains adjacent gotchas, mitigations, or warnings that apply to your problem too.
+4. **If nothing matches**: only THEN iterate empirically from first principles. And when you reach a working answer, the "no prior match" outcome is itself a signal that you have likely found a new discovery — run the skill-growth-protocol's in-flow ask.
+
+This applies at every level of engagement — not just on Phase B / capability validation. It applies when the user asks "why is X happening", "how do I do Y", "should we add Z?". Each user question is an opportunity to consult the skill's memory before falling back on agent reasoning. The skill grows compound interest only if past learnings are actively recalled, not just passively stored.
+
+**Concrete trigger phrases** that should activate the grep-references sequence BEFORE you start exploring:
+
+- "Why is X not working?" → grep for the symptom
+- "How do I make Y do Z?" → grep for both the feature and the desired behaviour
+- "Is there a way to..." → grep for the goal
+- "This crashes when I..." → grep for the error symptom
+
+The cost of grepping references/ first is ~10 seconds. The cost of NOT grepping and iterating from scratch is potentially hours of redundant work. Always pay the 10 seconds.
+
 ## Role split
 
 You (Claude Code) are the **technical + graphical executor**. The user is the **creative director + approver**. You infer design decisions from inspiration, draft specs from the brief, make scene mutations, write scripts, and surface choices for user approval only when ambiguity is genuine. The user provides vision + judgment; you handle execution. Ask 2-4 targeted questions per phase, never 20.
