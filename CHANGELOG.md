@@ -19,6 +19,12 @@ but adapted for skill evolution rather than a software API.
 
 _New learnings registered from past or ongoing Valtech RADON projects._
 
+### 💡 2026-05-26 15:50 — [project: rfsu-bang-fortune-lens]
+- **Built-in scroll-view component handles masked scrolling content**: when a brief asks for scrolling text, a slot-machine reel, a rolling counter, or any other content that needs to scroll inside a bounded window, Lens Studio's Asset Library has a ready-made `UI Scroll View` component that wraps masking, drag input, and optional scroll bars in one drop-in piece. Using it skips a multi-hour rebuild of the same machinery from primitive parts (Masking + Image + drag scripting + clip math).
+- Value for user: next colleague who needs a scrolling list, slot machine, ticker, or rolling counter saves a half-day of rebuilding masking + scroll plumbing from primitives — install one component instead.
+- File: `references/lens-recipe-catalog.md` § D-13
+- Type: [discovery]
+
 ### 💡 2026-05-18 19:57 — [project: skill-meta]
 - **Manualerna funkar nu utan internet — Handjet är självhostad lokalt**:
   pixel-fonten Handjet låg tidigare bara på Google Fonts CDN. Om en kollega

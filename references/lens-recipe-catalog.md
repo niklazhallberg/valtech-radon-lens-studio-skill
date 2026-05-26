@@ -865,6 +865,28 @@ LS ships a cluster of physics-driven interactive templates. All use the same und
 
 ---
 
+### D-13 — "I want scrolling content inside a bounded window (slot machine, ticker, scroll list)"
+
+**Intent**: Designer wants content that scrolls vertically or horizontally inside a defined visible window — slot-machine reels, scrolling text tickers, long lists of items in a fixed-size container, animated counters where digits roll. Content outside the window should be cleanly clipped.
+
+**LS primitive(s)**: `UI Scroll View` custom component (Asset Library, LS 4.49+) — wraps `Masking Component` + drag input + optional scroll bars + script API. Built on the standard `ScreenTransform` + `Masking` stack but pre-assembled.
+
+**Build approach**: Asset Library → search `UI Scroll View` → Install. Add a `ScreenTransform` SceneObject to the scene, then add `Scroll View` component to it via Inspector → Add Component. Create a child SceneObject with `ScreenTransform` for the content (must be larger than the parent rectangle for scrolling to occur), wire it into the Scroll View's `Content` input. Parent all scrollable visuals under the Content node. Configure `Horizontal` / `Vertical` toggles, `Scroll Type` (Restricted / Elastic), and `Inertia` to taste. Script API exposed via `createComponent(script.ScrollView)` for runtime construction.
+
+**Common pitfalls**:
+- The Masking that powers the clipping depends on the **stencil buffer** — if other scene components use stencil (some face effects, custom shaders, certain ML segmentation paths), masking can fail silently with no visible clipping. Test masking with a plain Screen Text inside the viewport first, before adding complex scene elements.
+- Content's `ScreenTransform` rectangle MUST be larger than the Scroll View's rectangle, otherwise there is nothing to scroll.
+- For *animated* auto-scrolling content (slot-machine reel) rather than user-drag scrolling: disable the `Horizontal` / `Vertical` toggles to suppress drag input, and animate the Content's `anchor.center.y` via `TweenScreenTransform` directly. The Masking still clips.
+- For Text inside the Scroll View: Snap's documentation states Text rendering respects the Masking stencil — but verify empirically per project, because stencil-buffer conflicts elsewhere in the scene can silently break it.
+
+**Difference from rolling your own**: Without UI Scroll View, the same effect requires manually composing `Masking` + `Image` (stencil shape) + drag scripting + content clipping math + bounds derivation — and the per-component setup pitfalls (which Image material to use, render-order conflicts, depth test settings) can consume a full day of iteration before reaching what the Asset Library component delivers in 5 minutes.
+
+**Source**: https://developers.snap.com/lens-studio/lens-studio-workflow/scene-set-up/2d/masking-component.md (Masking foundation) + UI Scroll View page in LS 5.x official docs.
+
+**Confidence**: official-docs
+
+---
+
 ## E — Commerce / Try-On
 
 ### E-1 — "I want a sunglasses / eyewear try-on lens"
