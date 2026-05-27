@@ -19,6 +19,12 @@ but adapted for skill evolution rather than a software API.
 
 _New learnings registered from past or ongoing Valtech RADON projects._
 
+### 💡 2026-05-26 — [project: skill-meta]
+- **Lens Studio scenes have a small set of recurring architectural shapes — naming them lets the agent reason at the right level**: rather than re-inventing structure from primitives every time, eight composition patterns cover the vast majority of real lens builds (multi-pass render-target chain, full-frame post-processing effect, script-driven VFX, tracking-driven material, interactive paint, tween-driven animation orchestration, ML/SnapML pipeline, event-graph glue). Each pattern documents when to use it, its anatomy, which editors are involved (Material/VFX/Visual Scripting/etc.), and the common pitfalls. With this vocabulary the agent can map a user brief directly to a known shape ("this is a script-driven VFX with a tween-driven orchestration layer") instead of guessing or drifting.
+- Value for user: next colleague who asks "how should I architect a lens that does X" gets a concrete pattern recommendation grounded in real builds, not an ad-hoc invention — and avoids common pitfalls that come baked into each pattern's docs.
+- File: `references/composition-patterns.md`
+- Type: [discovery]
+
 ### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
 - **The documented "clip text to a window" trick currently doesn't work in Lens Studio**: Snap's own guide describes how to put text inside a clipping shape so it appears only within the window — but in practice, on Lens Studio 5.21, the text either ignores the clip and renders everywhere or disappears entirely. Snap's docs page itself admits there is "a known bug with masking interactions" without specifying what's broken. Until Snap fixes it, the reliable fallback is a small per-frame script that toggles each text's visibility based on whether its full extent fits inside the intended window.
 - Value for user: next colleague who tries to build a slot-machine reel, a scrolling ticker, or any animated-text-inside-a-window stops here instead of spending most of a day rebuilding clipping from scratch — and gets the working script-based fallback pattern.
