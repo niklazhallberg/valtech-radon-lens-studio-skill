@@ -263,6 +263,28 @@ etc.) often hide their internals — you can use them and tweak exposed
 parameters, but you can't refactor the graph. If you need a variant,
 duplicate the material asset and edit the copy.
 
+### P8 — CC / MCP cannot edit the Shader Graph node structure (empirically verified)
+
+The Material Editor's graph is authored exclusively in the LS Shader
+Graph panel. The Editor Scripting API exposes `ShaderGraphPass` as an
+opaque asset (no `nodes`, no `graph`, no `connections` enumerable);
+on-disk `.ss_graph` is binary; `Editor.Graph.convertGraphToYaml` /
+`convertYamlToGraph` exist at runtime but are not in the public types
+and their signature is undocumented. Detail: see
+`lens-studio-api-gotchas.md` § "Shader Graph / VFX Graph / Script Graph
+node structure is NOT editable via the public Editor API".
+
+**What CC CAN do for graphs**: read/write Material parameter values,
+add/remove material passes, render-state mutations (blendMode, twoSided,
+depthWrite, etc.), create/delete Material assets. **What CC CANNOT do**:
+add/remove/rename/reconnect graph nodes.
+
+**Mitigation**: For Phase 3 custom-shader work, lock the graph
+structure with the user once (they author in the UI; CC uses
+`SetLensStudioSelection` to direct them). After that, CC drives
+parameter values for iteration. Don't promise structural graph
+modifications from CC.
+
 ---
 
 ## Performance budget (per material)

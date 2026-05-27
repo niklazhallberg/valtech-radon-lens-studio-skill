@@ -1138,6 +1138,38 @@ public speed: number = 1.0;
 
 ---
 
+#### Shader Graph / VFX Graph / Script Graph node structure is NOT editable via the public Editor API (LS 5.21, empirically verified)
+
+**Pattern**: The three graph editors (Material/Shader Graph, VFX Graph, Visual Scripting / Script Graph) are authored exclusively in their own UI panels. The Editor Scripting API exposes:
+
+- `ShaderGraphPass` as an asset type with only `id`, `type`, `meta`, `getOwnedEntities`, `getDirectlyReferencedEntities`, `name`, `fileMeta`, `cacheFile` as enumerable properties. No `graph`, no `nodes`, no `connections`.
+- `Material` asset's `passInfos[i]` exposes render-state flags (`blendMode`, `twoSided`, `depthWrite`, `cullMode`, `defines`, etc.) — but no path into the underlying graph nodes.
+- `Editor.Graph.convertGraphToYaml` / `convertYamlToGraph` exist at runtime but are **NOT in the public TypeScript types** (`keyof typeof Editor.Graph` resolves to `string`, namespace declared empty). Their two-argument signature is undocumented; calling with various plausible inputs (asset, asset id, cacheFile, asset+null, asset+undefined, asset+self) all return "Object is null".
+- The on-disk format `.ss_graph` is **binary**, not text/YAML — direct file-write workarounds are impractical (magic bytes + tag-value blocks for MetaData/Nodes/ChildNodes).
+- `createAsset(type: "ShaderGraphPass", ...)` is not supported via `asset-graphql` — the type is not in the `assetTypes` list.
+
+**What CAN be done programmatically**:
+
+- Material **parameter values** (tint, threshold, texture bindings) — via runtime `material.mainPass.X = value` or via `scene-graphql` setProperty on the Visual component.
+- VFX **property values** — via runtime `script.vfx.asset.properties['name'] = value`.
+- Visual Script **asset binding** — assign which `.vs` asset a `VisualScriptComponent` references, enable/disable the component.
+- Material **add/remove passes** (`addPass`, `passInfos[i]` render-state mutations).
+- Material **creation/deletion** via `asset-graphql` `createAsset(type: "Material")` — but the new material has 0 passes by default; a shader preset has to be applied via the UI.
+
+**What CANNOT be done programmatically**:
+
+- Adding, deleting, renaming, or reconnecting nodes in any of the three graph editors.
+- Reading the graph's node/wire structure for analysis or diff.
+- Programmatically applying a different shader preset to an existing Material (must be drag/drop in UI).
+
+**Mitigation**: Treat graph authoring as a **user-only surface**. Use MCP `SetLensStudioSelection` to direct the user to the right asset, then verbally describe the node-level change you want — let them make it in the UI. For Phase 3 polish on a custom shader, lock the graph structure once and iterate only on parameter values (which CC can drive).
+
+**Confidence**: empirically verified — direct probe against LS 5.21 via `ExecuteEditorCode` and asset-graphql, May 2026. Recheck on future LS versions in case Snap adds a public graph-mutation API.
+
+**Why generalizable**: A common misconception is that since CC can mutate scene objects and component properties via MCP, it should also be able to author graphs. The line is precisely between "things that have public Editor API" (scene, components, asset metadata) and "things authored in dedicated graph panels" (Shader/VFX/Script Graph). CC cannot cross that line.
+
+---
+
 #### `@input` of type `Asset` resolves to a typed runtime reference — but only AFTER `onAwake`; `onStart` is safer
 
 **Pattern**: An `@input public tex: Texture` field is *not* fully populated when the `@component` constructor runs. Reading `this.tex` before `onStart` (i.e., inside the constructor, or in any code path called before LS's lifecycle dispatches `OnStartEvent`) may yield `null` even when the asset is wired in Inspector.

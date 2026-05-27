@@ -193,13 +193,20 @@ have been applied for the frame — use it for "follow the head's *final*
 position" style logic. Using `On Frame` for follow-the-head produces 1-frame
 lag.
 
-### P6 — Visual Script asset path matters for the MCP
+### P6 — Visual Script asset path matters for the MCP (empirically verified)
 
 When using `scene-graphql` mutations on a `VisualScriptComponent`, the
-`asset` reference must be the asset id of the `.vs` file. The MCP cannot
-edit the graph nodes themselves — use the LS UI for node-level changes,
-and use MCP only to bind the asset to a component or to enable/disable the
-component.
+`asset` reference must be the asset id of the `.vs` file. **The MCP
+cannot edit the graph nodes themselves** — confirmed empirically via
+probe against LS 5.21: the Editor Scripting API exposes Script Graph
+assets as opaque (no `nodes`, no `connections` enumerable properties);
+`Editor.Graph.convertGraphToYaml` / `convertYamlToGraph` exist at runtime
+but are not in the public TypeScript types and their signature is
+undocumented. Use the LS UI for node-level changes, and use MCP only to
+bind the asset to a component or to enable/disable the component.
+
+Detail: see `lens-studio-api-gotchas.md` § "Shader Graph / VFX Graph /
+Script Graph node structure is NOT editable via the public Editor API".
 
 ---
 
