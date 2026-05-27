@@ -20,6 +20,12 @@ but adapted for skill evolution rather than a software API.
 _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-26 — [project: skill-meta]
+- **Lens Studio's Editor Scripting API (5.17+) is a separate runtime that the agent should reach for at scale — not just `scene-graphql`**: the MCP `ExecuteEditorCode` tool runs code inside the LS editor itself, with full access to the project, scene graph, and asset registry. It's strictly more powerful than `scene-graphql` (one round trip vs N for bulk operations, conditional mutations, computed values) and is the right tool for any operation touching >3 objects, any scene-wide audit, any compute-from-scene mutation, and project-level automation. The guide documents capability comparison vs `scene-graphql`, four common recipes (bulk rename, missing-component audit, anchor snapshot for diff, material reference scan), and six gotchas (TS subset not full Node, ⌘S still required, errors in Logger not MCP response, compound-type silent drop applies, sync-only no setTimeout, findByName case-sensitive).
+- Value for user: next colleague needing to rename 12 slots, audit anchor values, or apply conditional mutations across the scene gets one MCP call instead of dragging the LS UI through 12 clicks. Lowers the cost of doing things properly at scale.
+- File: `references/editor-scripting-api.md`
+- Type: [discovery]
+
+### 💡 2026-05-26 — [project: skill-meta]
 - **Lens Studio has two coexisting authoring surfaces — Visual Scripting (node graphs) and TypeScript components — and the agent needs a clear policy for which to reach for**: real lenses mix both, but the agent had no guidance on how to choose, how the two sides hand off (`Call Script API` node, custom-event bus, shared component state), or what the silent-failure modes are (string-based function names and event names typo silently with no compile error). The guide documents four common patterns (tap→tween→audio, face-tracking trigger, timer loop, math-driven material param), six pitfalls (silent typo drops, per-frame profiling blindness, fire-order ambiguity, On Frame vs On Late Update, MCP cannot edit nodes), and a generalizable rule for when to extract a graph into a TypeScript controller.
 - Value for user: next colleague who needs to decide "should I script this or graph it?" gets a concrete decision rule and the handoff mechanics; avoids the trap of growing a Visual Script too big and then having to untangle it later.
 - File: `references/visual-scripting-guide.md`
