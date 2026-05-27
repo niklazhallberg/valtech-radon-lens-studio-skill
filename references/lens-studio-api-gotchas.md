@@ -1074,6 +1074,82 @@ const matches = sceneObject.getComponents("Component")
 
 ---
 
+#### `@input` decorator order matters — annotations must come AFTER `@input`, not before
+
+**Pattern**: Inspector-display decorators (`@hint("tooltip text")`, `@label("Custom Label")`, `@widget(...)`) modify the most-recently-declared `@input` field. Writing them in the wrong order — e.g., `@hint("...") @input myField` — silently does nothing; the field appears in Inspector with no hint, no warning.
+
+**Mitigation**: Always write `@input` FIRST, then any modifier decorators on the lines BELOW the field. Treat the order as a one-way pipeline: declare → annotate.
+
+```typescript
+// CORRECT
+@input
+@hint("Speed in units per second")
+@label("Move Speed")
+public speed: number = 1.0;
+
+// WRONG — annotations are dropped silently
+@hint("Speed in units per second")
+@label("Move Speed")
+@input
+public speed: number = 1.0;
+```
+
+**Confidence**: VERIFY-tag — pattern observed in LS 5.x community examples; exact ordering rule not in the official docs page. Validate empirically before relying on it in production.
+
+**Why generalizable**: TypeScript decorators in mainstream JS frameworks (Angular, NestJS) are commutative; LS-decorator ordering is positional. Easy trap on first use.
+
+---
+
+#### `@input` typed as a custom class requires `@component` AND the class file to be loaded before the prefab
+
+**Pattern**: A field like `@input public controller: MyController` where `MyController` is another `@component` class only resolves correctly if `MyController`'s script asset is referenced from the scene before the consuming script tries to read the input. If the consumer is the only thing referencing `MyController`'s asset, the Inspector dropdown for that input shows the class but assigning a SceneObject at runtime may yield `null` on read.
+
+**Mitigation**: Have at least one direct SceneObject reference to the `MyController` component (e.g., a placeholder Visual or empty SceneObject hosting it) so its module is loaded ahead of the consumer. Alternatively, pass the controller via a runtime `findByName` lookup instead of an `@input` field.
+
+**Confidence**: VERIFY-tag — load-order behaviour partially documented; empirical reports in community forums match this pattern but no Snap source confirms it explicitly. Probe before trusting.
+
+**Why generalizable**: Architectures with cross-referencing components and lazy-loaded modules silently produce nulls without this awareness.
+
+---
+
+#### `@input` boolean defaults work in Script Asset; numeric/string defaults set there are overridden by the Script Component Inspector
+
+**Pattern**: For an `@input` boolean with a `= true` initializer, the default propagates to new Script Component instances. For numeric and string `@input` with initializers, the **Script Component Inspector** shows an empty/zero field on first attach — the class-level default is *not* applied to the component instance unless the user opens the Inspector and explicitly sets a value (or unless the field is wired via `setProperty` at component-add time).
+
+**Mitigation**: Don't rely on class-level initializers as runtime defaults for numeric/string `@input` fields. Either initialize defensively in `onAwake` (`if (this.speed === 0) this.speed = 1.0`), or set the value programmatically when creating the component via `ExecuteEditorCode`.
+
+**Confidence**: VERIFY-tag — observed in LS 5.20+ for some types; precise rules differ by LS version. Worth a 1-minute probe at start of any project that depends on it.
+
+**Why generalizable**: TS class initializers are intuitive defaults; LS's two-Inspector model (Asset vs Component) makes them unreliable.
+
+---
+
+#### Underscore-prefixed `@input` fields ARE shown in Inspector — they're not "private"
+
+**Pattern**: Many JS/TS codebases use `_` prefix to mean "internal, don't touch from outside". For `@input` fields, this convention has no effect — `@input public _internalState: number` shows in the Script Component Inspector exactly the same as `state: number`. There is no hide-from-Inspector decorator for `@input`.
+
+**Mitigation**: If a value should be persisted but never exposed in Inspector, don't decorate it with `@input`. Use a plain `private` field initialized in `onAwake`. If a value needs both persistence and Inspector hiding, redesign — LS treats `@input` as the public-Inspector contract.
+
+**Source**: https://developers.snap.com/lens-studio/features/scripting/script-components — official.
+
+**Confidence**: official docs.
+
+**Why generalizable**: The "underscore means private" convention is widely held but doesn't apply at the Inspector boundary.
+
+---
+
+#### `@input` of type `Asset` resolves to a typed runtime reference — but only AFTER `onAwake`; `onStart` is safer
+
+**Pattern**: An `@input public tex: Texture` field is *not* fully populated when the `@component` constructor runs. Reading `this.tex` before `onStart` (i.e., inside the constructor, or in any code path called before LS's lifecycle dispatches `OnStartEvent`) may yield `null` even when the asset is wired in Inspector.
+
+**Mitigation**: Touch `@input` asset references in `onStart` or later, not in the constructor or top-level field initializers. For `onAwake`-time reads, immediately null-check and treat null as a transient state, not an error.
+
+**Confidence**: VERIFY-tag — applies broadly across LS 5.x but exact lifecycle ordering varies. Safe default: defer asset access to `onStart`.
+
+**Why generalizable**: Constructor-time logic ported from other TS/JS contexts breaks silently on LS asset inputs.
+
+---
+
 ### Tween + VFX
 
 #### Tween Manager MUST be the very first item in the Scene Hierarchy

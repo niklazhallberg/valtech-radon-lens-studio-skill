@@ -20,6 +20,12 @@ but adapted for skill evolution rather than a software API.
 _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-26 — [project: skill-meta]
+- **TypeScript decorator family in LS 5.x has more silent-failure modes than the existing 4 documented entries**: added 5 more decorator gotchas — `@input` decorator order matters (annotations after, not before, the input line — wrong order silently drops the annotation), `@input` typed as a custom class needs the class file to be loaded ahead of the consumer or runtime read yields null, `@input` boolean defaults work in Script Asset but numeric/string defaults are overridden by Script Component Inspector, underscore-prefixed `@input` is NOT private and still shows in Inspector, `@input` Asset references aren't reliably populated until `onStart` not `onAwake`. Some entries marked VERIFY-tag per the user's memory pattern — confidence varies, validate empirically before trusting.
+- Value for user: next colleague writing a TypeScript component for a feature gets the full set of decorator gotchas instead of finding them through hours of "why isn't this wired" debugging. Several of these are non-obvious enough that even experienced LS authors hit them.
+- File: `references/lens-studio-api-gotchas.md` § "TypeScript decorator behaviour" (5 new entries)
+- Type: [discovery]
+
+### 💡 2026-05-26 — [project: skill-meta]
 - **Custom material authoring (Material Editor node graphs) has its own decision rule, performance budget, and silent-failure modes the agent needs to know**: every stylized look that isn't covered by PBR/Unlit/Sprite goes through a Material Editor graph, and the graph has its own gotchas (parameter name typos drop silently from TS → shader, `Branch` nodes don't actually skip GPU work, materials are shared by default between visuals, params set in onAwake can be reset by the visual's enable, Asset Library preset materials are opaque). The guide includes six common recipes (LUT color grade, screen-space dissolve, UV scroll, face-data-driven distortion, stylized outline, camera-feed blur), seven pitfalls, and a per-material-type node-count budget (UI sprite <10, face overlay <15, full-screen <25, particle <12).
 - Value for user: next colleague who's asked to add a stylized look gets concrete recipes and a budget instead of trial-and-erroring against mid-range Android FPS; the parameter-naming and onAwake-timing gotchas alone save 1-2 hours of "why isn't this working" debugging.
 - File: `references/material-editor-guide.md`
