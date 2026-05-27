@@ -20,6 +20,12 @@ but adapted for skill evolution rather than a software API.
 _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-26 — [project: skill-meta]
+- **Lens Studio has two coexisting authoring surfaces — Visual Scripting (node graphs) and TypeScript components — and the agent needs a clear policy for which to reach for**: real lenses mix both, but the agent had no guidance on how to choose, how the two sides hand off (`Call Script API` node, custom-event bus, shared component state), or what the silent-failure modes are (string-based function names and event names typo silently with no compile error). The guide documents four common patterns (tap→tween→audio, face-tracking trigger, timer loop, math-driven material param), six pitfalls (silent typo drops, per-frame profiling blindness, fire-order ambiguity, On Frame vs On Late Update, MCP cannot edit nodes), and a generalizable rule for when to extract a graph into a TypeScript controller.
+- Value for user: next colleague who needs to decide "should I script this or graph it?" gets a concrete decision rule and the handoff mechanics; avoids the trap of growing a Visual Script too big and then having to untangle it later.
+- File: `references/visual-scripting-guide.md`
+- Type: [discovery]
+
+### 💡 2026-05-26 — [project: skill-meta]
 - **Lens Studio scenes have a small set of recurring architectural shapes — naming them lets the agent reason at the right level**: rather than re-inventing structure from primitives every time, eight composition patterns cover the vast majority of real lens builds (multi-pass render-target chain, full-frame post-processing effect, script-driven VFX, tracking-driven material, interactive paint, tween-driven animation orchestration, ML/SnapML pipeline, event-graph glue). Each pattern documents when to use it, its anatomy, which editors are involved (Material/VFX/Visual Scripting/etc.), and the common pitfalls. With this vocabulary the agent can map a user brief directly to a known shape ("this is a script-driven VFX with a tween-driven orchestration layer") instead of guessing or drifting.
 - Value for user: next colleague who asks "how should I architect a lens that does X" gets a concrete pattern recommendation grounded in real builds, not an ad-hoc invention — and avoids common pitfalls that come baked into each pattern's docs.
 - File: `references/composition-patterns.md`
