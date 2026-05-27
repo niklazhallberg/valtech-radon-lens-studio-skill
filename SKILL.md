@@ -77,7 +77,26 @@ Natural anchors (no clock-watching required — they fire on actual events):
 - **Before context compression** (when conversation length grows or a `[ctx-compress]` signal appears). Compression discards everything you don't actively pull forward — discoveries that aren't formalised before compress are likely lost.
 - **At session-close.** Before the user says "klart för idag" / "tack" / equivalent, do one final pass: "Has anything we learned today been captured? If not, propose it now."
 
-Treat these checkpoints with the same firmness as the ⌘S handshake or the two-step commit/push gate — they are not optional. The user's question that triggered this section was: "How do we make sure the agent doesn't forget after a few hours?" — these checkpoints ARE the answer.
+Hard-fallback time/count anchors (fire mechanically when natural anchors haven't been hit):
+
+- **30-minute iteration checkpoint.** If 30 minutes have passed since the last commit OR the last skill-growth-protocol invocation, AND non-trivial empirical work has happened in that window, STOP and run the protocol's in-flow ask before continuing. The user explicitly asked for this fallback after a session where natural anchors all failed to fire during a long debugging loop ("vi har gått djupt utan att stanna för protokollet"). Do not wait for the user to remind you.
+- **5-failed-attempts checkpoint.** If you have tried 5+ different scripted workarounds for the same problem and all have failed, STOP. The pattern "approach X, Y, Z all ignored / didn't work" IS the discovery — even if you don't end up with a working solution. The list of negative results saves the next colleague's time. Do not require a positive outcome to invoke the protocol.
+
+Agent-internal discovery triggers (you must self-detect these — don't wait for the user):
+
+When you find yourself thinking ANY of the following, that thought IS the skill-growth signal — run the in-flow ask immediately:
+
+- "Hmm, that's not what I expected"
+- "Interesting — the API surface doesn't match the docs"
+- "That doesn't compile — `X` isn't a property of `Y`"
+- "I've tried 3+ things, all ignored"
+- "Empirically verified that ..."
+- "Confirmed via probe that ..."
+- "Even though the docs say X, in practice Y"
+
+Tracking your own surprise is the most reliable signal — sooner than waiting for the user to flag it.
+
+Treat all these checkpoints with the same firmness as the ⌘S handshake or the two-step commit/push gate — they are not optional. The user's question that triggered this section was: "How do we make sure the agent doesn't forget after a few hours?" — these checkpoints ARE the answer. If a session passes the 30-minute mark with non-trivial empirical work and you have NOT surfaced any discovery proposal, you have almost certainly missed one — back up and review the last 30 minutes explicitly.
 
 ### Prior-knowledge consultation — before iterating, ALWAYS check what the skill already knows
 

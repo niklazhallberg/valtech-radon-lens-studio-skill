@@ -70,6 +70,17 @@ Some Asset Library items arrive as **packed** Asset Packages — a single bundle
 ### To unpack
 - Right-click the asset in Asset Browser → **Unpack for Editing**
 
+### Gotcha: "Duplicate" is NOT available on packed assets (LS 5.21, empirically verified)
+
+If a colleague tries to right-click on an asset *inside* a `.lspkg` package (e.g., `sparkles_vfx` inside `Sparkles VFX.lspkg/VFX/`) and looks for a "Duplicate" option to fork it into project assets, **the menu won't contain Duplicate**. The available items are only `Re-import`, `Relink to new Source`, `Expand/Collapse All`, `Group`, `Organize Folder Structure`, `Find Usage`.
+
+**To duplicate a packed asset for editing**:
+1. Right-click on the **package root** (the row with the package icon, NOT the asset inside) → `Unpack` / `Unpack for Editing`
+2. The entire package contents move out of `Packages/...lspkg/` and into your project's main `Assets/` folder
+3. Now the previously-packed assets are normal editable assets — open them in their respective editors (VFX Editor, Material Editor, etc.)
+
+**Why this confuses people**: web-developer mental model expects "Duplicate" everywhere. LS treats packed content as immutable until the whole package is unpacked. The agent should select the package root for the right-click context menu, not the inner asset.
+
 ### Symptoms of "I edited but it didn't save"
 - Inside-prefab edits to a packed asset are silently lost on save until you unpack
 - The Apply button may not activate for changes inside a packed asset

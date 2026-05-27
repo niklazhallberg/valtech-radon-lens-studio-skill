@@ -378,6 +378,18 @@ setProperty(... valueType: RECT value: "{left:-1,right:1,top:1,bottom:-1}")
 
 Returns `success: true` but only first 2 fields persist. Fix: replace with 4 scalar NUMBER writes.
 
+**Empirically verified May 2026: dotted-path scalar writes work on vec4 fields too** — even for fields BURIED inside ScriptComponent inputs like TweenScreenTransform's `endAnchorsBounds`. Pattern:
+
+```graphql
+# Correct — write each scalar component individually via dotted path
+mutation {
+  z: setProperty(id: "<tween-id>" propertyPath: "endAnchorsBounds.z" valueType: NUMBER value: -0.18) { success }
+  w: setProperty(id: "<tween-id>" propertyPath: "endAnchorsBounds.w" valueType: NUMBER value: -0.58) { success }
+}
+```
+
+This means you can mutate any vec4/vec3/vec2 field — `anchor.top`, `endAnchorsBounds.z`, `localPosition.y`, etc. — without falling into the compound-type silent-drop. Use this routinely instead of trying to write the full vec4 object.
+
 ### Category 3: Enums — NUMBER + integer index only
 
 ```graphql
@@ -1168,6 +1180,90 @@ public speed: number = 1.0;
 **Confidence**: empirically verified — direct probe against LS 5.21 via `ExecuteEditorCode` and asset-graphql, May 2026. Recheck on future LS versions in case Snap adds a public graph-mutation API.
 
 **Why generalizable**: A common misconception is that since CC can mutate scene objects and component properties via MCP, it should also be able to author graphs. The line is precisely between "things that have public Editor API" (scene, components, asset metadata) and "things authored in dedicated graph panels" (Shader/VFX/Script Graph). CC cannot cross that line.
+
+---
+
+#### Anchor-grow tweens drift the visual CENTER when start/end anchor centers don't match (LS 5.21, empirically verified)
+
+**Pattern**: A `TweenScreenTransform` of type `Anchors` (movementType=`From/To`) animates a SceneObject's screen anchors from a small/narrow start state to a large/wide end state — the canonical "reveal" effect. If `start.center != end.center` (where center = (top+bottom)/2 or (left+right)/2), the visual middle DRIFTS during the animation.
+
+Example bug: `startAnchorsBounds.z=-0.35, .w=-0.45` → center y = -0.40. `endAnchorsBounds.z=-0.18, .w=-0.58` → center y = -0.38. During the tween, the visual rectangle's vertical center moves from y=-0.40 to y=-0.38 — visible as the object "growing upward" rather than "growing from middle outward".
+
+**Mitigation**: When authoring grow/shrink anchor tweens, ALWAYS verify:
+
+```
+start.x + start.y == end.x + end.y   // horizontal center
+start.z + start.w == end.z + end.w   // vertical center
+```
+
+If you want a 2D grow-from-center, set start to a small square centered at the end's center. If you want horizontal-only grow (keep vertical static), set `start.z = end.z` and `start.w = end.w` and only narrow `start.x/y` relative to `end.x/y`.
+
+**Why generalizable**: Every reveal/dismiss animation that uses anchor-grow has this pitfall. The note_grow / note_shrink tweens shipped with several Asset Library prefabs (e.g., the Note Group preset in some recipe samples) have this bug latent — the agent must check and re-author before relying on them.
+
+---
+
+#### `LayerSet` runtime API: `empty()`, `makeNone()`, `makeAll()` do NOT exist in LS 5.21 (empirically verified)
+
+**Pattern**: A common pattern for hiding/showing a SceneObject without disabling its update tick is layer manipulation: `sceneObject.layer = LayerSet.empty()` (no camera renders it) → tick continues, but rendering is off. In LS 5.21 the static helper methods `LayerSet.empty()`, `LayerSet.makeNone()`, and `LayerSet.makeAll()` are NOT in the runtime type definition — using them yields TS compile errors:
+
+```
+error TS2339: Property 'empty' does not exist on type 'typeof LayerSet'.
+error TS2339: Property 'makeAll' does not exist on type 'typeof LayerSet'.
+```
+
+**Mitigation**: For hiding without disable, you cannot rely on a clean LayerSet API in 5.21. Either:
+- Use `SceneObject.enabled = false` (also pauses tick — accept the trade-off)
+- Manipulate the underlying bitmask directly via Editor API in editor scripts (NOT lens runtime)
+- Use Visual component's mainPass color alpha as a fade-to-invisible (different control surface)
+- Layer manipulation may be exposed in a future LS version — recheck `typeof LayerSet`'s static methods if the use case is critical
+
+**Why generalizable**: When the goal is "hide but keep ticking" — typical for pre-warming VFX or queuing animations off-screen — this API surface dead-end will burn anyone who tries the documented-elsewhere pattern. Save the 10 min of compile failures by knowing it up front.
+
+---
+
+#### VFX preset render-properties (`Material_Render`, `Render_Layers`, `Render_Mesh`, `Material_Render_IDs`) do NOT gate rendering (Sparkles VFX 5.15.0, empirically verified)
+
+**Pattern**: When trying to hide a VFX (e.g., during a pre-warm to "burn off" its initial burst), you reach for the Manager_Script's exposed inputs:
+
+```typescript
+const vfx: any = sparklesVFX.getComponent("Component.VFXComponent");
+vfx.asset.properties["Material_Render"] = null;
+vfx.asset.properties["Render_Layers"] = 0;
+vfx.asset.properties["Render_Mesh"] = null;
+vfx.asset.properties["Material_Render_IDs"] = null;
+```
+
+The property writes succeed (no exception, `properties[key]` accepts the assignment). **BUT the VFX continues rendering** — particles still spawn visibly. Tested empirically on Sparkles VFX preset from Asset Library; the render path doesn't re-read these properties at render-time, OR the VFX system has cached the original asset references.
+
+**Empirically verified ineffective**: Material_Render = null, Render_Layers = 0, Render_Mesh = null, Material_Render_IDs = null, position offset (10000,-10000,10000), scale = 0.001, emitParticle = false (gates steady-state but NOT burst). Only `SceneObject.enabled = false` reliably hides — and that also pauses the VFX tick (so the burst stays armed for the next enable).
+
+**Mitigation**: For "hide while ticking" with VFX presets, treat it as **not script-accessible** for that VFX. Either:
+1. Live with the visible initial burst (accept asymmetric first-pop behavior)
+2. Swap to a preset without a burst block (Snowflakes VFX, Blinking Stars Particles, Confetti Particles — gentler emission curves)
+3. Edit the `.vfxgraph` directly: Unpack the `.lspkg` (right-click on the package root in Asset Browser → Unpack), open the duplicated asset in VFX Editor, find the Initialize-context burst-spawn node, set Count = 0
+4. Or use the Variant A pattern: `destroyComponent + createComponent` to force a fresh VFX instance — but this re-fires the burst every time the component is recreated
+
+**Why generalizable**: Any time someone needs to mitigate a VFX preset's initial behavior from script, this list saves ~30 min of trial-and-error.
+
+---
+
+#### VFX burst-particles persist across `enabled` toggle cycles — `enabled` is a tick-gate, not a lifecycle-reset (LS 5.21, empirically verified)
+
+**Pattern**: A `VFXComponent` with a t=0 Burst Spawn block fires its burst on the FIRST time the simulation ticks (typically the first `SceneObject.enabled = true` after lens load). Subsequent `enabled = false` / `enabled = true` cycles do NOT reset the simulation timeline — they pause and resume tick at the current time. So:
+
+1. Lens load + SceneObject disabled → simulation never starts → burst not yet fired
+2. First `enabled = true` (e.g., at a tap event) → simulation starts at t=0 → **burst fires visibly**
+3. `enabled = false` (e.g., on reroll) → tick pauses, burst particles still alive but rendering off
+4. Second `enabled = true` → tick resumes from paused state (which is post-burst) → **only steady-state visible**
+
+Result: first pop after lens load shows a large burst, subsequent pops show only the steady-state emission. This asymmetric "first time is bigger" behavior is by design but counter-intuitive.
+
+**Mitigation**: There is no public API to seek the timeline past t=0 or to force-reset the simulation. To get consistent behavior across all pops, the only options are:
+- Edit the .vfxgraph and set Burst Count = 0 (so all pops show only steady-state)
+- Accept the asymmetry as a "first-time celebration" feature
+- Use the destroyComponent + createComponent pattern (Variant A) on every pop to force fresh state (consistent burst-every-time — opposite asymmetry)
+
+**Why generalizable**: This explains why hide-tricks like `SceneObject.enabled = false` followed by re-enable doesn't "consume" the burst — the agent needs to know `enabled` is purely a tick-gate, not a state-reset, before designing any VFX-driven reveal.
 
 ---
 

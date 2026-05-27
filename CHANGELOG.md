@@ -20,6 +20,48 @@ but adapted for skill evolution rather than a software API.
 _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-27 — [project: skill-meta]
+- **Hard-fallback mid-session checkpoint + agent-internal discovery triggers** added to SKILL.md after a 2h session where natural-anchor checkpoints (commit, ⌘S, phase transition, magic moment) all failed to fire during a long debugging loop. Adds: (1) 30-minute iteration checkpoint — STOP and run skill-growth-protocol if 30 min passed since last commit/protocol-fire AND empirical work happened, (2) 5-failed-attempts checkpoint — the list of negative results IS the discovery, (3) agent-internal trigger phrases (when YOU think "hmm that's not what I expected", "API doesn't match docs", "tried 3+ things all ignored", "empirically verified that X" — those thoughts ARE the protocol signal, don't wait for the user).
+- Value for user: closes the failure mode "agent goes deep for hours without surfacing discoveries". Mechanical fallbacks fire when natural anchors don't.
+- File: `SKILL.md` § "Mandatory checkpoints — re-anchor to the growth protocol at these moments"
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+- **vec4 setProperty via dotted-path scalars works empirically** (workaround to the documented compound-type silent-drop): writing `setProperty(propertyPath: "endAnchorsBounds.z", valueType: NUMBER, value: -0.18)` persists correctly even though writing the full vec4 object via `valueType: VEC4` would silent-drop fields 3+. Applies to ANY vec4/vec3/vec2 field — `anchor.top`, `localPosition.y`, TweenScreenTransform's `endAnchorsBounds`, etc. Use routinely; faster + more reliable than batched VEC4 writes.
+- Value for user: every MCP user fighting the compound-type silent-drop now has a clean workaround. Saves trial-and-error on the documented gotcha.
+- File: `references/lens-studio-api-gotchas.md` § "Category 2: Compound types (RECT/VEC4/VEC2)"
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+- **Anchor-grow tweens drift the visual center when `start.center != end.center`**: a `TweenScreenTransform` of type Anchors that animates from a small/narrow rectangle to a large/wide one will VISIBLY DRIFT during the animation if the start and end anchor rectangles don't share the same midpoint. Manifests as the object "growing upward" rather than "growing from middle outward". Mitigation: verify `start.x + start.y == end.x + end.y` AND `start.z + start.w == end.z + end.w` before authoring the tween. For horizontal-only grow, keep start.z = end.z and start.w = end.w.
+- Value for user: any reveal/dismiss animation using anchor-grow has this latent pitfall; saves the 20-30 min of "why does it drift up" debugging the next time.
+- File: `references/lens-studio-api-gotchas.md` § "Anchor-grow tweens drift the visual CENTER..."
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+- **`LayerSet.empty()` / `makeNone()` / `makeAll()` static helpers do NOT exist in LS 5.21 runtime types**: the common pattern "hide without disable via empty LayerSet" requires constructor methods that aren't in the public TS types. All three plausible names fail with `TS2339: Property 'X' does not exist on type 'typeof LayerSet'`. No clean public API for "hide-but-tick" exists in 5.21.
+- Value for user: every developer reaching for layer manipulation as a hide-but-keep-running mechanism hits this dead end. Knowing up front saves the failed-compile loop.
+- File: `references/lens-studio-api-gotchas.md` § "`LayerSet` runtime API..."
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+- **VFX preset render-properties ignored for some Asset Library presets** (Sparkles VFX 5.15.0 empirically tested — likely applies to others): writing `vfx.asset.properties["Material_Render"] = null`, `Render_Layers = 0`, `Render_Mesh = null`, `Material_Render_IDs = null` all SUCCEED at the property assignment level (no exceptions), but DO NOT actually gate rendering — the VFX continues to render visibly. The render path doesn't re-read these properties at draw-time, or the VFX system caches the original asset references internally. List of empirically-ineffective approaches: Material_Render = null, Render_Layers = 0, Render_Mesh = null, Material_Render_IDs = null, position offset to (10000, -10000, 10000), scale to 0.001, emitParticle = false (gates steady-state only, not t=0 burst).
+- Value for user: ~30 min saved on the next colleague's "let me try to hide this VFX from script" iteration. The exhaustive negative-result list is the discovery.
+- File: `references/lens-studio-api-gotchas.md` § "VFX preset render-properties..."
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+- **VFX burst-particles persist across `enabled` toggle cycles — `enabled` is a tick-gate, not a lifecycle-reset**: a VFXComponent's t=0 Burst Spawn block fires ONLY on the first time the simulation ticks. `SceneObject.enabled = false` pauses tick but doesn't reset timeline; subsequent `enabled = true` resumes from where it paused (already past t=0 → no burst). Result: first pop after lens load shows a large burst, subsequent pops only show steady-state emission. Asymmetric "first time is bigger" behavior is by design, surprising, and not script-fixable without preset graph edit (set Burst Count = 0 in VFX Editor) or component-recreate pattern (destroyComponent + createComponent for fresh state every time).
+- Value for user: explains the entire asymmetric-burst phenomenon; saves the multi-hour "why is first time different" debugging loop. The fix paths are clearly laid out (edit graph, accept asymmetry, or destroyComponent pattern).
+- File: `references/lens-studio-api-gotchas.md` § "VFX burst-particles persist across `enabled` toggle cycles..."
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: skill-meta]
+- **Asset Library `.lspkg` packed assets: "Duplicate" not in context menu — must Unpack on package root**: trying to right-click on an asset INSIDE a `.lspkg` (e.g., `sparkles_vfx` inside `Sparkles VFX.lspkg/VFX/`) shows only Re-import / Relink / Expand / Group / Find Usage. No Duplicate. To duplicate a packed asset for editing, right-click on the **package root** (the row with the package icon) → `Unpack`. The entire package then moves out of `Packages/...lspkg/` into `Assets/`, making contents editable.
+- Value for user: every Anna-level user trying to fork a packaged asset hits this confusing UX. Knowing where to right-click saves ~5 min of menu-hunting per attempt.
+- File: `references/asset-library-guide.md` § "Gotcha: 'Duplicate' is NOT available on packed assets"
+- Type: [discovery]
+
+### 💡 2026-05-27 — [project: skill-meta]
 - **Graph authoring needs a formal four-mode protocol (Discover → Probe → Mutate → Explain), a per-project capability ledger, and a priority order — not ad-hoc API guessing**: builds on the empirical "no graph mutation API" finding to give the agent a *work model* for graph-touching tasks. Discover = enumerate Editor namespaces and graph entrypoints (read-only). Probe = test smallest possible operation on a `__PROBE_` prefixed throwaway asset, always clean up. Mutate = only after probe round-trip + user approval + verification step queued. Explain = separate Verified-working / Working-but-undocumented / Read-only-only / Unsafe in a capability ledger. Priority order: Script Graph first (best-documented, Custom Node bridge pattern lets agent own logic in TS), Shader Graph second (round-trip via the undocumented `convertGraphToYaml` if a project genuinely needs it), VFX Graph last (most fragile due to spawn/update phase structure). Framing: agent's role is "plugin author + probe runner", not "file editor". The position to communicate to the user is "I drive values + wiring; you author graph shape."
 - Value for user: next colleague who's tempted to "just try" graph editing in production assets gets a formal discipline that prevents project corruption, an explicit priority order so the most-productive direction is tried first, and the Custom Node bridge pattern that pushes complex logic out of graphs into TypeScript where CC can iterate fast.
 - File: `references/graph-authoring-protocol.md`
