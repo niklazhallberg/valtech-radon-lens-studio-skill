@@ -1145,14 +1145,15 @@ public speed: number = 1.0;
 - `ShaderGraphPass` as an asset type with only `id`, `type`, `meta`, `getOwnedEntities`, `getDirectlyReferencedEntities`, `name`, `fileMeta`, `cacheFile` as enumerable properties. No `graph`, no `nodes`, no `connections`.
 - `Material` asset's `passInfos[i]` exposes render-state flags (`blendMode`, `twoSided`, `depthWrite`, `cullMode`, `defines`, etc.) — but no path into the underlying graph nodes.
 - `Editor.Graph.convertGraphToYaml` / `convertYamlToGraph` exist at runtime but are **NOT in the public TypeScript types** (`keyof typeof Editor.Graph` resolves to `string`, namespace declared empty). Their two-argument signature is undocumented; calling with various plausible inputs (asset, asset id, cacheFile, asset+null, asset+undefined, asset+self) all return "Object is null".
-- The on-disk format `.ss_graph` is **binary**, not text/YAML — direct file-write workarounds are impractical (magic bytes + tag-value blocks for MetaData/Nodes/ChildNodes).
-- `createAsset(type: "ShaderGraphPass", ...)` is not supported via `asset-graphql` — the type is not in the `assetTypes` list.
+- The on-disk format `.ss_graph` (Shader Graph) and `.vfxgraph` (VFX Graph) are both **binary**, not text/YAML — direct file-write workarounds are impractical (magic bytes + tag-value blocks for MetaData/Nodes/ChildNodes).
+- `createAsset(type: "ShaderGraphPass", ...)` is not supported via `asset-graphql` — the type is not in the `assetTypes` list. Same for VFX/Script Graph asset types.
+- **`VFXComponent` is not a public type** in `Editor.Components` — VFX is delivered via Asset Library `.lspkg` installs only. The component appears at runtime when a VFX package is installed, but the Editor API surface for it is minimal (no parameter enumeration).
 
 **What CAN be done programmatically**:
 
 - Material **parameter values** (tint, threshold, texture bindings) — via runtime `material.mainPass.X = value` or via `scene-graphql` setProperty on the Visual component.
-- VFX **property values** — via runtime `script.vfx.asset.properties['name'] = value`.
-- Visual Script **asset binding** — assign which `.vs` asset a `VisualScriptComponent` references, enable/disable the component.
+- VFX **property values** — only via lens-runtime TypeScript (`script.vfx.asset.properties['name'] = value`). **NOT accessible via Editor API or `scene-graphql`** — empirically verified: `VFXComponent` in the Editor API exposes ONLY `enabled`, `name`, `sceneObject`, `id` (no `.asset`, no `.properties`). To drive a VFX from CC, write a lens-runtime `.ts` controller that holds the VFXComponent reference and mutates parameters per-frame or on-event.
+- Visual Script **asset binding** — assign which `.vs` asset a `VisualScriptComponent` references, enable/disable the component. (Note: Snap's "Behavior" custom component, the practical scripting-without-code path, is NOT a node graph — it's a flat parameter dictionary configured via `scriptInputInfo` keys like `triggeringEventType`, `setMaterialParameterVec4Value`, `setPosition`, etc.)
 - Material **add/remove passes** (`addPass`, `passInfos[i]` render-state mutations).
 - Material **creation/deletion** via `asset-graphql` `createAsset(type: "Material")` — but the new material has 0 passes by default; a shader preset has to be applied via the UI.
 
