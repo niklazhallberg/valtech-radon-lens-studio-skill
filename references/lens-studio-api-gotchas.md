@@ -1183,6 +1183,62 @@ public speed: number = 1.0;
 
 ---
 
+#### Lens Studio file-format reality check (LS 5.x project artifacts)
+
+The agent should NOT try to generate these formats from scratch — they're proprietary, some binary, none have publicly published schemas. The current state per Snap's official 5.x docs:
+
+| Extension | Purpose | Format / editability |
+|---|---|---|
+| `.esproj` | Project file (LS 5.x current) | Editable in Lens Studio; the project root |
+| `.lsproj` | Project file (LS 4.x and earlier) | **Cannot be opened directly in LS 5** — must be migrated |
+| `Scene.scene` | Scene description | Text-based, human-readable, Git-mergeable per Snap's own conflict examples — but exact JSON/YAML schema not publicly documented |
+| `.lsmat` | Material asset | Proprietary, schema not published — don't hand-author |
+| `.lsvfx` | VFX asset | Proprietary, schema not published — don't hand-author |
+| `.lsscript` | Visual Scripting graph asset | Proprietary, schema not published — don't hand-author |
+| `.ss_graph` | Shader graph file (importable via plugin) | Binary; editor plugin can `createMaterialFromGraph()` but no public schema |
+| `.mesh` | Imported 3D geometry | Proprietary binary, schema not published |
+| `.t3d` | 2D animation metadata | Proprietary, schema not published |
+| `.oprfb` | Prefab | Explicitly **binary** per Snap docs |
+| `.lso` | Exported object tree | Explicitly **binary** per Snap docs |
+
+**Implication for the agent**: TypeScript `.ts` source files are the safest output to generate — text, Git-friendly, well-documented contract. Material/VFX/Script Graph assets should be **scaffolded via instructions to the user**, not generated programmatically. (See `graph-authoring-protocol.md`.)
+
+Source: Snap 5.x project structure + migration docs.
+
+---
+
+#### 5.17+ Camera scripting API surface
+
+LS 5.17 added scripting-accessible matrices and render-target slot controls on Camera components:
+
+- `getProjectionMatrix()` — current projection matrix
+- `getViewMatrix()` — current view matrix
+- `getViewProjectionMatrix()` — convenience combined
+- `renderTargetMipmapLevel` — which mip level to render to (useful for multi-pass blur kernels)
+- `renderTargetSlice` — which array slice to render to (for cubemap / texture-array RTs)
+
+These make the **Multi-pass render target chain** composition pattern (`composition-patterns.md` § Pattern 1) significantly more powerful — you can now drive multi-pass kernels with explicit mip level selection without manual workarounds.
+
+Source: Snap 5.17 release notes.
+
+---
+
+#### 5.18+ SceneObject ancestor/descendant lookup methods
+
+LS 5.18 added hierarchy-traversal helpers that significantly simplify component lookup patterns:
+
+- `sceneObject.getComponentInAncestors(type)` — walk up the parent chain
+- `sceneObject.getComponentsInAncestors(type)` — all matching ancestors
+- `sceneObject.getComponentInDescendants(type)` — walk down all children
+- `sceneObject.getComponentsInDescendants(type)` — all matching descendants
+- `sceneObject.isDescendantOf(other)` — boolean check
+
+Use these instead of manually iterating `children[i].children[j]...`. Especially useful when wiring polymorphic interactions ("find the nearest controller above me", "disable all visuals below this node").
+
+Source: Snap 5.18 release notes.
+
+---
+
 #### Anchor-grow tweens drift the visual CENTER when start/end anchor centers don't match (LS 5.21, empirically verified)
 
 **Pattern**: A `TweenScreenTransform` of type `Anchors` (movementType=`From/To`) animates a SceneObject's screen anchors from a small/narrow start state to a large/wide end state — the canonical "reveal" effect. If `start.center != end.center` (where center = (top+bottom)/2 or (left+right)/2), the visual middle DRIFTS during the animation.

@@ -242,6 +242,16 @@ Useful before deleting a material — confirm nothing depends on it.
 
 ---
 
+## Packaging / distribution via `LensStudio:Spk`
+
+The editor scripting module `LensStudio:Spk` is described in Snap's plugin docs as "Toolkit for packaging and distributing Lens Studio projects." It lives in the editor-scripting world, not as a standalone CLI — invoke it from a plugin or `ExecuteEditorCode`. Specific public API surface isn't deeply documented, but the module name confirms that **packaging automation is intentionally inside Lens Studio's process, not headless**.
+
+For an agent: if a user asks "can we automate `.lens` exports via CI?", the honest answer is "not via a public CLI — automation must run inside LS via plugins or MCP". `LensStudio:Spk` is the entry point to investigate when this comes up.
+
+Source: Snap 5.x plugin / editor scripting docs.
+
+---
+
 ## Plugin authoring (sketch)
 
 Lens Studio plugins are editor-side scripts that register UI extensions.

@@ -238,6 +238,30 @@ Patterns compose freely. A scrolling slot-machine reel (RFSU Fortune Lens refere
 
 ---
 
+## Pattern 9 — Trigger-bus with Behavior + Script Graph custom triggers
+
+**Use when**: UI buttons, score systems, simple game rules, prototyping, workshop-style "wire things up live" interactions. The user wants no-code-feeling orchestration where buttons and scene events fire **named project-wide triggers** that any listener can react to.
+
+**Anatomy**:
+
+- Multiple `Behavior` components (Snap's official Behavior helper, installed from Asset Library) configured to **Send Custom Trigger** with a project-wide trigger name (e.g., `"button_pressed"`, `"score_changed"`).
+- A `Script Graph` (Visual Scripting) with **Trigger Response** nodes that listen on those names and route to action nodes.
+- Optional: small TypeScript controllers as Custom Nodes for state that grows beyond what's elegant in the graph.
+
+**Editors involved**: Visual Scripting (the listener graph), Behavior components (the senders), occasional small TS for state.
+
+**Why this is its own pattern (vs Pattern 8)**:
+Pattern 8 is event → action wired DIRECTLY within one graph. Pattern 9 is a publish-subscribe bus where senders and receivers don't know each other — they only share the trigger name. This makes it easier to refactor (add a new listener without touching the sender) and easier for designers to extend (drop another Behavior with the same trigger name).
+
+**Common pitfalls**:
+
+- **Typo'd trigger names fail silently** — there's no compile-time check that a sender's trigger name matches a listener's. Recommendation: centralize trigger names in a single Markdown / constants doc the team can grep.
+- **Out-of-order receiver execution** — multiple listeners on the same trigger fire in registration order. For ordering-dependent logic, chain triggers (`A` → fires `B` → fires `C`) instead of relying on registration order.
+
+Source: Snap 5.x Visual Scripting + Behavior sample projects.
+
+---
+
 ## Cross-references
 
 - Named single-feature recipes: `lens-recipe-catalog.md`

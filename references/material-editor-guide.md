@@ -13,6 +13,17 @@ and the pitfalls that bite mid-build.
 
 ---
 
+## PBR vs Graph Unlit — the lighting heuristic
+
+Snap's official 5.x docs say it explicitly: if the visual content **does not need lighting**, use `Graph Unlit` rather than routing through `PBR (Lighting)`. The mental model:
+
+- **PBR** → the object exists in a lit 3D world, has surface properties (metallic, roughness, normals), receives shadows. Use for: 3D characters, props, geometry that should "feel real" alongside the camera feed.
+- **Graph Unlit** → the effect is screen-space, UI-anchored, mask-oriented, compositing-style, or full-frame post-processing. Use for: color grades, overlays, sprites, screen UI, LUT applications, glitch / vignette / chromatic aberration, dissolve transitions.
+
+Cost difference is real: PBR includes light loops, normal calculations, environment sampling. Unlit skips all of that — faster on mid-range Android and simpler graphs.
+
+Rule of thumb when reading a brief: if the visual would look the same with or without the lens's lights, you want Unlit. Source: Snap 5.x Material Editor docs.
+
 ## When to reach for the Material Editor
 
 **Reach for it when:**
@@ -71,6 +82,52 @@ from previous frame (use a render target chain — see
 inter-frame state).
 
 ---
+
+## Custom Code Node — drop into GLSL when graph nodes aren't enough
+
+The `Custom Code` node (also called Code Node) lets you write **almost-pure GLSL** directly inside a Material Graph. Snap's docs describe it as native GLSL that Lens Studio analyzes and runs through a cross-compiler to device-safe shader code (so it'll work across iOS/Android).
+
+Shape of the node body:
+
+```glsl
+input float intensity;
+input vec3 baseColor;
+output vec4 result;
+
+void main() {
+  result = vec4(baseColor * intensity, 1.0);
+}
+```
+
+- `input X` / `output X` declarations at the top create the node's input and output ports
+- A `main()` function is required — it's the entry point
+- Standard GLSL math, swizzles, conditionals, loops work
+- `Custom Code Global` (separate node) lets you declare functions/globals that other Custom Code nodes can call
+
+**When to reach for it**: when you've hit the limits of graph-node composition — typically iterative algorithms (raymarching, custom blur kernels, signed-distance fields), or when you want to encapsulate a math chain that's already cleaner in GLSL than as 8 chained nodes. Same mechanic exists in **VFX Editor** Custom Code nodes (Spawn / Update / Output context variants).
+
+Source: Snap 5.x Material Editor + VFX Editor docs.
+
+## Functional node taxonomy
+
+Snap's docs organize Material Editor nodes under technical menu categories (Functions / Inputs / Main / Math). The functional grouping below is more useful when picking nodes for a brief:
+
+| Group | Purpose | Representative nodes |
+|---|---|---|
+| **Shading / PBR** | Lit 3D surface rendering with basecolor, normals, roughness, metallic, opacity, overrides | `PBR (Lighting)`, `Override`, `Faceted Normal`, `Linear Tone Mapping` |
+| **Texture sampling** | 2D / 3D / cube / array texture reads, direct or via object parameters | `Texture 2D Sample`, `Texture 2D Parameter`, `Texture 3D Parameter`, `Texture Cube Parameter`, `Texture 2D Array Parameter` |
+| **UV / coordinate transform** | Scroll, rotate, scale, triplanar, parallax, flipbook, flow-map sampling | `Rotate Coords`, `Scale Coords`, `Scroll Coords`, `Triplanar UV Coord`, `Parallax Coords`, `Flipbook Coords`, `Flow Map Sample` |
+| **Math / logic / interpolation** | Arithmetic, swizzles, vector/matrix construction, conditionals, loops, mix | `Add`, `Subtract`, `Multiply`, `Mix`, `Construct Vector`, `Construct Matrix`, `Switch`, `Conditional`, `If/else`, Loop nodes |
+| **Vectors / matrices / transforms** | Space conversion, world/camera/object data, vertex-to-pixel transfer | `Transform Vector`, `Transform by Matrix`, `Matrix Parameter`, `Get Object Transform`, `Interpolate` |
+| **Time / animation** | Time, delta time, fluctuation, parameter modulation over time | `Elapsed Time`, `Delta Time`, `Fluctuate` |
+| **Noise / procedural** | Procedural texturing, variation, gradients, value fields | `Noise (Simplex)`, `Voronoi Noise`, `Random Noise`, `Gradient` |
+| **Screen-space / camera / surface** | Full-frame effects, depth-aware logic, view-dependent shading, screen-derived values | `Depth`, `DDX`, `DDY`, `FWidth`, `Camera Position`, `Camera Facing Ratio`, `View Vector`, `Screen UV Coord`, `Position From Depth` |
+| **Lighting / environment** | Read lights, shadows, environment maps; combine with shading | `Light Color`, `Light Direction`, `Light Intensity`, `Light Position`, `Environment Sample`, `Shadow Sample`, Loop (Lights) |
+| **Parameters / exposure** | Make the graph script-controllable; scalars, colors, textures, arrays, curves, matrices, dropdowns | `Bool Parameter`, `Color Parameter`, `Float Parameter`, `Int Parameter`, `Texture 2D Object Parameter`, `Float Array Object Parameter`, `Curve Parameter`, `DropList Parameter`, `Matrix Parameter` |
+| **Subgraphs / reuse** | Encapsulate logic, reuse node clusters | Sub-Graph imports/exports, Sub-Graph library |
+| **Custom shader code** | Drop into GLSL when graph nodes don't suffice | `Custom Code`, `Custom Code Global` |
+
+Use this when a brief asks for a specific effect — pick the group first, then the node. Source: Snap 5.x docs (functional re-grouping by us, not an official taxonomy).
 
 ## Material parameters: the script ↔ shader handoff
 
@@ -192,6 +249,16 @@ preset can't do what you need.
 ---
 
 ## Pitfalls
+
+### P0 — Bool parameters marked "Static" cannot be changed from script at runtime
+
+When you add a `Bool Parameter` node to a Material Graph and mark it **Static** in its properties, the parameter compiles into the shader as a compile-time constant (used for code-branch generation / dead-code elimination). The shader is faster — but `material.mainPass.<paramName> = true` from a Script Component at runtime **has no effect**: the value is baked into the compiled shader binary.
+
+**Symptom**: you toggle a bool in TS, expect the visual to switch, nothing happens. No error, no warning.
+
+**Mitigation**: for any bool parameter the agent expects to mutate at runtime, leave Static **unchecked** in the Material Graph. Reserve Static for booleans that only differ between materials (e.g., "this material is the night variant" — chosen once at design time).
+
+Source: Snap 5.x Material Editor parameter docs.
 
 ### P1 — Material parameter name typos drop silently
 
