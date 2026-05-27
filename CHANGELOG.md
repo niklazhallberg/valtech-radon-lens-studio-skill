@@ -20,6 +20,12 @@ but adapted for skill evolution rather than a software API.
 _New learnings registered from past or ongoing Valtech RADON projects._
 
 ### 💡 2026-05-26 — [project: skill-meta]
+- **Capability tiers need a feature-by-feature matrix the agent can scan against, not just three abstract bands**: added a 60-row capability matrix organized by category (Face, Body, Environment, UI/interaction, Audio, Visual effects, ML/AI). Each row maps a typical client-brief outcome to its tier (1 / 2 / 3) with a one-liner explaining why. Includes a use-it-like-this protocol (read brief → underline outcomes → map to rows → run honest-language if any Tier 3 → clarify asset gaps if Tier 2) and an explicit note that LS 5.21+ shifts the line in some places.
+- Value for user: next colleague triaging a brief no longer has to derive feasibility from first principles for common requests like "3D sneaker on foot", "hair color change", "tap to reveal fortune", "GenAI character on face" — they get an immediate tier read with rationale.
+- File: `references/capability-tiers.md` § "Capability matrix — common requests by body-part and intent"
+- Type: [discovery]
+
+### 💡 2026-05-26 — [project: skill-meta]
 - **TypeScript decorator family in LS 5.x has more silent-failure modes than the existing 4 documented entries**: added 5 more decorator gotchas — `@input` decorator order matters (annotations after, not before, the input line — wrong order silently drops the annotation), `@input` typed as a custom class needs the class file to be loaded ahead of the consumer or runtime read yields null, `@input` boolean defaults work in Script Asset but numeric/string defaults are overridden by Script Component Inspector, underscore-prefixed `@input` is NOT private and still shows in Inspector, `@input` Asset references aren't reliably populated until `onStart` not `onAwake`. Some entries marked VERIFY-tag per the user's memory pattern — confidence varies, validate empirically before trusting.
 - Value for user: next colleague writing a TypeScript component for a feature gets the full set of decorator gotchas instead of finding them through hours of "why isn't this wired" debugging. Several of these are non-obvious enough that even experienced LS authors hit them.
 - File: `references/lens-studio-api-gotchas.md` § "TypeScript decorator behaviour" (5 new entries)
