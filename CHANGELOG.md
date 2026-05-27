@@ -19,25 +19,25 @@ but adapted for skill evolution rather than a software API.
 
 _New learnings registered from past or ongoing Valtech RADON projects._
 
-### 💡 2026-05-26 23:45 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
 - **The documented "clip text to a window" trick currently doesn't work in Lens Studio**: Snap's own guide describes how to put text inside a clipping shape so it appears only within the window — but in practice, on Lens Studio 5.21, the text either ignores the clip and renders everywhere or disappears entirely. Snap's docs page itself admits there is "a known bug with masking interactions" without specifying what's broken. Until Snap fixes it, the reliable fallback is a small per-frame script that toggles each text's visibility based on whether its full extent fits inside the intended window.
 - Value for user: next colleague who tries to build a slot-machine reel, a scrolling ticker, or any animated-text-inside-a-window stops here instead of spending most of a day rebuilding clipping from scratch — and gets the working script-based fallback pattern.
 - File: `references/lens-studio-api-gotchas.md` § "Masking Component does not visibly clip Text grandchildren in LS 5.21"
 - Type: [discovery]
 
-### 💡 2026-05-26 23:45 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
 - **Older custom components from the Asset Library can quietly fail with "module not found" errors**: many UI components in Snap's Asset Library were built for older Lens Studio versions (4.49, 4.53) and embed version-tagged references to helper modules. On Lens Studio 5.21 those tagged references don't resolve even after installing the matching standalone module packages — the names don't line up. The Preview pauses with a "Cannot find module" error and the lens won't run.
 - Value for user: next colleague who tries to base a project on an Asset Library component does a quick isolation test first — drop the component into a side scene with a plain text element and see if the Preview pauses. If it does, the asset is incompatible with the current Lens Studio version and time is saved before wiring up anything bigger.
 - File: `references/lens-studio-api-gotchas.md` § "Asset Library custom components built for older LS versions may fail with Cannot find module errors"
 - Type: [discovery]
 
-### 💡 2026-05-26 15:50 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
 - **Built-in scroll-view component handles masked scrolling content**: when a brief asks for scrolling text, a slot-machine reel, a rolling counter, or any other content that needs to scroll inside a bounded window, Lens Studio's Asset Library has a ready-made `UI Scroll View` component that wraps masking, drag input, and optional scroll bars in one drop-in piece. Using it skips a multi-hour rebuild of the same machinery from primitive parts (Masking + Image + drag scripting + clip math).
 - Value for user: next colleague who needs a scrolling list, slot machine, ticker, or rolling counter saves a half-day of rebuilding masking + scroll plumbing from primitives — install one component instead.
 - File: `references/lens-recipe-catalog.md` § D-13
 - Type: [discovery]
 
-### 💡 2026-05-18 19:57 — [project: skill-meta]
+### 💡 2026-05-18 — [project: skill-meta]
 - **Manualerna funkar nu utan internet — Handjet är självhostad lokalt**:
   pixel-fonten Handjet låg tidigare bara på Google Fonts CDN. Om en kollega
   satt på en konferens med dåligt wifi eller startade manualen offline efter
@@ -58,7 +58,7 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 nätverket är opålitligt; en designer som öppnar `MANUAL-SIMPLE.html` på
 ett café eller en kunds gästnät ser samma sak som lokalt.
 
-### 💡 2026-05-18 15:05 — [project: skill-meta]
+### 💡 2026-05-18 — [project: skill-meta]
 - **Pass 0 — Image-to-3D Generation: the skill can now mentor the whole
   chain idea → image → 3D → compression → import → publish**: previously,
   the 3D doctrine started at "you have a .glb"; everything upstream was
@@ -106,7 +106,7 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
   `SKILL.md` (References pointer + version bump 0.9.0 → 0.10.0)
 - Type: [doctrine]
 
-### 💡 2026-05-18 14:20 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-18 — [project: rfsu-bang-fortune-lens]
 - **GLB post-process: switching the recommended tool from `gltf.report` to
   `optimizeglb.com/dashboard`**: empirical finding from the RFSU project where
   the same clean source .glb produced visible mesh artifacts
@@ -127,7 +127,7 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
 - Files: `references/3d-asset-import-doctrine.md` (Pass 1b section)
 - Type: [doctrine-correction]
 
-### 💡 2026-05-18 10:49 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-18 — [project: rfsu-bang-fortune-lens]
 - **GLB-first 3D import doctrine + two-pass optimization — a systematic way
   to keep lens size under Snap's limit when custom 3D models are imported**:
   an RFSU project showed how quickly a hat FBX could blow up the lens from
@@ -168,7 +168,7 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
 
 ## [v0.8.0] — 2026-05-15
 
-### 💡 2026-05-15 10:35 — [project: skill-meta]
+### 💡 2026-05-15 — [project: skill-meta]
 - **One-line installer + auto-sync — non-technical designers can onboard
   themselves**: Three pieces that together close the "designer can't set up
   the skill alone" gap.
@@ -195,7 +195,7 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
 
 ## [v0.7.4] — 2026-05-14
 
-### 💡 2026-05-14 18:30 — [project: skill-meta]
+### 💡 2026-05-14 — [project: skill-meta]
 - **Warm tone in CHANGELOG + protocol v0.5**: CHANGELOG entries
   now use 💡-emoji, HH:MM timestamp, plain-English description,
   and "Value for user" field. The section title is now
@@ -218,7 +218,7 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
 
 ## [v0.7.3] — 2026-05-14
 
-### 💡 2026-05-14 13:30 — [project: skill-meta]
+### 💡 2026-05-14 — [project: skill-meta]
 - **Documentation sync: MCP capability gap-fixes (Tier 1)**:
   Cross-validated an external Perplexity Deep Research report
   (2026-05-13) against existing `references/`. Three Tier 1

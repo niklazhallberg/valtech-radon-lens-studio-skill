@@ -1,4 +1,4 @@
-# Skill Growth Protocol v0.5
+# Skill Growth Protocol v0.6
 
 Purpose: capture empirical learnings from real
 projects so the skill grows over time — in flow,
@@ -219,7 +219,7 @@ leadership).
 Entry format (auto-extracted by the agent):
 
 ```markdown
-### 💡 YYYY-MM-DD HH:MM — [project: <cwd-derived>]
+### 💡 YYYY-MM-DD — [project: <cwd-derived>]
 - **<title in plain English>**: <1-2 sentence
   description, jargon-free, plain English>
 - Value for user: <what the next colleague gains —
@@ -244,7 +244,7 @@ English gloss in parentheses.
 Auto-extraction:
 - 💡-emoji — always prefix on the rubric (signal:
   positive new insight)
-- `YYYY-MM-DD HH:MM` — current date + time in 24h format
+- `YYYY-MM-DD` — current date (no time stamp — multiple entries per day are fine, ordered top-down newest-first)
 - `<cwd-derived>` — from `$PWD`
   (`~/Projects/<name>-lens` → `<name>-lens`)
 - `<title>` — plain-English summary (if the discovery
@@ -316,6 +316,15 @@ adjustment — re-evaluate at migration time.
 
 ## Changelog
 
+- v0.5 → v0.6 (2026-05-27): CHANGELOG entry header simplified to date-only —
+  `### 💡 YYYY-MM-DD HH:MM` becomes `### 💡 YYYY-MM-DD`. Multiple entries
+  per day are ordered top-down newest-first; intra-day ordering matters more
+  than minute precision, and the time stamp added clutter without value.
+  All existing entries in `CHANGELOG.md` were retroactively stripped of
+  their `HH:MM` segments in the same commit. Header at line 222 + auto-
+  extraction spec at line 247 updated. Triggered by Niklaz's feedback
+  (RFSU Fortune Lens session): "I don't want to show exact times in the
+  changelog — just the date and project is enough."
 - v0.4 → v0.5 (2026-05-14): warm-tone CHANGELOG format.
   In-flow ask template rewritten in plain English without
   jargon (no grep, no "discovery" words, no API paths in
