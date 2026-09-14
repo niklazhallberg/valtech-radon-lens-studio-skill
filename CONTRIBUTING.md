@@ -36,7 +36,7 @@ When you change something user-facing in the install flow:
 2. **Manually sync the same change into `docs/MANUAL.html`** — same
    logical content, HTML formatting (`<div class="step-note">`,
    `<figure class="step-screenshot">`, etc.).
-3. **Bump `version:` in `SKILL.md` frontmatter** for **minor releases
+3. **Bump `metadata.version:` in `SKILL.md` frontmatter** for **minor releases
    only** (new behaviors, capability additions, distribution changes).
    Patch releases (e.g. 0.7.0 → 0.7.1) are tracked via git tag +
    CHANGELOG.md entry, NOT via SKILL.md-bump. See "Version convention"
@@ -73,7 +73,7 @@ SKILL=/tmp/lens-studio-snapchat-filter-vX.Y.Z.skill
 unzip -l "$SKILL" | grep "MANUAL.html"
 
 # 2. SKILL.md version string matches
-unzip -p "$SKILL" lens-studio-snapchat-filter/SKILL.md | grep "version:"
+unzip -p "$SKILL" lens-studio-snapchat-filter/SKILL.md | grep "metadata:" -A 1
 
 # 3. File size is plausible (>175 KB for v0.5.0+)
 ls -la "$SKILL"
@@ -97,7 +97,7 @@ tokens specifically: restart Lens Studio (token rotates on restart).
 
 ## Version convention
 
-The `version:` field in `SKILL.md` frontmatter tracks **minor releases
+The `metadata.version:` field in `SKILL.md` frontmatter tracks **minor releases
 only** — not patches.
 
 - **Minor bumps** (e.g. 0.7 → 0.8): new behaviors, new reference files,
@@ -112,7 +112,7 @@ This convention was established 2026-05-14 after the v0.7.0/v0.7.1
 cycle revealed that bumping `SKILL.md` on every patch creates pointless
 churn (commit, push, `.skill`-rebuild for a 1-line version-stamp
 change). The **git tag is the authoritative version**; `SKILL.md`'s
-`version:` field is the "capability era" marker, not a per-commit
+`metadata.version:` field is the "capability era" marker, not a per-commit
 version stamp.
 
 When in doubt: if the change adds new files, new behaviors, or rewrites

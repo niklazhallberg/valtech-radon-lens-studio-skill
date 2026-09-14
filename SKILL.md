@@ -1,5 +1,7 @@
 ---
 name: lens-studio-snapchat-filter
+metadata:
+  version: "0.8.0"
 description: Builds Snapchat AR Lenses and Sponsored Lenses in Lens Studio 5.20+ with Claude Code, optionally with the Lens Studio MCP server. Covers full pipeline (Phase 0 spec → Phase 5 submission), empirically-validated LS 5.x API patterns, MCP mutation rules (probe+bulk, silent-drop recovery), and Sponsored Lens submission to Snap Ads Manager. TRIGGER when user mentions Lens Studio, Snapchat, filter (in Snap context), Sponsored Lens, AR lens, .esproj/.lens files, Snap Ads Manager, Camera Kit, Bitmoji, or asks help building a Snapchat AR experience. SKIP for TikTok Effect House, Meta Spark, Unity/Unreal AR, native ARKit/ARCore, WebXR, Spectacles AR Object, or generic AR without Snap context. If user says "AR project" without specifying platform, ask first.
 ---
 

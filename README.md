@@ -106,14 +106,14 @@ The skill activates automatically. The agent walks you through environment detec
 
 Once installed, the skill keeps itself up-to-date in the background. There is **no daily `git pull` to remember**.
 
-How it works: when you start Claude Code (`claude` in any terminal), a small hook runs `git pull --ff-only` on the skill repo before your session begins. If new entries have arrived since you last saw an announcement, you see something like this inline in chat:
+How it works: when you start Claude Code (`claude` in any terminal), a small hook runs `git pull --ff-only` on the skill repo before your session begins. If new entries have arrived since you last saw an announcement, you see something like this inline in chat (example):
 
 ```
 💡 Lens Studio-skillen uppdaterades — 2 nya lärdomar sedan sist
 
 Senaste ändringar:
   • feat(discovery): Text3D position via wrapper-parent
-  • docs(v0.7.5): warm-tone CHANGELOG format
+  • docs(v0.8.0): warm-tone CHANGELOG format
 
 See CHANGELOG.md in the skill folder for full history.
 ```
