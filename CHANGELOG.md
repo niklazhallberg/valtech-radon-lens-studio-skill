@@ -4,8 +4,8 @@ All notable changes to **lens-studio-snapchat-filter** are documented here.
 
 Discoveries from real Valtech RADON projects flow into the
 "Improvements and newly acquired knowledge" section automatically
-via the skill-growth protocol — see `references/skill-growth-protocol.md`
-for the in-flow-ask mechanic and format spec.
+via the shared `radon-skill-growth` skill — see `references/_growth-protocol-pointer.md`
+for the pointer to the mechanic and format spec.
 
 At release time: those entries are consolidated under a `[vX.Y.Z]`
 heading with the release date.

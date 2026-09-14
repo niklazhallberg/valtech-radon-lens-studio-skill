@@ -146,7 +146,7 @@ This is what makes the "compound interest on skill investment" idea real. Your c
 | `references/lens-studio-api-gotchas.md` | ~21 empirically-validated API gotchas (Tween Manager quirks, ScreenTransform behaviour, MetaInfo transient-view persistence, and more) |
 | `references/body-anchored-calibration.md` | Probe-first protocol for tracker-driven content (foot, face, hand, body, world-anchored). Mandatory reading before any tracker work |
 | `references/voice-and-pedagogy.md` | The 8 principles + 3 layers that govern how the agent talks to you. Mentor-role is the product's core value, not just the technical machinery |
-| `references/skill-growth-protocol.md` | How new learnings flow back into the skill — the cultural protocol |
+| `references/_growth-protocol-pointer.md` | Pointer to the shared `radon-skill-growth` skill that governs how new learnings flow back into the skill — the cultural protocol |
 | `references/onboarding-protocol.md` | 8 questions, 3 groups, ~7 minutes — captures vision, constraints, asset validation before Phase 0 spec drafting |
 | `references/concierge-setup-flow.md` | 8-step setup conversation for designers who've never built a lens before |
 | `docs/MANUAL.html` · `MANUAL-EN.html` · `MANUAL-SIMPLE.html` | Designer-facing manuals (SV full, EN full, EN quick). Hosted live on Cloudflare — see Getting started above |

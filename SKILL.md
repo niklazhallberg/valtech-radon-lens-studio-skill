@@ -152,7 +152,7 @@ Each project ships with: `PROJECT-STATE.md` (living tracker), `PROJECT-PLAN.md`,
 
 **Foundational + cultural**
 - `references/snap-docs/` — 365 Snap docs pages, curated into 9 buckets. Use `references/snap-docs/00-INDEX.md` as routing table; don't grep blindly
-- `references/skill-growth-protocol.md` — discovery flow-back: generalize, propose, approve, write, commit, push. Includes the "not-a-discovery" checklist
+- `references/_growth-protocol-pointer.md` — pointer to the shared `radon-skill-growth` skill which governs discovery flow-back: generalize, propose, approve, write, commit, push
 
 **User-facing docs**
 - `docs/MANUAL-SV.md` · `docs/MANUAL-EN.md` · `docs/INSTALL-REFERENCE.md` · `docs/TROUBLESHOOTING.md`

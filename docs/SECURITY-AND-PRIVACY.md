@@ -23,7 +23,7 @@
 
 ## The Generalization rule as active security mechanism
 
-`skill-growth-protocol.md` has a **three-step checklist that runs BEFORE anything gets committed**:
+The shared `radon-skill-growth` skill defines a **three-step checklist that runs BEFORE anything gets committed**. See `references/_growth-protocol-pointer.md`:
 
 **Step 1 — Identify the core.** What's the general rule behind the specific finding?
 
@@ -45,7 +45,7 @@
 1. The AI as gate-keeper runs the checklist
 2. **Human approves every commit explicitly** — no auto-push, no auto-commit
 
-The protocol can be reviewed in [`references/skill-growth-protocol.md`](../references/skill-growth-protocol.md) lines 18–82.
+The protocol is defined in the shared `radon-skill-growth` skill, with a pointer at [`references/_growth-protocol-pointer.md`](../references/_growth-protocol-pointer.md).
 
 ## Repo security
 
@@ -68,7 +68,7 @@ This is important to understand structurally:
 3. **The discovery protocol** filters out everything project-specific BEFORE anything is even proposed for commit (Step 2 checklist).
 4. The only thing that flows from project to skill is **the generalized pattern** — not data.
 
-Concrete example from `skill-growth-protocol.md`:
+Concrete example from the generalization rule:
 
 ```
 BEFORE (would NOT be committed):

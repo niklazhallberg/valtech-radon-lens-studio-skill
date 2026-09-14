@@ -48,7 +48,7 @@ Skillen är byggd i **7 lager**. Varje lager existerar för att lösa ett specif
 **Värde:** En kollega kan starta ensam. Ingen enskild person blir flaskhals.
 
 ### f) Self-growth protocol
-**Vad:** `skill-growth-protocol.md` v0.5 — protokoll för hur **nya lärdomar fångas i flowet** under riktiga projekt och flödar in i skillen.
+**Vad:** `radon-skill-growth` v1.0 shared skill — protokoll för hur **nya lärdomar fångas i flowet** under riktiga projekt och flödar in i skillen. Pointer i `references/_growth-protocol-pointer.md`.
 **Vad det kostar att INTE ha det:** Skillen stagnerar efter dag 1. Kunskap från projekt 2, 3, 4 hamnar i folks huvuden eller Slack-trådar och försvinner.
 **Värde:** Compound interest. Se sektion 4.
 
@@ -136,7 +136,7 @@ Skill-repot ligger i en mapp (typiskt klonad till `~/Projects/` eller där desig
 
 ### b) Generaliseringsregeln (teknisk filter)
 
-`skill-growth-protocol.md` v0.5 specificerar en obligatorisk trestegs-checklist som körs **innan något ens föreslås för commit** till skill-repot:
+Den delade `radon-skill-growth`-skillen specificerar en obligatorisk trestegs-checklist som körs **innan något ens föreslås för commit** till skill-repot. Se `references/_growth-protocol-pointer.md`:
 
 1. **Identifiera den generella regeln** bakom det specifika fyndet.
 2. **Explicit borttagningslista** — det här stryks bort:
@@ -235,7 +235,7 @@ Idag är Snapchat Lens-projekt beroende av en person. Med skillen + 2–3 utbild
 
 ### Nu (denna vecka)
 
-1. **Säkerhetsgranskning** — låt relevant funktion läsa `skill-growth-protocol.md` + sektion 5 i detta dokument. Konfirma att Generaliseringsregeln + manuella commit-godkännanden möter Valtechs policy.
+1. **Säkerhetsgranskning** — låt relevant funktion läsa `references/_growth-protocol-pointer.md` + sektion 5 i detta dokument. Konfirma att Generaliseringsregeln + manuella commit-godkännanden möter Valtechs policy. Den delade `radon-skill-growth`-skillen definierar det fullständiga protokollet.
 2. **Migrera repo till Valtech-organisationskonto** på GitHub. Eliminerar "personligt konto"-frågetecknet och auto-aktiverar branch protection-rule:n.
 3. **Sätt upp 30-min demo** för 2–3 utvalda designers + 1 stakeholder. Live walk-through av onboarding-flödet.
 

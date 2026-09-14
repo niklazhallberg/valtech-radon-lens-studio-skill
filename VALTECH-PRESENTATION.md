@@ -48,7 +48,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 **Value:** A colleague can start alone. No single person becomes a bottleneck.
 
 ### f) Self-growth protocol
-**What:** `skill-growth-protocol.md` v0.5 — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill.
+**What:** `radon-skill-growth` v1.0 shared skill — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill. Pointer in `references/_growth-protocol-pointer.md`.
 **What it costs NOT to have it:** The skill stagnates after day 1. Knowledge from projects 2, 3, 4 ends up in people's heads or Slack threads and disappears.
 **Value:** Compound interest. See section 4.
 
@@ -136,7 +136,7 @@ The skill repo lives in one folder (typically cloned to `~/Projects/` or whereve
 
 ### b) The Generalization rule (technical filter)
 
-`skill-growth-protocol.md` v0.5 specifies a mandatory three-step checklist that runs **before anything is even proposed for commit** to the skill repo:
+The shared `radon-skill-growth` skill specifies a mandatory three-step checklist that runs **before anything is even proposed for commit** to the skill repo. See `references/_growth-protocol-pointer.md`:
 
 1. **Identify the general rule** behind the specific finding.
 2. **Explicit removal checklist** — these get stripped:
@@ -235,7 +235,7 @@ Today, Snapchat Lens projects depend on a single person. With the skill + 2–3 
 
 ### Now (this week)
 
-1. **Security review** — have the relevant function read `skill-growth-protocol.md` + section 5 of this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy.
+1. **Security review** — have the relevant function read `references/_growth-protocol-pointer.md` + section 5 of this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy. The shared `radon-skill-growth` skill defines the full protocol.
 2. **Migrate repo to a Valtech organization account** on GitHub. Eliminates the "personal account" question mark and auto-activates the branch protection rule.
 3. **Set up a 30-min demo** for 2–3 selected designers + 1 stakeholder. Live walk-through of the onboarding flow.
 
