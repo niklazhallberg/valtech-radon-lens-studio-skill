@@ -150,18 +150,18 @@ mkdir -p ~/Projects/[client]-lens
 cd ~/Projects/[client]-lens
 ```
 
-Substitute `[client]` with the actual name in kebab-case (e.g., `spotify-lens`, `olw-lens`, `voi-lens`).
+Substitute `[client]` with the actual name in kebab-case.
 
-**Example** — for an Adidas project:
+**Example** — for a hypothetical footwear-brand project:
 
 ```bash
-mkdir -p ~/Projects/adidas-lens
-cd ~/Projects/adidas-lens
+mkdir -p ~/Projects/example-lens
+cd ~/Projects/example-lens
 ```
 
 When the command finishes, you're *inside* the project folder — the terminal prompt now shows the folder name.
 
-**Verify:** open Finder → Projects. You'll see a new `adidas-lens` folder. This is where Claude will create subfolders (`docs/`, `brief/`, etc.) in the next phase.
+**Verify:** open Finder → Projects. You'll see a new `example-lens` folder. This is where Claude will create subfolders (`docs/`, `brief/`, etc.) in the next phase.
 
 Inside the project folder, create the sub-structure:
 
@@ -265,7 +265,7 @@ claude
 ```
 
 > [!NOTE]
-> Run this in the same terminal window, from your project folder (e.g., `adidas-lens`). This starts the Claude Code CLI — you'll land in an interactive chat prompt where you type messages directly to Claude.
+> Run this in the same terminal window, from your project folder (e.g., `example-lens`). This starts the Claude Code CLI — you'll land in an interactive chat prompt where you type messages directly to Claude.
 
 Ask:
 
