@@ -387,7 +387,7 @@ should this be a two-pass render-target chain (see composition-patterns)?"
 The split is often cheaper and easier to reason about.
 
 For tracker-driven materials (face liquify, body warp, hand-driven
-distortion): see `references/face-effect-tuning-via-inspector.md` memory
+distortion): see `references/face-effects-deep-dive.md`
 — lock baseline via script, hand off feel-tuning to LS Inspector sliders.
 
 ---

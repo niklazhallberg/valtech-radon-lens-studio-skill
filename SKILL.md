@@ -117,9 +117,9 @@ Snapchat-specific terminology, ad-policy categories, performance gates (LAT < 65
 
 Deep optimization mechanics, per-asset numeric budgets, anti-patterns, Phase 4 DoD checklist: `references/performance-optimization-guide.md`. 3D-heavy lenses: `references/3d-asset-import-doctrine.md`. Submission compliance: `references/sponsored-lens-submission.md`.
 
-## Project documentation pattern
+## Project documentation pattern (per-project, created by agent)
 
-Each project ships with: `PROJECT-STATE.md` (living tracker), `PROJECT-PLAN.md`, `docs/USER-EXPERIENCE.md`, `docs/TECH-SPEC.md`, `docs/PROJECT-DECISIONS.md`, `INSPIRATION/` (≥5 reference images, sorted into sub-folders), `project-info/client-brief.md`. Template scaffold: `assets/project-template/`.
+**In each client Lens Studio project**, the agent scaffolds: `PROJECT-STATE.md` (living tracker), `PROJECT-PLAN.md`, `docs/USER-EXPERIENCE.md`, `docs/TECH-SPEC.md`, `docs/PROJECT-DECISIONS.md`, `INSPIRATION/` (≥5 reference images, sorted into sub-folders), `project-info/client-brief.md`. These files live in the CLIENT'S project repo, not in the skill. Template scaffold: `assets/project-template/`.
 
 ## References (load on demand)
 

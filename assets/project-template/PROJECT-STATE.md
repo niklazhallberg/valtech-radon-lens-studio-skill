@@ -19,7 +19,7 @@ Per-project living state tracker. CC + user maintain together throughout the pro
 
 ## Onboarding status
 
-Light-touch intake per `docs/claude-code-lens-studio/17-onboarding-protocol.md`.
+Light-touch intake per the skill's `references/onboarding-protocol.md`.
 
 - [ ] **Group 1 — Vision** (3 questions answered)
   - Date answered: ____
@@ -57,7 +57,7 @@ Filled in by CC after Readiness Report approval. User reviews + edits if needed.
 
 ## Phase status
 
-Per `docs/claude-code-lens-studio/15-phase-progression.md`.
+Per the skill's `references/phase-progression.md`.
 
 - [ ] **Phase 0** — Spec drafts (TECH-SPEC.md + USER-EXPERIENCE.md)
   - Started: ____
@@ -100,7 +100,7 @@ Per `docs/claude-code-lens-studio/15-phase-progression.md`.
 
 ## Watch points (active for current phase)
 
-Per `docs/claude-code-lens-studio/10-watch-points-methodology.md`. Set 3-5 at the start of each phase.
+Per the skill's `references/watch-points-methodology.md`. Set 3-5 at the start of each phase.
 
 **Current phase**: ____
 
@@ -123,7 +123,7 @@ Per `docs/claude-code-lens-studio/10-watch-points-methodology.md`. Set 3-5 at th
 
 ## UX principles (locked before scripting)
 
-Per `docs/claude-code-lens-studio/16-ux-principle-locking.md`. Lock before Phase 2 scripting.
+Per the skill's `references/ux-principle-locking.md`. Lock before Phase 2 scripting.
 
 1. **Principle 1**: ____
    - What this rules out: ____
@@ -159,7 +159,7 @@ Cases where the brief was extended beyond original scope (with user approval). C
 
 ## Gotchas discovered (project-specific)
 
-Empirical landmines discovered in THIS project. Add to `docs/PIPELINE-GOTCHAS.md` if generalizable.
+Empirical landmines discovered in THIS project. Surface to the skill's `references/lens-studio-api-gotchas.md` if generalizable — via the growth protocol.
 
 1. ____
 2. ____

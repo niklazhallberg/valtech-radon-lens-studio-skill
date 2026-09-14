@@ -39,7 +39,7 @@
 | **4** | Test, iterate, polish | 1–2 hours | [Owner] | pending |
 | **5** | Submission prep + handover | 1 hour | [Owner] | pending |
 
-Each phase detail: see skill's `references/build-pipeline.md`.
+Each phase detail: see the skill's `references/phase-progression.md`.
 
 ---
 

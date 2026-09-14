@@ -1,6 +1,6 @@
 # Security and privacy
 
-> This document describes how the `valtech-radon-lens-studio-skill` handles security, privacy, and client data. Written to be readable by security, legal, or compliance reviewers within Valtech RADON — or the colleague who wants to understand how project data is isolated from the skill repo. The original source is `docs/VALTECH-PRESENTATION.md` section 5; it's extracted here so it can be reviewed and shared on its own.
+> This document describes how the `valtech-radon-lens-studio-skill` handles security, privacy, and client data. Written to be readable by security, legal, or compliance reviewers within Valtech RADON — or the colleague who wants to understand how project data is isolated from the skill repo. The original source is `VALTECH-PRESENTATION.md` section 5; it's extracted here so it can be reviewed and shared on its own.
 
 ## What is stored in the skill file?
 
