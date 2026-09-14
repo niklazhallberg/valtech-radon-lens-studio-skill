@@ -54,7 +54,7 @@ Between blocks:
 > "Done — we've pinned the vision. Three blocks left to work through: frames (client + deadline + off-limits), assets (what you already have), then I'll draw a Readiness Report for you to approve.
 >
 > Block 2 of 3 — Frames.  
-> Question 4: Which client + ad-policy category? (E.g. 'adidas, sportswear (general)' or 'RFSU, sexual wellness (regulated)' — affects Snap's review time.)"
+> Question 4: Which client + ad-policy category? (E.g. a sportswear brand in the 'general' category, or a sexual-wellness organisation in the 'regulated' category — affects Snap's review time.)"
 
 **Variants & warnings:**
 - **Skip the progress-bar if user said "short on time"** — they signaled trust in the flow; don't slow them down with meta.
@@ -317,7 +317,7 @@ These can sneak into ANY template if you're not careful:
 Living document. When a new mentor pattern proves itself across 2–3 real sessions, add it as a template here. When a template hasn't been invoked across 3+ projects, evaluate whether it should be cut.
 
 **Templates added:**
-- 2026-05-13 — initial 6 templates from Samba/adidas friction analysis
+- 2026-05-13 — initial 6 templates from a previous footwear-brand friction analysis
 - (future additions logged here)
 
 ---

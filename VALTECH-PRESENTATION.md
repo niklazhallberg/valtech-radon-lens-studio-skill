@@ -140,7 +140,7 @@ The shared `radon-skill-growth` skill specifies a mandatory three-step checklist
 
 1. **Identify the general rule** behind the specific finding.
 2. **Explicit removal checklist** — these get stripped:
-   - ❌ Client names (adidas, RFSU, Ray-Ban, etc.)
+   - ❌ Client names or campaign identifiers
    - ❌ Project-specific values (X coordinates, campaign budgets, exact tuning constants for this one shoe)
    - ❌ Internal project names, file paths
    - ❌ Dates, deadlines

@@ -673,7 +673,7 @@ Per asset object:
 - Quick icon variants for A/B testing
 - Phase 5 submission prep (if no brand icon exists yet)
 
-**Risks:** Brand projects (like adidas) require a brand-approved icon — AI-generated does NOT work for final submission. Use for WIP/draft only.
+**Risks:** Brand projects require a brand-approved icon — AI-generated does NOT work for final submission. Use for WIP/draft only.
 
 **Cross-ref:** `./snap-docs/07-publishing/configuring/` (icon spec).
 

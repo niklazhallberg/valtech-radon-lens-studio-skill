@@ -140,7 +140,7 @@ Den delade `radon-skill-growth`-skillen specificerar en obligatorisk trestegs-ch
 
 1. **Identifiera den generella regeln** bakom det specifika fyndet.
 2. **Explicit borttagningslista** — det här stryks bort:
-   - ❌ Klientnamn (adidas, RFSU, Ray-Ban, etc.)
+   - ❌ Klientnamn eller kampanjidentifierare
    - ❌ Projektspecifika värden (X-koordinater, kampanjbudgetar, exakta tuning-konstanter för just den här skon)
    - ❌ Interna projektnamn, filsökvägar
    - ❌ Datum, deadlines

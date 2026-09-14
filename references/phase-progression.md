@@ -232,7 +232,7 @@ z-order via `renderOrder` on visual components (see `lens-studio-api-gotchas.md`
 
 ### Mutations: typical ~20–25
 
-Per RFSU project metrics. Roughly: scene-hierarchy creates (5–8) + asset imports (3–5) + anchor sets (8–12) + initial renderOrder/visual properties (2–5).
+Per metrics from a validated production Lens build. Roughly: scene-hierarchy creates (5–8) + asset imports (3–5) + anchor sets (8–12) + initial renderOrder/visual properties (2–5).
 
 ### DoD signal
 

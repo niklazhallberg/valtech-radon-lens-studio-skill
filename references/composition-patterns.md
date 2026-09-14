@@ -25,7 +25,7 @@ Compiled 2026-05-27 from Snap Lens Studio official docs + Perplexity research on
 7. ML / SnapML pipeline
 8. Event-graph glue pattern
 
-Patterns compose freely. A scrolling slot-machine reel (RFSU Fortune Lens reference) uses Tween Orchestration + a script-based clipping fallback because the documented Masking-component path failed empirically (see `lens-studio-api-gotchas.md` § "Masking Component does not visibly clip Text grandchildren in LS 5.21"). A paint-on-face brand activation uses Interactive Paint + Material Driven by Tracking. A music-reactive AR cape uses Material Driven by Tracking + VFX From Script + audio analysis from `audio-in-lenses.md`.
+Patterns compose freely. A scrolling slot-machine reel (validated in a previous production Lens build) uses Tween Orchestration + a script-based clipping fallback because the documented Masking-component path failed empirically (see `lens-studio-api-gotchas.md` § "Masking Component does not visibly clip Text grandchildren in LS 5.21"). A paint-on-face brand activation uses Interactive Paint + Material Driven by Tracking. A music-reactive AR cape uses Material Driven by Tracking + VFX From Script + audio analysis from `audio-in-lenses.md`.
 
 ---
 
@@ -186,7 +186,7 @@ Patterns compose freely. A scrolling slot-machine reel (RFSU Fortune Lens refere
 - Easing choice has dramatic UX impact: Cubic Out is fast-at-start (good for slides), Cubic In is slow-at-start (good for builds), Exponential Out is the classic "slot machine wind-down" with most action late. Quartic In/Out gives gentle bell curves. Try multiple before committing.
 - Multiple tweens on the same property race. If `pack_split_L` (anchors) and `rotation_L_v1` (rotation callback) both fire on tap, their start times and durations must be coordinated or the visual feels chaotic. Sync durations or stagger explicitly with `DelayedCallbackEvent`.
 
-**Why generalizable**: nearly every polished commercial lens uses Tween orchestration for entrance/exit transitions, branded reveals, settle animations after recipe-driven triggers. The RFSU Fortune Lens reference uses ~15 named tweens in one controller.
+**Why generalizable**: nearly every polished commercial lens uses Tween orchestration for entrance/exit transitions, branded reveals, settle animations after recipe-driven triggers. A validated production Lens build used ~15 named tweens in one controller.
 
 ---
 
