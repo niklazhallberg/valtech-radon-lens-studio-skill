@@ -22,7 +22,10 @@
 
 set -u
 
-SKILL_DIR="${HOME}/.claude/skills/lens-studio-snapchat-filter"
+# Resolve SKILL_DIR relative to this script's own location, so the hook works
+# regardless of install path (direct clone, plugin install, symlink).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 STATE_DIR="${HOME}/.claude/state"
 STATE_FILE="${STATE_DIR}/lens-skill-last-head"
 GIT_TIMEOUT=10  # seconds — bounds the network roundtrip if a timeout tool is available

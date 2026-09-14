@@ -1,8 +1,10 @@
-# Onboarding Snippet (intern — för Niklaz)
+# Onboarding Snippet — Valtech RADON internal
 
 Kopiera en av varianterna nedan när du bjuder in en kollega via Slack-DM eller mejl.
 
-**Live på:** `https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev`
+> **TODO (enterprise migration):** URL:erna nedan är placeholders. Ersätt med den kanoniska Valtech RADON-domänen innan snippet:en delas till kollegor. **Skicka inte ut som den är.**
+
+**Live på (placeholder):** `https://docs.example.valtech.com/radon/lens-studio`
 
 ---
 
@@ -11,19 +13,19 @@ Kopiera en av varianterna nedan när du bjuder in en kollega via Slack-DM eller 
 ```
 Hej [Anna]! 👋
 
-Jag har byggt en Claude Code-skill som hjälper dig komma igång med
+Vi har byggt en Claude Code-skill som hjälper dig komma igång med
 Lens Studio-projekt — alltifrån att rigga upp filer till att felsöka
 shader-kompilering med en AI-assistent som kan din kontext.
 
 Manualen ligger här (öppna i Chrome eller Safari):
 
-  → https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/fullstandigguide-sv
+  → https://docs.example.valtech.com/radon/lens-studio/fullstandigguide-sv
 
 Den walkar dig genom installation (Claude Code + skill) på ~15 min.
 Ping mig när du är förbi "Acceptera inbjudan"-steget så bjuder jag
 in dig till skill-repo:t.
 
-/Niklaz
+/Valtech RADON
 ```
 
 ## Variant 2 — English, colleague
@@ -31,19 +33,19 @@ in dig till skill-repo:t.
 ```
 Hi [name]! 👋
 
-I've built a Claude Code skill that helps you spin up Lens Studio
+We've built a Claude Code skill that helps you spin up Lens Studio
 projects — from scaffolding files to debugging shader compilation
 with an AI assistant that knows your project context.
 
 The manual lives here (open in Chrome or Safari):
 
-  → https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/fullguide-en
+  → https://docs.example.valtech.com/radon/lens-studio/fullguide-en
 
 It walks you through install (Claude Code + skill) in ~15 min.
 Ping me when you hit the "Accept the invitation" step and I'll
 add you to the skill repo.
 
-/Niklaz
+/Valtech RADON
 ```
 
 ## Variant 3 — kort, för tekniska
@@ -51,11 +53,11 @@ add you to the skill repo.
 ```
 Yo — Claude Code-skill för Lens Studio. Manual:
 
-  → https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/nosmalltalk
+  → https://docs.example.valtech.com/radon/lens-studio/nosmalltalk
 
 Säg till när du behöver invitation till repo:t.
 
-/Niklaz
+/Valtech RADON
 ```
 
 ---

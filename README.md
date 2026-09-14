@@ -12,7 +12,7 @@ Building a Snapchat Lens is harder than it looks. APIs shift between minor Lens 
 
 Without a shared system, all of that knowledge lives in one person's head. They become the bottleneck — when they're on vacation, sick, or assigned to another project, the team starts from scratch.
 
-**A shared knowledge bank is more durable than one expert.** That's why I (Niklaz) built `valtech-radon-lens-studio-skill`. It started concretely: while I built an RFSU Sponsored Lens with Claude Code as my pair, every gotcha, every API quirk, every tracker calibration trick was captured and generalized. On top of that foundation: all 365 pages of Snap's official Lens Studio documentation, curated and organized so the agent can cite the right source instead of hallucinating.
+**A shared knowledge bank is more durable than one expert.** That's why Valtech RADON built `lens-studio-snapchat-filter`. It started concretely: while building a Sponsored Lens with Claude Code as pair-programmer, every gotcha, every API quirk, every tracker calibration trick was captured and generalized. On top of that foundation: all 365 pages of Snap's official Lens Studio documentation, curated and organized so the agent can cite the right source instead of hallucinating.
 
 **Two design choices set the tone:**
 
@@ -45,12 +45,14 @@ This division is enforced by the skill's operational rules and voice mandate. Yo
 
 For the friendliest path — and the one we recommend for new colleagues — use the hosted onboarding manuals:
 
-| Audience | URL |
+> **TODO (enterprise migration):** The URLs below are placeholders. The canonical Valtech RADON hosting domain must be supplied and configured before external or internal distribution. Do NOT distribute these URLs as-is.
+
+| Audience | URL (placeholder — needs canonical domain) |
 |---|---|
-| Quick / technically comfortable (EN) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/nosmalltalk |
-| Full guide (EN) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/fullguide-en |
-| Full guide (SV) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/fullstandigguide-sv |
-| Router (pick your path) | https://valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/ |
+| Quick / technically comfortable (EN) | https://docs.example.valtech.com/radon/lens-studio/nosmalltalk |
+| Full guide (EN) | https://docs.example.valtech.com/radon/lens-studio/fullguide-en |
+| Full guide (SV) | https://docs.example.valtech.com/radon/lens-studio/fullstandigguide-sv |
+| Router (pick your path) | https://docs.example.valtech.com/radon/lens-studio/ |
 
 The manuals walk through everything below in 10–15 minutes with copy-paste-ready commands and "what you see when it worked" verification steps.
 
@@ -79,7 +81,7 @@ Verify with `claude --version`.
 **3. Clone this skill to the Claude Code skills directory:**
 
 ```bash
-git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git ~/.claude/skills/lens-studio-snapchat-filter
+git clone https://github.com/valtech-radon/lens-studio-snapchat-filter.git ~/.claude/skills/lens-studio-snapchat-filter
 ```
 
 You must be invited as a collaborator on the private repository to clone it. See the **Access** section below.
@@ -202,26 +204,25 @@ When you scroll `CHANGELOG.md` six months from now, you should feel momentum. "W
 
 ## Access
 
-This is currently a **private repository** on a personal GitHub account. Access is granted by invitation to Valtech RADON colleagues only.
+This is a **public repository** under the Valtech RADON organisation. Read access is open to everyone; write access is granted to authorised Valtech RADON personnel and approved contractors.
 
-If you have been invited as a collaborator:
+Because the repository is public, **it must not contain client confidential information, personal data, credentials, tokens, or unapproved third-party materials.** See `NOTICE.md` at the repo root for the full internal-use notice.
 
-- You have full read + write access
+If you have write access:
+
 - Pull the repo into `~/.claude/skills/lens-studio-snapchat-filter/`
 - Use the skill in your lens projects
 - When the agent surfaces an in-flow ask: **say yes**
-- Open an issue or push a fix when you see something that conflicts with your experience
+- **All changes to `main` go via pull request.** No direct pushes. The growth protocol writes discoveries as PRs, not direct commits — the user-facing approval moment stays identical, but the audit trail is reviewable.
 
-There is no formal review process yet. Trust is high; the audit trail (every change in git history with project context, author, and timestamp) is the safety net.
-
-Migration to a Valtech GitHub organization with SSO and granular role management is on the roadmap.
+The PR review process is the safety net. Every change is visible in git history with project context, author, and timestamp.
 
 ---
 
 ## At a glance
 
-- **Owner**: Niklaz Hallberg
-- **Status**: Private, invitation-only, growing actively
+- **Owner**: Valtech RADON
+- **Status**: Public repository, PR-based contribution, growing actively
 - **Latest release**: see `CHANGELOG.md`
 - **Use it for**: Snapchat AR Lenses, Sponsored Lenses, brand campaigns, internal experimentation with Lens Studio AI workflows
 - **Not for**: TikTok Effect House, Meta Spark, Unity / Unreal AR, native ARKit / ARCore (see `SKILL.md` `when_to_use` for full scope)

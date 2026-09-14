@@ -5,7 +5,7 @@ to colleagues.
 
 ## Single source of truth
 
-This GitHub repo (`niklazhallberg/valtech-radon-lens-studio-skill`) is
+This GitHub repo (`valtech-radon/lens-studio-snapchat-filter`) is
 canon. Two derivative copies exist:
 
 - **Local install** (`~/.claude/skills/lens-studio-snapchat-filter/`)

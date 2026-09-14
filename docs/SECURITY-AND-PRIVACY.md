@@ -49,24 +49,27 @@ The protocol is defined in the shared `radon-skill-growth` skill, with a pointer
 
 ## Repo security
 
-| Aspect | Status today |
+| Aspect | Status |
 |---|---|
-| Repo type | **Private GitHub repo** |
-| Access today | Limited — on the maintainer's personal GitHub account |
-| Plan | Migrate to Valtech organization account |
-| Future | `@valtech.com` SSO authentication |
-| Auto-push | **Disabled** — every push requires explicit approval |
+| Repo type | **Public GitHub repo** under Valtech RADON organisation |
+| Read access | Open to anyone — repo is public |
+| Write access | Restricted to authorised Valtech RADON personnel and approved contractors |
+| Contribution model | **Pull request only.** No direct pushes to `main`. Every change reviewed before merge. |
+| Auto-push | **Disabled.** The growth protocol opens PRs; humans approve merges. |
 
-Migration to a Valtech org is an open item in [VALTECH-PRESENTATION.md section 7](VALTECH-PRESENTATION.md#7-recommended-next-steps).
+Because the repo is public, **the isolation guarantees below are more important, not less.** Client data cannot be in the repo at all — not even in a private branch.
+
+See `NOTICE.md` at repo root for the full internal-use notice covering client confidentiality, IP, and data-protection obligations.
 
 ## What happens with client data during a project?
 
 This is important to understand structurally:
 
-1. **The skill runs LOCALLY** on the designer's machine. Nothing is sent to GitHub without explicit approval.
+1. **The skill runs LOCALLY** on the designer's machine. Nothing is sent to GitHub without explicit approval, and the growth protocol writes discoveries as PRs — nothing merges without human review.
 2. **The Lens Studio project** (with the client's 3D models, briefs, campaign material) lives in a COMPLETELY SEPARATE folder, e.g. `~/Projects/<client>-lens/`. **This folder is NEVER pushed to the skill repo.**
 3. **The discovery protocol** filters out everything project-specific BEFORE anything is even proposed for commit (Step 2 checklist).
 4. The only thing that flows from project to skill is **the generalized pattern** — not data.
+5. **Because the skill repo is public, the Generalization rule is doubly critical** — anything that leaks into a proposed PR is visible to the world in the diff. The Generalization rule + human PR review are the two-layer defence.
 
 Concrete example from the generalization rule:
 

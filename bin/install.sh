@@ -103,7 +103,10 @@ fi
 
 # ─── 5. Skill clone check ───────────────────────────────────────────
 header "5. Kollar att skill-mappen finns på din dator"
-SKILL_DIR="${HOME}/.claude/skills/lens-studio-snapchat-filter"
+# Resolve SKILL_DIR relative to this script's own location so it survives
+# any install path (direct clone, plugin install, symlink).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 if [ -d "${SKILL_DIR}/.git" ]; then
   ok "Skillen finns på din dator (${SKILL_DIR})"
 else
@@ -115,10 +118,10 @@ Vi gör det manuellt eftersom GitHub-inloggning är personlig.
 2. Du får en inbjudan via mail — acceptera den
 3. Öppna terminalen och kör:
 
-   git clone git@github.com:niklazhallberg/valtech-radon-lens-studio-skill.git ${SKILL_DIR}
+   git clone git@github.com:valtech-radon/lens-studio-snapchat-filter.git ${SKILL_DIR}
 
    (Om SSH inte funkar, använd https-versionen:
-    git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git ${SKILL_DIR})
+    git clone https://github.com/valtech-radon/lens-studio-snapchat-filter.git ${SKILL_DIR})
 
 4. Kör install.sh igen — den fortsätter där den slutade"
 fi
