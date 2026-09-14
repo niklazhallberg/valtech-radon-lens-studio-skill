@@ -1,308 +1,460 @@
 # Enterprise Migration Audit Report
 
-**Date:** 2026-09-14  
-**Auditor:** Claude Code (radon-skill-growth v1.0)  
-**Status:** READY FOR REVIEW + DECISIONS
+**Date:** 2026-09-14
+**Auditor:** Claude Code (following radon-skill-growth v1.0 protocol)
+**Status:** READY FOR REVIEW — 12 commits, all findings addressed
 
 ---
 
 ## Summary
 
-This report documents the enterprise migration audit of `valtech-radon-lens-studio-skill` from personal GitHub account to Valtech RADON enterprise organization. **Four findings have been auto-fixed.** Five findings require explicit user decisions before proceeding. One finding (Finding 8c) requires GitHub admin action after migration.
+Enterprise-migration audit of `valtech-radon-lens-studio-skill` from personal
+GitHub account to Valtech RADON enterprise organisation. All nine findings
+addressed. All decisions applied per user direction. `scripts/check-links.sh`
+passes with 0 broken references (632 path-like references checked).
 
-**Commits made:** 4  
-**Files changed:** 25+  
-**Auto-fixed findings:** 1 (critical), 2a, 2b, 4, 5  
-**Awaiting decisions:** 2c, 3, 6, 7, 8a, 8b, 8c, 9
-
----
-
-## Completed Fixes
-
-### Finding 1 (CRITICAL) — Growth protocol chain ✓
-
-**Issue:** Commit 7e7a268 renamed `references/skill-growth-protocol.md` → `.superseded.md` and added `_growth-protocol-pointer.md`, but the rename was never propagated. Nine references in seven files still pointed to the non-existent file, breaking the mandatory session-start instruction in `operational-discipline.md`.
-
-**Fixes:**
-- ✓ Repointed all 9 references to `_growth-protocol-pointer.md`
-- ✓ Updated references to reflect protocol lives in shared `radon-skill-growth` skill
-- ✓ Hardened pointer file with:
-  - Explicit prerequisite: `radon-skill-growth` must be installed
-  - Fallback instructions: use `references/skill-growth-protocol.superseded.md` if shared skill missing
-  - Placeholder for canonical URL (to be filled post-migration)
-- ✓ Removed line-range citation at `docs/SECURITY-AND-PRIVACY.md:48` (external repo links rot)
-- ✓ Kept `.superseded.md` as safety net
-
-**Files changed:**
-- `references/operational-discipline.md:11`
-- `SKILL.md:155`
-- `README.md:149`
-- `VALTECH-PRESENTATION.md:51, 139, 238`
-- `VALTECH-PRESENTATION-SV.md:51, 139, 238`
-- `docs/SECURITY-AND-PRIVACY.md:26, 48, 71`
-- `CHANGELOG.md:7` (header prose only; historical entries left intact)
-- `references/_growth-protocol-pointer.md` (hardened)
-
-**Commit:** 2a5864f
+**Commits:** 12
+**Files changed:** ~40
+**Net lines:** +1500 / -200 (mostly plugin structure + vendored shared skill)
 
 ---
 
-### Finding 2a — Clone target mismatch ✓
-
-**Issue:** README.md:82 cloned to current directory, contradicting `install.sh` and `INSTALL-REFERENCE.md` which expected `~/.claude/skills/lens-studio-snapchat-filter`.
-
-**Fix:**
-- ✓ Updated README.md step 3 to clone directly to `~/.claude/skills/lens-studio-snapchat-filter`
-- ✓ Removed intermediate `cd` step
-
-**Commit:** cd1f831
-
----
-
-### Finding 2b — Claude Code install method alignment ✓
-
-**Issue:** `README.md:74`, `INSTALL-REFERENCE.md:40`, `MANUAL-SV.md:110`, `MANUAL-EN.md:110`, `TROUBLESHOOTING.md:38` all document `curl -fsSL https://claude.ai/install.sh | bash`, but `bin/install.sh:86,94` used `npm install -g @anthropic-ai/claude-code` instead. Node.js prerequisite (lines 54-65) was only needed for npm path.
-
-**Fix:**
-- ✓ Changed `bin/install.sh` step 3 to use curl method
-- ✓ Removed Node.js prerequisite check entirely
-- ✓ Simplified error messaging to reflect curl-based flow
-
-**Commit:** cd1f831
-
----
-
-### Finding 4 — Dead paths in project templates ✓
-
-**Issue:** Twelve broken references in `assets/project-template/` and `references/` pointing to deleted `docs/claude-code-lens-studio/NN-*` paths reorganized into `references/`. One editing artifact ("memory —") in material-editor-guide.md:390.
-
-**Fixes:**
-- ✓ PROJECT-PLAN.md:42: `references/build-pipeline.md` → `references/phase-progression.md`
-- ✓ PROJECT-STATE.md:22: `docs/.../17-onboarding-protocol.md` → `references/onboarding-protocol.md`
-- ✓ PROJECT-STATE.md:60: `docs/.../15-phase-progression.md` → `references/phase-progression.md`
-- ✓ PROJECT-STATE.md:103: `docs/.../10-watch-points-methodology.md` → `references/watch-points-methodology.md`
-- ✓ PROJECT-STATE.md:126: `docs/.../16-ux-principle-locking.md` → `references/ux-principle-locking.md`
-- ✓ PROJECT-STATE.md:162: `docs/PIPELINE-GOTCHAS.md` → `references/lens-studio-api-gotchas.md` (via growth protocol)
-- ✓ material-editor-guide.md:390: `face-effect-tuning-via-inspector.md` → `face-effects-deep-dive.md` (+ fix editing artifact)
-- ✓ SECURITY-AND-PRIVACY.md:3: `docs/VALTECH-PRESENTATION.md` → `VALTECH-PRESENTATION.md` (root-level)
-- ✓ SKILL.md:122: Clarified that PROJECT-STATE, PROJECT-PLAN, docs/*, INSPIRATION/, project-info/ are per-client-project files created by agent, not repo files
-
-**All rewritten as "the skill's `references/...`" where used in project templates to avoid ambiguity.**
-
-**Commit:** 913bbd8
-
----
-
-### Finding 5 — Version tracking consistency ✓
-
-**Issue:** CONTRIBUTING.md step 3 prescribed bumping `version:` in SKILL.md frontmatter, but no such field existed. The sibling `radon-skill-growth` skill uses `metadata.version:`. README.md:116 showed illustrative v0.7.5 (doesn't exist; sequence is v0.7.4 → v0.8.0).
-
-**Fixes:**
-- ✓ Added `metadata.version: "0.8.0"` to SKILL.md frontmatter (matches latest tag + CHANGELOG heading)
-- ✓ Updated CONTRIBUTING.md step 3 to reference `metadata.version:` (not `version:`)
-- ✓ Updated verification step (line 76) to grep `metadata:` instead of `version:`
-- ✓ Updated Version convention section to use correct field name
-- ✓ Changed README.md example from v0.7.5 to v0.8.0, marked as "(example)" for clarity
-
-**Commit:** cccbeda
-
----
-
-## Decisions Required (8 items)
-
-### 2c — Platform scope for install.sh
-
-**Current state:** README.md:59 lists "macOS, Linux, or Windows WSL terminal" as prerequisites, but `bin/install.sh:50-57` exits with macOS-only message and is in Swedish.
-
-**Options:**
-1. **Scope README honestly to macOS** for the scripted install path (faster, immediate)
-2. **Extend install.sh to support Linux/Windows** (more work, enables broader adoption)
-
-**Recommendation:** Option 1 (scope honestly) unless Valtech expects Linux/Windows support for skill deployment.
-
-**Action:** Update README.md:59 to list macOS only, or extend install.sh and update README.
-
----
-
-### 3 — Orphaned script disposition
-
-**File:** `scripts/session-sync-hook.sh` (1407 bytes)
-
-**What it does:** Counts 💡 entries in CHANGELOG.md; flags every 10th one for consolidation review. Not the auto-sync hook (that's `scripts/session-sync.sh`, 3797 bytes).
-
-**Context:** Appears copied from `radon-skill-growth/assets/session-sync-hook.sh` during v1.0 adoption. Two files one character apart in name, doing unrelated things, one dead — trap for next maintainer.
-
-**Options:**
-1. **Delete** (it belongs to shared skill, not this skill)
-2. **Wire up deliberately + document** (make it intentional, update CONTRIBUTING.md)
-
-**Recommendation:** Delete (it's a shared-skill artifact). No references to it anywhere in the repo.
-
-**Action:** Decide, or I will delete it.
-
----
-
-### 6 — Hosted manual URLs post-migration
-
-**Current URLs:** `*.niklaz-a-hallberg.workers.dev` in README.md:50-53, docs/index.html, docs/_redirects, ONBOARDING-SNIPPET.md
-
-**Issue:** Personal domain, exposed in public repo now. After org migration, should point to enterprise domain.
-
-**Occurrences:**
-- README.md:50-53 (4 URLs)
-- docs/index.html (router page)
-- docs/_redirects (path rewrites)
-- ONBOARDING-SNIPPET.md (email/Slack invite templates)
-
-**Action needed:** Provide canonical enterprise domain for hosted manuals. I will repoint all URLs.
-
----
-
-### 7 — Shared skill ownership: radon-skill-growth description
-
-**Issue:** The shared `radon-skill-growth` skill (separate repo) has description: "Personal knowledge-growth protocol for Niklaz's domain skills". Now that this skill is enterprise-owned, that description is inaccurate/outdated.
-
-**Status:** That skill is in a separate repository — cannot edit from here.
-
-**Action:** After migration, ask maintainer of `radon-skill-growth` to update its description to reflect Valtech RADON ownership (or note this as known issue).
-
----
-
-### 8a — LICENSE addition
-
-**Current state:** No LICENSE file in repo.
-
-**Options:**
-1. MIT
-2. Apache 2.0
-3. Proprietary (all rights reserved to Valtech RADON)
-4. Other
-
-**Recommendation:** If sharing internally only, proprietary. If planning open-source contribution, MIT.
-
-**Action:** Provide license choice. I will add LICENSE file + update .gitignore if needed.
-
----
-
-### 8b — CODEOWNERS file
-
-**Current state:** No CODEOWNERS file.
-
-**Action needed:** Provide list of who owns which directories (e.g., radon-skill-growth team owns `references/skill-growth-protocol.superseded.md`? Claude Code team owns `references/` broadly? etc.).
-
-**Note:** CODEOWNERS only matters post-migration once Valtech org has branch protection rules.
-
----
-
-### 8c — Stale remote branch cleanup
-
-**Branch:** `origin/cloudflare/workers-autoconfig` (visible in `git branch -a` at session start)
-
-**Status:** Orphaned. Not merged to main, no references in repo.
-
-**Action:** After PR merge to main, delete this branch from GitHub. (I cannot delete remote branches; you must do via GitHub UI or `git push origin --delete cloudflare/workers-autoconfig`.)
-
----
-
-### 9 — Plugin packaging: radon-skill-growth bundling strategy
-
-**Issue:** Colleagues must clone this repo AND separately install `radon-skill-growth`, and dependency fails silently (see Finding 1).
-
-**Solution:** Package as plugin with bundled dependency under `skills/` directory. But: how to include `radon-skill-growth`?
-
-**Options:**
-1. **Git submodule** — cleaner separation, can update shared skill independently
-2. **Vendored copy** — simpler distribution, harder to maintain when shared skill updates
-3. **Separate plugin** — each skill installable from marketplace independently (requires resolving inter-plugin dependencies, may not be supported yet)
-
-**Action needed:** Choose bundling strategy. I will:
-- Create `.claude-plugin/plugin.json`
-- Add skill structure documentation
-- Verify with `/plugin marketplace add ./` before committing
-
----
-
-## Deferred Items (document but don't implement)
-
-### Large file refactoring
-
-**Files:** `references/lens-studio-api-gotchas.md` (1527 lines), `references/lens-recipe-catalog.md` (1135 lines)
-
-**Proposal:** Split into smaller files by topic (e.g., `gotchas/compositing.md`, `gotchas/scripting.md`, etc.) to reduce per-file context load.
-
-**Status:** Deferred — too large for this PR. Propose after migration stabilizes.
-
----
-
-### Snap docs mirror staleness
-
-**File:** `references/snap-docs/.mirror-meta.md` records `captured: 2026-05-13` (4 months old) against Lens Studio 5.x
-
-**Proposal:** Re-mirror cadence (quarterly? bi-annual?) + staleness warning agent can surface to user.
-
-**Status:** Deferred — do not re-mirror now. Capture proposal for future quarterly review.
-
----
-
-### Voice and pedagogy file organization
-
-**Discrepancy:** `references/voice-and-pedagogy.md` cross-references `mentor-flow-patterns.md`, `glossary-translation.md`, `stepped-conversation-patterns.md` as separate files, but SKILL.md:127 describes voice-and-pedagogy as if it contains all their contents.
-
-**Clarification needed:** Does voice-and-pedagogy.md already include these, or are they missing files?
-
-**Status:** Investigate and document correct structure after migration.
-
----
-
-## GitHub Manual Tasks (post-PR merge)
-
-1. ✓ (Verify all links work) — run `scripts/check-links.sh` output below
-2. Move repo to Valtech RADON GitHub organization
-3. Set up branch protection on main (force-push + deletion blocked)
-4. Delete stale branch `origin/cloudflare/workers-autoconfig`
-5. Configure CODEOWNERS file (after .github/CODEOWNERS added)
-6. Update repo visibility (currently public — verify intent)
-7. Add deploy key for automated CI if needed
-8. Update `radon-skill-growth` description in its own repo
-
----
-
-## check-links.sh Output
-
-*(To be generated after you provide decision on Finding 9 — will include verification that all corrected paths resolve.)*
-
-Run this in repo root after merge:
-```bash
-bash scripts/check-links.sh
+## Fixes Applied — one commit per logical change
+
+### 1. Growth-protocol chain repointed (CRITICAL) — commit 2a5864f
+
+Commit 7e7a268 renamed `references/skill-growth-protocol.md` → `.superseded.md`
+and added `_growth-protocol-pointer.md`, but 9 references in 7 files were not
+propagated. Session-opening step 1 in `operational-discipline.md` pointed to
+the non-existent file — the entire discovery-capture chain was silently broken
+for every new colleague.
+
+**Files updated:** `operational-discipline.md:11`, `SKILL.md:155`, `README.md:149`,
+`VALTECH-PRESENTATION.md:51,139,238`, `VALTECH-PRESENTATION-SV.md:51,139,238`,
+`docs/SECURITY-AND-PRIVACY.md:26,48,71`, `CHANGELOG.md:7` (header prose only).
+
+The line-range citation `lines 18–82` at `docs/SECURITY-AND-PRIVACY.md:48` was
+removed — line ranges into another repo's file rot immediately.
+
+`references/_growth-protocol-pointer.md` was hardened with an explicit
+prerequisite that the shared skill must be reachable, plain-text fallback
+instructions if it is not, and a canonical-location field (updated once the
+plugin structure was created in commit 8d9792f).
+
+`.superseded.md` is kept in place as the fallback safety net.
+
+### 2. Install path contradictions resolved — commit cd1f831
+
+- README.md cloned into the current directory; `install.sh` expected the repo
+  at `~/.claude/skills/lens-studio-snapchat-filter`. README now matches
+  `INSTALL-REFERENCE.md`.
+- `install.sh` used `npm install -g @anthropic-ai/claude-code`; every doc used
+  `curl -fsSL https://claude.ai/install.sh | bash`. `install.sh` now uses the
+  documented curl method; the Node.js prerequisite check (which only served
+  the npm path) is removed.
+
+### 3. Install-path platform scope honest — commit 1c9821d
+
+Per user decision: scope scripted install path to macOS only in README and
+INSTALL-REFERENCE. Linux/WSL support noted as deferred until someone can test
+and own it. Manual install on Linux/WSL is still possible by adapting the
+shell commands in INSTALL-REFERENCE.md.
+
+### 4. Orphaned `scripts/session-sync-hook.sh` deleted — commit 90a5014
+
+Per user decision. The script was a consolidation-counter copied from
+`radon-skill-growth/assets/session-sync-hook.sh` during v1.0 adoption. Zero
+references anywhere in the repo. Its near-identical name to the real
+`session-sync.sh` was a maintainer trap. Deleted.
+
+### 5. Broken documentation paths repointed — commit 913bbd8
+
+Twelve stale references in `assets/project-template/` pointed at a docs layout
+that was reorganised into `references/`. Two more elsewhere. Each fix
+verified against the actual target file contents (probable-target guesses
+in the audit were spot-checked, not blindly applied):
+
+| File:line | Was | Now |
+|---|---|---|
+| `PROJECT-PLAN.md:42` | `references/build-pipeline.md` | `references/phase-progression.md` |
+| `PROJECT-PLAN.md:87-88` | `build-pipeline.md` (×2) | `references/phase-progression.md` |
+| `PROJECT-STATE.md:22` | `docs/claude-code-lens-studio/17-onboarding-protocol.md` | `references/onboarding-protocol.md` |
+| `PROJECT-STATE.md:60` | `docs/claude-code-lens-studio/15-phase-progression.md` | `references/phase-progression.md` |
+| `PROJECT-STATE.md:103` | `docs/claude-code-lens-studio/10-watch-points-methodology.md` | `references/watch-points-methodology.md` |
+| `PROJECT-STATE.md:126` | `docs/claude-code-lens-studio/16-ux-principle-locking.md` | `references/ux-principle-locking.md` |
+| `PROJECT-STATE.md:162` | `docs/PIPELINE-GOTCHAS.md` | `references/lens-studio-api-gotchas.md` (via growth protocol) |
+| `references/material-editor-guide.md:390` | `face-effect-tuning-via-inspector.md` (nonexistent) + editing artifact "…md memory —" | `face-effects-deep-dive.md` (sentence repaired) |
+| `docs/SECURITY-AND-PRIVACY.md:3` | `docs/VALTECH-PRESENTATION.md` (wrong dir) | `VALTECH-PRESENTATION.md` (root) |
+
+Project-template files now say "the skill's `references/...`" so the reader
+(who is inside a client project when they read the template) is not confused
+about which repo the target lives in.
+
+`SKILL.md:122` was reworded: PROJECT-STATE.md, PROJECT-PLAN.md,
+docs/TECH-SPEC.md, docs/USER-EXPERIENCE.md, docs/PROJECT-DECISIONS.md,
+INSPIRATION/, project-info/client-brief.md are per-CLIENT-PROJECT files
+scaffolded by the agent — not repo files. Template scaffold at
+`assets/project-template/` verified to scaffold PROJECT-STATE.md and
+PROJECT-PLAN.md; the three `docs/` files are created ad hoc during Phase 0
+per `references/onboarding-protocol.md`.
+
+### 6. Two more real references caught by check-links.sh — commit 930a181
+
+- `references/mcp-tool-schemas.md`: 18 references used `../body-anchored-calibration.md`
+  and `../snap-docs/*`. From `references/`, `../` resolves to repo root, not
+  back to `references/`. Fixed to `./body-anchored-calibration.md` and
+  `./snap-docs/*`.
+- `references/capability-validation-protocol.md:3`: `build-pipeline.md` →
+  `phase-progression.md` (missed in commit 913bbd8).
+- `references/capability-tiers.md:178`: `project_ls_521_release.md` was an
+  editing artifact pointing at a non-existent memory file. Rephrased to
+  refer to Snap's release notes in general.
+
+### 7. Version tracking consistent — commit cccbeda
+
+- `SKILL.md` gained `metadata.version: "0.8.0"` in frontmatter (matches the
+  latest git tag and CHANGELOG heading). Pattern taken from the sibling
+  `radon-skill-growth` skill (`metadata.version: "1.0"`).
+- `CONTRIBUTING.md` step 3, verification step, and Version-convention section
+  updated to say `metadata.version:` (not `version:`).
+- README.md:116 illustrative example `docs(v0.7.5)` was invalid (sequence is
+  v0.7.4 → v0.8.0). Changed to `docs(v0.8.0)` and marked the whole block as
+  "(example)" so it is unambiguous prose.
+- Frontmatter `name` (24 chars, kebab-case) and `description` (766 chars,
+  third person) verified against Anthropic's constraints (≤64 / ≤1024).
+
+### 8. De-personalised — commit 1392f9e
+
+**URL rewrites** (all clearly marked as placeholders; canonical Valtech domain
+TBD post-migration):
+
+- `*.niklaz-a-hallberg.workers.dev` → `docs.example.valtech.com/radon/lens-studio`
+  in README.md, VALTECH-PRESENTATION*.md, ONBOARDING-SNIPPET.md, docs/_redirects
+- `github.com/niklazhallberg/valtech-radon-lens-studio-skill` →
+  `github.com/valtech-radon/lens-studio-snapchat-filter` in README.md,
+  bin/install.sh, CONTRIBUTING.md, docs/MANUAL*.html
+- Visible TODO in README and ONBOARDING-SNIPPET.md warning that the URLs are
+  placeholders and MUST NOT be distributed until the canonical Valtech
+  hosting domain is supplied
+
+**Owner references:**
+
+- README.md:15: "I (Niklaz) built" → "Valtech RADON built"
+- README.md:225: "Owner: Niklaz Hallberg" → "Owner: Valtech RADON"
+- ONBOARDING-SNIPPET.md: `/Niklaz` signatures → `/Valtech RADON`
+- `references/snap-docs/.mirror-meta.md`:
+  - `cache_location: ~/Projects/adidas-lens/…` → `~/Projects/<lens-project>/…`
+    **(client name removed — critical for a public repo)**
+  - `captured_by: Niklaz Hallberg / Valtech Radon` → `Valtech RADON`
+
+**Hardcoded install paths:**
+
+- `scripts/session-sync.sh:25`: `SKILL_DIR="${HOME}/.claude/skills/…"` →
+  derived from `BASH_SOURCE`'s parent-of-parent so the hook survives any
+  install path (direct clone, plugin install, symlink)
+- `bin/install.sh:121`: same change
+
+**Security-model rewrites** (repo is now public):
+
+- README.md "Access" section: private/invitation-only → public repo,
+  PR-based contribution, no direct pushes to main
+- README.md "At a glance": Owner Valtech RADON, PR-based status
+- docs/README.md: rewritten to warn that the ENTIRE repo is public (not just
+  docs/), so the "no client data / no credentials" rule applies everywhere
+- docs/SECURITY-AND-PRIVACY.md "Repo security" table: public repo, PR-only
+  writes; explicit callout that public repo makes the Generalization rule
+  DOUBLY critical
+- VALTECH-PRESENTATION*.md:172: rewritten from "private personal account" to
+  "public under Valtech RADON, PR-based"
+
+### 9. Repo hygiene — commit bffdca1
+
+- `.gitignore` expanded from `.claude/` + `.DS_Store` to also cover `*.skill`,
+  `node_modules/`, `.env*` (with `!.env.example`), `*.log`, `Thumbs.db`,
+  editor files
+- `NOTICE.md` added per user decision (internal-use notice, proprietary — not
+  MIT/Apache): states repo is Valtech RADON internal material; lists the
+  categories that must never be committed (client data, personal data,
+  credentials, unapproved third-party materials); refers to Valtech
+  employment/contractor agreements for binding terms; explicitly not legal
+  advice
+- `LICENSE` added as an all-rights-reserved / proprietary Valtech RADON file
+  that cross-references NOTICE.md
+- `.github/CODEOWNERS` created with transitional wildcard `* @niklaz-hallberg_valtech`
+  per user decision, and a TODO block instructing the maintainer to
+  (a) verify the GitHub handle exists in the Valtech org,
+  (b) replace with team refs (e.g., `@valtech-radon/lens-studio-core`) if the
+  org uses that pattern,
+  (c) once RADON has named owners for core / lens-studio / design / copy / PM
+  / marketing, replace the wildcard with directory-scoped rules.
+  **Explicitly warns against inventing team names (e.g., "radon-skill-growth"
+  or "RADON skill guild") before the org creates them.**
+
+### 10. Distribution + growth-protocol write-back updated — commit 6bb2142
+
+**CONTRIBUTING.md rewritten:**
+
+- Deleted the "Building the .skill file" section (7 manual steps per release)
+- Deleted the OneDrive workflow (upload, back up old, test fresh install)
+- Replaced with: push to `main` (via PR) → colleagues run
+  `/plugin marketplace update`
+- All workflow steps now require feature branch + PR (no direct pushes)
+- Added a "Growth protocol — writes back as PR" section: agent creates branch,
+  commits generalised entry, opens PR — the user's in-flow approval moment is
+  unchanged, the mechanical write path becomes a reviewable diff
+- Added security-check note that public repo makes screenshot-credential
+  rotation doubly important
+
+**`references/_growth-protocol-pointer.md`:**
+
+- Added "Write-back is via PR, not direct push" section
+- Explicit rule: branch + PR always; this repo's rule takes precedence over
+  any direct-push pattern in the shared skill
+
+Rationale: more than 5 people will hold write access under the enterprise
+org; a PR-based flow gives a real audit trail and blocks accidental
+client-data leaks before merge — particularly critical now that the repo
+is public.
+
+### 11. Plugin packaging with vendored shared skill — commit 8d9792f
+
+Per user decision (vendored copy, not submodule, not separate plugin):
+
+- Added `.claude-plugin/plugin.json` — manifest declaring both skills, plugin
+  name `valtech-radon-lens-studio`, version 0.8.0
+- Vendored `radon-skill-growth` under `skills/radon-skill-growth/` — snapshot
+  of upstream commit `1cf4dc454cdf96ef4b44141b66dd1f88746e353b` (v1.0)
+- Added `skills/radon-skill-growth/PROVENANCE.md` — records upstream URL,
+  vendored SHA and date, sync procedure (quarterly or on upstream minor
+  release), and deprecation path (promote to org-level plugin once
+  enterprise marketplace is live and inter-plugin deps are verified)
+
+**Guardrails observed per user instruction:**
+
+- No new hooks
+- No new MCP servers
+- No new external API calls
+- No new credentials
+- No new GitHub Actions
+- No automatic publishing
+- No new executable behaviour beyond existing reviewed scripts
+- Primary skill is left at repo root (backward compatible with existing
+  clones); `plugin.json` declares both skill locations
+
+**Not verified** in this PR: `plugin.json` load via
+`/plugin marketplace add ./` — requires running Claude Code with plugin
+support and is a post-merge verification step.
+
+### 12. scripts/check-links.sh — commit 930a181
+
+New script per Finding 4. Walks all markdown, extracts backtick-quoted repo
+paths, resolves them, exits non-zero on any miss. Handles wildcards,
+placeholders, code fragments, external URLs, LS URI schemes, per-client-project
+scaffolded files (allowlist), and prose shorthand (bare filename anywhere in
+repo).
+
+## `check-links.sh` output — clean
+
+```
+$ bash scripts/check-links.sh
+Checked 632 path-like references.
+✓ All repo-relative markdown paths resolve.
 ```
 
-Expected: No broken links in markdown files relative to repo root.
+---
+
+## GitHub-side tasks still needed (manual, post-merge)
+
+You need to do these in the GitHub UI or via `gh` / `git push`; I have not
+and will not touch them from here.
+
+1. **Move the repo to a Valtech RADON GitHub organisation.** The clone URL
+   currently in code and docs (`valtech-radon/lens-studio-snapchat-filter`)
+   is a placeholder — align the actual org name to whatever you register.
+
+2. **Set up branch protection on `main`:**
+   - Require pull request reviews before merging
+   - Block force-pushes and branch deletion
+   - Require CODEOWNERS review (once CODEOWNERS is validated)
+
+3. **Delete stale branch `origin/cloudflare/workers-autoconfig`.**
+   Content: one commit (`46a7d76`) from `cloudflare-workers-and-pages[bot]`
+   dated 2026-05-27 adding `wrangler.jsonc` (Cloudflare deployment config
+   for the `valtech-radon-lens-studio-skill` name) and 7 lines of
+   Node/Wrangler entries to `.gitignore`. **Not merged, not needed for this
+   PR** (user directed us not to configure any hosting here). Safe to delete
+   manually via GitHub UI or:
+   `git push origin --delete cloudflare/workers-autoconfig`
+   **I did NOT delete this branch. Do it after the PR is merged.**
+
+4. **Validate `.github/CODEOWNERS`:**
+   - Confirm `@niklaz-hallberg_valtech` exists as a handle inside the Valtech
+     org (once the org is set up). If not, replace with the correct handle
+     or a team ref (e.g., `@valtech-radon/lens-studio-core`) — see the TODO
+     block in the file.
+   - Once RADON has named owners for the sub-domains (core, Lens Studio,
+     design, copy, PM, marketing), replace the wildcard with
+     directory-scoped rules.
+
+5. **Update `radon-skill-growth` skill's own description** (separate repo).
+   Its current description reads
+   "Personal knowledge-growth protocol for Niklaz's domain skills."
+   That skill is not editable from this repo — it lives at
+   `https://github.com/niklazhallberg/radon-skill-growth` (until it moves to
+   the enterprise org). Change to a Valtech RADON-owned, organisation-level
+   description. **This is a required post-migration follow-up** — the
+   description will otherwise contradict the enterprise ownership claimed
+   throughout this repo.
+
+6. **Configure the canonical Valtech RADON hosting domain** for the
+   onboarding manuals, then replace the `docs.example.valtech.com/radon/lens-studio`
+   placeholder URLs in:
+   - `README.md` (Getting-started URL table)
+   - `ONBOARDING-SNIPPET.md` (three Slack/email variants)
+   - `VALTECH-PRESENTATION.md` (Day-1 walkthrough)
+   - `VALTECH-PRESENTATION-SV.md` (Day-1 walkthrough)
+   Do NOT distribute the current documentation with the placeholder URLs.
+
+7. **Verify the plugin loads** via
+   `/plugin marketplace add ./` (or the equivalent enterprise-marketplace
+   command) before publishing. If the manifest fails, iterate on
+   `.claude-plugin/plugin.json`.
+
+8. **Publish the plugin** to the Valtech RADON marketplace once one exists.
+   Nothing in this PR triggers publishing automatically — that step is
+   deliberately manual (guardrail: no automatic publishing).
 
 ---
 
-## Next Steps
+## Deferred items — proposals only, do not implement in this PR
 
-1. **Review this report** — confirm all fixes are acceptable
-2. **Answer the 8 questions** above
-3. I will:
-   - Apply any remaining fixes
-   - De-personalize remaining URLs + clone targets (Finding 7)
-   - Add repo hygiene files (Finding 8)
-   - Create plugin structure (Finding 9)
-   - Generate and paste `check-links.sh` output
-4. **Open PR** with all commits
-5. **After merge:** You handle GitHub-level tasks (branch protection, CODEOWNERS config, branch deletion, etc.)
+### D1 — Split large reference files
+
+`references/lens-studio-api-gotchas.md` (~1527 lines) and
+`references/lens-recipe-catalog.md` (~1135 lines) each consume a large share
+of the Claude Code context window when loaded.
+
+**Proposal:** split by topic once the plugin ships and colleagues report
+real usage patterns. Candidate splits:
+- `gotchas/mcp-and-mutations.md`, `gotchas/scripting-runtime.md`,
+  `gotchas/scene-and-components.md`, `gotchas/tween-and-animation.md`
+- `recipes/face/`, `recipes/world/`, `recipes/body/`, `recipes/commerce/`,
+  `recipes/sponsored/`
+
+Do not split now — the current single-file structure is what the growth
+protocol has been writing into for 3+ months. A split would fragment the
+CHANGELOG's `File:` pointers and needs its own PR.
+
+### D2 — Snap docs mirror re-mirror cadence
+
+`references/snap-docs/.mirror-meta.md` records `captured: 2026-05-13`
+against Lens Studio 5.x. That is ~4 months stale as of today. Between then
+and now, Snap released LS 5.21 (visible from the plain-text release notes
+the agent can fetch) — some captured pages may be behind.
+
+**Proposal:**
+- Re-mirror cadence: **quarterly**, plus on any major LS version bump
+  (5.x → 6.x)
+- The agent should surface a staleness warning at Phase 0 if
+  `.mirror-meta.md`'s `captured:` date is > 90 days old and the user is
+  starting a new project
+- A stand-alone `references/snap-docs/.refetch.sh` script is a future task
+  (recorded in the file's own Maintenance section)
+
+Do not re-mirror now — user directed us not to touch snap-docs in this PR.
+
+### D3 — Voice-and-pedagogy file organisation discrepancy
+
+`references/voice-and-pedagogy.md` cross-references `mentor-flow-patterns.md`,
+`glossary-translation.md`, and `stepped-conversation-patterns.md` as separate
+files. `SKILL.md:127` (in the References-load-on-demand section) describes
+voice-and-pedagogy as if it already CONTAINS "full templates, glossary
+translations, mentor-flow patterns, stepped-conversation discipline".
+
+Grep confirms `mentor-flow-patterns.md`, `glossary-translation.md`, and
+`stepped-conversation-patterns.md` **do not exist** as separate files —
+their content lives inside `voice-and-pedagogy.md`. So SKILL.md:127 is
+correct; the cross-references inside voice-and-pedagogy.md itself are
+pointing at sub-sections that have been rolled up, not at real files.
+
+**Proposal:** in a future PR, either
+- (a) update the cross-references inside `voice-and-pedagogy.md` to point at
+  the correct `## Heading` anchors within the same file, or
+- (b) split the content back out into the referenced files if the single
+  file has become unwieldy.
+
+Prefer (a) — the current single-file structure is efficient for context
+loading; the fix is a heading-anchor rewrite, not a file split.
+
+Do not fix now — it is a cosmetic navigation issue, not a functional bug,
+and touching `voice-and-pedagogy.md` mid-migration risks conflicts with any
+in-flight voice work.
+
+### D4 — Deprecate `scripts/session-sync.sh` once marketplace is live
+
+`scripts/session-sync.sh` (the SessionStart hook that runs `git pull --ff-only`
+on the skill repo before each Claude Code session) becomes redundant with
+`/plugin marketplace update` once the enterprise marketplace is live and
+verified. The user directed us **not** to remove it in this PR — it stays
+functional for existing users who have not migrated to the plugin.
+
+**Proposal:** once the marketplace is verified working across ≥3 colleagues
+on real projects, deprecate the hook in a follow-up PR — replace the script
+body with a "please migrate to the plugin" one-liner, and eventually delete
+it.
 
 ---
 
-## File Summary
+## Follow-up items for the shared `radon-skill-growth` skill (separate repo)
 
-**Total changed files:** 25+  
-**Total commits:** 4  
-**Lines added/removed:** ~100 net
+These belong to the shared skill's own repo, not this one. Note them here so
+they are not lost.
 
-All changes are:
-- Backwards-compatible (no API breaks)
-- Non-destructive (no deletions, only clarifications and repoints)
-- Atomic (one logical change per commit)
-- Reversible (git history preserved; can undo any commit)
+- Description update (see GitHub-side task #5 above)
+- Ownership move to the Valtech RADON org
+- Consider whether `radon-skill-growth` should itself become a first-class
+  plugin in the enterprise marketplace once inter-plugin dependencies are
+  verified (see the deprecation-path note in
+  `skills/radon-skill-growth/PROVENANCE.md`)
+
+---
+
+## Guardrails observed in this PR
+
+Per the user's additional implementation guardrail on Finding 9, the PR
+adds skills, references, templates, and documentation. It does **not** add
+any of the following:
+
+- ❌ New hooks (none added; existing `scripts/session-sync.sh` preserved)
+- ❌ New MCP servers
+- ❌ New external API calls
+- ❌ New credentials / tokens
+- ❌ New GitHub Actions
+- ❌ Automatic publishing
+- ❌ New executable behaviour beyond existing reviewed scripts
+
+The only new script added is `scripts/check-links.sh` — read-only, offline,
+walks markdown files and exits with a status code. It performs no network
+I/O, writes no files, and touches no external systems.
+
+---
+
+## Commit list
+
+```
+930a181  chore: add scripts/check-links.sh + fix references it caught + pointer update
+8d9792f  feat: package as Claude Code plugin with vendored radon-skill-growth
+6bb2142  chore: switch to plugin-marketplace distribution + PR-based growth protocol
+bffdca1  chore: add repo hygiene — .gitignore expansion, NOTICE.md, LICENSE, CODEOWNERS
+1392f9e  refactor: de-personalize repo — replace personal URLs, owner refs, hardcoded paths
+90a5014  chore: remove orphaned scripts/session-sync-hook.sh
+1c9821d  docs: scope scripted install to macOS honestly
+88fff27  docs: add comprehensive enterprise migration audit report  (this file, first draft)
+cccbeda  fix: add version tracking + update documentation
+913bbd8  fix: correct broken documentation links in project templates + clarify project-scoped files
+cd1f831  fix: align Claude Code install method across all docs + fix clone target in README
+2a5864f  fix(critical): repoint all broken growth-protocol references + harden pointer
+```
+
+Twelve atomic commits, one logical change each. Every commit has a
+`Co-Authored-By: Claude Haiku 4.5` trailer.
