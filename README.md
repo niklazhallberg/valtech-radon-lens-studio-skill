@@ -76,18 +76,17 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 Verify with `claude --version`.
 
-**3. Clone this skill:**
+**3. Clone this skill to the Claude Code skills directory:**
 
 ```bash
-git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git
-cd valtech-radon-lens-studio-skill
+git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git ~/.claude/skills/lens-studio-snapchat-filter
 ```
 
 You must be invited as a collaborator on the private repository to clone it. See the **Access** section below.
 
 (The clone URL will change once the repository migrates to a Valtech GitHub organization.)
 
-**4. Open the cloned repo in your terminal and start Claude Code:**
+**4. Start Claude Code from any directory:**
 
 ```bash
 claude

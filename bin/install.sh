@@ -51,19 +51,7 @@ Säg till maintainer på Slack om du behöver Windows-stöd."
 fi
 
 # ─── 2. Pre-reqs ─────────────────────────────────────────────────────
-header "2. Kollar att du har Node.js och git"
-if command -v node >/dev/null 2>&1; then
-  ok "Node.js hittat ($(node --version))"
-else
-  fail "Node.js saknas på din dator." \
-"Node.js är programmet vi behöver för att köra Claude Code.
-
-1. Ladda ner Node.js: https://nodejs.org/download (välj LTS-versionen)
-2. Installera (klicka dig igenom)
-3. Stäng terminalen
-4. Öppna en ny terminal och kör install.sh igen"
-fi
-
+header "2. Kollar att du har git"
 if command -v git >/dev/null 2>&1; then
   ok "git hittat ($(git --version | awk '{print $3}'))"
 else
@@ -82,19 +70,16 @@ header "3. Installerar Claude Code (eller bekräftar att det redan finns)"
 if command -v claude >/dev/null 2>&1; then
   ok "Claude Code redan installerat ($(claude --version 2>/dev/null | head -1))"
 else
-  say "Installerar via npm... (kan ta upp till 1 minut)"
-  if npm install -g @anthropic-ai/claude-code >/tmp/claude-install.log 2>&1; then
+  say "Installerar via officiell installatör... (kan ta upp till 1 minut)"
+  if curl -fsSL https://claude.ai/install.sh | bash >/tmp/claude-install.log 2>&1; then
     ok "Claude Code installerat"
   else
     fail "Installationen av Claude Code misslyckades." \
-"Vanligaste orsaken är att npm behöver sudo-rättigheter.
+"Kolla loggen för detaljer:
 
-Försök detta i terminalen:
-
-  sudo npm install -g @anthropic-ai/claude-code
-
-Om det inte heller funkar, kolla loggen:
   cat /tmp/claude-install.log
+
+Om curl inte fungerar på din dator, besök https://claude.ai för alternativa installationsmetoder.
 
 Kör sen install.sh igen."
   fi
