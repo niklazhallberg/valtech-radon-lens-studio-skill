@@ -2,20 +2,22 @@
 
 **Date:** 2026-09-14
 **Auditor:** Claude Code (following radon-skill-growth v1.0 protocol)
-**Status:** READY FOR REVIEW — 12 commits, all findings addressed
+**Status:** READY FOR REVIEW — 16 commits, all findings addressed, both
+publication blockers from the first safety gate fixed
 
 ---
 
 ## Summary
 
-Enterprise-migration audit of `valtech-radon-lens-studio-skill` from personal
-GitHub account to Valtech RADON enterprise organisation. All nine findings
-addressed. All decisions applied per user direction. `scripts/check-links.sh`
-passes with 0 broken references (632 path-like references checked).
+Enterprise-migration audit of `valtech-radon-lens-studio-skill` from a personal
+GitHub account to a Valtech RADON enterprise organisation. All nine original
+findings addressed and both blockers from the plain-language publication gate
+resolved in a follow-up wave (commits `8793a55`, `89c7ab5`, `c52d523`, `aa102e7`).
 
-**Commits:** 12
-**Files changed:** ~40
-**Net lines:** +1500 / -200 (mostly plugin structure + vendored shared skill)
+**Commits:** 16
+**Files changed:** ~55
+**Net lines:** +1900 / -260 (plugin structure + vendored shared skill + client
+data generalisation + install path hardening)
 
 ---
 
@@ -253,13 +255,192 @@ placeholders, code fragments, external URLs, LS URI schemes, per-client-project
 scaffolded files (allowlist), and prose shorthand (bare filename anywhere in
 repo).
 
-## `check-links.sh` output — clean
+### 13. Client-data generalisation — commit 8793a55
+
+First blocker from the publication gate. Repo is public and `NOTICE.md` forbids
+client names in concrete commercial contexts. This commit removed RFSU, adidas,
+Samba, and campaign identifiers from non-vendored content while preserving the
+technical lesson each entry had captured.
+
+- CHANGELOG.md: 13 headings stamped `[project: rfsu-bang-fortune-lens]` →
+  `[project: sponsored-lens-production]`; 2 prose mentions of the same client
+  → `a previous sponsored Lens project`.
+- VALTECH-PRESENTATION.md and its Swedish twin: the illustrative example line
+  `❌ Client names (adidas, RFSU, Ray-Ban, etc.)` → `❌ Client names or
+  campaign identifiers`. The Generalization rule now states its principle
+  instead of naming real clients as examples.
+- 10 files in `references/` rewritten to use neutral phrases:
+  `composition-patterns.md`, `glossary-translation.md`, `concierge-setup-flow.md`,
+  `mentor-flow-patterns.md`, `mcp-tool-schemas.md`, `lens-recipe-catalog.md`,
+  `phase-progression.md`, `sponsored-lens-submission.md`,
+  `voice-and-pedagogy.md`, `capability-tiers.md`.
+- Preserved everywhere: metrics, technical guidance, and the factual claim
+  that the skill was seeded from real production work.
+
+### 14. Client-data generalisation in user-facing manuals — commit 89c7ab5
+
+Same principle, applied to the manuals a colleague actually reads at onboarding.
+
+- `docs/MANUAL-EN.md` and `docs/MANUAL-SV.md` (six matched changes each):
+  hero example, time-saved benchmark, empirical-validation paragraph,
+  onboarding intake example, Phase 2 concrete example, INSPIRATION-folder
+  example, and 'how was this skill built?' attribution — all rewritten to
+  refer to `a previous sponsored Lens production` / `the seed project`
+  instead of the real client and campaign. Retained: 5-day build time,
+  the tap-to-open-a-package mechanic, decelerating-callback rhythm,
+  Tier 1 classification.
+- `docs/MANUAL.html` and `docs/MANUAL-EN.html` screenshot section: caption
+  and image `alt` text no longer name the client or product; explicit HTML
+  comment added warning that the bundled screenshot itself
+  (`img/Image_Snapchat_Tutorial.png`) shows visible branding and must be
+  replaced or redacted before external distribution. **The image itself
+  is not modified by this PR; the TODO is the flag.**
+- `docs/INSTALL-REFERENCE.md`: the example project folder `~/Projects/adidas-lens`
+  → `~/Projects/example-lens`, and the `spotify-lens / olw-lens / voi-lens`
+  client-list example was removed.
+
+### 15. Installation destination — commit c52d523
+
+Second blocker from the publication gate. The earlier PR embedded the
+placeholder `valtech-radon/lens-studio-snapchat-filter` as if it were a
+working clone URL. That org does not exist. Following the docs would fail.
+
+- `bin/install.sh`: no default clone URL. If neither
+  `LENS_STUDIO_SKILL_REPO_URL` nor `--repo <URL>` is supplied, the script
+  fails safely with a Swedish message pointing the user at the maintainer
+  for a local copy and shows the exact env-var / --repo pattern for once
+  a verified URL exists. Actual clone happens only when the operator
+  explicitly supplies a URL.
+- `README.md` step 3: replaced with a flagged 'UNAVAILABLE VIA A PUBLIC
+  CLONE URL RIGHT NOW' block explaining the supported pilot path (local
+  copy from maintainer) and showing the env-var / `--repo` pattern.
+- `docs/INSTALL-REFERENCE.md` step 3: retired the `.skill zip` option and
+  the placeholder git-clone option. Added a bright status callout;
+  Option A is now `Local checkout from the skill maintainer`; Option B is
+  `Git clone (only once a verified organisation URL exists)`.
+- `docs/MANUAL-EN.html` and `docs/MANUAL.html`: step 3 'Accept the
+  invitation' rewritten as 'Get access (pending marketplace registration)'.
+  Step 6 clone code block rewritten with a status warning and the
+  env-var install template. The bare `valtech-radon/...` output line and
+  the five `https://github.com/valtech-radon/...` hyperlinks in the
+  'Want to know more?' section removed; replaced with a status note and
+  plain-text file references.
+- `docs/MANUAL-SIMPLE.html`: 'Download the skill + auto-sync' rewritten
+  with the status warning + env-var template. 'Email from Niklaz Hallberg'
+  invitation step replaced with the pending-marketplace status.
+- `docs/MANUAL-EN.md` and `docs/MANUAL-SV.md`: three-step overview no
+  longer references a `.skill` zip; explains 'the maintainer will hand
+  you a local copy'. Two `Niklaz at Valtech RADON maintains the skill`
+  attributions rephrased to `the skill-maintainer team at Valtech RADON`.
+- `docs/index.html`: footer `Built by Niklaz Hallberg · V_RADON` →
+  `Built by Valtech RADON`.
+- `VALTECH-PRESENTATION.md` and its Swedish twin (line 172): no longer
+  asserts a live URL; states that the specific organisation/repository
+  URL is not yet confirmed.
+- `CONTRIBUTING.md`: 'This GitHub repo (`valtech-radon/lens-studio-snapchat-filter`)
+  is canon' → 'the enterprise-owned GitHub repository for this plugin has
+  not yet been created or the current repository transferred'.
+- `.claude-plugin/plugin.json`: `name` reduced to a working identifier
+  `radon-lens-studio` (no longer asserting a GitHub org); `homepage`
+  changed to a deliberately-invalid placeholder
+  `https://example.invalid/radon-lens-studio-placeholder`. Two `$comment`
+  fields explain that both are TODO until the org and marketplace format
+  are finalised.
+
+### 16. Vendored growth skill — personal-reference removal — commit aa102e7
+
+Third blocker follow-up. Personal references to a named team member
+generalised inside the vendored copy only; upstream is not edited.
+
+- `skills/radon-skill-growth/SKILL.md`: description now reads
+  `Knowledge-growth protocol used by Valtech RADON's domain skills`
+  (was `Personal knowledge-growth protocol for Niklaz's domain skills`).
+  Body header shifted from `Niklaz's` to `Valtech RADON's` in the same
+  spirit. Kept the `personal`/`solo`/`single-user stance` framing that
+  describes the protocol's design tone — that is intentional design, not
+  a personal-identifier reference.
+- `skills/radon-skill-growth/scripts/finalize-skill.sh`: the example
+  `gh repo create niklazhallberg/$NAME` command → `gh repo create
+  <owner>/$NAME` with an inline instruction to substitute a real GitHub
+  account. The script only prints this as guidance; it does not execute
+  the command.
+- `skills/radon-skill-growth/PROVENANCE.md`: upstream URL
+  `https://github.com/niklazhallberg/radon-skill-growth` no longer
+  written out. Replaced with a factual note that the upstream is
+  currently under a personal GitHub account maintained by a Valtech
+  RADON team member, that the specific URL is intentionally omitted
+  because it points at a personal account, and that the skill maintainer
+  can share it privately if the sync procedure is invoked. Sync
+  procedure step 1 now says 'obtain the current upstream URL from the
+  skill maintainer'.
+
+---
+
+## `check-links.sh` output — clean, after all blocker fixes
 
 ```
 $ bash scripts/check-links.sh
-Checked 632 path-like references.
+Checked 634 path-like references.
 ✓ All repo-relative markdown paths resolve.
 ```
+
+## Final safety-scan results — after blocker fixes
+
+Explicit scans covering the categories in the plain-language publication gate.
+
+- **Client names in non-vendored content** (`adidas`, `rfsu`, `samba`,
+  `ray-ban`, `fortune.lens`, `bang.fortune`, `condom`): **no matches**
+  except one category-level industry description in
+  `references/snap-domain-context.md:18` (`Sexual Wellness (condoms,
+  lubricants, sex tech)` — an ad-policy category, not a client name).
+- **Campaign / project slugs** (`[project: rfsu-…]` etc.): **no matches**.
+- **Personal Workers domains** (`*.niklaz-a-hallberg.workers.dev`):
+  **no matches** outside historical MIGRATION-REPORT text.
+- **Personal GitHub URLs** (`niklazhallberg/...`): **no matches** outside
+  the deliberately-preserved `references/skill-growth-protocol.superseded.md`
+  safety-net file (line 300) and MIGRATION-REPORT.
+- **Personal name references** (`Niklaz` / `Niklaz Hallberg`) in
+  non-vendored content: **no matches** outside MIGRATION-REPORT.
+- **Credentials / tokens** (`api key`, `BEARER <token>`, `ghp_...`,
+  `sk-...`, `xoxb-`, `AKIA...`): **no matches**.
+- **`.env*` files anywhere in the working tree**: **no matches**.
+
+### Unavoidable historical / provenance mentions
+
+These I did **not** rewrite; each is a deliberate choice, listed here for
+transparency.
+
+- The current repo folder name / skill title `valtech-radon-lens-studio-skill`
+  appears at the top of `README.md`, `VALTECH-PRESENTATION*.md`, and
+  `docs/SECURITY-AND-PRIVACY.md`. This is the name of the folder on
+  disk; it is not asserted as a GitHub URL. The user directed me to
+  treat `valtech-radon` as a transitional placeholder, not an org name.
+  Once the repo is transferred or a new one created, this identifier
+  will be updated accordingly.
+- `references/skill-growth-protocol.superseded.md` is preserved
+  verbatim as a documented safety-net for the growth protocol. It
+  contains an old personal GitHub URL and a `[project: …]` slug on
+  line 300, and adidas/RFSU/Ray-Ban in the original example text. It
+  is not user-facing under normal operation; the pointer file directs
+  the agent to it only if the shared skill is unreachable.
+- `MIGRATION-REPORT.md` (this file) quotes the earlier state of the repo
+  as audit history. Client names and personal URLs appear inside quoted
+  or historical text, not as active references.
+- Vendored `skills/radon-skill-growth/` upstream provenance says the
+  source is under a personal GitHub account maintained by a Valtech
+  RADON team member. The URL itself is not exposed (per the third
+  blocker fix). This will be updated once the shared skill moves under
+  a Valtech RADON organisation.
+- One `example.invalid/radon-lens-studio-placeholder` string in
+  `plugin.json`. Deliberately using RFC 2606 `.invalid` TLD so the field
+  cannot resolve to a live host by accident. Two adjacent `$comment`
+  fields mark both `name` and `homepage` as TODO until org / marketplace
+  is finalised.
+- 14 `docs.example.valtech.com/radon/lens-studio` placeholder URLs in
+  the manuals and presentation files. Each is flanked by a visible TODO
+  block instructing that the URL is a placeholder and must be replaced
+  with the canonical Valtech RADON hosting domain before distribution.
+  No live domain is asserted.
 
 ---
 
@@ -442,6 +623,10 @@ I/O, writes no files, and touches no external systems.
 ## Commit list
 
 ```
+aa102e7  refactor(vendored): remove personal references to Niklaz in radon-skill-growth
+c52d523  fix: remove fake clone URLs, gate install.sh behind explicit verified URL
+89c7ab5  refactor: generalise client-identifying content in docs/MANUAL-*.md/html + INSTALL-REFERENCE
+8793a55  refactor: generalise client-identifying references per NOTICE.md policy
 930a181  chore: add scripts/check-links.sh + fix references it caught + pointer update
 8d9792f  feat: package as Claude Code plugin with vendored radon-skill-growth
 6bb2142  chore: switch to plugin-marketplace distribution + PR-based growth protocol
@@ -456,5 +641,6 @@ cd1f831  fix: align Claude Code install method across all docs + fix clone targe
 2a5864f  fix(critical): repoint all broken growth-protocol references + harden pointer
 ```
 
-Twelve atomic commits, one logical change each. Every commit has a
+Sixteen atomic commits, one logical change each — twelve from the original
+migration + four from the safety-gate blocker fixes. Every commit has a
 `Co-Authored-By: Claude Haiku 4.5` trailer.
