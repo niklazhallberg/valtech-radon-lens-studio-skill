@@ -584,6 +584,41 @@ on real projects, deprecate the hook in a follow-up PR — replace the script
 body with a "please migrate to the plugin" one-liner, and eventually delete
 it.
 
+### D5 — Screenshot `docs/img/Image_Snapchat_Tutorial.png` — internal pilot only, replace before external distribution
+
+The screenshot bundled with the manuals still shows visible branding from the
+seed project. This PR does not modify the image itself — only the surrounding
+caption and `alt` text were generalised, and a visible TODO block was added
+next to the image reference in both `docs/MANUAL.html` and `docs/MANUAL-EN.html`.
+
+**Distribution rule (applies regardless of the repository's current GitHub
+visibility):**
+
+- **Internal pilot use — allowed as-is.** The image may remain in the plugin
+  for internal Valtech RADON pilot use. This is a non-blocking follow-up for
+  the pilot.
+- **External or public distribution — blocked.** Before this plugin is
+  distributed outside the internal pilot audience (colleague onboarding
+  outside the pilot cohort, external sharing of the manuals, publishing to
+  a marketplace visible to non-Valtech users, or any use where a non-pilot
+  reader will see it), the image **must** be replaced, redacted, or removed.
+  The TODO comments already in the HTML manuals flag the requirement inline.
+
+**Options for the replacement PR (do not act now):**
+- Replace with a screenshot from a generalised or dummy project.
+- Redact the branded artwork in the screenshot with a solid block or blur.
+- Remove the image entirely and let the surrounding narrative stand on its
+  own, or replace with an ASCII / diagram placeholder.
+
+Any of the three closes the blocker. The choice is deferred until the
+distribution audience is decided.
+
+**Verified 2026-09-14:** `gh repo view` reports the repository visibility
+as `PUBLIC`. The distribution rule above therefore *also* applies to the
+current on-disk state of the repository, but is written to hold even if the
+visibility later changes — the block is about *who reads the manuals*, not
+about whether the git repo is public.
+
 ---
 
 ## Follow-up items for the shared `radon-skill-growth` skill (separate repo)
