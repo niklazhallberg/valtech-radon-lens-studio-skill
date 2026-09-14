@@ -1,0 +1,12 @@
+{
+  "name": "valtech-radon-lens-studio",
+  "version": "0.8.0",
+  "description": "Valtech RADON's Claude Code plugin for building Snapchat AR Lenses and Sponsored Lenses in Lens Studio. Bundles the lens-studio-snapchat-filter skill with the shared radon-skill-growth protocol.",
+  "author": "Valtech RADON",
+  "license": "Proprietary — see LICENSE and NOTICE.md at plugin root",
+  "homepage": "https://github.com/valtech-radon/lens-studio-snapchat-filter",
+  "skills": [
+    "./SKILL.md",
+    "./skills/radon-skill-growth/SKILL.md"
+  ]
+}
