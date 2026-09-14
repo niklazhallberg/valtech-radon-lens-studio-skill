@@ -25,7 +25,7 @@ If you get stuck at any step, return to Claude Code and say "I'm stuck on step [
 
 ## Prerequisites
 
-- macOS, Windows, or Linux machine
+- **macOS** — the scripted install (`bin/install.sh`) supports macOS only. This manual reference works on Windows and Linux for users who can adapt the shell commands themselves; automated Linux/WSL support is deferred.
 - 10 GB free disk space (Lens Studio is ~3 GB)
 - Internet connection
 - Admin rights to install applications

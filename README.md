@@ -56,7 +56,7 @@ The manuals walk through everything below in 10–15 minutes with copy-paste-rea
 
 ### Prerequisites
 
-- macOS, Linux, or Windows WSL terminal
+- **macOS** — the scripted install path (`bin/install.sh`) currently supports macOS only. Linux and Windows/WSL support is deferred; it will be added once someone can test and own it. Manual installation on Linux/WSL is possible by following the shell commands in `docs/INSTALL-REFERENCE.md` step-by-step.
 - A **paid Claude account** — a free claude.ai chat account doesn't work with Claude Code. Options:
   - **Enterprise subscription** — on the way for Valtech RADON
   - **Your own Claude Pro** ($17–20/mo) — sign up at https://claude.com/pricing
