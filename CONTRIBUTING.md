@@ -3,20 +3,26 @@
 Internal Valtech doc — how to make changes to this skill and ship them
 to colleagues.
 
+## Distribution model — plugin marketplace
+
+This repo is distributed as a Claude Code **plugin** via a GitHub-synced
+marketplace. Colleagues install once and receive updates automatically.
+
+- **Publish flow**: push to `main` (via PR) → colleagues run
+  `/plugin marketplace update` in Claude Code to pull the latest version.
+- **No manual `.skill` builds.** No OneDrive uploads. No email-attached zips.
+- **No backup dance.** Git history is the backup.
+
+The old `.skill` file distribution workflow (build a zip, upload to OneDrive,
+tell colleagues to re-install manually) has been retired. It required seven
+manual steps per release and was error-prone.
+
 ## Single source of truth
 
-This GitHub repo (`valtech-radon/lens-studio-snapchat-filter`) is
-canon. Two derivative copies exist:
-
-- **Local install** (`~/.claude/skills/lens-studio-snapchat-filter/`)
-  — what Claude Code on your machine loads. Typically a direct git
-  clone of this repo, so editing here = editing the repo.
-- **Distribution `.skill` file** — what colleagues install. Manually
-  built from this repo (see "Building the .skill file" below).
-
-When colleagues report a problem, the question is *"have my changes
-made it into the distributed `.skill`?"*. They have not until you
-rebuild and replace the `.skill` file.
+This GitHub repo (`valtech-radon/lens-studio-snapchat-filter`) is canon.
+Colleagues' local installs are direct clones or plugin-managed copies of
+this repo. Editing here = editing the source that everyone else sees on
+next `/plugin marketplace update`.
 
 ## Canonical doc per topic
 
@@ -28,61 +34,44 @@ rebuild and replace the `.skill` file.
 | Troubleshooting | `docs/TROUBLESHOOTING.md` | When something breaks after install |
 | Internal agent behavior | `references/*.md` | Read by Claude, not by humans |
 
-## Workflow for changing install steps
+## Contribution workflow — PR-based
+
+**All changes go via pull request. No direct pushes to `main`.** This applies
+equally to human contributors and to the growth protocol: the shared
+`radon-skill-growth` skill opens a PR from a discovery branch; a human reviews
+and merges. The user-facing "OK to save?" moment stays identical — but the
+audit trail is a reviewable diff, not a fait-accompli commit.
 
 When you change something user-facing in the install flow:
 
-1. **Edit `docs/INSTALL-REFERENCE.md` first** (it's canon).
-2. **Manually sync the same change into `docs/MANUAL.html`** — same
+1. **Create a feature branch** off `main`.
+2. **Edit `docs/INSTALL-REFERENCE.md` first** (it's canon).
+3. **Manually sync the same change into `docs/MANUAL.html`** — same
    logical content, HTML formatting (`<div class="step-note">`,
    `<figure class="step-screenshot">`, etc.).
-3. **Bump `metadata.version:` in `SKILL.md` frontmatter** for **minor releases
+4. **Bump `metadata.version:` in `SKILL.md` frontmatter** for **minor releases
    only** (new behaviors, capability additions, distribution changes).
    Patch releases (e.g. 0.7.0 → 0.7.1) are tracked via git tag +
    CHANGELOG.md entry, NOT via SKILL.md-bump. See "Version convention"
    below for the full rule.
-4. **Commit + push** to GitHub.
-5. **Build a new `.skill` file** (see below).
-6. **Replace the `.skill` on OneDrive Desktop** (back up the old one
-   first as `*-vX.Y.Z.skill.backup`).
-7. **Test fresh-install** from the new `.skill` to confirm the change
-   reaches end users.
+5. **Commit and push the branch**, then open a pull request.
+6. **Get PR review + merge.** Once merged to `main`, the marketplace picks it
+   up on the next colleague `/plugin marketplace update`.
 
-## Building the .skill file
+## Growth protocol — writes back as PR
 
-The `.skill` is just a zip with a renamed extension. Build it from the
-parent of the skill folder, excluding `.git/` and macOS clutter:
+When Claude Code + the shared `radon-skill-growth` skill capture a discovery
+during a real project session, the protocol is:
 
-```bash
-cd ~/.claude/skills
-zip -r /tmp/lens-studio-snapchat-filter-vX.Y.Z.skill lens-studio-snapchat-filter \
-  -x "lens-studio-snapchat-filter/.git/*" \
-  -x "lens-studio-snapchat-filter/.DS_Store" \
-  -x "lens-studio-snapchat-filter/**/.DS_Store"
-```
+1. Agent proposes the generalised entry (Generalization rule stripped of
+   client-specifics).
+2. User approves in-flow ("yes, save that").
+3. Agent creates a feature branch, commits the entry (references/*.md +
+   CHANGELOG.md), pushes, and **opens a PR** — not a direct push to `main`.
+4. Human reviews and merges the PR.
 
-Replace `vX.Y.Z` with the actual version. Output goes to `/tmp/` first
-so you can verify before replacing the distributed copy.
-
-Pre-distribution verification (run all four):
-
-```bash
-SKILL=/tmp/lens-studio-snapchat-filter-vX.Y.Z.skill
-
-# 1. MANUAL.html is present
-unzip -l "$SKILL" | grep "MANUAL.html"
-
-# 2. SKILL.md version string matches
-unzip -p "$SKILL" lens-studio-snapchat-filter/SKILL.md | grep "metadata:" -A 1
-
-# 3. File size is plausible (>175 KB for v0.5.0+)
-ls -la "$SKILL"
-
-# 4. Mtime is "now"
-stat -f "%Sm" "$SKILL"
-```
-
-Only after all four pass: replace the Desktop / OneDrive copy.
+This keeps the user's in-flow approval momentum intact while ensuring every
+change to `main` is a reviewable diff. See `references/_growth-protocol-pointer.md`.
 
 ## Screenshots
 
@@ -94,6 +83,9 @@ describe the panel/state shown (e.g., `ls-mcp-server-panel.png`,
 API keys), the credential **must be rotated/invalidated before push**
 so the token in the committed image is no longer valid. For MCP
 tokens specifically: restart Lens Studio (token rotates on restart).
+
+Because the repo is **public**, this rule is doubly important — a leaked
+token in a committed image is visible worldwide within seconds.
 
 ## Version convention
 
@@ -125,11 +117,5 @@ Manual HTML sync is friction. Future work:
 
 - [ ] Generate `MANUAL.html` from `INSTALL-REFERENCE.md` + a template
   (pandoc, or a small Node/Python script).
-- [ ] Wrap the build/verify steps above in a `build.sh` or `Makefile`.
-- [ ] Automate the OneDrive replace step (or document a Drive
-  Stream-aware path).
-- [ ] Add a CI check that `version:` in `SKILL.md` matches the latest
+- [ ] Add a CI check that `metadata.version:` in `SKILL.md` matches the latest
   git tag.
-
-Until then: follow the workflow above by hand. The cost of a wrong
-distribution is much higher than the cost of one manual sync.

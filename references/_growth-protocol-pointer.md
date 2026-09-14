@@ -31,3 +31,22 @@ Do not duplicate the shared skill's content.
 ## Temporary discovery staging
 
 Candidates for "save for later" → `SKILL-DISCOVERIES.md` at repo root.
+
+## Write-back is via PR, not direct push
+
+When the user approves an in-flow ask, the agent **must not** push directly
+to `main`. Instead:
+
+1. Create a feature branch (e.g., `discovery/<short-slug>-<date>`).
+2. Commit the generalised entry to `references/*.md` and/or `CHANGELOG.md`.
+3. Push the branch.
+4. Open a pull request describing the discovery, its origin (redacted of
+   client specifics per the Generalization rule), and the value-for-user.
+
+The user's approval-in-flow moment is unchanged. The mechanical write path
+becomes a reviewable diff. This matters because more than five people hold
+write access under the enterprise organisation; a PR-based flow gives a real
+audit trail and blocks accidental client-data leaks before merge.
+
+If the shared skill's protocol still shows a direct-push pattern, this
+repo's rule takes precedence: **branch + PR, always**.
