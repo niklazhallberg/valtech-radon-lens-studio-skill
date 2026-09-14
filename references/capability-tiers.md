@@ -175,8 +175,7 @@ moves to the Tier 3 honest-language response.
 
 - LS 5.21+ surfaces shift the line between Tier 1 and 2 in some places
   (GenAI tools moving more capability into the editor itself). Re-check
-  release notes — link in `project_ls_521_release.md` memory — when a
-  feature near the boundary comes up.
+  Snap's release notes when a feature near the boundary comes up.
 - This matrix reflects what an external agency with standard LS + MCP
   can produce. Snap-internal teams and partners may have access to
   features marked Tier 3.

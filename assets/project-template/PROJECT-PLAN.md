@@ -84,8 +84,8 @@ Specific to this project:
 
 Project is MVP-complete when:
 
-- [ ] All Phase 4 DoD items met (see skill's `build-pipeline.md`)
-- [ ] All Phase 5 DoD items met (see skill's `build-pipeline.md`)
+- [ ] All Phase 4 DoD items met (see skill's `references/phase-progression.md`)
+- [ ] All Phase 5 DoD items met (see skill's `references/phase-progression.md`)
 - [ ] Client final approval on preview video
 - [ ] Handover package delivered to media agency
 - [ ] Lens uploaded to Snap Ads Manager
