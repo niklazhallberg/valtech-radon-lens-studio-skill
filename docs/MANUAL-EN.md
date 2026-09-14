@@ -113,7 +113,7 @@ The skill is empirically validated from real production builds. When it says "us
 
 ### Three-step install overview
 
-1. **Install the skill** to `~/.claude/skills/`. If you received a `.skill` file, rename the extension to `.zip` and unzip. The result should be `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` as an existing file.
+1. **Install the skill** to `~/.claude/skills/`. **No public clone URL is available yet** — a skill maintainer will hand you a local copy of the plugin. Place it so that `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` exists.
 2. **Create a project folder** for your client project, e.g. `~/Projects/[client]-lens/`.
 3. **Register the Lens Studio MCP server** with Claude Code so Claude can drive LS directly.
 
@@ -429,7 +429,7 @@ Two ways:
 - If you cloned from git: `cd ~/.claude/skills/lens-studio-snapchat-filter && git pull`
 - If you got a `.skill` file: change extension to `.zip`, unzip over the existing folder
 
-Niklaz at Valtech RADON maintains the skill. New versions ship when learnings from new projects have been empirically validated.
+The skill-maintainer team at Valtech RADON maintains the skill. New versions ship when learnings from new projects have been empirically validated.
 
 **What if Lens Studio updates and something breaks?**
 The skill is pinned to LS 5.20+ but tested against the latest version. If an LS update breaks a pattern, it's caught in the next skill release. Between releases: tell Claude *"LS updated to X.Y.Z and now [Z] doesn't work"* — Claude probes empirically and reports.
@@ -492,4 +492,4 @@ That filter keeps the skill high-quality without bloating it.
 
 ---
 
-*Last updated: 2026-05-12 against skill version 0.4.3+. Questions or feedback: ping Niklaz at Valtech RADON.*
+*Last updated: 2026-05-12 against skill version 0.4.3+. Questions or feedback: ping the skill-maintainer team at Valtech RADON.*

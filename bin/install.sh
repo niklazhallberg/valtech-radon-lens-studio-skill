@@ -110,20 +110,52 @@ SKILL_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 if [ -d "${SKILL_DIR}/.git" ]; then
   ok "Skillen finns på din dator (${SKILL_DIR})"
 else
-  fail "Skillen är inte klonad än." \
-"Innan vi kan fortsätta behöver du klona skill-repot manuellt.
-Vi gör det manuellt eftersom GitHub-inloggning är personlig.
+  # No embedded clone URL — the enterprise-owned repository has not yet been
+  # created or the current one transferred. Refuse to clone from a made-up URL.
+  # A verified URL may be passed explicitly:
+  #   LENS_STUDIO_SKILL_REPO_URL="git@github.com:<org>/<repo>.git" bin/install.sh
+  # Or:
+  #   bin/install.sh --repo git@github.com:<org>/<repo>.git
+  # If neither is set, we STOP here rather than pretend a public install URL exists.
+  REPO_URL="${LENS_STUDIO_SKILL_REPO_URL:-}"
+  # Also accept --repo <URL> as first positional argument for convenience.
+  if [ "${1:-}" = "--repo" ] && [ -n "${2:-}" ]; then
+    REPO_URL="${2}"
+  fi
 
-1. Skicka ditt GitHub-användarnamn till maintainer på Slack
-2. Du får en inbjudan via mail — acceptera den
-3. Öppna terminalen och kör:
+  if [ -z "${REPO_URL}" ]; then
+    fail "Skill-mappen är inte klonad — och det finns ingen verifierad klonings-URL att använda." \
+"Lens Studio-plugin:et har ännu inte flyttats till en verifierad
+organisations-repo. Installationssteget för klon är därför OTILLGÄNGLIGT
+just nu.
 
-   git clone git@github.com:valtech-radon/lens-studio-snapchat-filter.git ${SKILL_DIR}
+Vad du kan göra idag (intern pilot):
+  1. Om du redan har en lokal checkout av plugin:et, se till att den ligger
+     i ${SKILL_DIR} och kör install.sh igen. Om du INTE har en checkout, ping
+     skill-maintainer för att få en lokal kopia manuellt.
 
-   (Om SSH inte funkar, använd https-versionen:
-    git clone https://github.com/valtech-radon/lens-studio-snapchat-filter.git ${SKILL_DIR})
+Vad du kan göra så snart org-repo:t finns:
+  2. Sätt miljövariabeln till den verifierade klon-URL:en och kör om:
+       LENS_STUDIO_SKILL_REPO_URL=\"git@github.com:<org>/<repo>.git\" bin/install.sh
+     eller
+       bin/install.sh --repo git@github.com:<org>/<repo>.git
 
-4. Kör install.sh igen — den fortsätter där den slutade"
+Kloningen görs INTE mot en påhittad default-URL. Detta script installerar
+INGENTING förrän en verifierad repo-URL har angivits."
+  fi
+
+  # If we reach here, REPO_URL was explicitly supplied by the operator.
+  say "Klonar från angiven URL: ${REPO_URL}"
+  if git clone "${REPO_URL}" "${SKILL_DIR}" >/tmp/skill-clone.log 2>&1; then
+    ok "Skill-repot klonat till ${SKILL_DIR}"
+  else
+    fail "Kloning misslyckades." \
+"Kolla loggen:
+  cat /tmp/skill-clone.log
+
+Vanliga orsaker: URL:en är fel, SSH-nyckel saknas, du är inte inbjuden
+till repot ännu, eller nätverket är nere. Åtgärda och kör om."
+  fi
 fi
 
 # ─── 6. Configure SessionStart hook ─────────────────────────────────

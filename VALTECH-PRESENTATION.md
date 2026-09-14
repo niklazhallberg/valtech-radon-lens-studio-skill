@@ -169,7 +169,7 @@ Yes / no / save for later. No yes = nothing leaves the local machine.
 
 ### Repo status
 
-The skill repo is **public**, under the Valtech RADON GitHub organisation (`valtech-radon/lens-studio-snapchat-filter`). Read access is open; write access is restricted to authorised Valtech personnel and approved contractors. All contributions to `main` go via pull request — direct pushes are blocked by branch protection. The growth protocol writes discoveries as PRs (not direct commits), so every change is reviewed by a human before merge.
+The skill repo is **public**, planned to sit under a Valtech RADON GitHub organisation once the migration lands. Read access will be open; write access is restricted to authorised Valtech personnel and approved contractors. All contributions to `main` go via pull request — direct pushes are blocked by branch protection. The growth protocol writes discoveries as PRs (not direct commits), so every change is reviewed by a human before merge. **The specific organisation / repository URL is not yet confirmed at the time of writing** — the current repository will be transferred, or a new one created, once the org name and marketplace format are finalised.
 
 ### Comparison with the alternative
 

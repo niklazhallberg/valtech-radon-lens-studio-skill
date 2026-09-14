@@ -684,12 +684,11 @@
   <p class="hint">Expected output: <code>claude code 1.x.x</code></p>
 </section>
 
-<!-- 03 — Accept GitHub invitation -->
+<!-- 03 — Access is pending marketplace registration -->
 <section class="story">
   <span class="story-num">Then</span>
-  <h2>Accept the invitation</h2>
-  <p class="copy">Open the email from Niklaz Hallberg. Click <strong>View invitation</strong>. If you don&rsquo;t have a GitHub account yet, click &ldquo;Create an account&rdquo;, sign up, and verify your email.</p>
-  <p class="hint">Click <em>Accept invitation</em> on the GitHub page once you&rsquo;re signed in.</p>
+  <h2>Get access (pending)</h2>
+  <p class="copy" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status pending.</strong> No confirmed GitHub URL to invite you to yet. The skill maintainer will hand you a local copy of the plugin — place it at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Once the organisation-owned repository is confirmed, a GitHub invitation flow will replace this step.</p>
 </section>
 
 <!-- 04 — Install GitHub CLI -->
@@ -724,21 +723,19 @@
 <!-- 06 — Clone repo + activate auto-sync -->
 <section class="story">
   <span class="story-num">And then</span>
-  <h2>Download the skill + auto-sync</h2>
-  <p class="copy">Run, in order:</p>
-  <div class="value-block wide">
-    <span class="value">mkdir -p ~/.claude/skills</span>
-    <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Copy</button>
-  </div>
-  <div class="value-block wide">
-    <span class="value">git clone https://github.com/valtech-radon/lens-studio-snapchat-filter ~/.claude/skills/lens-studio-snapchat-filter</span>
-    <button class="copy-btn" data-copy="git clone https://github.com/valtech-radon/lens-studio-snapchat-filter ~/.claude/skills/lens-studio-snapchat-filter">Copy</button>
-  </div>
+  <h2>Get the skill</h2>
+  <p class="copy" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status: pending marketplace registration.</strong> No confirmed public clone URL exists yet. Ask the skill maintainer for a local copy and place it at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Do not clone from a placeholder URL.</p>
+  <p class="copy">Once the local copy is in place, run:</p>
   <div class="value-block wide">
     <span class="value">~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</span>
     <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy</button>
   </div>
-  <p class="hint">The install script wires up auto-sync — the skill updates itself on every <code>claude</code> start from now on.</p>
+  <p class="copy">When the organisation-owned repo is confirmed, pass its URL explicitly:</p>
+  <div class="value-block wide">
+    <span class="value">LENS_STUDIO_SKILL_REPO_URL="git@github.com:&lt;org&gt;/&lt;repo&gt;.git" bin/install.sh</span>
+    <button class="copy-btn" data-copy="LENS_STUDIO_SKILL_REPO_URL=git@github.com:ORG/REPO.git bin/install.sh">Copy template</button>
+  </div>
+  <p class="hint">The install script wires up auto-sync and refuses to clone from a made-up default.</p>
 </section>
 
 <!-- 07 — Start -->

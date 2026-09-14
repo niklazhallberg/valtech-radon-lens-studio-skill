@@ -113,7 +113,7 @@ Skill:en är empiriskt validerad från riktiga produktionsbyggen. När den säge
 
 ### Installation i tre steg (översikt)
 
-1. **Installera skill:en** i `~/.claude/skills/`. Om du fått en `.skill`-fil byter du extension till `.zip` och packar upp den. Resultatet ska vara `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` som existerande fil.
+1. **Installera skill:en** i `~/.claude/skills/`. **Ingen publik klon-URL är tillgänglig ännu** — en skill-maintainer överlämnar en lokal kopia av plugin:et till dig. Placera den så att `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` existerar.
 2. **Skapa en projektmapp** för ditt kundprojekt, t.ex. `~/Projects/[kund]-lens/`.
 3. **Registrera Lens Studio MCP-server** med Claude Code så att Claude kan styra LS direkt.
 
@@ -429,7 +429,7 @@ Två varianter:
 - Om du klonade från git: `cd ~/.claude/skills/lens-studio-snapchat-filter && git pull`
 - Om du fick en `.skill`-fil: byt extension till `.zip`, packa upp över befintlig mapp
 
-Niklaz på Valtech RADON underhåller skill:en. Nya versioner släpps när lärdomar från nya projekt validerats empiriskt.
+Skill-maintainer-teamet på Valtech RADON underhåller skill:en. Nya versioner släpps när lärdomar från nya projekt validerats empiriskt.
 
 **Vad händer om Lens Studio uppdateras och något bryter?**
 Skill:en är pinnad till LS 5.20+ men testas mot senaste version. Om en LS-uppdatering bryter ett mönster, fångas det i nästa skill-uppdatering. Mellan uppdateringar: säg till Claude *"LS uppdaterades till X.Y.Z och nu fungerar inte [Z]"* — Claude probar empiriskt och rapporterar.
@@ -492,4 +492,4 @@ Den filtreringen håller skill:en kvalitativt hög utan att svälla.
 
 ---
 
-*Senast uppdaterad: 2026-05-12 mot skill version 0.4.3+. Frågor eller feedback: pinga Niklaz på Valtech RADON.*
+*Senast uppdaterad: 2026-05-12 mot skill version 0.4.3+. Frågor eller feedback: pinga skill-maintainer-teamet på Valtech RADON.*

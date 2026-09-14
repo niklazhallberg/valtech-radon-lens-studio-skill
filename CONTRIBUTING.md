@@ -19,9 +19,13 @@ manual steps per release and was error-prone.
 
 ## Single source of truth
 
-This GitHub repo (`valtech-radon/lens-studio-snapchat-filter`) is canon.
+**Where "here" is:** the enterprise-owned GitHub repository for this plugin.
+That repository has not yet been created or the current repository transferred,
+so this doc refers to it by its role ("the plugin repo"), not by a specific
+URL. Update this section with the confirmed URL once the migration lands.
+
 Colleagues' local installs are direct clones or plugin-managed copies of
-this repo. Editing here = editing the source that everyone else sees on
+the plugin repo. Editing here = editing the source that everyone else sees on
 next `/plugin marketplace update`.
 
 ## Canonical doc per topic

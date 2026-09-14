@@ -78,15 +78,39 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 Verify with `claude --version`.
 
-**3. Clone this skill to the Claude Code skills directory:**
+**3. Obtain the skill — UNAVAILABLE VIA A PUBLIC CLONE URL RIGHT NOW.**
 
-```bash
-git clone https://github.com/valtech-radon/lens-studio-snapchat-filter.git ~/.claude/skills/lens-studio-snapchat-filter
-```
-
-You must be invited as a collaborator on the private repository to clone it. See the **Access** section below.
-
-(The clone URL will change once the repository migrates to a Valtech GitHub organization.)
+> **Status: pending marketplace registration.** The Lens Studio plugin has
+> not yet been moved into an organisation-owned repository, and no confirmed
+> public clone URL exists. Do not attempt to clone from a placeholder URL —
+> it will fail.
+>
+> **Supported install path today (internal pilot only):**
+> A skill maintainer will hand you a local checkout of the plugin (via
+> file transfer, USB, or an internal Slack message with a repository invite
+> once one exists). Place it at:
+>
+> ```
+> ~/.claude/skills/lens-studio-snapchat-filter/
+> ```
+>
+> Verify:
+>
+> ```bash
+> ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md
+> # should print the file path, not an error
+> ```
+>
+> **When an organisation-owned repository exists**, `bin/install.sh` will
+> accept its URL explicitly, either via environment variable or `--repo`:
+>
+> ```bash
+> LENS_STUDIO_SKILL_REPO_URL="git@github.com:<org>/<repo>.git" bin/install.sh
+> # or
+> bin/install.sh --repo git@github.com:<org>/<repo>.git
+> ```
+>
+> The script will refuse to clone from a made-up default. This is deliberate.
 
 **4. Start Claude Code from any directory:**
 

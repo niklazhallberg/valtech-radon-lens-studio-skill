@@ -169,7 +169,7 @@ Ja / nej / spara för senare. Inget ja = inget lämnar den lokala datorn.
 
 ### Repo-status
 
-Skill-repot är **publikt**, under Valtech RADON GitHub-organisationen (`valtech-radon/lens-studio-snapchat-filter`). Läsåtkomst är öppen; skrivåtkomst är begränsad till auktoriserad Valtech-personal och godkända konsulter. Alla ändringar till `main` går via pull request — direkta pushar är blockerade av branch protection. Growth-protokollet skriver discoveries som PR:er (inte som direkta commits), så varje ändring granskas av en människa innan merge.
+Skill-repot är **publikt**, planerat att flyttas under en Valtech RADON GitHub-organisation när migreringen är klar. Läsåtkomst är öppen; skrivåtkomst är begränsad till auktoriserad Valtech-personal och godkända konsulter. Alla ändringar till `main` går via pull request — direkta pushar är blockerade av branch protection. Growth-protokollet skriver discoveries som PR:er (inte som direkta commits), så varje ändring granskas av en människa innan merge. **Det specifika organisations-/repository-URL:et är inte bekräftat när detta skrivs** — det nuvarande repot flyttas, eller ett nytt skapas, när organisationsnamn och marketplace-format är fastställda.
 
 ### Jämförelse med alternativet
 
