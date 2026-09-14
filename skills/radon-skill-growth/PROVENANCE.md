@@ -5,9 +5,15 @@ It is not the canonical source.
 
 ## Provenance
 
-- **Upstream repo:** `https://github.com/niklazhallberg/radon-skill-growth`
-  *(TODO: after enterprise migration, upstream is expected to move to a
-  Valtech RADON organisation repository. Update this file when that happens.)*
+- **Upstream:** the source repository for the `radon-skill-growth` skill,
+  currently maintained under a personal GitHub account by a Valtech RADON
+  team member. The specific URL is intentionally omitted here because it
+  points at a personal account; it is not a supported installation
+  destination for anyone else. The skill maintainer can share the URL
+  privately if the sync procedure below is invoked.
+  *(TODO: after enterprise migration, the upstream is expected to move
+  under a Valtech RADON organisation. Update this file with the new URL
+  once that happens, and only then.)*
 - **Vendored commit:** `1cf4dc454cdf96ef4b44141b66dd1f88746e353b`
 - **Vendored version:** v1.0 (see `SKILL.md` frontmatter `metadata.version`)
 - **Vendored on:** 2026-09-14
@@ -32,9 +38,10 @@ Decision recorded during enterprise migration:
 Because this is a vendored copy, upstream changes are not automatic.
 
 **Sync procedure** (do this quarterly, or whenever the upstream skill releases
-a new minor version):
+a new minor version). The skill maintainer runs this; end users do not.
 
-1. In the upstream `radon-skill-growth` repo, pull latest `main`.
+1. Obtain the current upstream URL from the skill maintainer and pull the
+   latest `main` into a local working copy.
 2. From that upstream working copy, copy `SKILL.md`, `references/`,
    `assets/`, and `scripts/` into this directory, overwriting existing files.
 3. Update the **Vendored commit** and **Vendored on** fields at the top of

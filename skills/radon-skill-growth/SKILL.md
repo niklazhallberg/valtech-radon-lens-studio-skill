@@ -1,7 +1,7 @@
 ---
 name: radon-skill-growth
 description: >-
-  Personal knowledge-growth protocol for Niklaz's domain skills. Use this whenever
+  Knowledge-growth protocol used by Valtech RADON's domain skills. Use this whenever
   working inside any radon-* domain skill (TouchDesigner, Lens Studio, 8thWall,
   comfy-cloud, modelBridge, etc.) and a non-trivial problem gets solved. It governs
   how empirical learnings are captured in-flow, generalized, gated by the human, and
@@ -16,7 +16,7 @@ metadata:
 
 # radon-skill-growth v1.0
 
-This is the **canonical** knowledge-growth protocol shared by all of Niklaz's domain
+This is the **canonical** knowledge-growth protocol shared by Valtech RADON's domain
 skills. The mechanic lives here once; each domain skill carries only a thin pointer
 plus its own domain-specific examples and its own `references/` + `CHANGELOG.md`.
 

@@ -116,8 +116,9 @@ fi
 
 # --- Step 5: print backup commands ----------------------------------------------
 echo ""
-echo "5. Backup to GitHub — run these yourself (private repo on your account):"
-echo "   gh repo create niklazhallberg/$NAME --private --source=$SRC --remote=origin"
+echo "5. Backup to GitHub — run these yourself. Substitute <owner> with your own"
+echo "   personal or organisation GitHub account before running:"
+echo "   gh repo create <owner>/$NAME --private --source=$SRC --remote=origin"
 echo "   git -C $SRC push -u origin main"
 echo ""
 echo "   Watch for files >100MB (3D, renders, .c4d/.obj). If present, gitignore them BEFORE pushing."
