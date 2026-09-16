@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snapchat-filter på 10 minuter — Manual</title>
+<title>RADON Skills Library</title>
 <link rel="preload" href="/assets/fonts/handjet/handjet-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/handjet/handjet-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -788,12 +788,8 @@
 <!-- ╚═════════════════════════════════════════╝ -->
 <nav class="nav">
   <div class="nav-left">
-    <a href="/" class="nav-back" aria-label="Tillbaka till välj manual">&larr;</a>
-    <span class="nav-brand">Lens Studio Skill</span>
-  </div>
-  <div class="lang-toggle" role="group" aria-label="Language selector">
-    <a href="/fullstandigguide-sv" class="lang-toggle__option is-active" aria-current="page">SV</a>
-    <a href="/fullguide-en" class="lang-toggle__option">EN</a>
+    <a href="/" class="nav-back" aria-label="Back to choose your path">&larr;</a>
+    <span class="nav-brand">RADON Skills Library</span>
   </div>
 </nav>
 
@@ -803,471 +799,37 @@
 <section class="section hero">
   <div class="hero-top">
     <div class="hero-text">
-      <span class="hero-kicker">Kom igång med</span>
+      <span class="hero-kicker">RADON Skills Library</span>
       <h1>
-        Lens Studio Skill
+        This guide has moved
       </h1>
-      <p class="tagline">Skapa Snapchat-filter i Lens Studio — direkt från terminalen, via Claude Code. Ett skill-paket som blir smartare ju mer vi använder det.</p>
+      <p class="tagline">The previous Lens Studio-specific guide has been replaced by the RADON Skills Library onboarding. Choose a current onboarding path to learn how to get started with Claude Code or how to work effectively with RADON skills.</p>
 
       <div class="hero-meta">
-        <span>Förkunskaper · inga</span>
-        <span>Tid · 10–15 min</span>
+        <span>Audience &middot; RADON colleagues</span>
+        <span>Format &middot; plain-language guide</span>
       </div>
     </div>
-    <div class="hero-stage" aria-label="Roterande 3D ASCII-spöke">
+    <div class="hero-stage" aria-label="Rotating 3D ASCII ghost">
       <pre id="ascii" aria-hidden="true"></pre>
     </div>
   </div>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  PREREQUISITES                          ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="prerequisites">
-  <span class="micro">Innan du börjar</span>
-  <h2>Skaffa ett Claude-konto</h2>
-  <p class="lede">Claude Code kräver inloggning med ett betalt konto eller egna API-credits — ett gratis claude.ai-konto räcker inte. Tre vägar finns; öppna den som passar dig.</p>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  CHOOSE A CURRENT ONBOARDING PATH     ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="choose-a-path">
+  <span class="micro">Choose a current onboarding path</span>
+  <h2>Where to go next</h2>
+  <p class="lede">The current site offers two short onboarding paths and the up-to-date documentation library. Pick whichever fits.</p>
 
-  <details class="hint-collapsible path-details coming">
-    <summary>A. Enterprise subscription (Currently not available)</summary>
-    <p>På väg, mer information kommer senare.</p>
-    <p>Tills dess — välj väg B eller C nedan.</p>
-  </details>
+  <p><a href="/">&larr; Back to onboarding home</a></p>
+  <p><a href="/nosmalltalk">Get started with Claude Code</a></p>
+  <p><a href="/fullguide-en">Work better with RADON skills</a></p>
+  <p><a href="https://github.valtech.com" target="_blank" rel="noopener">Open the RADON Skills Library</a></p>
 
-  <details class="hint-collapsible path-details">
-    <summary>B. Egen Claude Pro-prenumeration ($17–20/mån)</summary>
-    <p>Bra om du vill ha förutsägbar månadskostnad eller redan har en Pro-prenumeration.</p>
-    <p><strong>1.</strong> Gå till <code>claude.com/pricing</code> i webbläsaren.</p>
-    <p><strong>2.</strong> Välj <strong>Claude Pro</strong> och teckna abonnemanget.</p>
-    <p><strong>3.</strong> Registrera med din @valtech.com-adress (eller Google/Microsoft SSO).</p>
-    <p><strong>4.</strong> Klart. Senare i Steg 07 när du kör <code>claude</code> i terminalen — välj <strong>"Claude account with subscription"</strong> vid login-prompten.</p>
-  </details>
-
-  <details class="hint-collapsible path-details">
-    <summary>C. Egen API-credit ($5–20, pay-as-you-go)</summary>
-    <p>Bäst om du bara vill prova "lite grann". Ingen månadskostnad — du laddar på krediter och förbrukar dem per användning.</p>
-    <p><strong>1.</strong> Gå till <code>platform.claude.com/login</code>.</p>
-    <p><strong>2.</strong> Registrera med din @valtech.com-adress (eller "Continue with Google/Microsoft").</p>
-    <p><strong>3.</strong> Välj <strong>"Individual"</strong> i onboarding-flödet.</p>
-    <p><strong>4.</strong> Gå till <strong>API Keys</strong> → <strong>Create Key</strong>. Spara nyckeln (<code>sk-ant-...</code>) säkert — den visas bara en gång.</p>
-    <p><strong>5.</strong> Gå till <strong>Billing</strong> → ladda på minst $10 med kort.</p>
-    <p><strong>6.</strong> Senare i Steg 07 när du kör <code>claude</code> i terminalen — välj <strong>"Anthropic Console (API key)"</strong> och paste:a in nyckeln.</p>
-  </details>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 1                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-1">
-  <span class="micro">Steg 01 av 08</span>
-  <h2>Installera Claude Code</h2>
-  <p class="lede">Claude Code är hjärnan som bygger ditt filter — byggd av Anthropic, företaget bakom AI-modellen Claude. Den körs lokalt på din egen dator, och det enda kontot du behöver är din Anthropic-inloggning.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Öppna Terminal-appen (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, skriv "Terminal", tryck Enter).</p>
-      <p><strong>2.</strong> Klistra in detta och tryck Enter — installationen tar någon minut:</p>
-      <div class="code-block compact">
-        <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
-        <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Kopiera</button>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Terminalen visar nedladdning + install-steg, något i stil med:</p>
-      <pre class="output">Downloading Claude Code...
-Installing to /usr/local/bin/claude
-Installation complete.</pre>
-      <p>När prompten är tillbaka och du kan skriva igen — installen är klar.</p>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>Curl-kommandot kraschar</strong> — vanligast att internet bröts mitt i. Kör samma kommando igen.</li>
-          <li><strong>Vet inte vad Terminal är</strong> — det är en svart eller mörkgrön ruta där du skriver kommandon istället för att klicka. Öppna Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) och skriv "Terminal".</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 2                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-2">
-  <span class="micro">Steg 02 av 08</span>
-  <h2>Verifiera installationen</h2>
-  <p class="lede">Innan vi går vidare — bekräfta att <code>claude</code>-kommandot faktiskt nås från din terminal.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p>I samma terminal, kör:</p>
-      <div class="code-block compact">
-        <pre><code>claude --version</code></pre>
-        <button class="copy-btn" data-copy="claude --version">Kopiera</button>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Ett versionsnummer:</p>
-      <pre class="output">claude code 1.x.x</pre>
-      <p>Exakt nummer spelar ingen roll — det viktiga är att du <em>får</em> ett svar (inte "command not found").</p>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>"command not found: claude"</strong> — installationen körde, men terminalen hittar inte <code>claude</code> än. Stäng terminalen, öppna en ny. Funkar oftast då.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 3                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-3">
-  <span class="micro">Steg 03 av 08</span>
-  <h2>Få access (väntar på marketplace-registrering)</h2>
-  <p class="lede" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status väntande.</strong> Organisations-ägt repository för det här plugin:et har ännu inte skapats eller det nuvarande repot flyttats, så det finns ingen bekräftad GitHub-URL att bjuda in dig till idag. Supported pilot-väg är en <strong>lokal kopia som skill-maintainer överlämnar</strong>.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör (pilot)</h3>
-      <p><strong>1.</strong> Kontakta skill-maintainern och be om en lokal kopia av plugin:et.</p>
-      <p><strong>2.</strong> Placera kopian på din dator så att <code>~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> existerar.</p>
-      <p><strong>3.</strong> När organisations-repot finns kommer denna sektion ersättas med ett GitHub-invitation-flöde. Tills dess: klona INTE från placeholder-URL:er någonstans i dessa manualer.</p>
-
-      <div class="hint">
-        En verifierad klon-URL kan anges explicit senare via <code>LENS_STUDIO_SKILL_REPO_URL</code> eller <code>--repo</code>. Install-scriptet vägrar att klona från en påhittad default.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Att köra <code>ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> skriver ut sökvägen (inte ett fel). Bra signal — gå vidare till nästa steg.</p>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>File not found</strong> — den lokala kopian är inte på plats än. Kontakta skill-maintainern.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 4                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-4">
-  <span class="micro">Steg 04 av 08</span>
-  <h2>Installera GitHub CLI</h2>
-  <p class="lede">Vi behöver ett verktyg som heter <code>gh</code>. Det gör att din dator kan hämta filer från GitHub utan att be om lösenord varje gång.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Gå till nedladdningssidan i webbläsaren:</p>
-      <div class="code-block compact">
-        <pre><code>https://cli.github.com/</code></pre>
-        <button class="copy-btn" data-copy="https://cli.github.com/">Kopiera</button>
-      </div>
-      <p><strong>2.</strong> Klicka på den vita knappen <strong>Download for Mac</strong>.</p>
-      <p><strong>3.</strong> Öppna den nedladdade <code>.pkg</code>-filen och följ stegen i installern. Precis som vilken Mac-app som helst.</p>
-
-      <div class="hint">
-        Använder du redan Homebrew? Du kan istället köra <code>brew install gh</code> i terminalen.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Verifiera installen med:</p>
-      <div class="code-block compact">
-        <pre><code>gh --version</code></pre>
-        <button class="copy-btn" data-copy="gh --version">Kopiera</button>
-      </div>
-      <p>Du borde se något i stil med:</p>
-      <pre class="output">gh version 2.x.x</pre>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>"command not found: gh"</strong> — installen är klar men terminalen ser inte den än. Stäng terminalen och öppna en ny.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 5                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-5">
-  <span class="micro">Steg 05 av 08</span>
-  <h2>Logga in på GitHub via terminalen</h2>
-  <p class="lede">Två kommandon. Det första loggar in dig på GitHub. Det andra ser till att inloggningen kommer ihåg dig — så du slipper logga in igen framöver.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Kör i terminalen:</p>
-      <div class="code-block compact">
-        <pre><code>gh auth login</code></pre>
-        <button class="copy-btn" data-copy="gh auth login">Kopiera</button>
-      </div>
-      <p>Följ promparna: välj <em>GitHub.com</em>, välj <em>HTTPS</em>, logga in via webbläsaren. Klicka <strong>Authorize</strong> i browsern när den frågar.</p>
-      <p><strong>2.</strong> När du är tillbaka i terminalen — kör:</p>
-      <div class="code-block compact">
-        <pre><code>gh auth setup-git</code></pre>
-        <button class="copy-btn" data-copy="gh auth setup-git">Kopiera</button>
-      </div>
-      <p>Det här gör att alla framtida <code>git</code>-kommandon använder din GitHub-login utan att fråga om lösenord.</p>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Efter <code>gh auth login</code>:</p>
-      <pre class="output">✓ Authentication complete.
-✓ Logged in as @your-username</pre>
-      <p>Efter <code>gh auth setup-git</code>:</p>
-      <pre class="output">✓ Configured git protocol</pre>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>Browsern öppnas inte automatiskt</strong> — kopiera URL:en som visas i terminalen och klistra in i webbläsaren manuellt.</li>
-          <li><strong>"Authorization failed"</strong> — du loggade in på fel GitHub-konto. Kör <code>gh auth logout</code> och börja om.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 6                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-6">
-  <span class="micro">Steg 06 av 08</span>
-  <h2>Hämta Lens Skill<br>(och aktivera auto-sync)</h2>
-  <p class="lede">Nu placerar vi skill:en på din dator och kopplar den till GitHub så den synkar sig själv. Härifrån uppdaterar filen sig själv — när en kollega lägger till ny kunskap i skillen får du den senaste versionen automatiskt.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6); margin-bottom: 20px;"><strong>Status: väntar på marketplace-registrering.</strong> Det finns <em>ingen bekräftad publik klon-URL</em> för det här plugin:et idag. Be skill-maintainer om en lokal kopia och placera den vid <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Klona INTE från en placeholder-URL.</p>
-      <p><strong>1.</strong> Förbered mappen där Claude Code letar efter skills:</p>
-      <div class="code-block compact">
-        <pre><code>mkdir -p ~/.claude/skills</code></pre>
-        <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Kopiera</button>
-      </div>
-      <p><strong>2.</strong> När organisations-repot finns och du har den verifierade URL:en, ange den explicit (install-scriptet vägrar att gissa en default):</p>
-      <div class="code-block compact">
-        <pre><code># Byt &lt;org&gt;/&lt;repo&gt; mot den bekräftade URL:en från skill-maintainer
-LENS_STUDIO_SKILL_REPO_URL="git@github.com:&lt;org&gt;/&lt;repo&gt;.git" \
-  ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
-        <button class="copy-btn" data-copy="LENS_STUDIO_SKILL_REPO_URL=git@github.com:ORG/REPO.git ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Kopiera mall</button>
-      </div>
-      <p><strong>3.</strong> Om en maintainer redan har lagt en lokal kopia vid <code>~/.claude/skills/lens-studio-snapchat-filter/</code>, kör install-scriptet direkt — det aktiverar auto-sync:</p>
-      <div class="code-block compact">
-        <pre><code>~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
-        <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Kopiera</button>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Om du angett en verifierad klon-URL visar klon-kommandot nedladdningens framsteg. Annars utgår install-scriptet från en existerande lokal kopia. Oavsett vilket kör det en checklista och avslutar med:</p>
-      <pre class="output">🎉 Allt är på plats!
-
-✅ Claude Code installerat
-✅ Lens Studio verifierat
-✅ Lens Studio-skillen installerad
-✅ Auto-sync aktiverat</pre>
-      <p>Auto-sync är nu igång — varje gång du startar Claude Code framöver hämtar den senaste kunskapen från GitHub automatiskt.</p>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>"Repository not found"</strong> eller 404 vid klone — gå tillbaka till Steg 03 och bekräfta att invitationen accepterades med samma GitHub-konto du loggade in med i Steg 05.</li>
-          <li><strong>Promptas för username/password</strong> — Steg 05's <code>gh auth setup-git</code> körde inte. Kör <code>gh auth setup-git</code> igen och prova klone på nytt.</li>
-          <li><strong>install.sh klagar på saknat Node.js eller git</strong> — följ instruktionerna scriptet ger. Det är idempotent — säkert att köra om när du fixat det som saknades.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 7                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-7">
-  <span class="micro">Steg 07 av 08</span>
-  <h2>Starta Claude Code</h2>
-  <p class="lede">Nu öppnar du själva Claude-sessionen — det är där ni två (du och Claude) pratar.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p>I samma terminal, skriv:</p>
-      <div class="code-block compact">
-        <pre><code>claude</code></pre>
-        <button class="copy-btn" data-copy="claude">Kopiera</button>
-      </div>
-      <p>Tryck Enter. Första gången du startar Claude Code öppnas en webbläsare för Anthropic-login. Logga in där, kom tillbaka till terminalen.</p>
-
-      <div class="hint">
-        <strong>Login-prompten frågar hur du vill logga in.</strong> Välj baserat på vägen du valde i "Innan du börjar":
-        <ul>
-          <li><strong>Väg B (Pro/Max):</strong> "Claude account with subscription" — logga in via webbläsaren.</li>
-          <li><strong>Väg C (API-credit):</strong> "Anthropic Console (API key)" — paste:a in din <code>sk-ant-...</code>-nyckel.</li>
-        </ul>
-      </div>
-
-      <div class="hint">
-        <strong>Byta modell senare?</strong> När du är inne i Claude Code, skriv <code>/model</code> för att välja:
-        <ul>
-          <li><strong>Haiku 4.5</strong> — snabbast och billigast. Bra för enkla tasks och att spara credit under testfasen.</li>
-          <li><strong>Sonnet 4.6</strong> — default. Bra balans mellan smarthet och kostnad.</li>
-          <li><strong>Opus 4.7</strong> — starkast. Använd när du fastnar i komplex kod eller knepiga buggar.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>I terminalen visas en prompt — en cursor som väntar på att du ska skriva. Något i stil med:</p>
-      <pre class="output">Welcome to Claude Code.
-
-Type your message to begin:
-&gt; _</pre>
-      <p>Det streckade understrecket (cursor) blinkar. Du är inne. Allt du skriver härifrån går direkt till Claude.</p>
-
-      <details class="hint-collapsible">
-        <summary>Funkar inte?</summary>
-        <ul>
-          <li><strong>"You need to log in"</strong> men ingen webbläsare öppnas — kopiera URL:en som visas i terminalen och klistra in i webbläsaren manuellt.</li>
-          <li><strong>"Account not found / unauthorized"</strong> — ditt Anthropic-konto har inte access till Claude Code-API:n. Be Valtech-IT lägga till dig.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-
-  <h3 style="margin-top: 56px; margin-bottom: 28px; font-family: 'Handjet', 'Space Grotesk', sans-serif; font-size: clamp(26px, 2.6vw, 34px); font-weight: 500; letter-spacing: -0.01em; line-height: 1.05;">Såhär kan det se ut</h3>
-  <p>När du väl aktiverat Claude i din terminal. Resonerar du i princip som vanligt. Du beskriver vad du vill, Claude resonerar igenom det, gör ändringar i Lens Studio och berättar vad som är gjort. Nedan syns ett utdrag från ett tidigare sponsrat Lens-projekt, där rotation-timingen på förpacknings-animationerna finjusterades.</p>
-  <p style="color: var(--ink-60); font-style: italic;">Vänster: ett utdrag från ett tidigare sponsrat Lens-projekt — användaren frågar Claude på vanlig svenska, Claude resonerar igenom det, anropar MCP-servern och förklarar tillbaka. Höger: den färdiga lensen som körs live i Snapchat.</p>
-  <!-- TODO (enterprise migration): The bundled screenshot img/Image_Snapchat_Tutorial.png shows visible branding from the seed project. Replace with a generalised screenshot or a redacted version before external distribution. Do not distribute this manual with the original screenshot. -->
-  <div class="screenshot">
-    <img src="img/Image_Snapchat_Tutorial.png" alt="Side-by-side från ett tidigare sponsrat Lens-projekt — vänster: terminal-dialog med Claude Code (användarens prompt + Claudes resonemang + MCP-anrop); höger: den färdiga lensen som körs live i Snapchat.">
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 8 — THE MAGIC                     ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-8">
-  <span class="micro">Steg 08 av 08 · det här är magin</span>
-  <h2>Aktivera skill:en</h2>
-  <p class="lede">Sista steget. Säg till Claude vad du vill bygga — så aktiveras skill:en och hen tar över därifrån.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p>Klistra in i Claude Code (cursor:n från Steg 07) — tryck Enter:</p>
-      <div class="code-block compact">
-        <pre><code>Time to wake up! Let&rsquo;s create a Snapchat lens.</code></pre>
-        <button class="copy-btn" data-copy="Time to wake up! Let's create a Snapchat lens.">Kopiera</button>
-      </div>
-      <p>Det här är start-skottet. Från och med nu är det Claude som är din kollega — hen guidar dig genom Lens Studio-setup, projekt-onboarding och hela filter-bygget.</p>
-
-      <div class="hint">
-        Är du osäker på något steg framöver? Säg det till Claude i klartext: <em>"Jag förstår inte vad du menar med [X]"</em>. Hen omformulerar och förklarar enklare.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>Vad du ser när det funkat</h3>
-      <p>Claude svarar med att aktivera skill:en + onboarding-flow. Något i stil med:</p>
-      <pre class="output">Hej! Skill:en är aktiv. Innan vi börjar — har du
-Lens Studio installerat på datorn? (Det är där vi
-bygger filtret.)
-
-Berätta också lite om filtret du vill göra:
-- Vilken klient/projekt?
-- Grov idé — vad ska användaren uppleva?</pre>
-      <p>Härifrån är det inte längre manualen som styr. Du följer Claude. Hen är en kollega som vet vad hen gör.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STUCK                                  ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section stuck">
-  <span class="micro">Allt går inte enligt plan</span>
-  <h2>Fastnar du?</h2>
-  <p class="lede">Det här är nytt — du kommer förmodligen fastna någonstans. Det är helt okej. Här är tre vägar framåt.</p>
-
-  <div class="stuck-grid">
-    <div class="stuck-option">
-      <h3>1. Be en kollega</h3>
-      <p>På Valtech finns andra som kört detta. Skriv i er Slack-kanal (#snapchat-filter eller motsvarande) och peka på det steg som krånglar. Någon har troligen sett samma sak.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>2. Fråga Claude Code direkt</h3>
-      <p>Har du fått Claude Code att starta? Skriv bara <em>"Jag fastnar på &lt;steg&gt;: &lt;vad du ser&gt;"</em>. Claude växlar till felsökning automatiskt — hen frågar tillbaka tills hen förstår, och föreslår en fix.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>3. Fråga en annan AI</h3>
-      <p>Ingen Claude Code att fråga än? Kopiera kommandot eller felmeddelandet, klistra in i <a href="https://claude.ai">claude.ai</a>, <a href="https://chatgpt.com">ChatGPT</a> eller <a href="https://gemini.google.com">Gemini</a>. Lägg till <em>"jag försöker installera Claude Code för att bygga Snapchat-filter"</em> så de förstår kontexten.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>4. Visa mig din skärm</h3>
-      <p>Använd din dators skärmdump-funktion (Mac: <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>4</kbd>, Windows: <kbd>Win</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>). Ta bild på vad du ser i terminalen. Klistra in bilden direkt i Claude.ai eller ChatGPT — de kan SE vad som gått fel.</p>
-      <p style="font-size: 13px; color: var(--ink-60); margin-top: 12px;">Många nybörjare vet inte hur man <em>beskriver</em> ett fel i text. En screenshot är enklare.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  FÖR NYFIKNA                            ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section">
-  <span class="micro">För nyfikna</span>
-  <h2>Vill du veta mer?</h2>
-  <p class="lede">Manualen ovan är det du behöver för att komma igång. Här är några länkar om du vill grotta ner dig djupare.</p>
-
-  <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Obs:</strong> Web-länkar till plugin-källan är inte live ännu — det organisations-ägda repot är fortfarande under uppsättning. Öppna filerna lokalt vid <code>~/.claude/skills/lens-studio-snapchat-filter/</code> istället.</p>
-  <div class="ideas-grid">
-    <div class="idea">
-      <p class="idea-name">docs/INSTALL-REFERENCE.md</p>
-      <p class="idea-desc">Steg-för-steg installation manuellt (för dig som hellre läser komplett innan du börjar, eller behöver setupa flera maskiner).</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">docs/TROUBLESHOOTING.md</p>
-      <p class="idea-desc">Vanliga fel + fixar. Bra att kolla om Claude inte själv kan lösa något.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">references/mcp-tool-schemas.md</p>
-      <p class="idea-desc">Vad Claude kan göra i Lens Studio via MCP — alla 20 verktyg dokumenterade med parametrar.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">references/snap-docs/00-INDEX.md</p>
-      <p class="idea-desc">Routing-tabell till Snap:s officiella docs (365 sidor speglade, klassificerade per kategori).</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">CHANGELOG.md</p>
-      <p class="idea-desc">Se hur skillen har vuxit — varje accepterad upptäckt loggad med datum och generaliserad projekt-etikett. Skillens biografi.</p>
-    </div>
-  </div>
+  <p style="margin-top: 32px; color: var(--ink-60);">Sign in to Valtech GitHub Enterprise with your Valtech work account through the approved Valtech sign-in flow. You may need to complete additional verification.</p>
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
@@ -1278,7 +840,7 @@ Berätta också lite om filtret du vill göra:
   <div class="icon-wrap">
     <svg class="tw-icon ready" viewBox="0 0 24 24" aria-hidden="true"><path class="tw-icon-body" fill="#E65E30" fill-rule="evenodd" clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028H3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/><rect class="tw-eye" x="6" y="8.102" width="1.488" height="2.847" fill="#E65E30"/><rect class="tw-eye tw-eye-r" x="16.51" y="8.102" width="1.49" height="2.847" fill="#E65E30"/><rect class="tw-arm-r" x="0" y="10.95" width="3" height="3.1" fill="#E65E30"/><rect class="tw-foot tw-foot-1" x="4.487" y="17.079" width="1.513" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-2" x="7.488" y="17.079" width="1.512" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-3" x="15" y="17.079" width="1.513" height="2.921" fill="#E65E30"/><rect class="tw-foot tw-foot-4" x="18" y="17.079" width="1.513" height="2.921" fill="#E65E30"/></svg>
     <div class="key-hints" aria-hidden="true"><span class="kbd-hint">&larr;</span><span class="kbd-hint kbd-hint-space">space</span><span class="kbd-hint">&rarr;</span></div>
-    <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">Du är en riktig hacker!</span><span class="bubble-type"></span></div>
+    <div class="speech-bubble" aria-hidden="true"><span class="bubble-bite-static"></span><span class="bubble-ghost">You did it!</span><span class="bubble-type"></span></div>
   </div>
 </section>
 
@@ -1647,7 +1209,7 @@ Berätta också lite om filtret du vill göra:
       var typeEl = bubble.querySelector('.bubble-type');
       var ghostEl = bubble.querySelector('.bubble-ghost');
       if (!typeEl || !ghostEl) return;
-      var text = "Fastnar du? Be en kollega!";
+      var text = "Stuck? Ask a colleague!";
       ghostEl.textContent = text;
       typeEl.textContent = '';
       bubble.classList.add('visible');
@@ -1695,7 +1257,7 @@ Berätta också lite om filtret du vill göra:
         var typeEl = bubble && bubble.querySelector('.bubble-type');
         if (!bubble || !typeEl) return;
         bubble.classList.add('visible');
-        var fullText = 'Du är en riktig hacker!';
+        var fullText = 'You did it!';
         var i = 0;
         function step() {
           i++;

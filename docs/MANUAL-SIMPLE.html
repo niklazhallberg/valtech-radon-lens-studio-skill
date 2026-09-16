@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code — Get Started</title>
+<title>Get started with Claude Code — RADON Skills Library</title>
 <link rel="preload" href="/assets/fonts/handjet/handjet-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/handjet/handjet-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -612,7 +612,7 @@
 <nav class="nav">
   <div class="nav-left">
     <a href="/" class="nav-back" aria-label="Back to choose your path">&larr;</a>
-    <span class="nav-brand">Lens Studio Skill</span>
+    <span class="nav-brand">RADON Skills Library</span>
   </div>
   <span class="nav-badge">ONBOARDING</span>
 </nav>
@@ -624,139 +624,85 @@
   </div>
 </section>
 
-<!-- 00 — Get Claude account -->
+<!-- 01 — Get access to Claude Code -->
 <section class="story">
   <span class="story-num">First</span>
-  <h2>Get a Claude account</h2>
-  <p class="copy">Claude Code needs a paid account or your own API credits — a free claude.ai chat account isn't enough.</p>
-
-  <div class="path-cards">
-    <div class="path-card coming">
-      <span class="path-letter">A</span>
-      <div class="path-body">
-        <p class="path-title">Enterprise subscription</p>
-        <p class="path-meta">On the way — more info coming later</p>
-      </div>
-    </div>
-    <div class="path-card">
-      <span class="path-letter">B</span>
-      <div class="path-body">
-        <p class="path-title">Claude Pro · $17–20/mo</p>
-        <p class="path-meta">Predictable monthly cost. Sign up at:</p>
-        <a class="path-link" href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a>
-      </div>
-    </div>
-    <div class="path-card">
-      <span class="path-letter">C</span>
-      <div class="path-body">
-        <p class="path-title">API credits · $5–20, pay-as-you-go</p>
-        <p class="path-meta">Top up credits, burn per use. Sign up at:</p>
-        <a class="path-link" href="https://platform.claude.com/login" target="_blank" rel="noopener">platform.claude.com/login</a>
-        <p class="path-meta" style="color: var(--ink-60);">Then: API Keys → Create Key → save it · Billing → top up.</p>
-      </div>
-    </div>
-  </div>
-
-  <p class="hint">At Step 07 login: pick "Claude account with subscription" for B,<br>or "Anthropic Console (API key)" for C.</p>
+  <h2>Get access to Claude Code</h2>
+  <p class="copy">Use the approved Valtech setup to access Claude Code. If you are not sure which account or sign-in method to use, ask the pilot maintainer.</p>
 </section>
 
-<!-- 01 — Install -->
-<section class="story">
-  <span class="story-num">Download and</span>
-  <h2>Install Claude Code</h2>
-  <p class="copy"><kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter</p>
-  <p class="copy">Paste this and press Enter:</p>
-  <div class="value-block wide">
-    <span class="value">curl -fsSL https://claude.ai/install.sh | bash</span>
-    <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Copy</button>
-  </div>
-</section>
-
-<!-- 02 — Verify -->
-<section class="story">
-  <span class="story-num">Time to</span>
-  <h2>Verify installation</h2>
-  <p class="copy">In your terminal, run:</p>
-  <div class="value-block">
-    <span class="value">claude --version</span>
-    <button class="copy-btn" data-copy="claude --version">Copy</button>
-  </div>
-  <p class="hint">Expected output: <code>claude code 1.x.x</code></p>
-</section>
-
-<!-- 03 — Access is pending marketplace registration -->
+<!-- 02 — Install Claude Code -->
 <section class="story">
   <span class="story-num">Then</span>
-  <h2>Get access (pending)</h2>
-  <p class="copy" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status pending.</strong> No confirmed GitHub URL to invite you to yet. The skill maintainer will hand you a local copy of the plugin — place it at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Once the organisation-owned repository is confirmed, a GitHub invitation flow will replace this step.</p>
+  <h2>Install Claude Code (approved Valtech setup)</h2>
+  <p class="copy">Installation is coordinated by the pilot maintainer. Ask them for the current install guidance for your machine &mdash; the exact steps may change during the pilot.</p>
+  <p class="hint">You do not need Git, terminal knowledge or command-line experience to use a skill after onboarding.</p>
 </section>
 
-<!-- 04 — Install GitHub CLI -->
-<section class="story">
-  <span class="story-num">And then</span>
-  <h2>Install GitHub CLI</h2>
-  <p class="copy">Download the installer:</p>
-  <div class="value-block">
-    <a class="value url" href="https://cli.github.com/" target="_blank" rel="noopener">https://cli.github.com/</a>
-    <button class="copy-btn" data-copy="https://cli.github.com/">Copy</button>
-  </div>
-  <p class="hint">Click <strong>Download for Mac</strong> on the page, then run the installer.</p>
-</section>
-
-<!-- 05 — Sign in to GitHub -->
+<!-- 03 — Get access to the private RADON Skills Library -->
 <section class="story">
   <span class="story-num">Now</span>
-  <h2>Sign in to GitHub from your terminal</h2>
-  <p class="copy">In your terminal, run:</p>
-  <div class="value-block">
-    <span class="value">gh auth login</span>
-    <button class="copy-btn" data-copy="gh auth login">Copy</button>
+  <h2>Get access to the private RADON Skills Library</h2>
+  <p class="copy">During the pilot, the library is private. Open it through Valtech GitHub Enterprise:</p>
+  <div class="value-block wide">
+    <a class="value url" href="https://github.valtech.com" target="_blank" rel="noopener">Open the RADON Skills Library</a>
+    <button class="copy-btn" data-copy="https://github.valtech.com">Copy</button>
   </div>
-  <p class="hint">Follow the prompts: choose <em>GitHub.com</em>, use <em>HTTPS</em>, log in via the browser.</p>
-  <p class="copy">Then run:</p>
-  <div class="value-block">
-    <span class="value">gh auth setup-git</span>
-    <button class="copy-btn" data-copy="gh auth setup-git">Copy</button>
-  </div>
+  <p class="copy">Sign in with your Valtech work account through the approved Valtech sign-in flow. Follow the sign-in steps shown by Valtech. You may be asked to confirm your identity.</p>
 </section>
 
-<!-- 06 — Clone repo + activate auto-sync -->
+<!-- 04 — Get set up for the pilot -->
+<section class="story">
+  <span class="story-num">And</span>
+  <h2>Get set up for the pilot</h2>
+  <p class="copy">The pilot is set up manually. Ask the pilot maintainer for the current steps for your machine. You do not need to install Git, use the terminal, or understand technical setup details on your own.</p>
+</section>
+
+<!-- 05 — Open Claude Code and open your project folder -->
 <section class="story">
   <span class="story-num">And then</span>
-  <h2>Get the skill</h2>
-  <p class="copy" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status: pending marketplace registration.</strong> No confirmed public clone URL exists yet. Ask the skill maintainer for a local copy and place it at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Do not clone from a placeholder URL.</p>
-  <p class="copy">Once the local copy is in place, run:</p>
-  <div class="value-block wide">
-    <span class="value">~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</span>
-    <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy</button>
-  </div>
-  <p class="copy">When the organisation-owned repo is confirmed, pass its URL explicitly:</p>
-  <div class="value-block wide">
-    <span class="value">LENS_STUDIO_SKILL_REPO_URL="git@github.com:&lt;org&gt;/&lt;repo&gt;.git" bin/install.sh</span>
-    <button class="copy-btn" data-copy="LENS_STUDIO_SKILL_REPO_URL=git@github.com:ORG/REPO.git bin/install.sh">Copy template</button>
-  </div>
-  <p class="hint">The install script wires up auto-sync and refuses to clone from a made-up default.</p>
+  <h2>Open Claude Code and open your project folder</h2>
+  <p class="copy">Open Claude Code and open the local folder or project you want to work on. Describe what you are trying to achieve in normal language.</p>
 </section>
 
-<!-- 07 — Start -->
+<!-- 06 — Try a first prompt -->
 <section class="story">
-  <span class="story-num">And now</span>
-  <h2>Let&rsquo;s get started</h2>
-  <p class="copy">Write in your terminal:</p>
-  <div class="value-block">
-    <span class="value">claude</span>
-    <button class="copy-btn" data-copy="claude">Copy</button>
-  </div>
-  <p class="hint">Press Enter.<br><br>At the login prompt, pick the option that matches<br>your Claude account choice from the beginning.</p>
-</section>
-
-<!-- 08 — Paste -->
-<section class="story">
-  <span class="story-num">Activate skill by</span>
-  <h2>Paste something like</h2>
+  <span class="story-num">Try</span>
+  <h2>A first prompt</h2>
+  <p class="copy">You do not need special phrasing. Any of these work as an opening:</p>
   <div class="paste-block">
-    <p id="paste-text">Time to wake up! Let&rsquo;s create a Snapchat lens.</p>
-    <button class="copy-btn" data-copy-target="#paste-text">Copy</button>
+    <p id="paste-1">Help me turn this brief into a practical plan with assumptions, open questions and a review checklist.</p>
+    <button class="copy-btn" data-copy-target="#paste-1">Copy</button>
+  </div>
+  <div class="paste-block">
+    <p id="paste-2">I need to prepare a first concept for a campaign. Help me structure the work and identify what I need to decide.</p>
+    <button class="copy-btn" data-copy-target="#paste-2">Copy</button>
+  </div>
+  <div class="paste-block">
+    <p id="paste-3">I am not sure which RADON skill would help. Ask me a few simple questions and guide me.</p>
+    <button class="copy-btn" data-copy-target="#paste-3">Copy</button>
+  </div>
+  <div class="paste-block">
+    <p id="paste-4">This approach worked in a real project. Help me make it useful and safe for another colleague.</p>
+    <button class="copy-btn" data-copy-target="#paste-4">Copy</button>
+  </div>
+</section>
+
+<!-- 07 — Safety reminder -->
+<section class="story">
+  <span class="story-num">Before you begin</span>
+  <h2>Safety reminder</h2>
+  <p class="copy" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);">Do not share client-confidential material, personal data, passwords, access tokens, private links, or any information you are not authorised to use in the current Claude environment.</p>
+</section>
+
+<!-- 08 — Where the up-to-date docs live -->
+<section class="story">
+  <span class="story-num">Where the</span>
+  <h2>Up-to-date docs live</h2>
+  <p class="copy">The RADON Skills Library on Valtech GitHub Enterprise is the source of truth for detailed documentation, current pilot status and stewardship.</p>
+  <div class="value-block wide">
+    <a class="value url" href="https://github.valtech.com" target="_blank" rel="noopener">Open the RADON Skills Library</a>
+    <button class="copy-btn" data-copy="https://github.valtech.com">Copy</button>
   </div>
 </section>
 
@@ -972,7 +918,7 @@
     function onFirstArrow() {
       if (firstArrowSeen) return;
       firstArrowSeen = true;
-      // "Woop! Let's build a lens!" at +3.2s, visible ~5s (text included)
+      // Bubble "Partners in crime!" fires at +3.2s, visible ~5s
       setTimeout(function() {
         if (bubble2Done) return;
         bubble2Done = true;

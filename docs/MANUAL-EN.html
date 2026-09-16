@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lens Studio AI Skill — Manual</title>
+<title>Work better with RADON skills — RADON Skills Library</title>
 <link rel="preload" href="/assets/fonts/handjet/handjet-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/handjet/handjet-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -789,11 +789,7 @@
 <nav class="nav">
   <div class="nav-left">
     <a href="/" class="nav-back" aria-label="Back to choose your path">&larr;</a>
-    <span class="nav-brand">Lens Studio Skill</span>
-  </div>
-  <div class="lang-toggle" role="group" aria-label="Language selector">
-    <a href="/fullstandigguide-sv" class="lang-toggle__option">SV</a>
-    <a href="/fullguide-en" class="lang-toggle__option is-active" aria-current="page">EN</a>
+    <span class="nav-brand">RADON Skills Library</span>
   </div>
 </nav>
 
@@ -803,15 +799,15 @@
 <section class="section hero">
   <div class="hero-top">
     <div class="hero-text">
-      <span class="hero-kicker">Get started with</span>
+      <span class="hero-kicker">Skills-first</span>
       <h1>
-        Lens Studio Skill
+        Work better with RADON skills
       </h1>
-      <p class="tagline">Build Snapchat filters in Lens Studio — straight from your terminal, via Claude Code. A skill package that gets smarter the more we use it.</p>
+      <p class="tagline">A skill is a reusable way of working that helps Claude support a task consistently. This page walks through how to get useful, trustworthy results from a shared RADON skill in a real session.</p>
 
       <div class="hero-meta">
-        <span>Prerequisites · none</span>
-        <span>Time · 10–15 min</span>
+        <span>Audience &middot; RADON colleagues</span>
+        <span>Format &middot; plain-language guide</span>
       </div>
     </div>
     <div class="hero-stage" aria-label="Rotating 3D ASCII ghost">
@@ -820,454 +816,105 @@
   </div>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  PREREQUISITES                          ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="prerequisites">
-  <span class="micro">Before you start</span>
-  <h2>Get a Claude account</h2>
-  <p class="lede">Claude Code needs a paid login or your own API credits — a free claude.ai chat account is not enough. There are three paths; open the one that fits you.</p>
-
-  <details class="hint-collapsible path-details coming">
-    <summary>A. Enterprise subscription (Currently not available)</summary>
-    <p>On the way — more information coming later.</p>
-    <p>Until then — pick path B or C below.</p>
-  </details>
-
-  <details class="hint-collapsible path-details">
-    <summary>B. Your own Claude Pro subscription ($17–20/mo)</summary>
-    <p>Good if you want a predictable monthly cost or already have a Pro subscription.</p>
-    <p><strong>1.</strong> Go to <code>claude.com/pricing</code> in your browser.</p>
-    <p><strong>2.</strong> Pick <strong>Claude Pro</strong> and sign up.</p>
-    <p><strong>3.</strong> Register with your @valtech.com address (or Google/Microsoft SSO).</p>
-    <p><strong>4.</strong> Done. Later in Step 07 when you run <code>claude</code> in the terminal — pick <strong>"Claude account with subscription"</strong> at the login prompt.</p>
-  </details>
-
-  <details class="hint-collapsible path-details">
-    <summary>C. Your own API credits ($5–20, pay-as-you-go)</summary>
-    <p>Best if you just want to try things out. No monthly commitment — you top up credits and burn them per use.</p>
-    <p><strong>1.</strong> Go to <code>platform.claude.com/login</code>.</p>
-    <p><strong>2.</strong> Register with your @valtech.com address (or "Continue with Google/Microsoft").</p>
-    <p><strong>3.</strong> Pick <strong>"Individual"</strong> in the onboarding flow.</p>
-    <p><strong>4.</strong> Go to <strong>API Keys</strong> → <strong>Create Key</strong>. Save the key (<code>sk-ant-...</code>) somewhere safe — it's only shown once.</p>
-    <p><strong>5.</strong> Go to <strong>Billing</strong> → top up at least $10 with a card.</p>
-    <p><strong>6.</strong> Later in Step 07 when you run <code>claude</code> in the terminal — pick <strong>"Anthropic Console (API key)"</strong> and paste your key.</p>
-  </details>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 01 — WHAT A SKILL IS       ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="what-a-skill-is">
+  <span class="micro">01 · What a skill is</span>
+  <h2>A skill is a reusable way of working</h2>
+  <p class="lede">A skill is a reusable way of working that helps Claude support a task consistently — a shared starting point, sensible steps, useful questions to ask, and quality checks.</p>
+  <p>You remain responsible for choosing what is appropriate for the project, checking facts and quality, making decisions, handling client and stakeholder context, and reviewing the work before it is used.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 1                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-1">
-  <span class="micro">Step 01 of 08</span>
-  <h2>Install Claude Code</h2>
-  <p class="lede">Claude Code is the brain that builds your filter — built by Anthropic, the company behind the AI model Claude. It runs locally on your own machine, and the only account you need is your Anthropic login.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p><strong>1.</strong> Open the Terminal app (Mac: <kbd>⌘</kbd>+<kbd>Space</kbd>, type "Terminal", hit Enter).</p>
-      <p><strong>2.</strong> Paste this and press Enter — the install takes a minute or so:</p>
-      <div class="code-block compact">
-        <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
-        <button class="copy-btn" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Copy</button>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>The terminal shows download + install steps, something like:</p>
-      <pre class="output">Downloading Claude Code...
-Installing to /usr/local/bin/claude
-Installation complete.</pre>
-      <p>When the prompt is back and you can type again — the install is done.</p>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>The curl command crashes</strong> — most common cause is the internet broke mid-install. Run the same command again.</li>
-          <li><strong>Don't know what Terminal is</strong> — it's a black or dark-green window where you type commands instead of clicking. Open Spotlight (<kbd>⌘</kbd>+<kbd>Space</kbd>) and type "Terminal".</li>
-        </ul>
-      </details>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 02 — START WITH THE OUTCOME  ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="outcome">
+  <span class="micro">02 · Where to start</span>
+  <h2>Start with the outcome you need</h2>
+  <p class="lede">Describe the goal in your own words before you describe the mechanics.</p>
+  <p>A clear outcome makes it easier for Claude to help you pick the right approach and easier for you to notice when a suggested plan does not match what the project actually needs.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 2                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-2">
-  <span class="micro">Step 02 of 08</span>
-  <h2>Verify the installation</h2>
-  <p class="lede">Before we move on — confirm that the <code>claude</code> command is actually reachable from your terminal.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p>In the same terminal, run:</p>
-      <div class="code-block compact">
-        <pre><code>claude --version</code></pre>
-        <button class="copy-btn" data-copy="claude --version">Copy</button>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>A version number:</p>
-      <pre class="output">claude code 1.x.x</pre>
-      <p>The exact number doesn't matter — what matters is that you <em>get</em> a response (not "command not found").</p>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>"command not found: claude"</strong> — the install ran, but the terminal doesn't know where <code>claude</code> lives yet. Close the terminal, open a new one. Usually fixes it.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 03 — GIVE USEFUL CONTEXT    ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="context">
+  <span class="micro">03 · Give useful context</span>
+  <h2>Give Claude the context it needs</h2>
+  <p class="lede">Enough to be useful, no more than that. Stay within your approved information boundaries.</p>
+  <p>Share the intended outcome, the audience, relevant constraints, existing material you have, and what success looks like. Leave client-confidential material out — generalise the examples you use.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 3                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-3">
-  <span class="micro">Step 03 of 08</span>
-  <h2>Get access (pending marketplace registration)</h2>
-  <p class="lede" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status pending.</strong> The enterprise-owned repository for this plugin has not yet been created or the current repository transferred, so there is no confirmed GitHub URL to invite you to today. The supported pilot path is a <strong>local copy handed to you by the skill maintainer</strong>.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do (pilot)</h3>
-      <p><strong>1.</strong> Contact the skill maintainer and ask for a local copy of the plugin.</p>
-      <p><strong>2.</strong> Place the copy on your machine so that <code>~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> exists.</p>
-      <p><strong>3.</strong> When the organisation-owned repository has been created, this section will be replaced with a GitHub invitation flow. Until then, do not attempt to clone from placeholder URLs anywhere in these manuals.</p>
-
-      <div class="hint">
-        A verified clone URL can be passed explicitly later via <code>LENS_STUDIO_SKILL_REPO_URL</code> or <code>--repo</code>. The install script refuses to clone from a made-up default.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>Running <code>ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> prints the file path (not an error). Good signal — move on to the next step.</p>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>File not found</strong> — the local copy is not in place yet. Contact the skill maintainer.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 04 — MANAGEABLE STEPS       ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="manageable-steps">
+  <span class="micro">04 · Work in manageable steps</span>
+  <h2>Ask Claude to work in manageable steps</h2>
+  <p class="lede">Describe what you need in normal language. Claude can help you explore options, structure the work, draft material and make changes in the local project when you ask it to. Review the plan and the result before using anything in project or client work.</p>
+  <p>When a task is complex, ask Claude to walk you through the plan before starting. &ldquo;Walk me through this step by step before touching anything&rdquo; is a good opening.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 4                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-4">
-  <span class="micro">Step 04 of 08</span>
-  <h2>Install GitHub CLI</h2>
-  <p class="lede">We need a tool called <code>gh</code>. It lets your machine pull files from GitHub without asking for a password every time.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p><strong>1.</strong> Go to the download page in your browser:</p>
-      <div class="code-block compact">
-        <pre><code>https://cli.github.com/</code></pre>
-        <button class="copy-btn" data-copy="https://cli.github.com/">Copy</button>
-      </div>
-      <p><strong>2.</strong> Click the white <strong>Download for Mac</strong> button.</p>
-      <p><strong>3.</strong> Open the downloaded <code>.pkg</code> file and follow the installer steps. Just like any other Mac app.</p>
-
-      <div class="hint">
-        Already using Homebrew? You can instead run <code>brew install gh</code> in the terminal.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>Verify the install with:</p>
-      <div class="code-block compact">
-        <pre><code>gh --version</code></pre>
-        <button class="copy-btn" data-copy="gh --version">Copy</button>
-      </div>
-      <p>You should see something like:</p>
-      <pre class="output">gh version 2.x.x</pre>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>"command not found: gh"</strong> — the install is done but the terminal doesn't see it yet. Close the terminal and open a new one.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 05 — REVIEW THE OUTPUT       ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="review">
+  <span class="micro">05 · Review the output</span>
+  <h2>Review the output with professional judgement, craft and client understanding</h2>
+  <p class="lede">You are the professional. The output is a draft for your judgement.</p>
+  <p>Push back when something feels off. Ask &ldquo;why?&rdquo; — Claude can explain its reasoning. Whether the result is right for a specific client is a judgement only you can make.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 5                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-5">
-  <span class="micro">Step 05 of 08</span>
-  <h2>Sign in to GitHub from the terminal</h2>
-  <p class="lede">Two commands. The first signs you in to GitHub. The second makes the sign-in stick — so you don't have to log in again later.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p><strong>1.</strong> In the terminal, run:</p>
-      <div class="code-block compact">
-        <pre><code>gh auth login</code></pre>
-        <button class="copy-btn" data-copy="gh auth login">Copy</button>
-      </div>
-      <p>Follow the prompts: choose <em>GitHub.com</em>, choose <em>HTTPS</em>, log in via the browser. Click <strong>Authorize</strong> in the browser when asked.</p>
-      <p><strong>2.</strong> Once back in the terminal — run:</p>
-      <div class="code-block compact">
-        <pre><code>gh auth setup-git</code></pre>
-        <button class="copy-btn" data-copy="gh auth setup-git">Copy</button>
-      </div>
-      <p>This makes all future <code>git</code> commands use your GitHub login without asking for a password.</p>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>After <code>gh auth login</code>:</p>
-      <pre class="output">✓ Authentication complete.
-✓ Logged in as @your-username</pre>
-      <p>After <code>gh auth setup-git</code>:</p>
-      <pre class="output">✓ Configured git protocol</pre>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>Browser doesn't open automatically</strong> — copy the URL shown in the terminal and paste it into your browser manually.</li>
-          <li><strong>"Authorization failed"</strong> — you signed in with the wrong GitHub account. Run <code>gh auth logout</code> and start over.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 06 — TEST IN REAL WORK       ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="test">
+  <span class="micro">06 · Test in real work</span>
+  <h2>Test the approach in real work</h2>
+  <p class="lede">A real preview, a real device, a real reader.</p>
+  <p>A skill helps you start well. Testing in the real context is where you find out whether the plan holds up under the messy details of the project.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 6                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-6">
-  <span class="micro">Step 06 of 08</span>
-  <h2>Download the Lens Skill<br>(and activate auto-sync)</h2>
-  <p class="lede">Now we'll place the skill on your machine and wire it up to sync with GitHub. From there it updates itself — whenever a colleague pushes new knowledge into the skill, you'll have the latest version automatically.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6); margin-bottom: 20px;"><strong>Status: pending marketplace registration.</strong> There is <em>no confirmed public clone URL</em> for this plugin today. Ask the skill maintainer for a local copy and place it at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Do not attempt to clone from a placeholder URL.</p>
-      <p><strong>1.</strong> Prepare the folder where Claude Code looks for skills:</p>
-      <div class="code-block compact">
-        <pre><code>mkdir -p ~/.claude/skills</code></pre>
-        <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Copy</button>
-      </div>
-      <p><strong>2.</strong> Once the organisation-owned repository exists and you have the verified URL, use it explicitly (the install script refuses to guess a default):</p>
-      <div class="code-block compact">
-        <pre><code># Replace &lt;org&gt;/&lt;repo&gt; with the confirmed URL supplied by the skill maintainer
-LENS_STUDIO_SKILL_REPO_URL="git@github.com:&lt;org&gt;/&lt;repo&gt;.git" \
-  ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
-        <button class="copy-btn" data-copy="LENS_STUDIO_SKILL_REPO_URL=git@github.com:ORG/REPO.git ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy template</button>
-      </div>
-      <p><strong>3.</strong> If a maintainer has already placed a local copy at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>, run the install script directly — it activates auto-sync:</p>
-      <div class="code-block compact">
-        <pre><code>~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
-        <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy</button>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>If you supplied a verified clone URL, the clone command shows download progress. Otherwise the install script starts from an existing local copy. Either way, it runs a checklist and ends with:</p>
-      <pre class="output">🎉 Allt är på plats!
-
-✅ Claude Code installerat
-✅ Lens Studio verifierat
-✅ Lens Studio-skillen installerad
-✅ Auto-sync aktiverat</pre>
-      <p>Auto-sync is now running — every time you start Claude Code from now on, it pulls the latest knowledge from GitHub automatically.</p>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>"Repository not found"</strong> or 404 on clone — go back to Step 03 and confirm the invitation was accepted with the same GitHub account you signed in with in Step 05.</li>
-          <li><strong>Prompted for username/password</strong> — Step 05's <code>gh auth setup-git</code> didn't run. Run <code>gh auth setup-git</code> again and try the clone once more.</li>
-          <li><strong>install.sh complains about missing Node.js or git</strong> — follow the script's instructions. It's idempotent — safe to re-run after fixing the missing dependency.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 07 — KEEP WHAT WORKS         ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="iterate">
+  <span class="micro">07 · Keep what works</span>
+  <h2>Keep what works and improve what does not</h2>
+  <p class="lede">Iterate. A workflow that works today may need small changes for the next project.</p>
+  <p>Small, honest notes about what worked and what did not are more valuable than long, tidy write-ups.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 7                                 ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-7">
-  <span class="micro">Step 07 of 08</span>
-  <h2>Start Claude Code</h2>
-  <p class="lede">Now you open the Claude session itself — that's where the two of you (you and Claude) actually talk.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p>In the same terminal, type:</p>
-      <div class="code-block compact">
-        <pre><code>claude</code></pre>
-        <button class="copy-btn" data-copy="claude">Copy</button>
-      </div>
-      <p>Press Enter. The first time you start Claude Code, a browser opens for Anthropic login. Log in there, come back to the terminal.</p>
-
-      <div class="hint">
-        <strong>The login prompt asks how you want to sign in.</strong> Pick the option that matches the path you chose in "Before you start":
-        <ul>
-          <li><strong>Path B (Pro/Max):</strong> "Claude account with subscription" — log in through the browser.</li>
-          <li><strong>Path C (API credits):</strong> "Anthropic Console (API key)" — paste your <code>sk-ant-...</code> key.</li>
-        </ul>
-      </div>
-
-      <div class="hint">
-        <strong>Switch model later?</strong> Once you're inside Claude Code, type <code>/model</code> to pick:
-        <ul>
-          <li><strong>Haiku 4.5</strong> — fastest and cheapest. Good for simple tasks and saving credit during testing.</li>
-          <li><strong>Sonnet 4.6</strong> — default. Good balance of intelligence and cost.</li>
-          <li><strong>Opus 4.7</strong> — strongest. Use when you're stuck on complex code or tricky bugs.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>The terminal shows a prompt — a cursor waiting for you to type. Something like:</p>
-      <pre class="output">Welcome to Claude Code.
-
-Type your message to begin:
-&gt; _</pre>
-      <p>The underscore (cursor) blinks. You're in. Everything you type from here goes straight to Claude.</p>
-
-      <details class="hint-collapsible">
-        <summary>Not working?</summary>
-        <ul>
-          <li><strong>"You need to log in"</strong> but no browser opens — copy the URL shown in the terminal and paste it into your browser manually.</li>
-          <li><strong>"Account not found / unauthorized"</strong> — your Anthropic account doesn't have access to the Claude Code API. Ask Valtech IT to add you.</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-
-  <h3 style="margin-top: 56px; margin-bottom: 28px; font-family: 'Handjet', 'Space Grotesk', sans-serif; font-size: clamp(26px, 2.6vw, 34px); font-weight: 500; letter-spacing: -0.01em; line-height: 1.05;">What talking to Claude actually looks like</h3>
-  <p>Once you're inside, the conversation is plain language — you describe what you want, Claude reasons through it, makes changes in Lens Studio via the MCP server, and tells you what they did. Here's a real snippet from a previous sponsored Lens project, where the rotation timing on the package animations was being fine-tuned.</p>
-  <p style="color: var(--ink-60); font-style: italic;">Left: a real snippet from a previous sponsored Lens project — the user asking Claude in plain language, Claude reasoning through it, calling the MCP server, and explaining back. Right: the resulting lens running live in Snapchat.</p>
-  <!-- TODO (enterprise migration): The bundled screenshot img/Image_Snapchat_Tutorial.png shows visible branding from the seed project. Replace with a generalised screenshot or a redacted version before external distribution. Do not distribute this manual with the original screenshot. -->
-  <div class="screenshot">
-    <img src="img/Image_Snapchat_Tutorial.png" alt="Side-by-side from a previous sponsored Lens project — left: a Claude Code terminal dialogue (user prompt + Claude's reasoning + MCP calls); right: the finished lens running live in Snapchat.">
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 08 — /skill-creator          ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="skill-creator">
+  <span class="micro">08 · When something works repeatedly</span>
+  <h2>When something works repeatedly</h2>
+  <p class="lede">If a workflow has proven useful across more than one situation, you can suggest it for the shared library. Claude Code includes <code>/skill-creator</code>, which can help you organise the workflow into a reusable skill.</p>
+  <p>Before you share it, remove client names, campaign identifiers, personal data, credentials, private URLs, and confidential project material — only the universal pattern is portable.</p>
+  <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><code>/skill-creator</code> helps prepare a proposal. It does not approve, publish, distribute, or install anything automatically.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STEP 8 — THE MAGIC                     ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section step" id="step-8">
-  <span class="micro">Step 08 of 08 · this is the magic</span>
-  <h2>Activate the skill</h2>
-  <p class="lede">Last step. Tell Claude what you want to build — and the skill activates and takes over from there.</p>
-
-  <div class="step-grid">
-    <div class="step-do">
-      <h3>What you do</h3>
-      <p>Paste this into Claude Code (the cursor from Step 07) — press Enter:</p>
-      <div class="code-block compact">
-        <pre><code>Time to wake up! Let&rsquo;s create a Snapchat lens.</code></pre>
-        <button class="copy-btn" data-copy="Time to wake up! Let's create a Snapchat lens.">Copy</button>
-      </div>
-      <p>This is the starting gun. From here on Claude is your colleague — they guide you through Lens Studio setup, project onboarding, and the entire filter build.</p>
-
-      <div class="hint">
-        Unsure about a step later? Tell Claude in plain language: <em>"I don't understand what you mean by [X]"</em>. They'll rephrase and explain it more simply.
-      </div>
-    </div>
-
-    <div class="step-see">
-      <h3>What you see when it worked</h3>
-      <p>Claude replies by activating the skill + the onboarding flow. Something like:</p>
-      <pre class="output">Hey! The skill is active. Before we begin — do you
-have Lens Studio installed on your machine? (That's
-where we build the filter.)
-
-Also tell me a bit about the filter you want to make:
-- Which client/project?
-- Rough idea — what should the user experience?</pre>
-      <p>From here it's no longer the manual driving. You're following Claude. They're a colleague who knows what they're doing.</p>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 09 — SAFETY REMINDER          ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="safety">
+  <span class="micro">09 · Safety reminder</span>
+  <h2>What not to share</h2>
+  <p class="lede" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);">Do not share client-confidential material, personal data, passwords, access tokens, private links, or any information you are not authorised to use in the current Claude environment.</p>
 </section>
 
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  STUCK                                  ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section stuck">
-  <span class="micro">Not everything goes to plan</span>
-  <h2>Stuck?</h2>
-  <p class="lede">This is new — you'll probably get stuck somewhere. That's completely fine. Here are three ways forward.</p>
-
-  <div class="stuck-grid">
-    <div class="stuck-option">
-      <h3>1. Ask a colleague</h3>
-      <p>Others at Valtech have done this. Post in your Slack channel (#snapchat-filter or equivalent) and point at the step that's misbehaving. Someone has probably seen the same thing.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>2. Ask Claude Code directly</h3>
-      <p>Got Claude Code running? Just type <em>"I'm stuck on &lt;step&gt;: &lt;what you see&gt;"</em>. Claude switches to troubleshooting automatically — asks back until it understands, and suggests a fix.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>3. Ask another AI</h3>
-      <p>No Claude Code yet to ask? Copy the command or the error message, paste it into <a href="https://claude.ai">claude.ai</a>, <a href="https://chatgpt.com">ChatGPT</a>, or <a href="https://gemini.google.com">Gemini</a>. Add <em>"I'm trying to install Claude Code to build Snapchat filters"</em> so they understand the context.</p>
-    </div>
-
-    <div class="stuck-option">
-      <h3>4. Show me your screen</h3>
-      <p>Use your computer's screenshot tool (Mac: <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>4</kbd>, Windows: <kbd>Win</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>). Grab what you see in the terminal. Paste the image straight into Claude.ai or ChatGPT — they can SEE what went wrong.</p>
-      <p style="font-size: 13px; color: var(--ink-60); margin-top: 12px;">Many beginners don't know how to <em>describe</em> an error in text. A screenshot is easier.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ╔═════════════════════════════════════════╗ -->
-<!-- ║  FOR THE CURIOUS                        ║ -->
-<!-- ╚═════════════════════════════════════════╝ -->
-<section class="section">
-  <span class="micro">For the curious</span>
-  <h2>Want to know more?</h2>
-  <p class="lede">The manual above is everything you need to get started. Here are some links if you want to dig deeper.</p>
-
-  <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Note:</strong> Web links to the plugin source are not live yet — the enterprise-owned repository is still being set up. Open the files locally at <code>~/.claude/skills/lens-studio-snapchat-filter/</code> instead.</p>
-  <div class="ideas-grid">
-    <div class="idea">
-      <p class="idea-name">docs/INSTALL-REFERENCE.md</p>
-      <p class="idea-desc">Manual step-by-step installation (for those who'd rather read it all before starting, or need to set up multiple machines).</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">docs/TROUBLESHOOTING.md</p>
-      <p class="idea-desc">Common errors + fixes. Worth checking if Claude can't resolve something on its own.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">references/mcp-tool-schemas.md</p>
-      <p class="idea-desc">What Claude can do in Lens Studio via MCP — all 20 tools documented with their parameters.</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">references/snap-docs/00-INDEX.md</p>
-      <p class="idea-desc">Routing table to Snap's official docs (365 pages mirrored, classified by category).</p>
-    </div>
-    <div class="idea">
-      <p class="idea-name">CHANGELOG.md</p>
-      <p class="idea-desc">See how the skill has grown — every accepted discovery logged with date and generalised project label. The skill's biography.</p>
-    </div>
-  </div>
+<!-- ╔════════════════════════════════════════╗ -->
+<!-- ║  SECTION 10 — THE LIBRARY              ║ -->
+<!-- ╚════════════════════════════════════════╝ -->
+<section class="section" id="library">
+  <span class="micro">10 · The library</span>
+  <h2>Where the up-to-date docs live</h2>
+  <p class="lede">The RADON Skills Library on Valtech GitHub Enterprise is the source of truth for detailed documentation, current pilot status and stewardship.</p>
+  <p>Sign in with your Valtech work account through the approved Valtech sign-in flow. You may need to complete additional verification.</p>
+  <p><a href="https://github.valtech.com" target="_blank" rel="noopener">Open the RADON Skills Library</a></p>
 </section>
 
 <!-- ╔═════════════════════════════════════════╗ -->
