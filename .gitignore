@@ -1,3 +1,34 @@
+# Claude Code local state
 .claude/
 
+# macOS
 .DS_Store
+._*
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Node / JavaScript tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Distribution artifacts
+*.skill
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log

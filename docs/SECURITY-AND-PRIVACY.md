@@ -1,6 +1,6 @@
 # Security and privacy
 
-> This document describes how the `valtech-radon-lens-studio-skill` handles security, privacy, and client data. Written to be readable by security, legal, or compliance reviewers within Valtech RADON — or the colleague who wants to understand how project data is isolated from the skill repo. The original source is `docs/VALTECH-PRESENTATION.md` section 5; it's extracted here so it can be reviewed and shared on its own.
+> This document describes how the `valtech-radon-lens-studio-skill` handles security, privacy, and client data. Written to be readable by security, legal, or compliance reviewers within Valtech RADON — or the colleague who wants to understand how project data is isolated from the skill repo. The original source is `VALTECH-PRESENTATION.md` section 5; it's extracted here so it can be reviewed and shared on its own.
 
 ## What is stored in the skill file?
 
@@ -23,7 +23,7 @@
 
 ## The Generalization rule as active security mechanism
 
-`skill-growth-protocol.md` has a **three-step checklist that runs BEFORE anything gets committed**:
+The shared `radon-skill-growth` skill defines a **three-step checklist that runs BEFORE anything gets committed**. See `references/_growth-protocol-pointer.md`:
 
 **Step 1 — Identify the core.** What's the general rule behind the specific finding?
 
@@ -45,30 +45,33 @@
 1. The AI as gate-keeper runs the checklist
 2. **Human approves every commit explicitly** — no auto-push, no auto-commit
 
-The protocol can be reviewed in [`references/skill-growth-protocol.md`](../references/skill-growth-protocol.md) lines 18–82.
+The protocol is defined in the shared `radon-skill-growth` skill, with a pointer at [`references/_growth-protocol-pointer.md`](../references/_growth-protocol-pointer.md).
 
 ## Repo security
 
-| Aspect | Status today |
+| Aspect | Status |
 |---|---|
-| Repo type | **Private GitHub repo** |
-| Access today | Limited — on the maintainer's personal GitHub account |
-| Plan | Migrate to Valtech organization account |
-| Future | `@valtech.com` SSO authentication |
-| Auto-push | **Disabled** — every push requires explicit approval |
+| Repo type | **Public GitHub repo** under Valtech RADON organisation |
+| Read access | Open to anyone — repo is public |
+| Write access | Restricted to authorised Valtech RADON personnel and approved contractors |
+| Contribution model | **Pull request only.** No direct pushes to `main`. Every change reviewed before merge. |
+| Auto-push | **Disabled.** The growth protocol opens PRs; humans approve merges. |
 
-Migration to a Valtech org is an open item in [VALTECH-PRESENTATION.md section 7](VALTECH-PRESENTATION.md#7-recommended-next-steps).
+Because the repo is public, **the isolation guarantees below are more important, not less.** Client data cannot be in the repo at all — not even in a private branch.
+
+See `NOTICE.md` at repo root for the full internal-use notice covering client confidentiality, IP, and data-protection obligations.
 
 ## What happens with client data during a project?
 
 This is important to understand structurally:
 
-1. **The skill runs LOCALLY** on the designer's machine. Nothing is sent to GitHub without explicit approval.
+1. **The skill runs LOCALLY** on the designer's machine. Nothing is sent to GitHub without explicit approval, and the growth protocol writes discoveries as PRs — nothing merges without human review.
 2. **The Lens Studio project** (with the client's 3D models, briefs, campaign material) lives in a COMPLETELY SEPARATE folder, e.g. `~/Projects/<client>-lens/`. **This folder is NEVER pushed to the skill repo.**
 3. **The discovery protocol** filters out everything project-specific BEFORE anything is even proposed for commit (Step 2 checklist).
 4. The only thing that flows from project to skill is **the generalized pattern** — not data.
+5. **Because the skill repo is public, the Generalization rule is doubly critical** — anything that leaks into a proposed PR is visible to the world in the diff. The Generalization rule + human PR review are the two-layer defence.
 
-Concrete example from `skill-growth-protocol.md`:
+Concrete example from the generalization rule:
 
 ```
 BEFORE (would NOT be committed):

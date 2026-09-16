@@ -25,7 +25,7 @@ If you get stuck at any step, return to Claude Code and say "I'm stuck on step [
 
 ## Prerequisites
 
-- macOS, Windows, or Linux machine
+- **macOS** — the scripted install (`bin/install.sh`) supports macOS only. This manual reference works on Windows and Linux for users who can adapt the shell commands themselves; automated Linux/WSL support is deferred.
 - 10 GB free disk space (Lens Studio is ~3 GB)
 - Internet connection
 - Admin rights to install applications
@@ -77,37 +77,41 @@ If LS won't open or crashes immediately:
 > [!NOTE]
 > All commands in this step run in your **terminal** (Terminal.app or iTerm on macOS). Open it now if you don't have it open yet. All commands from here through Step 7 run in the same terminal window.
 
-You received the skill as one of:
+> **⚠ Status: pending marketplace registration.** There is **no confirmed public clone URL** for this plugin today. The enterprise-owned repository has not yet been created or the current repository transferred. The supported pilot path is **local plugin loading from a checked-out copy** that a skill maintainer hands you directly. Do not attempt to clone from a placeholder URL — it will fail.
 
-### Option A: `.skill` file (zip archive)
+You will receive the skill as one of:
+
+### Option A: Local checkout from the skill maintainer (supported pilot path)
+
+The skill maintainer hands you a directory (via file transfer, USB stick, or an internal Slack message once an org-owned repository exists). Place the directory at:
 
 ```bash
 mkdir -p ~/.claude/skills
-unzip lens-studio-snapchat-filter.skill -d ~/.claude/skills/
+# Move / copy the directory the maintainer provided into place, e.g.:
+mv ~/Downloads/lens-studio-snapchat-filter ~/.claude/skills/
 # Result: ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md exists
 ```
 
 **Verify:** run `ls ~/.claude/skills/` — you should now see `lens-studio-snapchat-filter/` in the listing.
 
-If `unzip` fails (because the file has `.skill` extension, not `.zip`), rename first:
+### Option B: Git clone (only once a verified organisation URL exists)
+
+Do **not** clone from a placeholder URL. Once the organisation-owned repository has been created and its URL confirmed, run:
 
 ```bash
-cp lens-studio-snapchat-filter.skill ~/Downloads/lens-studio-snapchat-filter.zip
-cd ~/Downloads
-unzip lens-studio-snapchat-filter.zip -d ~/.claude/skills/
+LENS_STUDIO_SKILL_REPO_URL="git@github.com:<org>/<repo>.git" \
+  ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh
 ```
 
-### Option B: Git clone (internal Valtech repo or GitHub)
+Or, if you have the URL as a script argument rather than an env variable:
 
 ```bash
-git clone <repo-url> ~/.claude/skills/lens-studio-snapchat-filter
+~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh --repo git@github.com:<org>/<repo>.git
 ```
 
-For updates later: `cd ~/.claude/skills/lens-studio-snapchat-filter && git pull`.
+`bin/install.sh` will refuse to clone from a made-up default; a verified URL must be supplied explicitly.
 
-### Option C: Manual copy (zip + extract from email/Slack/Drive)
-
-Same as Option A — unzip the archive contents into `~/.claude/skills/lens-studio-snapchat-filter/`.
+For updates later (once cloned): `cd ~/.claude/skills/lens-studio-snapchat-filter && git pull`.
 
 ## Step 4: Verify skill install
 
@@ -150,18 +154,18 @@ mkdir -p ~/Projects/[client]-lens
 cd ~/Projects/[client]-lens
 ```
 
-Substitute `[client]` with the actual name in kebab-case (e.g., `spotify-lens`, `olw-lens`, `voi-lens`).
+Substitute `[client]` with the actual name in kebab-case.
 
-**Example** — for an Adidas project:
+**Example** — for a hypothetical footwear-brand project:
 
 ```bash
-mkdir -p ~/Projects/adidas-lens
-cd ~/Projects/adidas-lens
+mkdir -p ~/Projects/example-lens
+cd ~/Projects/example-lens
 ```
 
 When the command finishes, you're *inside* the project folder — the terminal prompt now shows the folder name.
 
-**Verify:** open Finder → Projects. You'll see a new `adidas-lens` folder. This is where Claude will create subfolders (`docs/`, `brief/`, etc.) in the next phase.
+**Verify:** open Finder → Projects. You'll see a new `example-lens` folder. This is where Claude will create subfolders (`docs/`, `brief/`, etc.) in the next phase.
 
 Inside the project folder, create the sub-structure:
 
@@ -265,7 +269,7 @@ claude
 ```
 
 > [!NOTE]
-> Run this in the same terminal window, from your project folder (e.g., `adidas-lens`). This starts the Claude Code CLI — you'll land in an interactive chat prompt where you type messages directly to Claude.
+> Run this in the same terminal window, from your project folder (e.g., `example-lens`). This starts the Claude Code CLI — you'll land in an interactive chat prompt where you type messages directly to Claude.
 
 Ask:
 

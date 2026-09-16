@@ -1,23 +1,30 @@
 # docs/ — publik mapp
 
-**⚠️ Allt i denna mapp serveras live på Cloudflare-URL:en.**
+**⚠️ Hela repo:t är publikt — inte bara den här mappen.**
 
-Det betyder: vem som har URL:en kan läsa filerna här. URL:en är inte offentligt listad (delas riktat via Slack/mejl), men det finns ingen autentisering på Cloudflare Workers gratis-tier. Behandla `docs/` som "halv-publik".
+Repositoriet är publikt under Valtech RADON-organisationen. Vem som helst kan läsa alla filer i repo:t (inklusive `references/`, `CHANGELOG.md`, m.m.). Historiskt var det bara `docs/` som exponerades via Cloudflare, men efter enterprise-migreringen är hela repo:t offentligt.
 
-## Vad som hör hemma här
+Behandla **hela repo:t** enligt reglerna nedan — inte bara `docs/`.
+
+## Vad som hör hemma i docs/ specifikt
 
 - HTML-manualer som kollegor ska kunna läsa innan de installerar skill:en (Steg 0 i onboarding).
-- Statiska assets som manualerna refererar till (`assets/fonts/`, ev. bilder).
+- Statiska assets som manualerna refererar till (`docs/assets/fonts/`, ev. bilder).
 - Markdown som är OK att vara nåbar med en URL.
 - `_redirects` — path-rewrites (Cloudflare-syntax, identisk med Netlify).
 - `index.html` — router-sidan som listar de tre manual-varianterna.
 
-## Vad som INTE hör hemma här
+## Vad som INTE hör hemma i repo:t (någonstans)
 
-- `skill.md`, `CHANGELOG.md`, `project-info/` — lärdomar och intern dokumentation. De ligger en nivå upp.
-- `ONBOARDING-SNIPPET.md` — interna Slack-mallar. Ligger i repo-roten.
-- `references/snap-docs/` — 365 sidor mirror av Snaps docs, för stor och delvis känslig. Stannar utanför.
+Eftersom hela repo:t är publikt gäller den här regeln överallt, inte bara i `docs/`:
+
+- Klient-konfidentiell information (klientnamn i konkreta kontexter, brief-detaljer, kampanjbudgetar).
+- Personuppgifter.
+- Credentials, API-nycklar, tokens.
+- Icke-godkända tredjeparts-material.
 - Säljmaterial, klient-specifikt content, kommersiellt känslig data.
+
+Se `NOTICE.md` i repo-roten för den fullständiga internal-use-noteringen.
 
 ## Path-struktur (rewrites)
 
@@ -30,6 +37,8 @@ Det betyder: vem som har URL:en kan läsa filerna här. URL:en är inte offentli
 
 Path-rewrites styrs av `_redirects`-filen.
 
-## Innan du commitar filer till docs/
+> **TODO (enterprise migration):** Bekräfta att `_redirects`-syntaxen fungerar på den kanoniska Valtech RADON-hostingdomänen (som ännu inte är levererad).
 
-Stanna upp och fråga: *"är det här OK att en kollega utanför Valtech ser om URL:en läcker?"*. Om svaret är nej eller "vet inte" — flytta ut.
+## Innan du commitar
+
+Fråga: *"är det här OK att alla på internet kan läsa?"* — inte bara *"är det OK att en kollega ser?"*. Om svaret är nej eller "vet inte" — commit:a inte.

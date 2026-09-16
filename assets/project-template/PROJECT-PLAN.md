@@ -39,7 +39,7 @@
 | **4** | Test, iterate, polish | 1–2 hours | [Owner] | pending |
 | **5** | Submission prep + handover | 1 hour | [Owner] | pending |
 
-Each phase detail: see skill's `references/build-pipeline.md`.
+Each phase detail: see the skill's `references/phase-progression.md`.
 
 ---
 
@@ -84,8 +84,8 @@ Specific to this project:
 
 Project is MVP-complete when:
 
-- [ ] All Phase 4 DoD items met (see skill's `build-pipeline.md`)
-- [ ] All Phase 5 DoD items met (see skill's `build-pipeline.md`)
+- [ ] All Phase 4 DoD items met (see skill's `references/phase-progression.md`)
+- [ ] All Phase 5 DoD items met (see skill's `references/phase-progression.md`)
 - [ ] Client final approval on preview video
 - [ ] Handover package delivered to media agency
 - [ ] Lens uploaded to Snap Ads Manager

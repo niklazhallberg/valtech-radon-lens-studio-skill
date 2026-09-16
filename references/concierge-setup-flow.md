@@ -48,9 +48,9 @@ Don't ask Anna to do a project-save yet — that comes after we know the project
 
 Ask one question that captures both client identity AND ad-policy category in a single turn (previously the category was re-asked in intake Q4 — now merged here to eliminate redundancy):
 
-> CC: "What's the client called and which ad-policy category applies? E.g. 'adidas, sportswear (general)' or 'RFSU, sexual wellness (regulated)'. I'll create the project folder and flag any policy restrictions directly (general = 1–3 days of review at Snap, regulated = 1–2 weeks)."
+> CC: "What's the client called and which ad-policy category applies? E.g. a sportswear brand in the 'general' category, or a sexual-wellness organisation in the 'regulated' category. I'll create the project folder and flag any policy restrictions directly (general = 1–3 days of review at Snap, regulated = 1–2 weeks)."
 
-Wait for Anna's answer (e.g., "Spotify, music streaming (general)").
+Wait for the user's answer (a client name + a category tag).
 
 Parse client-name + category. Save category to `PROJECT-STATE.md` under `ad_policy_category` so it propagates to Phase 5 submission prep without re-asking.
 

@@ -28,11 +28,11 @@ If any one of these breaks, the user feels it. They might not name it ("the agen
 
 **Why this matters:** Designers and non-technical users will silently disengage if tone implies "you should already know this." Each unexplained term, each "obvious" assumption is a small "I don't belong here" moment. Cumulative effect over a 30–60-min session is enormous.
 
-**Worked examples (Samba 2026-05-13):**
+**Worked examples (previous footwear-brand session, 2026-05-13):**
 
-❌ "The main external dependency is a 3D Samba model — we'll need a GLB/FBX, either from adidas or modeled."
+❌ "The main external dependency is a 3D shoe model — we'll need a GLB/FBX, either from the brand or modeled."
 
-✅ "The only external thing we need is the 3D model of the Samba shoe — that is, a file that describes the shape in 3D. The most common formats are called GLB or FBX; think of them as JPEG but for 3D objects. Either we get one from adidas or we model one."
+✅ "The only external thing we need is the 3D model of the shoe — that is, a file that describes the shape in 3D. The most common formats are called GLB or FBX; think of them as JPEG but for 3D objects. Either we get one from the brand or we model one."
 
 The AFTER version assumes the user is smart AND assumes they may not know "GLB" — both true. Translating ≠ patronizing.
 
@@ -106,7 +106,7 @@ The rule: speak about the lens, not about the agent's process. Recipe IDs are in
 
 **Why this matters:** The user invests emotional energy in the project. When the agent passes silently over a hard-won success, it tells the user "this was just routine." That's both false (it was a milestone) and demotivating.
 
-**Worked examples (Samba foot-tracking install):**
+**Worked examples (foot-tracking install, from a previous footwear-brand session):**
 
 ❌ "The Sneakers package dropped in a sneakers ObjectPrefab + left/right shoe meshes + 3 color variants. Good base. Now I'm installing the Foot Tracking component itself."
 
@@ -130,7 +130,7 @@ The AFTER converts status-log into shared progress narrative.
 
 **Worked examples:**
 
-✅ "The Phase 1 scaffolding we just landed uses Try-On Pack Sneakers — what we talked about in intake as 'placeholder until the brand asset lands'. Now that it works, we can start sourcing the real Samba mesh from adidas in parallel."
+✅ "The Phase 1 scaffolding we just landed uses Try-On Pack Sneakers — what we talked about in intake as 'placeholder until the brand asset lands'. Now that it works, we can start sourcing the real branded shoe mesh in parallel."
 
 ✅ "Last time we measured the X offset, it was at 26.65, which under-compensated ~15–20%. Probe-7 now aims for 32 — that should put the mesh center over the anchor."
 
@@ -262,4 +262,4 @@ Don't bloat — every principle should pull weight in every session. If a princi
 ---
 
 **v0.7.0 — first canonical capture of mentor-tone as code.**
-**Source material:** 14 friction themes from Samba/adidas Sponsored Lens build, real session, 2026-05-13.
+**Source material:** 14 friction themes from a previous footwear-brand Sponsored Lens build, real session, 2026-05-13.

@@ -191,7 +191,7 @@ When you encounter a new term that's NOT in this list but creates a confusion mo
 When in doubt: err on the side of including the translation.
 
 **Date stamps:**
-- 2026-05-13 — initial 19 terms from Samba/adidas session
+- 2026-05-13 — initial 19 terms from a previous footwear-brand session
 - (future additions logged here)
 
 ---

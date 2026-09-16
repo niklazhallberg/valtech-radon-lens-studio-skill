@@ -18,8 +18,10 @@ STATE_FILE="${STATE_DIR}/last_flag_${KEY}"
 
 [ -f "$CHANGELOG" ] || exit 0
 
-count="$(grep -c '^### 💡' "$CHANGELOG" 2>/dev/null || echo 0)"
-last="$(cat "$STATE_FILE" 2>/dev/null || echo 0)"
+count="$(grep -c '^### 💡' "$CHANGELOG" 2>/dev/null || true)"
+count="${count:-0}"
+last="$(cat "$STATE_FILE" 2>/dev/null || true)"
+last="${last:-0}"
 
 # Next multiple of 10 we haven't flagged yet.
 next_threshold=$(( (last / 10 + 1) * 10 ))

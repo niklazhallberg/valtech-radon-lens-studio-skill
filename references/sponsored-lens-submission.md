@@ -114,7 +114,7 @@ Specific limits:
 
 **How**: bind `OnStartEvent` and set `global.touchSystem.touchBlocking = true`. See `lens-studio-api-gotchas.md` → "Sponsored Lens compliance — touch-blocking" for the canonical recipe.
 
-**Source**: Empirically validated on Valtech RFSU Sponsored Lens build, 2026-05; consistent with Snap's general "lens must not impair user's ability to use Snapchat" principle.
+**Source**: Empirically validated on a Valtech RADON Sponsored Lens build, 2026-05; consistent with Snap's general "lens must not impair user's ability to use Snapchat" principle.
 
 **Apply when**: ANY Sponsored Lens with tap interaction.
 

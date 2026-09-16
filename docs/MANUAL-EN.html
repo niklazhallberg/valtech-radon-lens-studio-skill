@@ -932,35 +932,29 @@ Installation complete.</pre>
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-3">
   <span class="micro">Step 03 of 08</span>
-  <h2>Accept the invitation</h2>
-  <p class="lede">The skill lives on GitHub as a private repo. Niklaz has sent you an invitation — you need to accept it to gain access.</p>
-  <p>GitHub is a shared archive for code and files — think Google Drive but for development projects. The skill is stored there so everyone on the team can download it, use it, and best of all, automatically improve it over time.</p>
+  <h2>Get access (pending marketplace registration)</h2>
+  <p class="lede" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status pending.</strong> The enterprise-owned repository for this plugin has not yet been created or the current repository transferred, so there is no confirmed GitHub URL to invite you to today. The supported pilot path is a <strong>local copy handed to you by the skill maintainer</strong>.</p>
 
   <div class="step-grid">
     <div class="step-do">
-      <h3>What you do</h3>
-      <p><strong>1.</strong> Open the email from Niklaz Hallberg.</p>
-      <p><strong>2.</strong> Click the blue <strong>View invitation</strong> button.</p>
-      <p><strong>3.</strong> If GitHub asks you to sign in — sign in. If you don't have an account yet, click <em>Create an account</em>, sign up, and verify your email.</p>
-      <p><strong>4.</strong> Once signed in, you'll see a GitHub page with the invitation. Click <strong>Accept invitation</strong>.</p>
+      <h3>What you do (pilot)</h3>
+      <p><strong>1.</strong> Contact the skill maintainer and ask for a local copy of the plugin.</p>
+      <p><strong>2.</strong> Place the copy on your machine so that <code>~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> exists.</p>
+      <p><strong>3.</strong> When the organisation-owned repository has been created, this section will be replaced with a GitHub invitation flow. Until then, do not attempt to clone from placeholder URLs anywhere in these manuals.</p>
 
       <div class="hint">
-        Use the same email address the invitation was sent to. Otherwise GitHub may show a 404 (Repository not found).
+        A verified clone URL can be passed explicitly later via <code>LENS_STUDIO_SKILL_REPO_URL</code> or <code>--repo</code>. The install script refuses to clone from a made-up default.
       </div>
     </div>
 
     <div class="step-see">
       <h3>What you see when it worked</h3>
-      <p>After clicking Accept invitation, the GitHub repo's front page shows a confirmation:</p>
-      <pre class="output">You are now a collaborator on
-niklazhallberg/valtech-radon-lens-studio-skill</pre>
-      <p>You can now see the repo files via the web. Good signal — move on to the next step.</p>
+      <p>Running <code>ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> prints the file path (not an error). Good signal — move on to the next step.</p>
 
       <details class="hint-collapsible">
         <summary>Not working?</summary>
         <ul>
-          <li><strong>404 "Repository not found"</strong> — you're probably signed into the wrong GitHub account. Sign out, click <em>View invitation</em> in the email again, sign in with the right account.</li>
-          <li><strong>Invitation expired</strong> — invitations are valid for 7 days. Ask Niklaz to send a new one.</li>
+          <li><strong>File not found</strong> — the local copy is not in place yet. Contact the skill maintainer.</li>
         </ul>
       </details>
     </div>
@@ -1066,17 +1060,20 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
   <div class="step-grid">
     <div class="step-do">
       <h3>What you do</h3>
+      <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6); margin-bottom: 20px;"><strong>Status: pending marketplace registration.</strong> There is <em>no confirmed public clone URL</em> for this plugin today. Ask the skill maintainer for a local copy and place it at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Do not attempt to clone from a placeholder URL.</p>
       <p><strong>1.</strong> Prepare the folder where Claude Code looks for skills:</p>
       <div class="code-block compact">
         <pre><code>mkdir -p ~/.claude/skills</code></pre>
         <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Copy</button>
       </div>
-      <p><strong>2.</strong> Clone the skill into that folder:</p>
+      <p><strong>2.</strong> Once the organisation-owned repository exists and you have the verified URL, use it explicitly (the install script refuses to guess a default):</p>
       <div class="code-block compact">
-        <pre><code>git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter</code></pre>
-        <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter">Copy</button>
+        <pre><code># Replace &lt;org&gt;/&lt;repo&gt; with the confirmed URL supplied by the skill maintainer
+LENS_STUDIO_SKILL_REPO_URL="git@github.com:&lt;org&gt;/&lt;repo&gt;.git" \
+  ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
+        <button class="copy-btn" data-copy="LENS_STUDIO_SKILL_REPO_URL=git@github.com:ORG/REPO.git ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy template</button>
       </div>
-      <p><strong>3.</strong> Run the install script — it activates auto-sync:</p>
+      <p><strong>3.</strong> If a maintainer has already placed a local copy at <code>~/.claude/skills/lens-studio-snapchat-filter/</code>, run the install script directly — it activates auto-sync:</p>
       <div class="code-block compact">
         <pre><code>~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
         <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Copy</button>
@@ -1085,7 +1082,7 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
 
     <div class="step-see">
       <h3>What you see when it worked</h3>
-      <p>The clone command shows download progress. Then the install script runs a checklist and ends with:</p>
+      <p>If you supplied a verified clone URL, the clone command shows download progress. Otherwise the install script starts from an existing local copy. Either way, it runs a checklist and ends with:</p>
       <pre class="output">🎉 Allt är på plats!
 
 ✅ Claude Code installerat
@@ -1162,10 +1159,11 @@ Type your message to begin:
   </div>
 
   <h3 style="margin-top: 56px; margin-bottom: 28px; font-family: 'Handjet', 'Space Grotesk', sans-serif; font-size: clamp(26px, 2.6vw, 34px); font-weight: 500; letter-spacing: -0.01em; line-height: 1.05;">What talking to Claude actually looks like</h3>
-  <p>Once you're inside, the conversation is plain language — you describe what you want, Claude reasons through it, makes changes in Lens Studio via the MCP server, and tells you what they did. Here's a real snippet from the RFSU lens project, where the rotation timing on the pack animations was being fine-tuned.</p>
-  <p style="color: var(--ink-60); font-style: italic;">Left: a real snippet from the RFSU lens project — the user asking Claude in plain language, Claude reasoning through it, calling the MCP server, and explaining back. Right: the resulting lens running live in Snapchat.</p>
+  <p>Once you're inside, the conversation is plain language — you describe what you want, Claude reasons through it, makes changes in Lens Studio via the MCP server, and tells you what they did. Here's a real snippet from a previous sponsored Lens project, where the rotation timing on the package animations was being fine-tuned.</p>
+  <p style="color: var(--ink-60); font-style: italic;">Left: a real snippet from a previous sponsored Lens project — the user asking Claude in plain language, Claude reasoning through it, calling the MCP server, and explaining back. Right: the resulting lens running live in Snapchat.</p>
+  <!-- TODO (enterprise migration): The bundled screenshot img/Image_Snapchat_Tutorial.png shows visible branding from the seed project. Replace with a generalised screenshot or a redacted version before external distribution. Do not distribute this manual with the original screenshot. -->
   <div class="screenshot">
-    <img src="img/Image_Snapchat_Tutorial.png" alt="Side-by-side from the RFSU lens project — left: a Claude Code terminal dialogue (user prompt + Claude's reasoning + MCP calls); right: the finished lens running live in Snapchat with the Condom Fortune Cookie / Thin branding visible.">
+    <img src="img/Image_Snapchat_Tutorial.png" alt="Side-by-side from a previous sponsored Lens project — left: a Claude Code terminal dialogue (user prompt + Claude's reasoning + MCP calls); right: the finished lens running live in Snapchat.">
   </div>
 </section>
 
@@ -1247,27 +1245,28 @@ Also tell me a bit about the filter you want to make:
   <h2>Want to know more?</h2>
   <p class="lede">The manual above is everything you need to get started. Here are some links if you want to dig deeper.</p>
 
+  <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Note:</strong> Web links to the plugin source are not live yet — the enterprise-owned repository is still being set up. Open the files locally at <code>~/.claude/skills/lens-studio-snapchat-filter/</code> instead.</p>
   <div class="ideas-grid">
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/docs/INSTALL-REFERENCE.md" target="_blank" rel="noopener">
-      <p class="idea-name">INSTALL-REFERENCE.md<span class="idea-link-arrow">↗</span></p>
+    <div class="idea">
+      <p class="idea-name">docs/INSTALL-REFERENCE.md</p>
       <p class="idea-desc">Manual step-by-step installation (for those who'd rather read it all before starting, or need to set up multiple machines).</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/docs/TROUBLESHOOTING.md" target="_blank" rel="noopener">
-      <p class="idea-name">TROUBLESHOOTING.md<span class="idea-link-arrow">↗</span></p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">docs/TROUBLESHOOTING.md</p>
       <p class="idea-desc">Common errors + fixes. Worth checking if Claude can't resolve something on its own.</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/references/mcp-tool-schemas.md" target="_blank" rel="noopener">
-      <p class="idea-name">references/mcp-tool-schemas.md<span class="idea-link-arrow">↗</span></p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">references/mcp-tool-schemas.md</p>
       <p class="idea-desc">What Claude can do in Lens Studio via MCP — all 20 tools documented with their parameters.</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/references/snap-docs/00-INDEX.md" target="_blank" rel="noopener">
-      <p class="idea-name">references/snap-docs/00-INDEX.md<span class="idea-link-arrow">↗</span></p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">references/snap-docs/00-INDEX.md</p>
       <p class="idea-desc">Routing table to Snap's official docs (365 pages mirrored, classified by category).</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/CHANGELOG.md" target="_blank" rel="noopener">
-      <p class="idea-name">CHANGELOG.md<span class="idea-link-arrow">↗</span></p>
-      <p class="idea-desc">See how the skill has grown — every discovery logged with date + project. A long list of all the knowledge that's flowed in from real Valtech projects over time. The skill's biography.</p>
-    </a>
+    </div>
+    <div class="idea">
+      <p class="idea-name">CHANGELOG.md</p>
+      <p class="idea-desc">See how the skill has grown — every accepted discovery logged with date and generalised project label. The skill's biography.</p>
+    </div>
   </div>
 </section>
 

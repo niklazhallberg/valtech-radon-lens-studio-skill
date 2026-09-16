@@ -1,5 +1,7 @@
 ---
 name: lens-studio-snapchat-filter
+metadata:
+  version: "0.8.0"
 description: Builds Snapchat AR Lenses and Sponsored Lenses in Lens Studio 5.20+ with Claude Code, optionally with the Lens Studio MCP server. Covers full pipeline (Phase 0 spec → Phase 5 submission), empirically-validated LS 5.x API patterns, MCP mutation rules (probe+bulk, silent-drop recovery), and Sponsored Lens submission to Snap Ads Manager. TRIGGER when user mentions Lens Studio, Snapchat, filter (in Snap context), Sponsored Lens, AR lens, .esproj/.lens files, Snap Ads Manager, Camera Kit, Bitmoji, or asks help building a Snapchat AR experience. SKIP for TikTok Effect House, Meta Spark, Unity/Unreal AR, native ARKit/ARCore, WebXR, Spectacles AR Object, or generic AR without Snap context. If user says "AR project" without specifying platform, ask first.
 ---
 
@@ -117,9 +119,9 @@ Snapchat-specific terminology, ad-policy categories, performance gates (LAT < 65
 
 Deep optimization mechanics, per-asset numeric budgets, anti-patterns, Phase 4 DoD checklist: `references/performance-optimization-guide.md`. 3D-heavy lenses: `references/3d-asset-import-doctrine.md`. Submission compliance: `references/sponsored-lens-submission.md`.
 
-## Project documentation pattern
+## Project documentation pattern (per-project, created by agent)
 
-Each project ships with: `PROJECT-STATE.md` (living tracker), `PROJECT-PLAN.md`, `docs/USER-EXPERIENCE.md`, `docs/TECH-SPEC.md`, `docs/PROJECT-DECISIONS.md`, `INSPIRATION/` (≥5 reference images, sorted into sub-folders), `project-info/client-brief.md`. Template scaffold: `assets/project-template/`.
+**In each client Lens Studio project**, the agent scaffolds: `PROJECT-STATE.md` (living tracker), `PROJECT-PLAN.md`, `docs/USER-EXPERIENCE.md`, `docs/TECH-SPEC.md`, `docs/PROJECT-DECISIONS.md`, `INSPIRATION/` (≥5 reference images, sorted into sub-folders), `project-info/client-brief.md`. These files live in the CLIENT'S project repo, not in the skill. Template scaffold: `assets/project-template/`.
 
 ## References (load on demand)
 
@@ -152,7 +154,7 @@ Each project ships with: `PROJECT-STATE.md` (living tracker), `PROJECT-PLAN.md`,
 
 **Foundational + cultural**
 - `references/snap-docs/` — 365 Snap docs pages, curated into 9 buckets. Use `references/snap-docs/00-INDEX.md` as routing table; don't grep blindly
-- `references/skill-growth-protocol.md` — discovery flow-back: generalize, propose, approve, write, commit, push. Includes the "not-a-discovery" checklist
+- `references/_growth-protocol-pointer.md` — pointer to the shared `radon-skill-growth` skill which governs discovery flow-back: generalize, propose, approve, write, commit, push
 
 **User-facing docs**
 - `docs/MANUAL-SV.md` · `docs/MANUAL-EN.md` · `docs/INSTALL-REFERENCE.md` · `docs/TROUBLESHOOTING.md`

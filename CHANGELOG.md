@@ -4,8 +4,8 @@ All notable changes to **lens-studio-snapchat-filter** are documented here.
 
 Discoveries from real Valtech RADON projects flow into the
 "Improvements and newly acquired knowledge" section automatically
-via the skill-growth protocol — see `references/skill-growth-protocol.md`
-for the in-flow-ask mechanic and format spec.
+via the shared `radon-skill-growth` skill — see `references/_growth-protocol-pointer.md`
+for the pointer to the mechanic and format spec.
 
 At release time: those entries are consolidated under a `[vX.Y.Z]`
 heading with the release date.
@@ -31,31 +31,31 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 - File: `SKILL.md` § "Mandatory checkpoints — re-anchor to the growth protocol at these moments"
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **vec4 setProperty via dotted-path scalars works empirically** (workaround to the documented compound-type silent-drop): writing `setProperty(propertyPath: "endAnchorsBounds.z", valueType: NUMBER, value: -0.18)` persists correctly even though writing the full vec4 object via `valueType: VEC4` would silent-drop fields 3+. Applies to ANY vec4/vec3/vec2 field — `anchor.top`, `localPosition.y`, TweenScreenTransform's `endAnchorsBounds`, etc. Use routinely; faster + more reliable than batched VEC4 writes.
 - Value for user: every MCP user fighting the compound-type silent-drop now has a clean workaround. Saves trial-and-error on the documented gotcha.
 - File: `references/lens-studio-api-gotchas.md` § "Category 2: Compound types (RECT/VEC4/VEC2)"
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **Anchor-grow tweens drift the visual center when `start.center != end.center`**: a `TweenScreenTransform` of type Anchors that animates from a small/narrow rectangle to a large/wide one will VISIBLY DRIFT during the animation if the start and end anchor rectangles don't share the same midpoint. Manifests as the object "growing upward" rather than "growing from middle outward". Mitigation: verify `start.x + start.y == end.x + end.y` AND `start.z + start.w == end.z + end.w` before authoring the tween. For horizontal-only grow, keep start.z = end.z and start.w = end.w.
 - Value for user: any reveal/dismiss animation using anchor-grow has this latent pitfall; saves the 20-30 min of "why does it drift up" debugging the next time.
 - File: `references/lens-studio-api-gotchas.md` § "Anchor-grow tweens drift the visual CENTER..."
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **`LayerSet.empty()` / `makeNone()` / `makeAll()` static helpers do NOT exist in LS 5.21 runtime types**: the common pattern "hide without disable via empty LayerSet" requires constructor methods that aren't in the public TS types. All three plausible names fail with `TS2339: Property 'X' does not exist on type 'typeof LayerSet'`. No clean public API for "hide-but-tick" exists in 5.21.
 - Value for user: every developer reaching for layer manipulation as a hide-but-keep-running mechanism hits this dead end. Knowing up front saves the failed-compile loop.
 - File: `references/lens-studio-api-gotchas.md` § "`LayerSet` runtime API..."
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **VFX preset render-properties ignored for some Asset Library presets** (Sparkles VFX 5.15.0 empirically tested — likely applies to others): writing `vfx.asset.properties["Material_Render"] = null`, `Render_Layers = 0`, `Render_Mesh = null`, `Material_Render_IDs = null` all SUCCEED at the property assignment level (no exceptions), but DO NOT actually gate rendering — the VFX continues to render visibly. The render path doesn't re-read these properties at draw-time, or the VFX system caches the original asset references internally. List of empirically-ineffective approaches: Material_Render = null, Render_Layers = 0, Render_Mesh = null, Material_Render_IDs = null, position offset to (10000, -10000, 10000), scale to 0.001, emitParticle = false (gates steady-state only, not t=0 burst).
 - Value for user: ~30 min saved on the next colleague's "let me try to hide this VFX from script" iteration. The exhaustive negative-result list is the discovery.
 - File: `references/lens-studio-api-gotchas.md` § "VFX preset render-properties..."
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **VFX burst-particles persist across `enabled` toggle cycles — `enabled` is a tick-gate, not a lifecycle-reset**: a VFXComponent's t=0 Burst Spawn block fires ONLY on the first time the simulation ticks. `SceneObject.enabled = false` pauses tick but doesn't reset timeline; subsequent `enabled = true` resumes from where it paused (already past t=0 → no burst). Result: first pop after lens load shows a large burst, subsequent pops only show steady-state emission. Asymmetric "first time is bigger" behavior is by design, surprising, and not script-fixable without preset graph edit (set Burst Count = 0 in VFX Editor) or component-recreate pattern (destroyComponent + createComponent for fresh state every time).
 - Value for user: explains the entire asymmetric-burst phenomenon; saves the multi-hour "why is first time different" debugging loop. The fix paths are clearly laid out (edit graph, accept asymmetry, or destroyComponent pattern).
 - File: `references/lens-studio-api-gotchas.md` § "VFX burst-particles persist across `enabled` toggle cycles..."
@@ -73,13 +73,13 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 - File: `references/graph-authoring-protocol.md`
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **Verified: VFX Graph + Script Graph follow the same opaque-asset pattern as Shader Graph, with VFX being even more restrictive**: closed the capability matrix by installing Sparkles VFX + Behavior (Snap's script-graph proxy) as throwaway probes. `VFXComponent` in Editor API exposes ONLY `enabled`, `name`, `sceneObject`, `id` — **not even an `asset` reference is enumerable**, so VFX parameter-driving requires lens-runtime TypeScript (`script.vfx.asset.properties['name'] = value`) rather than MCP/Editor API. The "Behavior" custom component is NOT a node graph — it's a flat parameter dictionary (`scriptInputInfo` keys like `triggeringEventType`, `setMaterialParameterVec4Value`, `setPosition`). On-disk format `.vfxgraph` is binary like `.ss_graph`. Conclusion holds for all three graph types: node structure not editable, asset opaque, parameter-driving works (with different routes per type).
 - Value for user: next colleague gets a verified matrix instead of "we think it works the same" — knows exactly which surface to use for each graph type, and that VFX needs a lens-runtime controller rather than direct MCP.
 - File: `references/lens-studio-api-gotchas.md` § "Shader Graph / VFX Graph / Script Graph node structure is NOT editable via the public Editor API"
 - Type: [discovery]
 
-### 💡 2026-05-27 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-27 — [project: sponsored-lens-production]
 - **Empirically verified: Claude Code / MCP CANNOT edit Shader Graph, VFX Graph, or Script Graph node structure in LS 5.21**: ran a full probe via `ExecuteEditorCode` and asset-graphql against the live LS instance. `ShaderGraphPass` asset exposes only id/type/meta/name/fileMeta — no nodes, no graph property. `Editor.Graph.convertGraphToYaml` / `convertYamlToGraph` exist at runtime BUT are not in the public TypeScript types (`keyof typeof Editor.Graph` resolves to empty namespace), take 2 undocumented arguments, and all plausible input combinations returned "Object is null". On-disk `.ss_graph` format is binary (not text/YAML — magic bytes + tag-value blocks for MetaData/Nodes/ChildNodes). `createAsset` for ShaderGraphPass is not supported via asset-graphql. The empirical conclusion replaces my prior week's *guess* (which I wrote into visual-scripting-guide.md without verification): the answer was "no graph editing", confirmed.
 - Value for user: next colleague who asks "can CC edit my Shader Graph for me?" gets a verified no with the exact reasoning, plus the list of what CC CAN drive (material parameter values, pass render-state, asset binding, create/delete material assets). Saves the 30-minute "let me try a few API combos" that just happened.
 - File: `references/lens-studio-api-gotchas.md` § "Shader Graph / VFX Graph / Script Graph node structure is NOT editable via the public Editor API" + updates in `material-editor-guide.md` P8 and `visual-scripting-guide.md` P6
@@ -121,19 +121,19 @@ _New learnings registered from past or ongoing Valtech RADON projects._
 - File: `references/composition-patterns.md`
 - Type: [discovery]
 
-### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-26 — [project: sponsored-lens-production]
 - **The documented "clip text to a window" trick currently doesn't work in Lens Studio**: Snap's own guide describes how to put text inside a clipping shape so it appears only within the window — but in practice, on Lens Studio 5.21, the text either ignores the clip and renders everywhere or disappears entirely. Snap's docs page itself admits there is "a known bug with masking interactions" without specifying what's broken. Until Snap fixes it, the reliable fallback is a small per-frame script that toggles each text's visibility based on whether its full extent fits inside the intended window.
 - Value for user: next colleague who tries to build a slot-machine reel, a scrolling ticker, or any animated-text-inside-a-window stops here instead of spending most of a day rebuilding clipping from scratch — and gets the working script-based fallback pattern.
 - File: `references/lens-studio-api-gotchas.md` § "Masking Component does not visibly clip Text grandchildren in LS 5.21"
 - Type: [discovery]
 
-### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-26 — [project: sponsored-lens-production]
 - **Older custom components from the Asset Library can quietly fail with "module not found" errors**: many UI components in Snap's Asset Library were built for older Lens Studio versions (4.49, 4.53) and embed version-tagged references to helper modules. On Lens Studio 5.21 those tagged references don't resolve even after installing the matching standalone module packages — the names don't line up. The Preview pauses with a "Cannot find module" error and the lens won't run.
 - Value for user: next colleague who tries to base a project on an Asset Library component does a quick isolation test first — drop the component into a side scene with a plain text element and see if the Preview pauses. If it does, the asset is incompatible with the current Lens Studio version and time is saved before wiring up anything bigger.
 - File: `references/lens-studio-api-gotchas.md` § "Asset Library custom components built for older LS versions may fail with Cannot find module errors"
 - Type: [discovery]
 
-### 💡 2026-05-26 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-26 — [project: sponsored-lens-production]
 - **Built-in scroll-view component handles masked scrolling content**: when a brief asks for scrolling text, a slot-machine reel, a rolling counter, or any other content that needs to scroll inside a bounded window, Lens Studio's Asset Library has a ready-made `UI Scroll View` component that wraps masking, drag input, and optional scroll bars in one drop-in piece. Using it skips a multi-hour rebuild of the same machinery from primitive parts (Masking + Image + drag scripting + clip math).
 - Value for user: next colleague who needs a scrolling list, slot machine, ticker, or rolling counter saves a half-day of rebuilding masking + scroll plumbing from primitives — install one component instead.
 - File: `references/lens-recipe-catalog.md` § D-13
@@ -208,9 +208,9 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
   `SKILL.md` (References pointer + version bump 0.9.0 → 0.10.0)
 - Type: [doctrine]
 
-### 💡 2026-05-18 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-18 — [project: sponsored-lens-production]
 - **GLB post-process: switching the recommended tool from `gltf.report` to
-  `optimizeglb.com/dashboard`**: empirical finding from the RFSU project where
+  `optimizeglb.com/dashboard`**: empirical finding from a previous sponsored Lens project where
   the same clean source .glb produced visible mesh artifacts
   (tearing/distortion) after `gltf.report` optimization — even with lossless
   settings, even with PNG instead of JPEG, and even at 2K texture output.
@@ -229,10 +229,10 @@ ett café eller en kunds gästnät ser samma sak som lokalt.
 - Files: `references/3d-asset-import-doctrine.md` (Pass 1b section)
 - Type: [doctrine-correction]
 
-### 💡 2026-05-18 — [project: rfsu-bang-fortune-lens]
+### 💡 2026-05-18 — [project: sponsored-lens-production]
 - **GLB-first 3D import doctrine + two-pass optimization — a systematic way
   to keep lens size under Snap's limit when custom 3D models are imported**:
-  an RFSU project showed how quickly a hat FBX could blow up the lens from
+  a previous sponsored Lens project showed how quickly an FBX headwear model could blow up the lens from
   ~3 MB to 34 MB. The skill now has a `references/3d-asset-import-doctrine.md`
   that establishes GLB/glTF as the default format (Snap has a dedicated
   import guide for glTF), with FBX and OBJ as fallback formats. The

@@ -13,7 +13,7 @@ CC handles everything. No external assets needed beyond client logo / brand font
 Examples:
 - 2D face overlays, color tints, eye texture swaps
 - Tap-interactions with text/image reveals
-- Fortune / quiz / horoscope lenses (RFSU BANG = reference ✅)
+- Fortune / quiz / horoscope lenses (validated in a previous production build ✅)
 - Text + custom font lenses, simple particles
 - Basic face tracking with image overlays
 
@@ -122,7 +122,7 @@ moves to the Tier 3 honest-language response.
 | Request | Tier | Why |
 |---|---|---|
 | Tap to reveal text / image | 1 | InteractionComponent + tween |
-| Random fortune / quiz / reroll | 1 | JSON asset + script (RFSU BANG = reference) |
+| Random fortune / quiz / reroll | 1 | JSON asset + script (validated in a previous production build) |
 | Slot machine / scrolling reel | 1 | Script-based clipping + tween (see `lens-recipe-catalog.md` D-13 + masking gotcha) |
 | Drag-to-rotate / drag-to-pan | 1 | TouchSystem + ScreenTransform math |
 | Multi-step UI flow (3+ screens) | 1 | Script state machine + tween between layouts |
@@ -175,8 +175,7 @@ moves to the Tier 3 honest-language response.
 
 - LS 5.21+ surfaces shift the line between Tier 1 and 2 in some places
   (GenAI tools moving more capability into the editor itself). Re-check
-  release notes — link in `project_ls_521_release.md` memory — when a
-  feature near the boundary comes up.
+  Snap's release notes when a feature near the boundary comes up.
 - This matrix reflects what an external agency with standard LS + MCP
   can produce. Snap-internal teams and partners may have access to
   features marked Tier 3.

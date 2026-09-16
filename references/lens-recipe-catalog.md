@@ -959,7 +959,7 @@ LS ships a cluster of physics-driven interactive templates. All use the same und
 - Shoe models in wrong orientation appear rotated/backward on-foot — match example model axis orientation before export.
 - Template's feet-removal occlusion masks natural foot — if brief requires keeping feet visible alongside virtual shoe, remove occlusion mesh manually.
 
-**See also**: `body-anchored-calibration.md` and `lens-studio-api-gotchas.md` → "Try-On Pack Sneakers — Foot Tracking calibration" for the full empirical record from a Valtech RFSU project (geometry-scale-position-mirror sequencing, wrapper-anchor architecture, foot-specific verification protocol).
+**See also**: `body-anchored-calibration.md` and `lens-studio-api-gotchas.md` → "Try-On Pack Sneakers — Foot Tracking calibration" for the full empirical record from a validated production Lens build (geometry-scale-position-mirror sequencing, wrapper-anchor architecture, foot-specific verification protocol).
 
 **Source(s)**: https://developers.snap.com/lens-studio/4.55.1/references/templates/object/Try-On/foot-tracking [STALE URL; template current]
 

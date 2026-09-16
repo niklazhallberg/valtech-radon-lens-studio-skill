@@ -51,19 +51,7 @@ Säg till maintainer på Slack om du behöver Windows-stöd."
 fi
 
 # ─── 2. Pre-reqs ─────────────────────────────────────────────────────
-header "2. Kollar att du har Node.js och git"
-if command -v node >/dev/null 2>&1; then
-  ok "Node.js hittat ($(node --version))"
-else
-  fail "Node.js saknas på din dator." \
-"Node.js är programmet vi behöver för att köra Claude Code.
-
-1. Ladda ner Node.js: https://nodejs.org/download (välj LTS-versionen)
-2. Installera (klicka dig igenom)
-3. Stäng terminalen
-4. Öppna en ny terminal och kör install.sh igen"
-fi
-
+header "2. Kollar att du har git"
 if command -v git >/dev/null 2>&1; then
   ok "git hittat ($(git --version | awk '{print $3}'))"
 else
@@ -82,19 +70,16 @@ header "3. Installerar Claude Code (eller bekräftar att det redan finns)"
 if command -v claude >/dev/null 2>&1; then
   ok "Claude Code redan installerat ($(claude --version 2>/dev/null | head -1))"
 else
-  say "Installerar via npm... (kan ta upp till 1 minut)"
-  if npm install -g @anthropic-ai/claude-code >/tmp/claude-install.log 2>&1; then
+  say "Installerar via officiell installatör... (kan ta upp till 1 minut)"
+  if curl -fsSL https://claude.ai/install.sh | bash >/tmp/claude-install.log 2>&1; then
     ok "Claude Code installerat"
   else
     fail "Installationen av Claude Code misslyckades." \
-"Vanligaste orsaken är att npm behöver sudo-rättigheter.
+"Kolla loggen för detaljer:
 
-Försök detta i terminalen:
-
-  sudo npm install -g @anthropic-ai/claude-code
-
-Om det inte heller funkar, kolla loggen:
   cat /tmp/claude-install.log
+
+Om curl inte fungerar på din dator, besök https://claude.ai för alternativa installationsmetoder.
 
 Kör sen install.sh igen."
   fi
@@ -118,24 +103,59 @@ fi
 
 # ─── 5. Skill clone check ───────────────────────────────────────────
 header "5. Kollar att skill-mappen finns på din dator"
-SKILL_DIR="${HOME}/.claude/skills/lens-studio-snapchat-filter"
+# Resolve SKILL_DIR relative to this script's own location so it survives
+# any install path (direct clone, plugin install, symlink).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 if [ -d "${SKILL_DIR}/.git" ]; then
   ok "Skillen finns på din dator (${SKILL_DIR})"
 else
-  fail "Skillen är inte klonad än." \
-"Innan vi kan fortsätta behöver du klona skill-repot manuellt.
-Vi gör det manuellt eftersom GitHub-inloggning är personlig.
+  # No embedded clone URL — the enterprise-owned repository has not yet been
+  # created or the current one transferred. Refuse to clone from a made-up URL.
+  # A verified URL may be passed explicitly:
+  #   LENS_STUDIO_SKILL_REPO_URL="git@github.com:<org>/<repo>.git" bin/install.sh
+  # Or:
+  #   bin/install.sh --repo git@github.com:<org>/<repo>.git
+  # If neither is set, we STOP here rather than pretend a public install URL exists.
+  REPO_URL="${LENS_STUDIO_SKILL_REPO_URL:-}"
+  # Also accept --repo <URL> as first positional argument for convenience.
+  if [ "${1:-}" = "--repo" ] && [ -n "${2:-}" ]; then
+    REPO_URL="${2}"
+  fi
 
-1. Skicka ditt GitHub-användarnamn till maintainer på Slack
-2. Du får en inbjudan via mail — acceptera den
-3. Öppna terminalen och kör:
+  if [ -z "${REPO_URL}" ]; then
+    fail "Skill-mappen är inte klonad — och det finns ingen verifierad klonings-URL att använda." \
+"Lens Studio-plugin:et har ännu inte flyttats till en verifierad
+organisations-repo. Installationssteget för klon är därför OTILLGÄNGLIGT
+just nu.
 
-   git clone git@github.com:niklazhallberg/valtech-radon-lens-studio-skill.git ${SKILL_DIR}
+Vad du kan göra idag (intern pilot):
+  1. Om du redan har en lokal checkout av plugin:et, se till att den ligger
+     i ${SKILL_DIR} och kör install.sh igen. Om du INTE har en checkout, ping
+     skill-maintainer för att få en lokal kopia manuellt.
 
-   (Om SSH inte funkar, använd https-versionen:
-    git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill.git ${SKILL_DIR})
+Vad du kan göra så snart org-repo:t finns:
+  2. Sätt miljövariabeln till den verifierade klon-URL:en och kör om:
+       LENS_STUDIO_SKILL_REPO_URL=\"git@github.com:<org>/<repo>.git\" bin/install.sh
+     eller
+       bin/install.sh --repo git@github.com:<org>/<repo>.git
 
-4. Kör install.sh igen — den fortsätter där den slutade"
+Kloningen görs INTE mot en påhittad default-URL. Detta script installerar
+INGENTING förrän en verifierad repo-URL har angivits."
+  fi
+
+  # If we reach here, REPO_URL was explicitly supplied by the operator.
+  say "Klonar från angiven URL: ${REPO_URL}"
+  if git clone "${REPO_URL}" "${SKILL_DIR}" >/tmp/skill-clone.log 2>&1; then
+    ok "Skill-repot klonat till ${SKILL_DIR}"
+  else
+    fail "Kloning misslyckades." \
+"Kolla loggen:
+  cat /tmp/skill-clone.log
+
+Vanliga orsaker: URL:en är fel, SSH-nyckel saknas, du är inte inbjuden
+till repot ännu, eller nätverket är nere. Åtgärda och kör om."
+  fi
 fi
 
 # ─── 6. Configure SessionStart hook ─────────────────────────────────

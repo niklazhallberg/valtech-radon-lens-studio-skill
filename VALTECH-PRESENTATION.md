@@ -48,7 +48,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 **Value:** A colleague can start alone. No single person becomes a bottleneck.
 
 ### f) Self-growth protocol
-**What:** `skill-growth-protocol.md` v0.5 — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill.
+**What:** `radon-skill-growth` v1.0 shared skill — protocol for how **new learnings get captured in the flow** during real projects and stream into the skill. Pointer in `references/_growth-protocol-pointer.md`.
 **What it costs NOT to have it:** The skill stagnates after day 1. Knowledge from projects 2, 3, 4 ends up in people's heads or Slack threads and disappears.
 **Value:** Compound interest. See section 4.
 
@@ -63,7 +63,7 @@ The skill is built in **7 layers**. Each layer exists to solve a specific proble
 
 ### Day 1 — designer Anna, has never built a Snap filter
 
-1. **00:00** — Anna opens the hosted onboarding manual (one of three: SV full, EN full, or EN quick — `valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/`). 8 steps with copy-paste-ready commands and "what you see when it worked" verification at every step. Sets up Claude Code, accepts the repo invitation, clones the skill.
+1. **00:00** — Anna opens the hosted onboarding manual (one of three: SV full, EN full, or EN quick — `docs.example.valtech.com/radon/lens-studio/ (placeholder — canonical domain TBD post-migration)`). 8 steps with copy-paste-ready commands and "what you see when it worked" verification at every step. Sets up Claude Code, accepts the repo invitation, clones the skill.
 2. **00:05** — Claude Code activates the skill automatically when Anna mentions "Snapchat filter for [client]". Confirms platform.
 3. **00:10** — Concierge mode runs environment detection. Says "✅ LS installed, ❌ MCP not registered — want me to fix it?". One step at a time.
 4. **00:30** — Setup done. Onboarding intake starts: 8 questions on vision, feel, tempo, audience. Anna gets ongoing "what you get back for the answer" feedback.
@@ -136,11 +136,11 @@ The skill repo lives in one folder (typically cloned to `~/Projects/` or whereve
 
 ### b) The Generalization rule (technical filter)
 
-`skill-growth-protocol.md` v0.5 specifies a mandatory three-step checklist that runs **before anything is even proposed for commit** to the skill repo:
+The shared `radon-skill-growth` skill specifies a mandatory three-step checklist that runs **before anything is even proposed for commit** to the skill repo. See `references/_growth-protocol-pointer.md`:
 
 1. **Identify the general rule** behind the specific finding.
 2. **Explicit removal checklist** — these get stripped:
-   - ❌ Client names (adidas, RFSU, Ray-Ban, etc.)
+   - ❌ Client names or campaign identifiers
    - ❌ Project-specific values (X coordinates, campaign budgets, exact tuning constants for this one shoe)
    - ❌ Internal project names, file paths
    - ❌ Dates, deadlines
@@ -169,7 +169,7 @@ Yes / no / save for later. No yes = nothing leaves the local machine.
 
 ### Repo status
 
-The skill repo is **private**, currently on Niklaz Hallberg's personal GitHub account (`niklazhallberg/valtech-radon-lens-studio-skill`). Access by invitation only. A branch protection rule on `main` blocks force-push and branch deletion. It sits dormant today — GitHub doesn't enforce branch protection on free private personal repos — but auto-activates when the repo migrates to a Valtech organization account (planned, see section 7).
+The skill repo is **public**, planned to sit under a Valtech RADON GitHub organisation once the migration lands. Read access will be open; write access is restricted to authorised Valtech personnel and approved contractors. All contributions to `main` go via pull request — direct pushes are blocked by branch protection. The growth protocol writes discoveries as PRs (not direct commits), so every change is reviewed by a human before merge. **The specific organisation / repository URL is not yet confirmed at the time of writing** — the current repository will be transferred, or a new one created, once the org name and marketplace format are finalised.
 
 ### Comparison with the alternative
 
@@ -228,14 +228,14 @@ Today, Snapchat Lens projects depend on a single person. With the skill + 2–3 
 ### What's already shipped (since v0.7.1)
 
 - ✅ **`CONTRIBUTING.md`** — canonical docs per topic, install-step workflow, version convention. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
-- ✅ **Hosted onboarding manuals** — three Cloudflare-hosted manuals (SV full, EN full, EN quick) at `valtech-radon-lens-studio-skill.niklaz-a-hallberg.workers.dev/`. Designed for a non-technical colleague to install Claude Code + the skill in 10–15 min.
+- ✅ **Hosted onboarding manuals** — three Cloudflare-hosted manuals (SV full, EN full, EN quick) at `docs.example.valtech.com/radon/lens-studio/ (placeholder — canonical domain TBD post-migration)`. Designed for a non-technical colleague to install Claude Code + the skill in 10–15 min.
 - ✅ **`ONBOARDING-SNIPPET.md`** — Slack/email invite templates (three variants) for sharing the manual with new colleagues.
 - ✅ **Auto-sync hook** — `scripts/session-sync.sh` runs on every `claude` start, pulling latest skill updates and announcing new entries inline. No daily `git pull` to remember.
 - ✅ **Branch protection rule on `main`** — created. Force-push + branch deletion blocked. Dormant today (free private personal repo), auto-activates post-migration.
 
 ### Now (this week)
 
-1. **Security review** — have the relevant function read `skill-growth-protocol.md` + section 5 of this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy.
+1. **Security review** — have the relevant function read `references/_growth-protocol-pointer.md` + section 5 of this document. Confirm the Generalization rule + manual commit approvals meet Valtech's policy. The shared `radon-skill-growth` skill defines the full protocol.
 2. **Migrate repo to a Valtech organization account** on GitHub. Eliminates the "personal account" question mark and auto-activates the branch protection rule.
 3. **Set up a 30-min demo** for 2–3 selected designers + 1 stakeholder. Live walk-through of the onboarding flow.
 

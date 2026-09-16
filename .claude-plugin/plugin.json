@@ -1,0 +1,14 @@
+{
+  "$comment_1_name": "TODO (enterprise migration): 'name' below is a working identifier for the pilot. Confirm final plugin name once the organisation and marketplace format are finalised in SE-Valtech/v-radon-claude-skill-marketplace.",
+  "name": "radon-lens-studio",
+  "version": "0.8.0",
+  "description": "Valtech RADON's Claude Code plugin for building Snapchat AR Lenses and Sponsored Lenses in Lens Studio. Bundles the lens-studio-snapchat-filter skill with the shared radon-skill-growth protocol.",
+  "author": "Valtech RADON",
+  "license": "Proprietary — see LICENSE and NOTICE.md at plugin root",
+  "$comment_2_homepage": "TODO (enterprise migration): 'homepage' below is not a live URL. Replace with the confirmed enterprise repository URL after migration; do not treat as a working link today.",
+  "homepage": "https://example.invalid/radon-lens-studio-placeholder",
+  "skills": [
+    "./SKILL.md",
+    "./skills/radon-skill-growth/SKILL.md"
+  ]
+}

@@ -932,35 +932,29 @@ Installation complete.</pre>
 <!-- ╚═════════════════════════════════════════╝ -->
 <section class="section step" id="step-3">
   <span class="micro">Steg 03 av 08</span>
-  <h2>Acceptera inbjudan</h2>
-  <p class="lede">Skill:en bor på GitHub som ett privat repo. Niklaz har skickat dig en invitation — du behöver acceptera den för att få access.</p>
-  <p>GitHub är ett delat arkiv för kod och filer — tänk Google Drive fast för utvecklingsprojekt. Skill:en ligger lagrad där, så att alla på teamet kan ladda ner den, använda den och allra bäst, automatiskt förbättra den över tid.</p>
+  <h2>Få access (väntar på marketplace-registrering)</h2>
+  <p class="lede" style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Status väntande.</strong> Organisations-ägt repository för det här plugin:et har ännu inte skapats eller det nuvarande repot flyttats, så det finns ingen bekräftad GitHub-URL att bjuda in dig till idag. Supported pilot-väg är en <strong>lokal kopia som skill-maintainer överlämnar</strong>.</p>
 
   <div class="step-grid">
     <div class="step-do">
-      <h3>Vad du gör</h3>
-      <p><strong>1.</strong> Öppna mejlet från Niklaz Hallberg.</p>
-      <p><strong>2.</strong> Klicka på den blå knappen <strong>View invitation</strong>.</p>
-      <p><strong>3.</strong> Om GitHub ber dig logga in — logga in. Saknar du konto, klicka <em>Create an account</em>, fyll i uppgifter och verifiera din mejl.</p>
-      <p><strong>4.</strong> När du är inloggad ser du en GitHub-sida med invitation. Klicka <strong>Accept invitation</strong>.</p>
+      <h3>Vad du gör (pilot)</h3>
+      <p><strong>1.</strong> Kontakta skill-maintainern och be om en lokal kopia av plugin:et.</p>
+      <p><strong>2.</strong> Placera kopian på din dator så att <code>~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> existerar.</p>
+      <p><strong>3.</strong> När organisations-repot finns kommer denna sektion ersättas med ett GitHub-invitation-flöde. Tills dess: klona INTE från placeholder-URL:er någonstans i dessa manualer.</p>
 
       <div class="hint">
-        Använd helst samma mejladress som invitationen skickades till. Annars kan GitHub säga 404 (Repository not found).
+        En verifierad klon-URL kan anges explicit senare via <code>LENS_STUDIO_SKILL_REPO_URL</code> eller <code>--repo</code>. Install-scriptet vägrar att klona från en påhittad default.
       </div>
     </div>
 
     <div class="step-see">
       <h3>Vad du ser när det funkat</h3>
-      <p>Efter klicket på Accept invitation visas GitHub-repots framsida med en bekräftelse:</p>
-      <pre class="output">You are now a collaborator on
-niklazhallberg/valtech-radon-lens-studio-skill</pre>
-      <p>Du kan nu se filerna i repot via webben. Bra signal — gå vidare till nästa steg.</p>
+      <p>Att köra <code>ls ~/.claude/skills/lens-studio-snapchat-filter/SKILL.md</code> skriver ut sökvägen (inte ett fel). Bra signal — gå vidare till nästa steg.</p>
 
       <details class="hint-collapsible">
         <summary>Funkar inte?</summary>
         <ul>
-          <li><strong>404 "Repository not found"</strong> — du är troligen inloggad på fel GitHub-konto. Logga ut, klicka <em>View invitation</em>-länken i mejlet igen, logga in med rätt konto.</li>
-          <li><strong>Invitation har gått ut</strong> — invitations är giltiga i 7 dagar. Be Niklaz skicka en ny.</li>
+          <li><strong>File not found</strong> — den lokala kopian är inte på plats än. Kontakta skill-maintainern.</li>
         </ul>
       </details>
     </div>
@@ -1066,17 +1060,20 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
   <div class="step-grid">
     <div class="step-do">
       <h3>Vad du gör</h3>
+      <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6); margin-bottom: 20px;"><strong>Status: väntar på marketplace-registrering.</strong> Det finns <em>ingen bekräftad publik klon-URL</em> för det här plugin:et idag. Be skill-maintainer om en lokal kopia och placera den vid <code>~/.claude/skills/lens-studio-snapchat-filter/</code>. Klona INTE från en placeholder-URL.</p>
       <p><strong>1.</strong> Förbered mappen där Claude Code letar efter skills:</p>
       <div class="code-block compact">
         <pre><code>mkdir -p ~/.claude/skills</code></pre>
         <button class="copy-btn" data-copy="mkdir -p ~/.claude/skills">Kopiera</button>
       </div>
-      <p><strong>2.</strong> Klona skill:en till den mappen:</p>
+      <p><strong>2.</strong> När organisations-repot finns och du har den verifierade URL:en, ange den explicit (install-scriptet vägrar att gissa en default):</p>
       <div class="code-block compact">
-        <pre><code>git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter</code></pre>
-        <button class="copy-btn" data-copy="git clone https://github.com/niklazhallberg/valtech-radon-lens-studio-skill ~/.claude/skills/lens-studio-snapchat-filter">Kopiera</button>
+        <pre><code># Byt &lt;org&gt;/&lt;repo&gt; mot den bekräftade URL:en från skill-maintainer
+LENS_STUDIO_SKILL_REPO_URL="git@github.com:&lt;org&gt;/&lt;repo&gt;.git" \
+  ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
+        <button class="copy-btn" data-copy="LENS_STUDIO_SKILL_REPO_URL=git@github.com:ORG/REPO.git ~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Kopiera mall</button>
       </div>
-      <p><strong>3.</strong> Kör install-scriptet — det aktiverar auto-sync:</p>
+      <p><strong>3.</strong> Om en maintainer redan har lagt en lokal kopia vid <code>~/.claude/skills/lens-studio-snapchat-filter/</code>, kör install-scriptet direkt — det aktiverar auto-sync:</p>
       <div class="code-block compact">
         <pre><code>~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh</code></pre>
         <button class="copy-btn" data-copy="~/.claude/skills/lens-studio-snapchat-filter/bin/install.sh">Kopiera</button>
@@ -1085,7 +1082,7 @@ niklazhallberg/valtech-radon-lens-studio-skill</pre>
 
     <div class="step-see">
       <h3>Vad du ser när det funkat</h3>
-      <p>Klon-kommandot visar nedladdningens framsteg. Sedan kör install-scriptet en checklista och avslutar med:</p>
+      <p>Om du angett en verifierad klon-URL visar klon-kommandot nedladdningens framsteg. Annars utgår install-scriptet från en existerande lokal kopia. Oavsett vilket kör det en checklista och avslutar med:</p>
       <pre class="output">🎉 Allt är på plats!
 
 ✅ Claude Code installerat
@@ -1162,10 +1159,11 @@ Type your message to begin:
   </div>
 
   <h3 style="margin-top: 56px; margin-bottom: 28px; font-family: 'Handjet', 'Space Grotesk', sans-serif; font-size: clamp(26px, 2.6vw, 34px); font-weight: 500; letter-spacing: -0.01em; line-height: 1.05;">Såhär kan det se ut</h3>
-  <p>När du väl aktiverat Claude i din terminal. Resonerar du i princip som vanligt. Du beskriver vad du vill, Claude resonerar igenom det, gör ändringar i Lens Studio och berättar vad som är gjort. Nedan syns ett utdrag från ett RFSU-projekt, där rotation-timingen på pack-animationerna finjusterades.</p>
-  <p style="color: var(--ink-60); font-style: italic;">Vänster: ett utdrag från RFSU-lens-projektet — användaren frågar Claude på vanlig svenska, Claude resonerar igenom det, anropar MCP-servern och förklarar tillbaka. Höger: den färdiga lensen som körs live i Snapchat.</p>
+  <p>När du väl aktiverat Claude i din terminal. Resonerar du i princip som vanligt. Du beskriver vad du vill, Claude resonerar igenom det, gör ändringar i Lens Studio och berättar vad som är gjort. Nedan syns ett utdrag från ett tidigare sponsrat Lens-projekt, där rotation-timingen på förpacknings-animationerna finjusterades.</p>
+  <p style="color: var(--ink-60); font-style: italic;">Vänster: ett utdrag från ett tidigare sponsrat Lens-projekt — användaren frågar Claude på vanlig svenska, Claude resonerar igenom det, anropar MCP-servern och förklarar tillbaka. Höger: den färdiga lensen som körs live i Snapchat.</p>
+  <!-- TODO (enterprise migration): The bundled screenshot img/Image_Snapchat_Tutorial.png shows visible branding from the seed project. Replace with a generalised screenshot or a redacted version before external distribution. Do not distribute this manual with the original screenshot. -->
   <div class="screenshot">
-    <img src="img/Image_Snapchat_Tutorial.png" alt="Side-by-side från RFSU-lens-projektet — vänster: terminal-dialog med Claude Code (användarens prompt + Claudes resonemang + MCP-anrop); höger: den färdiga lensen som körs live i Snapchat, med Condom Fortune Cookie / Thin-branding synlig.">
+    <img src="img/Image_Snapchat_Tutorial.png" alt="Side-by-side från ett tidigare sponsrat Lens-projekt — vänster: terminal-dialog med Claude Code (användarens prompt + Claudes resonemang + MCP-anrop); höger: den färdiga lensen som körs live i Snapchat.">
   </div>
 </section>
 
@@ -1247,27 +1245,28 @@ Berätta också lite om filtret du vill göra:
   <h2>Vill du veta mer?</h2>
   <p class="lede">Manualen ovan är det du behöver för att komma igång. Här är några länkar om du vill grotta ner dig djupare.</p>
 
+  <p style="padding: 12px; background: rgba(255, 200, 0, 0.08); border-left: 3px solid rgba(255, 200, 0, 0.6);"><strong>Obs:</strong> Web-länkar till plugin-källan är inte live ännu — det organisations-ägda repot är fortfarande under uppsättning. Öppna filerna lokalt vid <code>~/.claude/skills/lens-studio-snapchat-filter/</code> istället.</p>
   <div class="ideas-grid">
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/docs/INSTALL-REFERENCE.md" target="_blank" rel="noopener">
-      <p class="idea-name">INSTALL-REFERENCE.md<span class="idea-link-arrow">↗</span></p>
+    <div class="idea">
+      <p class="idea-name">docs/INSTALL-REFERENCE.md</p>
       <p class="idea-desc">Steg-för-steg installation manuellt (för dig som hellre läser komplett innan du börjar, eller behöver setupa flera maskiner).</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/docs/TROUBLESHOOTING.md" target="_blank" rel="noopener">
-      <p class="idea-name">TROUBLESHOOTING.md<span class="idea-link-arrow">↗</span></p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">docs/TROUBLESHOOTING.md</p>
       <p class="idea-desc">Vanliga fel + fixar. Bra att kolla om Claude inte själv kan lösa något.</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/references/mcp-tool-schemas.md" target="_blank" rel="noopener">
-      <p class="idea-name">references/mcp-tool-schemas.md<span class="idea-link-arrow">↗</span></p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">references/mcp-tool-schemas.md</p>
       <p class="idea-desc">Vad Claude kan göra i Lens Studio via MCP — alla 20 verktyg dokumenterade med parametrar.</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/references/snap-docs/00-INDEX.md" target="_blank" rel="noopener">
-      <p class="idea-name">references/snap-docs/00-INDEX.md<span class="idea-link-arrow">↗</span></p>
+    </div>
+    <div class="idea">
+      <p class="idea-name">references/snap-docs/00-INDEX.md</p>
       <p class="idea-desc">Routing-tabell till Snap:s officiella docs (365 sidor speglade, klassificerade per kategori).</p>
-    </a>
-    <a class="idea idea-link" href="https://github.com/niklazhallberg/valtech-radon-lens-studio-skill/blob/main/CHANGELOG.md" target="_blank" rel="noopener">
-      <p class="idea-name">CHANGELOG.md<span class="idea-link-arrow">↗</span></p>
-      <p class="idea-desc">Se hur skillen har vuxit — varje upptäckt loggad med datum + projekt. En lång lista över all kunskap som flowat in från riktiga Valtech-projekt över tid. Skillens biografi.</p>
-    </a>
+    </div>
+    <div class="idea">
+      <p class="idea-name">CHANGELOG.md</p>
+      <p class="idea-desc">Se hur skillen har vuxit — varje accepterad upptäckt loggad med datum och generaliserad projekt-etikett. Skillens biografi.</p>
+    </div>
   </div>
 </section>
 

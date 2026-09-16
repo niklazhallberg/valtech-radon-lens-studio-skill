@@ -1,0 +1,25 @@
+# CODEOWNERS — transitional ownership during enterprise migration
+#
+# This is temporary pilot-phase ownership. After the Valtech RADON org has
+# named owners for RADON core, Lens Studio, design, copy, project management
+# and marketing, replace the single-owner default below with directory-specific
+# team assignments.
+#
+# TODO (enterprise migration):
+#   1. Verify @niklaz-hallberg_valtech is the correct GitHub handle inside the
+#      Valtech GitHub organisation. If not, replace it here.
+#   2. If GitHub rejects this handle (e.g., the org uses team refs like
+#      @valtech-radon/lens-studio-core instead of individual handles), replace
+#      the wildcard rule with the correct team reference and document the
+#      substitution in MIGRATION-REPORT.md.
+#   3. Once org owners are named for the sub-domains listed in the header
+#      comment above, replace the single wildcard rule with directory-scoped
+#      rules such as:
+#        references/               @valtech-radon/lens-studio-core
+#        docs/                     @valtech-radon/copy-and-design
+#        assets/project-template/  @valtech-radon/project-management
+#        .github/                  @valtech-radon/devops
+#      Do NOT invent teams (e.g., "radon-skill-growth", "RADON skill guild")
+#      before they are formally created in the org.
+
+* @niklaz-hallberg_valtech

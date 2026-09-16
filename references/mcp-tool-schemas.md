@@ -74,7 +74,7 @@ against external capability mapping 2026-05-13.
 Desktop Preview does NOT run all ML models — including foot tracking. MCP
 can prepare the scene perfectly, but visual verification requires a real
 device via QR code preview. Details + per-body-part matrix:
-`../body-anchored-calibration.md` §Desktop-preview-limitations.
+`./body-anchored-calibration.md` §Desktop-preview-limitations.
 
 ## Implication for agent flows
 
@@ -257,7 +257,7 @@ Probe live if needed:
 - Verify mutation result (read-back after setProperty / createSceneObject)
 - Probe-driven calibration
 
-**Cross-ref:** `../snap-docs/01-mcp-and-claude-code/developer-mode.md`; `../body-anchored-calibration.md` (hierarchy walk).
+**Cross-ref:** `./snap-docs/01-mcp-and-claude-code/developer-mode.md`; `./body-anchored-calibration.md` (hierarchy walk).
 
 ---
 
@@ -281,7 +281,7 @@ Probe live if needed:
 - Verify that content is within scene bounds
 - Center-of-mass calculation for object groups
 
-**Cross-ref:** `../body-anchored-calibration.md` step 6 (AABB formula + scale-dependent compensation).
+**Cross-ref:** `./body-anchored-calibration.md` step 6 (AABB formula + scale-dependent compensation).
 
 ---
 
@@ -302,7 +302,7 @@ Probe live if needed:
 - Set selection before a manual action in LS (e.g., before the user is going to check Inspector)
 - Cleanup between probes
 
-**Cross-ref:** `../snap-docs/04-scene-and-components/lens-studio-interface/`.
+**Cross-ref:** `./snap-docs/04-scene-and-components/lens-studio-interface/`.
 
 ---
 
@@ -343,7 +343,7 @@ Probe live if needed:
 - Create runtime assets (materials, render targets)
 - Asset audit before Phase 5 submission
 
-**Cross-ref:** `../snap-docs/03-assets-pipeline/asset-library/`; `../body-anchored-calibration.md` (AABB read step 6).
+**Cross-ref:** `./snap-docs/03-assets-pipeline/asset-library/`; `./body-anchored-calibration.md` (AABB read step 6).
 
 ---
 
@@ -365,7 +365,7 @@ Probe live if needed:
 - Install Snap-curated Try-On Packs for other body parts
 - Install ML models from Snap's library
 
-**Cross-ref:** `../body-anchored-calibration.md` Step 0 (Library-first sourcing); `../snap-docs/03-assets-pipeline/asset-library/`.
+**Cross-ref:** `./body-anchored-calibration.md` Step 0 (Library-first sourcing); `./snap-docs/03-assets-pipeline/asset-library/`.
 
 ---
 
@@ -391,7 +391,7 @@ Probe live if needed:
 - Snap-policy-compliant ad soundtrack for Sponsored Lens
 - Match music to lens tempo (snappy / cinematic)
 
-**Cross-ref:** `../snap-docs/02-scripting-api/audio/`; `SearchLensStudioMusicLibrary` (to find the music first).
+**Cross-ref:** `./snap-docs/02-scripting-api/audio/`; `SearchLensStudioMusicLibrary` (to find the music first).
 
 ---
 
@@ -413,7 +413,7 @@ Probe live if needed:
 - Find sample meshes, materials, ML models
 - Inventory before Phase 1 scaffolding
 
-**Cross-ref:** `../body-anchored-calibration.md` Step 0; `InstallLensStudioPackage` (to install a found asset).
+**Cross-ref:** `./body-anchored-calibration.md` Step 0; `InstallLensStudioPackage` (to install a found asset).
 
 ---
 
@@ -438,7 +438,7 @@ Probe live if needed:
 - Mood-matched audio (match the user's pace input — snappy/medium/slow-cinematic)
 - Pre-flight licensing check (countryCode-aware)
 
-**Cross-ref:** `InstallLicensedMusic` (to install the chosen track); `../snap-docs/02-scripting-api/audio/`.
+**Cross-ref:** `InstallLicensedMusic` (to install the chosen track); `./snap-docs/02-scripting-api/audio/`.
 
 ---
 
@@ -458,7 +458,7 @@ Probe live if needed:
 - Identify whether Try-On Pack is already installed (before re-install)
 - Determine capability surface before Phase 1 scaffolding
 
-**Cross-ref:** `InstallLensStudioPackage`; `../snap-docs/03-assets-pipeline/package-management/`.
+**Cross-ref:** `InstallLensStudioPackage`; `./snap-docs/03-assets-pipeline/package-management/`.
 
 ---
 
@@ -486,7 +486,7 @@ Probe live if needed:
 - Document calibration state (before/after probe)
 - Debug when API state looks right but visual is wrong
 
-**Cross-ref:** `../body-anchored-calibration.md` (image interpretation reliability — show screenshot to user, trust their text report for screen-coord judgments).
+**Cross-ref:** `./body-anchored-calibration.md` (image interpretation reliability — show screenshot to user, trust their text report for screen-coord judgments).
 
 ---
 
@@ -525,7 +525,7 @@ Probe live if needed:
 - Inspect installed package README via `packages://`
 - Audit project state via `project://`
 
-**Cross-ref:** `FileEditTool`, `FileGrepTool`; `../snap-docs/02-scripting-api/scripting/`.
+**Cross-ref:** `FileEditTool`, `FileGrepTool`; `./snap-docs/02-scripting-api/scripting/`.
 
 ---
 
@@ -553,7 +553,7 @@ Per edit object:
 - Surgical edit of existing scripts
 - Multi-edit in one call (atomic semantics per file)
 
-**Cross-ref:** `../snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool` (after edit).
+**Cross-ref:** `./snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool` (after edit).
 
 ---
 
@@ -606,7 +606,7 @@ Per edit object:
 
 **Risks:** This is full Editor API access — use with discipline. When in doubt, probe scene-graphql first before ExecuteEditorCode.
 
-**Cross-ref:** `../snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool`.
+**Cross-ref:** `./snap-docs/02-scripting-api/scripting/`; `RecompileTypeScriptTool`.
 
 ---
 
@@ -653,7 +653,7 @@ Per asset object:
 
 **Risks:** Details are often poor. Do NOT use for brand-specific assets (logos, characters). Library-first (`SearchLensStudioAssetLibrary`) before AI generation.
 
-**Cross-ref:** `../body-anchored-calibration.md` Step 0 (Library-first); `../snap-docs/01-mcp-and-claude-code/ai-cc-example.md`.
+**Cross-ref:** `./body-anchored-calibration.md` Step 0 (Library-first); `./snap-docs/01-mcp-and-claude-code/ai-cc-example.md`.
 
 ---
 
@@ -673,9 +673,9 @@ Per asset object:
 - Quick icon variants for A/B testing
 - Phase 5 submission prep (if no brand icon exists yet)
 
-**Risks:** Brand projects (like adidas) require a brand-approved icon — AI-generated does NOT work for final submission. Use for WIP/draft only.
+**Risks:** Brand projects require a brand-approved icon — AI-generated does NOT work for final submission. Use for WIP/draft only.
 
-**Cross-ref:** `../snap-docs/07-publishing/configuring/` (icon spec).
+**Cross-ref:** `./snap-docs/07-publishing/configuring/` (icon spec).
 
 ---
 
@@ -698,7 +698,7 @@ Per asset object:
 - Capture `console.log` output from controllers
 - Force Preview refresh after script recompile
 
-**Cross-ref:** `RecompileTypeScriptTool`; `FileGrepTool` (for log search); `../snap-docs/04-scene-and-components/previewing-your-lens.md`.
+**Cross-ref:** `RecompileTypeScriptTool`; `FileGrepTool` (for log search); `./snap-docs/04-scene-and-components/previewing-your-lens.md`.
 
 ---
 
@@ -724,7 +724,7 @@ Per asset object:
 - Debug deprecated API error via KB search
 - Cross-check when the snap-docs mirror is stale
 
-**Cross-ref:** `../snap-docs/` (curated mirror — the KB is more complete); `../snap-docs/01-mcp-and-claude-code/developer-mode.md`.
+**Cross-ref:** `./snap-docs/` (curated mirror — the KB is more complete); `./snap-docs/01-mcp-and-claude-code/developer-mode.md`.
 
 ---
 

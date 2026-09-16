@@ -40,7 +40,7 @@ Exempel:
 - Blur-effekter (frostat glas, oskärpa)
 - Ljud-uppspelning vid tap
 
-**Konkret exempel — RFSU BANG Fortune Lens**: byggdes med skill:en på cirka 5 dagar. Det är en "open-the-pack"-lens där användaren tappar på en kondom-förpackning som öppnas, och en slumpmässig "fortune-cookie"-text avslöjas med en decelererande callback-rytm (känns som ett ödeshjul som landar på ett svar). Tier 1 från första till sista dag. Ingen 3D-artist, inga ML-modeller, ingen Snap-intern teknik.
+**Konkret exempel — en tidigare sponsrad Lens-produktion**: byggdes med skill:en på cirka 5 dagar. En "tappa-för-att-öppna-en-förpackning"-lens där användaren tappar på en brandad förpackning som öppnas, och en slumpmässig kort text avslöjas med en decelererande callback-rytm (känns som ett ödeshjul som landar på ett svar). Tier 1 från första till sista dag. Ingen 3D-artist, inga ML-modeller, ingen Snap-intern teknik.
 
 ### Tier 2 — Claude bygger om du levererar asset:en
 
@@ -73,7 +73,7 @@ Tier 3-detektering är skill:ens viktigaste tjänst i den första kund-konversat
 
 ### Tidsbesparing
 
-Erfarenheten från RFSU-projektet är konkret: en lens som med manuellt Lens Studio-arbete tagit 2–3 veckor att bygga, blev klar på 5 dagar med skill:en. Tidsvinsten kommer från:
+Erfarenheten från seed-projektet är konkret: en lens som med manuellt Lens Studio-arbete tagit 2–3 veckor att bygga, blev klar på 5 dagar med skill:en. Tidsvinsten kommer från:
 
 - **Scen-hierarki sätts upp en gång**, inte itererat fram via trial-and-error.
 - **Scripts genereras från specifikation**, inte handskrivna med syntax-jakt.
@@ -98,7 +98,7 @@ Det handlar om **arbetsdelning, inte automation**. Du är fortfarande creative d
 
 ### Kvalitet — produktionstestat, inte trial-and-error
 
-Skill:en är empiriskt validerad från flera produktionsbyggen, primärt RFSU BANG Fortune. När den säger "använd den här tween-pattern" är det för att alternativen testats och misslyckats. När den varnar för en silent-drop-bugg i `setProperty`, är det för att teamet redan blött näsa på den buggen. Du får inte mer än ett års worth of LS-arbete kondenserat i agent-form.
+Skill:en är empiriskt validerad från riktiga produktionsbyggen. När den säger "använd den här tween-pattern" är det för att alternativen testats och misslyckats. När den varnar för en silent-drop-bugg i `setProperty`, är det för att teamet redan blött näsa på den buggen. Du får inte mer än ett års worth of LS-arbete kondenserat i agent-form.
 
 ---
 
@@ -113,7 +113,7 @@ Skill:en är empiriskt validerad från flera produktionsbyggen, primärt RFSU BA
 
 ### Installation i tre steg (översikt)
 
-1. **Installera skill:en** i `~/.claude/skills/`. Om du fått en `.skill`-fil byter du extension till `.zip` och packar upp den. Resultatet ska vara `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` som existerande fil.
+1. **Installera skill:en** i `~/.claude/skills/`. **Ingen publik klon-URL är tillgänglig ännu** — en skill-maintainer överlämnar en lokal kopia av plugin:et till dig. Placera den så att `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` existerar.
 2. **Skapa en projektmapp** för ditt kundprojekt, t.ex. `~/Projects/[kund]-lens/`.
 3. **Registrera Lens Studio MCP-server** med Claude Code så att Claude kan styra LS direkt.
 
@@ -175,7 +175,7 @@ När setup är klar går Claude in i **onboarding-intaget**: 8 frågor uppdelade
 - *"Pace: snappy / medium / slow-cinematic?"*
 
 **Grupp 2 — Constraints (3 frågor)**: handlar om kund-, kategori- och deadline-villkor.
-- *"Kund + ad-policy-kategori?"* (t.ex. "Spotify, music/audio (general)" eller "RFSU, sexual wellness (regulated)")
+- *"Kund + ad-policy-kategori?"* (t.ex. en musikstreaming-brand i kategorin 'general', eller en sexuell hälsa-organisation i kategorin 'regulated')
 - *"Något off-limits?"* (t.ex. "ingen face liquify", "endast selfie-kamera")
 - *"Deadline?"* (driver hur många polish-iterationer som hinns med)
 
@@ -263,7 +263,7 @@ Skill:en delar in bygget i nio sekventiella faser (en del valfria). Du behöver 
 
 **Du ser**: i Preview kan du klicka på lensen och se tap-till-final-state-cykeln fungera. Det är inte poleratet än — bara att hela flödet körs igenom.
 
-**RFSU-konkret**: för Fortune-lensen blev Phase 2 där open-pack-animationen kopplades till tap, fortune-roll-callbacken med växande intervaller implementerades, och reroll-mekaniken sattes upp.
+**Konkret exempel från seed-projektet**: för en tappa-för-att-öppna-förpackning-lens blev Phase 2 där förpacknings-animationen kopplades till tap, text-roll-callbacken med växande intervaller implementerades, och reroll-mekaniken sattes upp.
 
 ### Phase 2.5 — Avancerade features (valfri, 1–2 h)
 
@@ -373,7 +373,7 @@ Den enskilt största hävstången för kvalitet är **vad du lägger i INSPIRATI
 
 Lägg minst 5 bilder. Mer är bättre. Subfolders får finnas men behövs inte — Claude sorterar retroaktivt om du levererar flat.
 
-Exempel från RFSU: INSPIRATION-mappen innehöll referenser från fortune cookies, retro-spelmaskiner, neon-skyltar och magic 8-balls. Claude utledde "playful + slumpmässighet + lekfullt nostalgisk vibe" — och det stämde.
+Exempel från seed-projektet: INSPIRATION-mappen innehöll referenser från fortune cookies, retro-spelmaskiner, neon-skyltar och magic 8-balls. Claude utledde "playful + slumpmässighet + lekfullt nostalgisk vibe" — och det stämde.
 
 ### Var specifik om känsla, inte specs
 
@@ -429,7 +429,7 @@ Två varianter:
 - Om du klonade från git: `cd ~/.claude/skills/lens-studio-snapchat-filter && git pull`
 - Om du fick en `.skill`-fil: byt extension till `.zip`, packa upp över befintlig mapp
 
-Niklaz på Valtech RADON underhåller skill:en. Nya versioner släpps när lärdomar från nya projekt validerats empiriskt.
+Skill-maintainer-teamet på Valtech RADON underhåller skill:en. Nya versioner släpps när lärdomar från nya projekt validerats empiriskt.
 
 **Vad händer om Lens Studio uppdateras och något bryter?**
 Skill:en är pinnad till LS 5.20+ men testas mot senaste version. Om en LS-uppdatering bryter ett mönster, fångas det i nästa skill-uppdatering. Mellan uppdateringar: säg till Claude *"LS uppdaterades till X.Y.Z och nu fungerar inte [Z]"* — Claude probar empiriskt och rapporterar.
@@ -466,7 +466,7 @@ Utan MCP får du fortfarande instruktioner — men du måste själv klicka och d
 
 ### Hur byggdes den här skill:en?
 
-Skill:en växte fram under produktion av RFSU BANG Fortune Lens (Valtech RADON för RFSU, första halvan av 2026). Varje gång ett LS-mönster misslyckades och rätt lösning hittades, dokumenterades det i en projektintern gotchas-fil. Varje gång ett fasprotokoll behövde justering, uppdaterades phase-progression-mallen. När RFSU-projektet var klart, extraherades all generaliserbar kunskap från projektmappen och paketerades som denna skill.
+Skill:en växte fram under produktion av ett Valtech RADON Sponsored Lens-bygge under första halvan av 2026. Varje gång ett LS-mönster misslyckades och rätt lösning hittades, dokumenterades det i en projektintern gotchas-fil. Varje gång ett fasprotokoll behövde justering, uppdaterades phase-progression-mallen. När projektet var klart, extraherades all generaliserbar kunskap från projektmappen — med Generaliseringsregeln som filter mot kund, kampanj och projektspecifik detalj — och paketerades som denna skill.
 
 Specifika 5.21-features (Text3D Animator, Easy Lens Button, etc.) validerades empiriskt via Phase B-capability-tests och dokumenterades i skill:ens `references/lens-studio-api-gotchas.md`. Skill:en är **inte spekulativ** — varje mönster i den har testats i produktion.
 
@@ -477,7 +477,7 @@ Om du under ett projekt upptäcker:
 - Ett UX-pattern som funkat bra och som andra borde kunna återanvända
 - En process-lärdom som skulle hjälpa nästa team
 
-… så pinga Niklaz. Tröskeln för att skill-:en ska uppdateras är: **passar lärdomen i ett Voi/OLW/Spotify-projekt också?** Om ja → migreras in i skill:en. Om bara RFSU-specifikt → stannar i projektets egna docs.
+… så pinga skill-maintainern. Tröskeln för att skill:en ska uppdateras är: **passar lärdomen i andra kundprojekt också?** Om ja → migreras in i skill:en via en pull request (efter att Generaliseringsregeln har filtrerat bort projektspecifik detalj). Om bara projektspecifikt → stannar i projektets egna docs.
 
 Den filtreringen håller skill:en kvalitativt hög utan att svälla.
 
@@ -492,4 +492,4 @@ Den filtreringen håller skill:en kvalitativt hög utan att svälla.
 
 ---
 
-*Senast uppdaterad: 2026-05-12 mot skill version 0.4.3+. Frågor eller feedback: pinga Niklaz på Valtech RADON.*
+*Senast uppdaterad: 2026-05-12 mot skill version 0.4.3+. Frågor eller feedback: pinga skill-maintainer-teamet på Valtech RADON.*

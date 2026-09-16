@@ -40,7 +40,7 @@ Examples:
 - Blur effects (frosted glass, depth-of-field feel)
 - Sound playback on tap
 
-**Concrete example — RFSU BANG Fortune Lens**: built with the skill in about 5 days. It's an "open-the-pack" lens where the user taps a condom package that opens up, revealing a random fortune-cookie text with a decelerating callback rhythm (feels like a wheel-of-fortune settling on an answer). Tier 1 from day one to launch. No 3D artist, no ML models, no Snap-internal tech.
+**Concrete example — a previous sponsored Lens production**: built with the skill in about 5 days. A "tap-to-open-a-package" lens where the user taps a branded package, it opens, and a random short text is revealed with a decelerating callback rhythm (feels like a wheel-of-fortune settling on an answer). Tier 1 from day one to launch. No 3D artist, no ML models, no Snap-internal tech.
 
 ### Tier 2 — Claude builds it if you provide the asset
 
@@ -73,7 +73,7 @@ Tier 3 detection is the skill's most important service in the first client conve
 
 ### Time saved
 
-The RFSU project gives a concrete benchmark: a lens that with manual Lens Studio work would have taken 2–3 weeks, was finished in 5 days with the skill. The time savings come from:
+The seed project gives a concrete benchmark: a lens that with manual Lens Studio work would have taken 2–3 weeks, was finished in 5 days with the skill. The time savings come from:
 
 - **Scene hierarchy gets set up once**, not iterated via trial-and-error.
 - **Scripts are generated from a spec**, not hand-written with syntax-hunting.
@@ -98,7 +98,7 @@ It's about **division of labor, not automation**. You're still the creative dire
 
 ### Quality — production-tested, not trial-and-error
 
-The skill is empirically validated from multiple production builds, primarily RFSU BANG Fortune. When it says "use this tween pattern", it's because the alternatives were tested and failed. When it warns about a silent-drop bug in `setProperty`, it's because the team already lost time on that exact bug. You get a year's worth of LS work condensed into agent form.
+The skill is empirically validated from real production builds. When it says "use this tween pattern", it's because the alternatives were tested and failed. When it warns about a silent-drop bug in `setProperty`, it's because the team already lost time on that exact bug. You get a year's worth of LS work condensed into agent form.
 
 ---
 
@@ -113,7 +113,7 @@ The skill is empirically validated from multiple production builds, primarily RF
 
 ### Three-step install overview
 
-1. **Install the skill** to `~/.claude/skills/`. If you received a `.skill` file, rename the extension to `.zip` and unzip. The result should be `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` as an existing file.
+1. **Install the skill** to `~/.claude/skills/`. **No public clone URL is available yet** — a skill maintainer will hand you a local copy of the plugin. Place it so that `~/.claude/skills/lens-studio-snapchat-filter/SKILL.md` exists.
 2. **Create a project folder** for your client project, e.g. `~/Projects/[client]-lens/`.
 3. **Register the Lens Studio MCP server** with Claude Code so Claude can drive LS directly.
 
@@ -175,7 +175,7 @@ When setup is done, Claude moves into the **onboarding intake**: 8 questions spl
 - *"Pace: snappy / medium / slow-cinematic?"*
 
 **Group 2 — Constraints (3 questions)**: about client, category, and deadline.
-- *"Client + ad-policy category?"* (e.g., "Spotify, music/audio (general)" or "RFSU, sexual wellness (regulated)")
+- *"Client + ad-policy category?"* (e.g., a music-streaming brand in the 'general' category, or a sexual-wellness organisation in the 'regulated' category)
 - *"Anything off-limits?"* (e.g., "no face liquify", "selfie camera only")
 - *"Deadline?"* (drives how many polish iterations are achievable)
 
@@ -263,7 +263,7 @@ The skill divides the build into nine sequential phases (some optional). You don
 
 **You see**: in Preview, you can click the lens and see the tap-to-final-state cycle work. It's not polished yet — just the full flow running end-to-end.
 
-**RFSU concrete**: for the Fortune lens, Phase 2 was where the open-pack animation got hooked into tap, the fortune-roll callback with growing intervals was implemented, and the reroll mechanic was set up.
+**Concrete example from the seed project**: for a tap-to-open-a-package lens, Phase 2 was where the package-open animation got hooked into tap, the text-roll callback with growing intervals was implemented, and the reroll mechanic was set up.
 
 ### Phase 2.5 — Advanced features (optional, 1–2 h)
 
@@ -373,7 +373,7 @@ The single biggest lever for quality is **what you put in the INSPIRATION folder
 
 Add at least 5 images. More is better. Subfolders are allowed but not required — Claude sorts retroactively if you deliver flat.
 
-Example from RFSU: the INSPIRATION folder held references from fortune cookies, retro slot machines, neon signs, and magic 8-balls. Claude inferred "playful + randomness + nostalgic playfulness" — and it was right.
+Example from the seed project: the INSPIRATION folder held references from fortune cookies, retro slot machines, neon signs, and magic 8-balls. Claude inferred "playful + randomness + nostalgic playfulness" — and it was right.
 
 ### Be specific about feel, not specs
 
@@ -429,7 +429,7 @@ Two ways:
 - If you cloned from git: `cd ~/.claude/skills/lens-studio-snapchat-filter && git pull`
 - If you got a `.skill` file: change extension to `.zip`, unzip over the existing folder
 
-Niklaz at Valtech RADON maintains the skill. New versions ship when learnings from new projects have been empirically validated.
+The skill-maintainer team at Valtech RADON maintains the skill. New versions ship when learnings from new projects have been empirically validated.
 
 **What if Lens Studio updates and something breaks?**
 The skill is pinned to LS 5.20+ but tested against the latest version. If an LS update breaks a pattern, it's caught in the next skill release. Between releases: tell Claude *"LS updated to X.Y.Z and now [Z] doesn't work"* — Claude probes empirically and reports.
@@ -466,7 +466,7 @@ Without MCP, you still get instructions — but you have to click and drag in LS
 
 ### How was this skill built?
 
-The skill grew during production of the RFSU BANG Fortune Lens (Valtech RADON for RFSU, first half of 2026). Every time an LS pattern failed and the right solution was found, it got documented in a project-internal gotchas file. Every time a phase protocol needed adjustment, the phase-progression template was updated. When the RFSU project was complete, all generalizable knowledge was extracted from the project folder and packaged as this skill.
+The skill grew during production of a Valtech RADON Sponsored Lens build in the first half of 2026. Every time an LS pattern failed and the right solution was found, it got documented in a project-internal gotchas file. Every time a phase protocol needed adjustment, the phase-progression template was updated. When the project was complete, all generalizable knowledge was extracted from the project folder — following the Generalization rule to strip client, campaign and project-specific detail — and packaged as this skill.
 
 Specific 5.21 features (Text3D Animator, Easy Lens Button, etc.) were validated empirically via Phase B capability tests and documented in the skill's `references/lens-studio-api-gotchas.md`. The skill is **not speculative** — every pattern in it has been tested in production.
 
@@ -477,7 +477,7 @@ If during a project you discover:
 - A UX pattern that worked well and others should be able to reuse
 - A process learning that would help the next team
 
-… ping Niklaz. The threshold for getting it merged into the skill is: **does this learning help on a Voi / OLW / Spotify project too?** If yes → migrates into the skill. If only RFSU-specific → stays in the project's own docs.
+… ping the skill maintainer. The threshold for getting it merged into the skill is: **does this learning help on other client projects too?** If yes → migrates into the skill via a pull request (after the Generalization rule strips project-specific detail). If only project-specific → stays in the project's own docs.
 
 That filter keeps the skill high-quality without bloating it.
 
@@ -492,4 +492,4 @@ That filter keeps the skill high-quality without bloating it.
 
 ---
 
-*Last updated: 2026-05-12 against skill version 0.4.3+. Questions or feedback: ping Niklaz at Valtech RADON.*
+*Last updated: 2026-05-12 against skill version 0.4.3+. Questions or feedback: ping the skill-maintainer team at Valtech RADON.*

@@ -1,6 +1,6 @@
 # Capability Validation Protocol
 
-How to verify Lens Studio API assumptions on the live LS instance before generating production TypeScript. This is the Phase 1.5 protocol from `build-pipeline.md`.
+How to verify Lens Studio API assumptions on the live LS instance before generating production TypeScript. This is the Phase 1.5 protocol from `phase-progression.md`.
 
 ## Why this exists
 
